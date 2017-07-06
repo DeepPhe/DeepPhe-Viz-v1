@@ -1,0 +1,913 @@
+@(patientName: String)
+
+@main(patientName) {
+
+	<div id="content"></div>
+
+	<script type="text/babel">
+
+
+
+		var App  = React.createClass({
+
+			render: function() {
+
+
+
+				return (
+					  <Grommet.App centered={false}>
+
+							<Grommet.Header justify="between" colorIndex="neutral-1" pad={{"horizontal": "medium"}}>
+								<Grommet.Title>DeepPhe Explorer</Grommet.Title>
+								<PatientPickerContainer patientName={this.props.patientName}/>
+							</Grommet.Header>
+
+							<Grommet.Box pad="medium">
+								<PatientViewContainer patientName={this.props.patientName} />
+							</Grommet.Box>
+
+
+					  </Grommet.App>
+				);
+			}
+		});
+
+
+
+		var PatientPickerContainer = React.createClass({
+
+			getInitialState: function() {
+				return {patients:[]};
+			},
+
+			loadPatients: function() {
+
+				var getAllPatientsEndpoint = jsRoutes.controllers.DeepPHE.getPatients();
+				$.ajax({
+				  url: getAllPatientsEndpoint.url,
+				  dataType: 'json',
+				  cache: false,
+				  success: function(results) {
+
+					var patientsArr = [];
+					$.each(results, function(i, item) {
+						var nameValue = results[i].data.name;
+						var patient = {name:nameValue};
+						patientsArr.push(patient);
+
+					});
+
+					this.setState({patients:patientsArr});
+
+				  }.bind(this),
+				  error: function(xhr, status, err) {
+					console.error(getAllPatientsEndpoint.url, status, err.toString());
+				  }.bind(this)
+				});
+			},
+
+			componentDidMount: function() {
+				this.loadPatients();
+
+			},
+
+			render: function() {
+				return (
+						<PatientPicker patients={this.state.patients} patientName={this.props.patientName} />
+				);
+			}
+
+		});
+
+		const PatientPicker = React.createClass({
+
+			render: function() {
+
+				var patientAnchors = this.props.patients.map(function(patient) {
+					var getPatientViewEndpoint = jsRoutes.controllers.Application.getPatient(patient.name);
+					return (
+						<Grommet.Anchor key={patient.name} href={getPatientViewEndpoint.url}>{patient.name}</Grommet.Anchor>
+					);
+				});
+
+				return (
+						<Grommet.Menu label={this.props.patientName}>
+							{patientAnchors}
+						</Grommet.Menu>
+				);
+			}
+		});
+
+
+		const PatientViewContainer = React.createClass({
+
+			getInitialState: function() {
+				return {patient:{name:'',cancerSummaries:{}, reports:{}}};
+			},
+
+
+			loadPatient: function() {
+				//Copy over the patientName property to the patient object.
+				//We do this here instead of in getInitialState to avoid anti-pattern:
+				//See here: https://facebook.github.io/react/tips/props-in-getInitialState-as-anti-pattern.html
+
+
+				this.setState({patient:{name:this.props.patientName,cancerSummaries:[],reports:[]}});
+
+				var getReportsEndpoint = jsRoutes.controllers.DeepPHE.getReports(this.props.patientName);
+
+				$.ajax({
+				  url: getReportsEndpoint.url,
+				  dataType: 'json',
+				  cache: false,
+				  success: function(data) {
+					 var reports = {};
+
+					 $.each(data.results[0].data, function(i, item) {
+						var report = data.results[0].data[i].row[0];
+						if(reports[report.title] == null){
+							reports[report.title] = report;
+						}
+					});
+
+					var newPatient = $.extend({}, this.state.patient);
+					newPatient.reports = reports;
+					this.setState({ patient: newPatient });
+
+				  }.bind(this),
+				  error: function(xhr, status, err) {
+					console.error(getReportsEndpoint.url, status, err.toString());
+				  }.bind(this)
+				});
+
+
+				const getCancerSummariesEndpoint = jsRoutes.controllers.DeepPHE.getCancerSummaries(this.props.patientName);
+
+
+				$.ajax({
+					url: getCancerSummariesEndpoint.url,
+					dataType: 'json',
+					cache: false,
+					success: function(data) {
+						//create a copy of the patient object in state so as to not modify in place.
+						var newPatient = $.extend({}, this.state.patient);
+
+						newPatient.cancerSummaries = data;
+						this.setState({ patient: newPatient });
+
+				  }.bind(this),
+				  error: function(xhr, status, err) {
+					console.error(getCancerSummariesEndpoint.url, status, err.toString());
+				  }.bind(this)
+				});
+
+
+
+			},
+
+			componentDidMount: function() {
+				this.loadPatient();
+			},
+
+			render: function() {
+				return (
+					<PatientView patient={this.state.patient} />
+				);
+			}
+
+		});
+
+		var PatientView = React.createClass({
+
+            clickHandler: function(fact) {
+                this.loadFactDetails(fact);
+			},
+
+			tmClickHandler: function(textMention){
+                this.setState({selectedTextMention:textMention});
+			},
+
+			loadFactDetails: function(fact) {
+				if(fact == null)
+				    return;
+
+				const getFactEndpoint = jsRoutes.controllers.DeepPHE.getFact(fact.id);
+
+				$.ajax({
+					url: getFactEndpoint.url,
+					dataType: 'json',
+					cache: false,
+					success: function(data) {
+						this.setState({ selectedFact: data });
+
+				  }.bind(this),
+				  error: function(xhr, status, err) {
+					console.error(getFactEndpoint.url, status, err.toString());
+				  }.bind(this)
+				});
+
+			},
+
+			getInitialState: function() {
+				return {selectedFact:null};
+			},
+
+			render: function() {
+
+			    var summaryArr = [];
+
+				for (var key in this.props.patient.cancerSummaries) {
+					summaryArr.push(this.props.patient.cancerSummaries[key]);
+				}
+
+				var reports = [];
+
+				for (var key in this.props.patient.reports) {
+					reports.push(this.props.patient.reports[key]);
+				}
+
+				const summaryTabs = summaryArr.map(function(summary) {
+					  var title = summary.id.substring('CancerSummary-'.length) + ' Cancer';
+
+					  return (
+						<Grommet.Tab key={summary.id} title={title} href="#">
+							<SummaryView patientName={this.props.patient.name} summary={summary} clickHandler={this.clickHandler}/>
+						</Grommet.Tab>
+					  );
+				},this);
+
+					//CSS styles in React are defined differently: https://facebook.github.io/react/docs/dom-elements.html
+				 const heightstyle = {
+					height : '900px',
+					overflow : 'scroll'
+				};
+
+				const factdetailsstyle = {
+					width : '350px',
+					height : '900px',
+					overflow : 'scroll'
+					};
+
+				const style = {
+					width : '550px',
+					height : '900px',
+					overflow : 'scroll'
+				};
+
+				return (
+
+					<Grommet.Box>
+						<Grommet.Heading tag="h2" strong={true}>{this.props.patient.name}</Grommet.Heading>
+
+		            	<Grommet.Split flex="right" fixed={true}>
+		            		<Grommet.Box style={style} separator="right">
+                                <Grommet.Tabs justify="start">
+								    {summaryTabs}
+							    </Grommet.Tabs>
+                            </Grommet.Box>
+
+							<Grommet.Split flex="right" fixed={true}>
+
+								<Grommet.Box separator="right" pad="medium" style={factdetailsstyle}>
+									  <FactDetailsView fact={this.state.selectedFact} clickHandler={this.clickHandler} tmClickHandler={this.tmClickHandler} />
+								</Grommet.Box>
+
+								<Grommet.Box separator="left" pad="medium" style={heightstyle}>
+								   <ReportsView reports={reports} fact={this.state.selectedFact} textMention={this.state.selectedTextMention}/>
+								</Grommet.Box>
+
+							</Grommet.Split>
+						</Grommet.Split>
+
+
+					</Grommet.Box>
+
+				);
+			}
+		});
+
+
+//
+//
+// Updating state based on property values pattern is found here:
+// We need to update the selectedReport if the textMention has been selected.
+// http://stackoverflow.com/questions/29397669/change-state-when-properties-change-and-first-mount-on-react-missing-function
+		var PropsSetOrChangeMixin = {
+		  componentWillMount: function() {
+			this.onPropsSetOrChange(this.props);
+		  },
+
+		  componentWillReceiveProps: function(nextProps) {
+			this.onPropsSetOrChange(nextProps);
+		  }
+		};
+
+
+		var ReportsView = React.createClass({
+
+		    mixins: [PropsSetOrChangeMixin],
+
+		  	onPropsSetOrChange: function(props) {
+
+		        if(typeof props.textMention != "undefined" && props.textMention != null){
+				    var documentId = props.textMention.documentId;
+
+				    for(var i=0;i<props.reports.length;i++){
+				        if(props.reports[i].id == documentId){
+				            this.setState({
+							  selectedReport: props.reports[i],
+							});
+
+				            break;
+				        }
+				    }
+				}
+
+
+			},
+
+ 			clickHandler: function(report) {
+				this.setState({selectedReport:report});
+			},
+
+			getInitialState: function() {
+ 			    if(this.props.reports.length>0)
+					return {selectedReport:this.props.reports[0]};
+ 			    else
+ 			        return {selectedReport:null};
+			},
+
+			render: function() {
+
+ 			    function SortByStartOffset(a, b){
+					  var comp =  a.startOffset - b.startOffset;
+					  if(comp==0)
+					      return b.endOffset - a.endOffset;
+					  else
+					      return comp;
+
+				}
+
+				var textMentions = [];
+				var annotatedReportIDs = [];
+
+
+				if(this.props.fact !=null){
+				    const allTMs = this.props.fact.textMentions;
+
+					if(typeof allTMs != "undefined"){
+						for(var i=0;i<allTMs.length;i++){
+
+						    if(!annotatedReportIDs.includes(allTMs[i].documentId)){
+						        annotatedReportIDs.push(allTMs[i].documentId);
+						    }
+
+						    if(typeof this.state.selectedReport != "undefined"  && this.state.selectedReport != null){
+								if(allTMs[i].documentId.localeCompare(this.state.selectedReport.id) == 0)
+									textMentions.push(allTMs[i]);
+						    }
+						}
+					}
+				}
+
+				textMentions.sort(SortByStartOffset);
+				var selectedReport = this.state.selectedReport;
+
+
+
+				if(this.props.reports.length==0){
+					 return (
+							<Grommet.Heading tag="h4" strong={true}>No Reports Available</Grommet.Heading>
+					 );
+				}
+				else{
+					return (
+
+						<Grommet.Box wrap={true} direction="row">
+							<Grommet.Heading tag="h3" strong={true}>Reports</Grommet.Heading>
+
+							<ReportsTimeline reports={this.props.reports} selectedReport={selectedReport} annotatedReportIDs={annotatedReportIDs} clickHandler={this.clickHandler} />
+
+							<ReportView textMentions={textMentions} report={selectedReport} textMention={this.props.textMention}/>
+						</Grommet.Box>
+
+					);
+				}
+			}
+		});
+
+		var ReportsTimeline = React.createClass({
+
+		    clickHandler: function(report, event) {
+				 if (typeof this.props.clickHandler === 'function') {
+					this.props.clickHandler(report);
+				}
+			},
+
+			render: function() {
+				var sortedReports = this.props.reports;
+
+				function SortByDate(a, b){
+					  var aDate = new Date(a.principalDate);
+					  var bDate = new Date(b.principalDate);
+					  return aDate - bDate;
+				}
+
+				sortedReports.sort(SortByDate);
+
+				var timelineAnchors = sortedReports.map(function(report) {
+				    var title = report.title;
+				    title = title.substring(title.indexOf("report")+6);
+
+				    var currentReport = false;
+
+				    if(this.props.selectedReport != null){
+				        currentReport = this.props.selectedReport.id == report.id;
+				    }
+
+				    var hasAnnotations = this.props.annotatedReportIDs.includes(report.id);
+
+				    const filledcircle = {
+						 backgroundColor: '#166ca5',
+						 height: '10px',
+						 width: '10px',
+						 borderRadius:'50%'
+				    };
+				    if(hasAnnotations){
+						if(currentReport){
+							return (
+								<Grommet.Box pad="small" direction="row"><span style={filledcircle} /><Grommet.Heading tag="h5" strong={true}>{title}</Grommet.Heading></Grommet.Box>
+							);
+						}
+						else{
+							return (
+								<Grommet.Box pad="small" direction="row"><span style={filledcircle} /><Grommet.Anchor onClick={this.clickHandler.bind(this,report)}>{title}</Grommet.Anchor></Grommet.Box>
+							);
+						}
+
+				    }
+				    else{
+				        if(currentReport){
+							return (
+								<Grommet.Box pad="small" direction="row"><Grommet.Heading tag="h5" strong={true}>{title}</Grommet.Heading></Grommet.Box>
+							);
+						}
+						else{
+							return (
+								<Grommet.Box pad="small" direction="row"><Grommet.Anchor onClick={this.clickHandler.bind(this,report)}>{title}</Grommet.Anchor></Grommet.Box>
+							);
+						}
+				    }
+
+				}.bind(this));
+
+				return (
+
+					<Grommet.Box direction="row" colorIndex="light-2" wrap={true} responsive={false}>
+						{timelineAnchors}
+					</Grommet.Box>
+
+				);
+			}
+		});
+
+		var ReportView = React.createClass({
+
+
+		    insertHighlightingSpans: function(textMentions, text){
+		        if(text!=null && text.length>0 && textMentions!=null && textMentions.length>0){
+
+		            var textFragments = [];
+					var color = '#166ca5';
+
+
+		            if(textMentions.length==1){
+		                var textMention = textMentions[0];
+
+		                if(textMention == this.props.textMention){
+		                    color = '#dc2878';
+		                }
+
+						if(textMention.startOffset == 0)
+							textFragments.push('');
+						else
+							textFragments.push(text.substring(0,textMention.startOffset));
+
+						textFragments.push("<span style='background-color:" + color + "; color:#ffffff'>" + text.substring(textMention.startOffset, textMention.endOffset) + "</span>");
+						textFragments.push(text.substring(textMention.endOffset));
+		            }
+		            else{
+		                var lastValidTMIndex = 0;
+
+		                for(var i=0;i<textMentions.length;i++){
+
+							var textMention = textMentions[i];
+							var lastValidTM = textMentions[lastValidTMIndex];
+
+							if(textMention == this.props.textMention){
+		                    	color = '#dc2878';
+		                    }
+
+
+							//if this is the first textmention, paste the start of the document before the first TM.
+							if(i==0){
+								if(textMention.startOffset == 0)
+									textFragments.push('');
+								else
+									textFragments.push(text.substring(0,textMention.startOffset));
+							}
+							else{ //else, check if this text mention is valid. if it is, paste the text from last valid TM to this one.
+								if(textMention.startOffset<lastValidTM.endOffset){
+								    	//push end of the document
+								    continue; //skipping this TM.
+								}
+								else{
+									textFragments.push(text.substring(lastValidTM.endOffset,textMention.startOffset));
+								}
+							}
+
+							textFragments.push("<span style='background-color:" + color + ";  color:#ffffff'>" + text.substring(textMention.startOffset, textMention.endOffset) + "</span>");
+
+							lastValidTMIndex = i;
+
+						}
+
+						//push end of the document
+						textFragments.push(text.substring(textMentions[lastValidTMIndex].endOffset));
+
+
+
+		            }
+
+
+					var highlightedText = '';
+
+					for(var i=0;i<textFragments.length;i++){
+						highlightedText += textFragments[i];
+					}
+
+					return {__html: highlightedText};
+				}
+				return {__html: text};
+		    },
+
+			render: function() {
+
+				const style = {
+						whiteSpace : 'pre-wrap'
+					};
+
+				if(this.props.report == null){
+				    return (<span />);
+				}
+				return (
+
+					<Grommet.Article pad="medium">
+
+						<Grommet.Heading tag="h4" strong={true}> {this.props.report.title} </Grommet.Heading>
+
+						<Grommet.Section>
+							<div style={style} dangerouslySetInnerHTML={this.insertHighlightingSpans(this.props.textMentions,this.props.report.text)} />
+						</Grommet.Section>
+
+					</Grommet.Article>
+
+				);
+			}
+		});
+
+
+
+		var SummaryView = React.createClass({
+
+
+
+			render: function() {
+
+				return (
+
+					<Grommet.Box>
+						<SummaryFactsTableView summary={this.props.summary} clickHandler={this.props.clickHandler} hideFacts={true}/>
+
+						<Grommet.Box pad="small" separator="top">
+							<Grommet.Heading tag="h3" strong={true}>Tumors</Grommet.Heading>
+							<TumorSummaryViewContainer patientName={this.props.patientName} summary={this.props.summary} clickHandler={this.props.clickHandler}  />
+						</Grommet.Box>
+
+					</Grommet.Box>
+
+				);
+			}
+		});
+
+
+
+		var SummaryFactsTableView = React.createClass({
+
+			render: function() {
+				const HIDDEN_FACTS = ['generic','cellline','histologic','diagnosis','tumorextent'];
+
+			    function SortByName(a, b){
+					  var aName = a.category.toLowerCase();
+					  var bName = b.category.toLowerCase();
+					  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+				}
+				const collatedFacts = this.props.summary.collatedFacts;
+				collatedFacts.sort(SortByName);
+
+
+				const filteredFacts = collatedFacts.filter(function(collatedFactContainer){
+					var category = collatedFactContainer.category.toLowerCase();
+
+					if(this.props.hideFacts == true){
+						for(var i=0;i<HIDDEN_FACTS.length;i++){
+							if(category.includes(HIDDEN_FACTS[i])){
+								return false;
+							}
+						}
+					}
+
+					return true;
+				},this);
+
+
+				const collatedFactRows = filteredFacts.map(function(collatedFactContainer) {
+
+					//CSS styles in React are defined differently: https://facebook.github.io/react/docs/dom-elements.html
+
+					const tdStyle = {
+						verticalAlign : 'top'
+//						width : '200px',
+
+					};
+					const factViews = collatedFactContainer.facts.map(function(fact) {
+					  return (
+						<span key={fact.id}><FactView  fact={fact} onClick={this.props.clickHandler}/>&nbsp;|&nbsp;</span>
+					  );
+					},this); //the this parameter here fixes the binding, so we do not need to bind the clickHandler in the return.
+
+					const name = deepphe.toNonCamelCase(collatedFactContainer.category.substring(3));
+
+					return (
+
+							<Grommet.TableRow key={collatedFactContainer.category}>
+								<td key="label" style={tdStyle}>{name}</td>
+								<td key="value">{factViews}</td>
+							</Grommet.TableRow>
+					);
+				}.bind(this));
+
+				return (
+
+					<Grommet.Box direction="row">
+							<Grommet.Table selectable={false} >
+
+								<tbody>
+									{collatedFactRows}
+								</tbody>
+							</Grommet.Table>
+					</Grommet.Box>
+
+
+				);
+			}
+		});
+
+
+		var TumorSummaryViewContainer = React.createClass({
+
+
+			getInitialState: function() {
+				return {tumorSummaries:[]};
+			},
+
+			loadTumorSummaries: function() {
+
+				const getTumorSummariesEndpoint = jsRoutes.controllers.DeepPHE.getTumorSummaries(this.props.patientName, this.props.summary.id);
+
+
+				$.ajax({
+					url: getTumorSummariesEndpoint.url,
+					dataType: 'json',
+					cache: false,
+					success: function(data) {
+						this.setState({ tumorSummaries: data });
+
+				  }.bind(this),
+				  error: function(xhr, status, err) {
+					console.error(getTumorSummariesEndpoint.url, status, err.toString());
+				  }.bind(this)
+				});
+
+			},
+
+			componentDidMount: function() {
+				this.loadTumorSummaries();
+			},
+
+			render: function() {
+				return (
+					<TumorSummariesView tumorSummaries={this.state.tumorSummaries} clickHandler={this.props.clickHandler}/>
+				);
+			}
+
+		});
+
+		var TumorSummariesView = React.createClass({
+
+			render: function() {
+
+				const summaryTables = this.props.tumorSummaries.map(function(summary) {
+					  var summaryTitle = summary.id;
+					  if(summary.hasBodySite != null){
+						  summaryTitle = summary.hasBodySite;
+					  }
+
+					  return (
+						 <Grommet.Tab key={summary.id} title={summaryTitle} href="#">
+							<SummaryFactsTableView summary={summary} clickHandler={this.props.clickHandler} hideFacts={false}/>
+						</Grommet.Tab>
+
+					  );
+				},this);
+
+				return (
+					<Grommet.Tabs justify="start">
+						{summaryTables}
+					</Grommet.Tabs>
+				);
+			}
+		});
+
+		var FactView = React.createClass({
+
+			clickHandler: function() {
+				 if (typeof this.props.onClick === 'function') {
+					this.props.onClick(this.props.fact);
+				}
+			},
+
+			render: function() {
+
+				var modifierFactsArr = [];
+				var modifierLabel = '';
+
+				for (var key in this.props.fact.modifiers) {
+					const modifierFact = this.props.fact.modifiers[key];
+					if(modifierFact == null)
+						break;
+					modifierFactsArr.push(modifierFact);
+					modifierLabel += ', ' + modifierFact.prettyName;
+
+				}
+
+				var modifierStr = ' ';
+				 if(modifierLabel.length>0){
+					modifierStr = '(' + modifierLabel.substring(2) + ') ';
+				 }
+
+				return (
+					<Grommet.Anchor onClick={this.clickHandler} label={this.props.fact.prettyName + modifierStr}>
+						{this.props.fact.prettyName + modifierStr}
+					</Grommet.Anchor>
+
+				);
+			}
+		});
+
+
+		var FactDetailsView = React.createClass({
+
+ 			tmClickHandler: function(tm, event) {
+				 if (typeof this.props.tmClickHandler === 'function') {
+					this.props.tmClickHandler(tm);
+				}
+			},
+
+			render: function() {
+
+				if(this.props.fact == null){
+					return (
+						<Grommet.Box >
+						<Grommet.Heading tag="h4" strong={true}>Select a fact from the left...</Grommet.Heading>
+						</Grommet.Box>
+						);
+				}
+				else{
+
+					const collatedFacts = this.props.fact.collatedFacts;
+
+					var collatedFactRows = '';
+					var textMentionViews;
+					if(collatedFacts != null){
+
+						function SortByName(a, b){
+						  var aName = a.category.toLowerCase();
+						  var bName = b.category.toLowerCase();
+						  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+						}
+						collatedFacts.sort(SortByName);
+
+						//Map to create separate ListItems for each group of facts based on the category value
+						collatedFactRows = collatedFacts.map(function(collatedFactContainer) {
+
+							//Map to create separate FactViews or Anchors for each separate Fact/TextMention. This gets included
+							//within the secondary ListItem
+							const factViews = collatedFactContainer.facts.map(function(fact) {
+								return (
+									<span><FactView key={fact.id} fact={fact} onClick={this.props.clickHandler}/> | </span>
+								);
+							},this);
+
+							return (
+							 <Grommet.ListItem key={collatedFactContainer.category} justify='between'>
+								<span>
+								  {collatedFactContainer.category}:
+								</span>
+								<span className='secondary'>
+								  {factViews}
+								</span>
+							  </Grommet.ListItem>
+							);
+						},this); //the this parameter here fixes the binding, so we do not need to bind the clickHandler in the return.
+
+						const textMentions = this.props.fact.textMentions;
+						textMentionViews = textMentions.map(function(tm) {
+							var tmid = tm.documentId + tm.startOffset + tm.endOffset;
+							return (
+								<span><Grommet.Anchor onClick={this.tmClickHandler.bind(this,tm)} data-tip data-for={tmid}>{tm.text}</Grommet.Anchor>&nbsp;|&nbsp;
+									<ReactTooltip id={tmid} type='dark' effect = 'solid'>
+									  <span>{tm.documentId} | {tm.documentSection} - {tm.startOffset}:{tm.endOffset}</span>
+									</ReactTooltip>
+								</span>
+
+							);
+						},this);
+
+					}
+
+
+					return (
+						<Grommet.Box >
+							<Grommet.Heading tag="h4" strong={true}>Fact Information</Grommet.Heading>
+							<Grommet.List selectable={false}>
+								  <Grommet.ListItem justify='between'
+									separator='horizontal'>
+									<span>
+									  ID:
+									</span>
+									<span className='secondary'>
+
+									  {this.props.fact.id}
+									</span>
+								  </Grommet.ListItem>
+								  <Grommet.ListItem justify='between'>
+									<span>
+									  Name:
+									</span>
+									<span className='secondary'>
+									  {this.props.fact.prettyName}
+									</span>
+								  </Grommet.ListItem>
+								  <Grommet.ListItem justify='between'>
+									<span>
+									  Type:
+									</span>
+									<span className='secondary'>
+									  {this.props.fact.type}
+									</span>
+								  </Grommet.ListItem>
+								  <Grommet.ListItem justify='between'>
+									<span>
+									  Rules Applied:
+									</span>
+									<span className='secondary'>
+									  {this.props.fact.rulesApplied}
+									</span>
+								  </Grommet.ListItem>
+								  {collatedFactRows}
+
+							</Grommet.List>
+
+							<Grommet.Box pad="medium">
+								<Grommet.Heading tag="h5" strong={true}>Text Provenances</Grommet.Heading>
+								<span>{textMentionViews}</span>
+
+							</Grommet.Box>
+
+						</Grommet.Box>
+					);
+				}
+			}
+		});
+
+
+
+
+		const element = document.getElementById('content');
+		ReactDOM.render(<App patientName="@patientName" />, element);
+
+  </script>
+
+
+}

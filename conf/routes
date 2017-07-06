@@ -1,0 +1,18 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+GET     /deepphe/patients                                           @controllers.DeepPHE.getPatients()
+GET     /deepphe/patients/:patientName                              @controllers.DeepPHE.getPatient(patientName: String)
+GET     /deepphe/patients/:patientName/cancers                      @controllers.DeepPHE.getCancerSummaries(patientName: String)
+GET     /deepphe/patients/:patientName/reports                      @controllers.DeepPHE.getReports(patientName: String)
+GET     /deepphe/patients/:patientName/cancers/:cancerId/tumors     @controllers.DeepPHE.getTumorSummaries(patientName: String, cancerId: String)
+GET     /deepphe/facts/:factId                                      @controllers.DeepPHE.getFact(factId: String)
+
+GET     /patients/:patientName             @controllers.Application.getPatient(patientName: String)
+GET     /jsr/                       controllers.JavascriptRouter.jsRoutes
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
