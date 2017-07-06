@@ -1,5 +1,4 @@
 import db.Neo4JRESTCaller;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,13 +8,13 @@ import static org.junit.Assert.fail;
 
 public class Neo4JRESTCallerTest {
 
-	@Ignore
+	String SERVER_ROOT_URI = "http://localhost:7474/db/data/";
+	String username = "neo4j";
+	String password = "123";
+
 	@Test
 	public void testGetCancerSummaries() {
-		String SERVER_ROOT_URI = "http://localhost:7474/db/data/";
-		String username = "neo4j";
-		String password = "neo4jdemo";
-		String patientName = "Patient11";
+		String patientName = "Patient01";
 
 		Neo4JRESTCaller neo4jRESTCaller = new Neo4JRESTCaller(SERVER_ROOT_URI, username, password);
 
@@ -27,15 +26,10 @@ public class Neo4JRESTCallerTest {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-
 	}
 
-	@Ignore
 	@Test
 	public void testGetFact() {
-		String SERVER_ROOT_URI = "http://localhost:7474/db/data/";
-		String username = "neo4j";
-		String password = "neo4jdemo";
 		String factId = "MedicalRecord_Breast_709";
 
 		Neo4JRESTCaller neo4jRESTCaller = new Neo4JRESTCaller(SERVER_ROOT_URI, username, password);
@@ -48,16 +42,11 @@ public class Neo4JRESTCallerTest {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
-
 	}
 
-	@Ignore
 	@Test
 	public void testGetReports() {
-		String SERVER_ROOT_URI = "http://localhost:7474/db/data/";
-		String username = "neo4j";
-		String password = "neo4jdemo";
-		String patientName = "Patient11";
+		String patientName = "Patient03";
 
 		Neo4JRESTCaller neo4jRESTCaller = new Neo4JRESTCaller(SERVER_ROOT_URI, username, password);
 
@@ -65,7 +54,5 @@ public class Neo4JRESTCallerTest {
 		String patientJSON = neo4jRESTCaller.getReportsJSON(patientName);
 		assertTrue(patientJSON.length()>0);
 		System.out.println(patientJSON);
-
-
 	}
 }
