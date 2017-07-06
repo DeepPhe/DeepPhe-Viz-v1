@@ -12,7 +12,7 @@ You must have the following tools install to build this project:
 
 ## Getting Started
 
-First download/clone the `deepphe-viz` repo and do a maven build:
+First download/clone the `DeepPhe-Viz` repo and do a maven build:
 
 ````
 git clone https://github.com/DeepPhe/DeepPhe-Viz.git
@@ -25,7 +25,7 @@ Then put your neo4j database connection username and password in `conf/applicati
 ./activator run
 ````
 
-This will start the viz server on port 9000 by default. You can go to http://localhost:9000/patients/Patient92 (or any other patient number from your dataset) to see the result.
+This will start the web server on port 9000 by default. You can go to http://localhost:9000/patients/Patient92 (or any other patient number from your dataset) to see the result.
 
 Note: you can type `lsof -i :9000` to see if port 9000 is being used. And if you need to run this viz on a different port, say 8282, just type `./activator "run 8282"`.
 
