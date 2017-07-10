@@ -9,7 +9,7 @@ public class Application extends Controller {
 
     public Result index() {
 
-        return ok("This is cool");
+        return ok("This is the default action of DeepPhe application");
     }
 
     public Result getPatient(String patientName) {
