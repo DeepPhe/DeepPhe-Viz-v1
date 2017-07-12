@@ -1,25 +1,12 @@
-
-
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-
-/*
-#reportsMenu, #reportsContent{
-  height:600px;
-  overflow-y:scroll;
-  width:100%;
-}
-*/
-
-pre {
-    font-size:100%;
+.header {
+    min-height: 72px;
+    width: 100%;
+    margin-bottom: 0;
+    background-color: #0a64a0;
 }
 
-
-
-
-
-
-
+.left{
+width: 550px;
+    height: 900px;
+    overflow: scroll;
+}
