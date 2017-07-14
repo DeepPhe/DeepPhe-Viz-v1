@@ -1,0 +1,32 @@
+{
+  "name": "deepphe",
+  "version": "0.0.1",
+  "description": "DeepPhe",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monarch-initiative/phenogrid.git"
+  },
+  "keywords": [
+    "deepphe",
+    "visualization"
+  ],
+  "author": "University of Pittsburgh, Department of Biomedical Informatics",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/monarch-initiative/phenogrid/issues"
+  },
+  "homepage": "https://github.com/monarch-initiative/phenogrid",
+  "dependencies": {
+    "d3": "^3.5.17",
+    "handlebars": "^4.0.10",
+    "hapi": "^16.4.3",
+    "inert": "^4.2.0",
+    "neo4j-driver": "^1.4.0",
+    "request": "^2.81.0",
+    "vision": "^4.1.1"
+  },
+  "devDependencies": {
+    "jshint": "2.9.1"
+  },
+  "main": "js/deepphe.js"
+}

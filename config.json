@@ -1,0 +1,11 @@
+{
+    "server": {
+        "host": "0.0.0.0",
+        "port": 8383
+    },
+    "neo4j": {
+        "uri": "localhost:7474/db/data/cypher",
+        "username": "neo4j",
+        "password": "123"
+    }
+}
