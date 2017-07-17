@@ -1,4 +1,4 @@
-var neo4j = {
+var neo4jCypherQueries = {
 	getPatient: function(patientName) {
 		var cypherQuery = "MATCH (p:Patient)-->(c:Cancer)-->(t:Tumor)-[rel]->(f:Fact) " +
 							"WHERE p.name = '" + patientName + "' " +
@@ -7,4 +7,4 @@ var neo4j = {
 	}
 };
 
-module.exports = neo4j;
+module.exports = neo4jCypherQueries;

@@ -12,7 +12,7 @@ const Vision = require('vision');
 const HttpRequest = require('request');
 
 // Neo4j queries
-const neo4j = require('./js/neo4j.js');
+const neo4jCypherQueries = require('./js/neo4jCypherQueries.js');
 
 // By default, Node.js installations come with the file system module, fs
 const fs = require('fs');
@@ -100,16 +100,19 @@ server.route({
         HttpRequest({
             uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
             method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
             json: {
-                "query": neo4j.getPatient(patientName)
+                'query': neo4jCypherQueries.getPatient(patientName)
             }
         }, function (error, response, body) {
             if ( ! error) {
-                console.log('response: ' + JSON.stringify(response, null, 4));
+                //console.log('response: ' + JSON.stringify(response, null, 4));
                 // Render index.html
                 reply.view('index', {
-                    title: 'DeepPhe Viz',
-                    patientInfo: response
+                    title: 'DeepPhe-Viz',
+                    patientInfo: JSON.stringify(response, null, 4)
                 });
             } else {
                 console.log('Failed to make the neo4j rest api call:');
