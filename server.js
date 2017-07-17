@@ -44,27 +44,35 @@ server.route({
     }
 });
 
-// Register invert plugin and serve CSS files
+// Register invert plugin and serve CSS and JS files
 server.register(Inert, (err) => {
     if (err) {
         throw err;
     }
+});
 
-    // CSS route
-    server.route({
-        method: 'GET',
-        path:'/css/{file}', 
-        handler: {
-            file: function (request) {
-                return 'css/' + request.params.file;
-            }
-        }
-    });
+// CSS route
+server.route({
+    method: 'GET',
+    path:'/css/{file}', 
+    handler: function (request, reply) {
+        // This 'file' handler is only available after registering Inert plugin
+        reply.file(__dirname + '/css/' + request.params.file)
+    }
+});
+
+// JS route
+server.route({
+    method: 'GET',
+    path:'/js/{file}', 
+    handler: function (request, reply) {
+        // This 'file' handler is only available after registering Inert plugin
+        reply.file(__dirname + '/js/' + request.params.file)
+    }
 });
 
 // Register vision plugin to render view templates
 server.register(Vision, (err) => {
-
     if (err) {
         throw err;
     }
@@ -88,7 +96,7 @@ server.route({
     handler: function (request, reply) {
         var patientName = request.params.patientName;
 
-        // REST call
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
             method: "POST",
@@ -104,7 +112,7 @@ server.route({
                     patientInfo: response
                 });
             } else {
-                console.log('Request URI: ' + 'http://' + config.neo4j.username + ':' + config.neo4j.password + config.neo4j.uri);
+                console.log('Failed to make the neo4j rest api call:');
                 console.error(error);
             }
         });
