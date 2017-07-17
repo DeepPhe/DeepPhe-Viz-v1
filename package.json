@@ -1,23 +1,23 @@
 {
   "name": "deepphe",
   "version": "0.0.1",
-  "description": "DeepPhe",
+  "description": "DeepPhe-Viz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/monarch-initiative/phenogrid.git"
+    "url": "https://github.com/DeepPhe/DeepPhe-Viz.git"
   },
   "keywords": [
     "deepphe",
+    "Health NLP"
     "visualization"
   ],
   "author": "University of Pittsburgh, Department of Biomedical Informatics",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/monarch-initiative/phenogrid/issues"
+    "url": "https://github.com/DeepPhe/DeepPhe-Viz/issues"
   },
-  "homepage": "https://github.com/monarch-initiative/phenogrid",
+  "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "d3": "^3.5.17",
     "handlebars": "^4.0.10",
     "hapi": "^16.4.3",
     "inert": "^4.2.0",
@@ -25,8 +25,5 @@
     "request": "^2.81.0",
     "vision": "^4.1.1"
   },
-  "devDependencies": {
-    "jshint": "2.9.1"
-  },
-  "main": "js/deepphe.js"
+  "main": "server.js"
 }
