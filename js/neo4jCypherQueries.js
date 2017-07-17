@@ -1,6 +1,6 @@
 var neo4jCypherQueries = {
 	getPatients: function() {
-		var query = "MATCH (p:Patient) RETURN p.name";
+		var query = "MATCH (p:Patient) RETURN p";
 		return query;
 	},
 
@@ -11,10 +11,9 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-    // This query returns empty data
 	getReports: function(patientName) {
-		var query = "MATCH (patient:Patient { name:'" + patientName + "'})-->(report:Report) " +
-					"RETURN report";
+		var query = "MATCH (p:Patient {name:'" + patientName + "'})-->(r:Report) " +
+					"RETURN r";
 		return query;
 	},
     
