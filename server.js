@@ -108,7 +108,10 @@ server.route({
             uri: requestUri,
             method: "POST",
             headers: {
-                'X-Stream': true // Enable streaming
+                // Enable streaming
+                // Responses from the HTTP API can be transmitted as JSON streams, 
+                // resulting in better performance and lower memory overhead on the server side.
+                'X-Stream': true
             },
             json: {
                 'query': neo4jCypherQueries.getPatients()
@@ -163,8 +166,6 @@ server.route({
                 console.error(error);
             }
         });
-
-        
     }
 });
 

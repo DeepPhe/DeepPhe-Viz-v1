@@ -17,7 +17,6 @@ var neo4jCypherQueries = {
 		return query;
 	},
     
-    // This query returns empty data
     getCancers: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' " +
