@@ -117,8 +117,6 @@ server.route({
                 console.error(error);
             }
         });
-
-        
     }
 });
 
@@ -157,6 +155,75 @@ server.route({
     }
 });
 
+// Individual patient reports route
+server.route({
+    method: 'GET',
+    path:'/patients/{patientName}/reports', 
+    handler: function (request, reply) {
+        var patientName = request.params.patientName;
+
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getReports(patientName)
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+                // Render patient.html
+                reply.view('reports', {
+                    title: 'DeepPhe-Viz',
+                    reports: JSON.stringify(response, null, 4)
+                });
+            } else {
+                console.log('Failed to make the neo4j rest api call: getPatient()');
+                console.error(error);
+            }
+        });
+
+        
+    }
+});
+
+// Individual patient cancers route
+server.route({
+    method: 'GET',
+    path:'/patients/{patientName}/cancers', 
+    handler: function (request, reply) {
+        var patientName = request.params.patientName;
+
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getCancers(patientName)
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+                // Render patient.html
+                reply.view('cancers', {
+                    title: 'DeepPhe-Viz',
+                    cancers: JSON.stringify(response, null, 4)
+                });
+            } else {
+                console.log('Failed to make the neo4j rest api call: getPatient()');
+                console.error(error);
+            }
+        });
+
+        
+    }
+});
 
 // Start the server
 server.start((err) => {
