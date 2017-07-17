@@ -50,6 +50,7 @@ server.route({
 // Register invert plugin and serve CSS and JS files
 server.register(Inert, (err) => {
     if (err) {
+        console.log('Errors with registering Inert plugin...');
         throw err;
     }
 });
@@ -77,6 +78,7 @@ server.route({
 // Register vision plugin to render view templates
 server.register(Vision, (err) => {
     if (err) {
+        console.log('Errors with registering Vision plugin...');
         throw err;
     }
 
@@ -87,8 +89,12 @@ server.register(Vision, (err) => {
         engines: {
             html: require('handlebars')
         },
+        isCached: false, // Tell Hapi not to cache the view files, no need to restart app
+        layout: true, // Enable the built-in support for view layouts
         // Tell the server that our templates are located in the templates directory within the current path
-        path: __dirname + '/templates'
+        relativeTo: __dirname,
+        path: './templates',
+        layoutPath: './templates/layout'
     });
 });
 
@@ -111,10 +117,12 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 // Render patients.html
-                reply.view('patients', {
-                    title: 'DeepPhe-Viz',
+                var data = {
+                    title: 'All patients',
                     patients: JSON.stringify(response, null, 4)
-                });
+                };
+
+                reply.view('patients', data);
             } else {
                 console.log('Failed to make the neo4j rest api call: getPatients()');
                 console.error(error);
@@ -144,10 +152,12 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 // Render patient.html
-                reply.view('patient', {
-                    title: 'DeepPhe-Viz',
+                var data = {
+                    title: patientName,
                     patientInfo: JSON.stringify(response, null, 4)
-                });
+                };
+
+                reply.view('patient', data);
             } else {
                 console.log('Failed to make the neo4j rest api call: getPatient()');
                 console.error(error);
@@ -179,10 +189,12 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 // Render patient.html
-                reply.view('reports', {
-                    title: 'DeepPhe-Viz',
+                var data = {
+                    title: 'Reports of ' + patientName,
                     reports: JSON.stringify(response, null, 4)
-                });
+                };
+
+                reply.view('reports', data);
             } else {
                 console.log('Failed to make the neo4j rest api call: getPatient()');
                 console.error(error);
@@ -214,10 +226,12 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 // Render patient.html
-                reply.view('cancers', {
-                    title: 'DeepPhe-Viz',
+                var data = {
+                    title: 'Cancers of ' + patientName,
                     cancers: JSON.stringify(response, null, 4)
-                });
+                };
+
+                reply.view('cancers', data);
             } else {
                 console.log('Failed to make the neo4j rest api call: getPatient()');
                 console.error(error);
