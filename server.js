@@ -89,7 +89,40 @@ server.register(Vision, (err) => {
     });
 });
 
-// patient route
+// All patients route
+server.route({
+    method: 'GET',
+    path:'/patients', 
+    handler: function (request, reply) {
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getPatients()
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+                // Render patients.html
+                reply.view('patients', {
+                    title: 'DeepPhe-Viz',
+                    patients: JSON.stringify(response, null, 4)
+                });
+            } else {
+                console.log('Failed to make the neo4j rest api call: getPatients()');
+                console.error(error);
+            }
+        });
+
+        
+    }
+});
+
+// Individual patient route
 server.route({
     method: 'GET',
     path:'/patients/{patientName}', 
@@ -109,13 +142,13 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
-                // Render index.html
-                reply.view('index', {
+                // Render patient.html
+                reply.view('patient', {
                     title: 'DeepPhe-Viz',
                     patientInfo: JSON.stringify(response, null, 4)
                 });
             } else {
-                console.log('Failed to make the neo4j rest api call:');
+                console.log('Failed to make the neo4j rest api call: getPatient()');
                 console.error(error);
             }
         });
