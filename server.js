@@ -20,6 +20,9 @@ const fs = require('fs');
 // Load configuration data
 const config = JSON.parse(fs.readFileSync('./config.json'));
 
+// Beo4j REST API cypher endpoint with basic auth
+const requestUri = 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri;
+
 // Create a server with a host and port
 const server = new Hapi.Server();
 
@@ -96,7 +99,7 @@ server.route({
     handler: function (request, reply) {
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
-            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            uri: requestUri,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -129,7 +132,7 @@ server.route({
 
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
-            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            uri: requestUri,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -164,7 +167,7 @@ server.route({
 
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
-            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            uri: requestUri,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -199,7 +202,7 @@ server.route({
 
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
-            uri: 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri,
+            uri: requestUri,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
