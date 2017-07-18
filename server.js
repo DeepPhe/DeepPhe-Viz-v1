@@ -118,7 +118,7 @@ server.route({
                 // Render patients.html
                 var data = {
                     title: 'All patients',
-                    patients: JSON.stringify(response, null, 4)
+                    patients: JSON.stringify(body, null, 4)
                 };
 
                 reply.view('patients', data);
@@ -153,7 +153,7 @@ server.route({
                 // Render patient.html
                 var data = {
                     title: patientName,
-                    patientInfo: JSON.stringify(response, null, 4)
+                    patientInfo: JSON.stringify(body, null, 4)
                 };
 
                 reply.view('patient', data);
@@ -188,7 +188,7 @@ server.route({
                 // Render patient.html
                 var data = {
                     title: 'Reports of ' + patientName,
-                    reports: JSON.stringify(response, null, 4)
+                    reports: JSON.stringify(body, null, 4)
                 };
 
                 reply.view('reports', data);
@@ -225,7 +225,7 @@ server.route({
                 // Render patient.html
                 var data = {
                     title: 'Cancers of ' + patientName,
-                    cancers: JSON.stringify(response, null, 4)
+                    cancers: JSON.stringify(body, null, 4)
                 };
 
                 reply.view('cancers', data);
