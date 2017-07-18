@@ -31,13 +31,6 @@ server.connection({
     port: config.server.port,
     router: {
         stripTrailingSlash: true // removes trailing slashes on incoming paths
-    },
-    routes: {
-        cors: true,
-        timeout: {  // Disable timeouts. Otherwise, long/slow /compare routes fail
-            server: false,
-            socket: false 
-        }
     }
 });
 
