@@ -19,7 +19,19 @@ First download/clone the `DeepPhe-Viz` repo and do a maven build:
 git clone https://github.com/DeepPhe/DeepPhe-Viz.git
 cd DeepPhe-Viz
 ````
-Then put your neo4j database connection username and password in `config.json`. 
+
+## Installation & Configuration
+
+Installing this package and all its depedencies can be done with a simple command in the package root directory with no arguments:
+
+````
+npm install
+````
+
+Then put your neo4j database connection username and password in `config.json`. This assumes that you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
+
+
+## Running The Viz Server
 
 Now you can start the node server with
 
