@@ -29,6 +29,9 @@ const server = new Hapi.Server();
 server.connection({ 
     host: config.server.host, // If you plan to deploy your hapi application to a PaaS provider, you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1, 
     port: config.server.port,
+    router: {
+        stripTrailingSlash: true // removes trailing slashes on incoming paths
+    },
     routes: {
         cors: true,
         timeout: {  // Disable timeouts. Otherwise, long/slow /compare routes fail
