@@ -118,7 +118,8 @@ server.route({
                 // Render patients.html
                 var data = {
                     title: 'All patients',
-                    patients: JSON.stringify(body, null, 4)
+                    patientsJson: JSON.stringify(body), // Converts a JavaScript value to a JSON string.
+                    patients: JSON.stringify(body, null, 4) 
                 };
 
                 reply.view('patients', data);
