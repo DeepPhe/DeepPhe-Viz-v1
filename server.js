@@ -198,8 +198,6 @@ server.route({
                 console.error(error);
             }
         });
-
-        
     }
 });
 
@@ -235,8 +233,6 @@ server.route({
                 console.error(error);
             }
         });
-
-        
     }
 });
 

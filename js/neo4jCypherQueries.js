@@ -1,3 +1,5 @@
+'use strict';
+
 var neo4jCypherQueries = {
 	getPatients: function() {
 		var query = "MATCH (p:Patient) RETURN p";
