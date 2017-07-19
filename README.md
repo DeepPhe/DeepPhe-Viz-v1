@@ -31,7 +31,7 @@ npm install
 Then put your neo4j database connection username and password in `config.json`. This assumes that you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
 
 
-## Running The Viz Server
+## Launching The Viz Server
 
 Now you can start the node server with
 
@@ -39,6 +39,20 @@ Now you can start the node server with
 node server.js
 ````
 
-This will start the web server on port 8383 by default. You can go to http://localhost:8383/patients/Patient02 (or any other patient number from your dataset) to see the result.
+This will start the web server on port 8383 by default. You can go to http://localhost:8383/patients to see the result.
 
 Note: you can type `lsof -i :8383` to see if port 8383 is being used. 
+
+## Development Mode
+
+During development, you don't want to restart the server with `node server.js` every time after you make changes in the source code. [Nodemon](https://github.com/remy/nodemon) is a utility that will monitor for any changes in your source and automatically restart your server. Perfect for development. To install, 
+
+````
+npm install -g nodemon
+````
+
+Then just use `nodemon` instead of `node` to run your code, and now your process will automatically restart when your code changes.
+
+````
+nodemon server.js
+````
