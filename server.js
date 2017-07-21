@@ -14,6 +14,9 @@ const HttpRequest = require('request');
 // Neo4j queries
 const neo4jCypherQueries = require('./js/neo4jCypherQueries.js');
 
+// Utilities
+const util = require('./js/util.js');
+
 // By default, Node.js installations come with the file system module, fs
 const fs = require('fs');
 
@@ -115,11 +118,15 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
+                
+                // Convert the body into desired json data structure
+                var patientsJson = util.convertPatientsJson(body);
+
                 // Render patients.html
                 var data = {
                     title: 'All patients',
-                    patientsJson: JSON.stringify(body), // Converts a JavaScript value to a JSON string.
-                    patients: JSON.stringify(body, null, 4) 
+                    patientsJson: JSON.stringify(patientsJson), // Converts a JavaScript value to a JSON string.
+                    patients: JSON.stringify(patientsJson, null, 4) 
                 };
 
                 reply.view('patients', data);
