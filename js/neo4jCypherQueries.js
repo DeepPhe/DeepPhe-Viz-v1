@@ -10,13 +10,10 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-	getPatient: function(patientName) {
-		// Find and return all nodes with Patient label, and the patient has tumor fact?
-		// Relationships are basically an arrow --> between two nodes.
-		// Additional information can be placed in square brackets inside of the arrow.
-		var query = "MATCH (p:Patient)-->(c:Cancer)-->(t:Tumor)-[rel]->(f:Fact) " +
+    getPatientSummary: function(patientName) {
+		var query = "MATCH (p:Patient)" +
 					"WHERE p.name = '" + patientName + "' " +
-					"RETURN p.name,c.id,t.id,type(rel),f.name,f.uri";
+					"RETURN p";
 		return query;
 	},
 
@@ -26,7 +23,7 @@ var neo4jCypherQueries = {
 		return query;
 	},
     
-    getCancers: function(patientName) {
+    getCancerSummary: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' " +
 					"WITH cancer,cancerFactReln,fact " +
@@ -40,6 +37,16 @@ var neo4jCypherQueries = {
         var query = "MATCH (fact:Fact {id:'" + factId +"'}) " +
 					"OPTIONAL MATCH (fact)-[rel]->(n) " +
 					"RETURN fact,rel,n";
+		return query;
+	},
+
+	getTumors: function(patientName, cancerId) {
+        var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerTumorReln:hasTumor]->(tumor:Tumor)-[tumorFactReln]->(fact:Fact) " +
+					"WHERE patient.name = '" + patientName + "' AND cancer.id = '" + cancerId + "' " +
+					"WITH tumor,tumorFactReln,fact " +
+					"OPTIONAL MATCH (fact)-[factModifier]->(modifierFact:Fact) " +
+					"WHERE factModifier.name <> 'hasProvenance' " +
+					"RETURN tumor,tumorFactReln,fact,factModifier,modifierFact";
 		return query;
 	}
 

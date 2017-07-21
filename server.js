@@ -153,15 +153,19 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getPatient(patientName)
+                'query': neo4jCypherQueries.getCancerSummary(patientName)
             }
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
+                
+                // Convert the body into desired json data structure
+                var patientJson = util.convertPatientJson(body);
+
                 // Render patient.html
                 var data = {
                     title: patientName,
-                    patientInfo: JSON.stringify(body, null, 4)
+                    patientInfo: JSON.stringify(patientJson, null, 4)
                 };
 
                 reply.view('patient', data);
@@ -208,40 +212,6 @@ server.route({
     }
 });
 
-// Individual patient cancers route
-server.route({
-    method: 'GET',
-    path:'/patients/{patientName}/cancers', 
-    handler: function (request, reply) {
-        var patientName = request.params.patientName;
-
-        // REST API call: https://neo4j.com/docs/rest-docs/current/
-        HttpRequest({
-            uri: requestUri,
-            method: "POST",
-            headers: {
-                'X-Stream': true // Enable streaming
-            },
-            json: {
-                'query': neo4jCypherQueries.getCancers(patientName)
-            }
-        }, function (error, response, body) {
-            if ( ! error) {
-                //console.log('response: ' + JSON.stringify(response, null, 4));
-                // Render patient.html
-                var data = {
-                    title: 'Cancers of ' + patientName,
-                    cancers: JSON.stringify(body, null, 4)
-                };
-
-                reply.view('cancers', data);
-            } else {
-                console.log('Failed to make the neo4j rest api call: getPatient()');
-                console.error(error);
-            }
-        });
-    }
-});
 
 // Start the server
 server.start((err) => {
