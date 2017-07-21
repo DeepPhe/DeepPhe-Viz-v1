@@ -1,6 +1,8 @@
 'use strict';
 
 var neo4jCypherQueries = {
+	// Instead of using Cypher query, we can also do a direct API call 
+	// http://localhost:7474/db/data/label/Patient/nodes to get all the nodes with "Patient" label
 	getPatients: function() {
 		// Find and return all nodes with Patient label
 		// p is the node variable name, Patient is the node label
@@ -31,6 +33,13 @@ var neo4jCypherQueries = {
 					"OPTIONAL MATCH (fact)-[factModifier]->(modifierFact:Fact) " +
 					"WHERE factModifier.name <> 'hasProvenance' " +
 					"RETURN cancer,cancerFactReln,fact,factModifier,modifierFact";
+		return query;
+	},
+
+	getFact: function(factId) {
+        var query = "MATCH (fact:Fact {id:'" + factId +"'}) " +
+					"OPTIONAL MATCH (fact)-[rel]->(n) " +
+					"RETURN fact,rel,n";
 		return query;
 	}
 
