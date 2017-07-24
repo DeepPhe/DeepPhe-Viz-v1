@@ -29,18 +29,39 @@ var util = {
     	cancerSummary.id = dataArr[0][0].data.id;
         cancerSummary.collatedFacts = [];
 
+        // Build an arry of unique cancerFactReln
+        var uniqueCancerFactRelnArr = [];
+
         for (var i = 0; i < dataArr.length; i++) {
-        	var cancerFactReln = dataArr[i][1];
-        	var fact = dataArr[i][2];
-        	var factModifier = dataArr[i][3];
-        	var modifierFact = dataArr[i][4];
+            if (uniqueCancerFactRelnArr.indexOf(dataArr[i][1].data.name) ===-1) {
+                uniqueCancerFactRelnArr.push(dataArr[i][1].data.name);
+            }
+        }
 
-        	var obj = {};
-        	obj.category = cancerFactReln.data.name;
-        	obj.facts = [];
-        	obj.facts.push(fact.data);
+        // Build new data structure
+        for (var j = 0; j < uniqueCancerFactRelnArr.length; j++) {
+            var collatedFactObj = {};
 
-            cancerSummary.collatedFacts.push(obj);
+            // The name of category
+            collatedFactObj.category = uniqueCancerFactRelnArr[j];
+            // Array of facts of this category
+            collatedFactObj.facts = [];
+
+            // Loop through the origional data
+            for (var k = 0; k < dataArr.length; k++) {
+            	var cancerFactReln = dataArr[k][1].data;
+	        	var fact = dataArr[k][2].data;
+
+                // Add to facts array
+	            if (cancerFactReln.name === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
+	            	collatedFactObj.facts.push(fact);
+	            	// Need to delete the added fact from dataArr for better performance?
+	            	// So we won't need to check it for the next category?
+	            }
+            }
+
+            // Add collatedFactObj to cancerSummary.collatedFacts
+            cancerSummary.collatedFacts.push(collatedFactObj);
         }
 
         return cancerSummary;

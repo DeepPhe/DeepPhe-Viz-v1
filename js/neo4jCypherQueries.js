@@ -23,13 +23,27 @@ var neo4jCypherQueries = {
 		return query;
 	},
     
-    getCancerSummary: function(patientName) {
+    getCancerSummaryOld: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' " +
 					"WITH cancer,cancerFactReln,fact " +
 					"OPTIONAL MATCH (fact)-[factModifier]->(modifierFact:Fact) " +
 					"WHERE factModifier.name <> 'hasProvenance' " +
 					"RETURN cancer,cancerFactReln,fact,factModifier,modifierFact";
+		return query;
+	},
+    
+    getCancer: function(patientName) {
+		var query = "MATCH (patient:Patient)-->(cancer:Cancer) " +
+					"WHERE patient.name = '" + patientName + "' " +
+					"RETURN cancer";
+		return query;
+	},
+
+    getCancerSummary: function(patientName) {
+		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
+					"WHERE patient.name = '" + patientName + "' " +
+					"RETURN cancer,cancerFactReln,fact";
 		return query;
 	},
 
