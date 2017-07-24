@@ -44,6 +44,9 @@ var util = {
 
             // The name of category
             collatedFactObj.category = uniqueCancerFactRelnArr[j];
+            // toNonCamelCase, remove 'has' from beginning
+            collatedFactObj.categoryName = this.toNonCamelCase(uniqueCancerFactRelnArr[j].substring(3));
+
             // Array of facts of this category
             collatedFactObj.facts = [];
 
@@ -65,6 +68,12 @@ var util = {
         }
 
         return cancerSummary;
+    },
+
+    // E.g., convert "hasBodySite" into " Body Site"
+    toNonCamelCase: function(text) {
+        var result = text.replace( /([A-Z])/g, " $1" );
+        return result.charAt(0).toUpperCase() + result.slice(1);
     }
 }
 
