@@ -120,7 +120,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var patientsJson = util.convertPatientsJson(body);
+                var patientsJson = util.getPatientsJson(body);
 
                 // Render patients.html
                 var data = {
@@ -160,7 +160,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var patientJson = util.convertPatientJson(body);
+                var patientJson = util.getCancerSummaryJson(body);
 
                 // Render patient.html
                 var data = {

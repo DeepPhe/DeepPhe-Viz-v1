@@ -23,6 +23,7 @@ var neo4jCypherQueries = {
 		return query;
 	},
     
+    // Old cypher query that returns everything
     getCancerSummaryOld: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' " +

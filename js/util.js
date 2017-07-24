@@ -1,7 +1,7 @@
 'use strict';
 
 var util = {
-    convertPatientsJson: function(neo4jRawJson) {
+    getPatientsJson: function(neo4jRawJson) {
         var patientsJson = {};
         var dataArr = neo4jRawJson.data;
         var patientsArr = [];
@@ -21,7 +21,7 @@ var util = {
         return patientsJson;
     },
 
-    convertPatientJson: function(neo4jRawJson) {
+    getCancerSummaryJson: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
     	var cancerSummary = {};
