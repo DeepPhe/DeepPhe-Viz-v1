@@ -216,6 +216,36 @@ server.route({
     }
 });
 
+// Single report endpoint called by client ajax, no view rendering
+server.route({
+    method: 'GET',
+    path:'/reports/{reportId}', 
+    handler: function (request, reply) {
+        var reportId = request.params.reportId;
+
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: requestUri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getReport(reportId)
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+
+                reply(body);
+            } else {
+                console.log('Failed to make the neo4j rest api call: getReport()');
+                console.error(error);
+            }
+        });
+    }
+});
+
 // Start the server
 server.start((err) => {
     if (err) {

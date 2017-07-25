@@ -23,6 +23,12 @@ var neo4jCypherQueries = {
 		return query;
 	},
     
+    getReport: function(reportId) {
+		var query = "MATCH (r:Report {id:'" + reportId + "'}) " +
+					"RETURN r";
+		return query;
+	},
+
     // Old cypher query that returns everything
     getCancerSummaryOld: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +

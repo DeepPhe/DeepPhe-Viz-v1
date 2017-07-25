@@ -10,7 +10,9 @@
 
 <div id="reports"></div>
 
+<h2>Individual Report: <span id="reportId"></span></h2>
 
+<div id="report"></div>
 
 <script type="text/javascript">
 var patientName = '{{patientName}}';
@@ -26,11 +28,11 @@ function getCancerSummary(patientName) {
 	    dataType : 'json'
 	});
 
-	jqxhr.done(function(data) {
-	    console.log(data);
+	jqxhr.done(function(response) {
+	    console.log(response);
 	    
-	    // Render data
-	    $('#cancers').html('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
+	    // Render response
+	    $('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
 	});
 
 	jqxhr.fail(function () { 
@@ -48,11 +50,11 @@ function getReports(patientName) {
 	    dataType : 'json'
 	});
 
-	jqxhr.done(function(data) {
-	    console.log(data);
+	jqxhr.done(function(response) {
+	    console.log(response);
 	    
-	    // Render data
-	    $('#reports').html('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
+	    // Render response
+	    $('#reports').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
 	});
 
 	jqxhr.fail(function () { 
@@ -60,10 +62,35 @@ function getReports(patientName) {
 	});
 }
 
+// Get reports
+function getReport(reportId) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/reports/' + reportId,
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json'
+	});
+
+	jqxhr.done(function(response) {
+	    console.log("Report: " + reportId);
+	    console.log(response);
+	    
+	    // Render response
+	    $('#reportId').html(reportId);
+	    $('#report').html('<pre>' + response.data[0][0].data.text + '</pre>');
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get report");
+	});
+}
 
 // Get patient cancer symmary and reports
 getCancerSummary(patientName);
 
 getReports(patientName);
+
+getReport('REPORT_patient02_report006_RAD_580499229');
 
 </script>
