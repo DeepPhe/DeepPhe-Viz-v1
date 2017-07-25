@@ -138,10 +138,27 @@ server.route({
     }
 });
 
-// Individual patient route
+// Individual patient page
 server.route({
     method: 'GET',
     path:'/patients/{patientName}', 
+    handler: function (request, reply) {
+        var patientName = request.params.patientName;
+
+        // Render patient.html
+        var data = {
+            patientName: patientName,
+            baseUri: server.info.uri // Get the base uri via server.info 
+        };
+
+        reply.view('patient', data);
+    }
+});
+
+// Cancer summary endpoint called by client ajax, no view rendering
+server.route({
+    method: 'GET',
+    path:'/patients/{patientName}/cancers', 
     handler: function (request, reply) {
         var patientName = request.params.patientName;
 
@@ -160,24 +177,16 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var patientJson = util.getCancerSummaryJson(body);
-
-                // Render patient.html
-                var data = {
-                    title: patientName,
-                    patientInfo: JSON.stringify(patientJson, null, 4)
-                };
-
-                reply.view('patient', data);
+                reply(util.getCancerSummaryJson(body));
             } else {
-                console.log('Failed to make the neo4j rest api call: getPatient()');
+                console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
             }
         });
     }
 });
 
-// Individual patient reports route
+// Reports endpoint called by client ajax, no view rendering
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/reports', 
@@ -197,21 +206,15 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
-                // Render patient.html
-                var data = {
-                    title: 'Reports of ' + patientName,
-                    reports: JSON.stringify(body, null, 4)
-                };
 
-                reply.view('reports', data);
+                reply(body);
             } else {
-                console.log('Failed to make the neo4j rest api call: getPatient()');
+                console.log('Failed to make the neo4j rest api call: getReports()');
                 console.error(error);
             }
         });
     }
 });
-
 
 // Start the server
 server.start((err) => {

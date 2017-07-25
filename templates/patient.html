@@ -1,4 +1,69 @@
 
-<h2>{{title}}</h2>
 
-<pre>{{patientInfo}}</pre>
+<h2>{{patientsName}}</h2>
+
+<h2>Cancer Summary</h2>
+
+<div id="cancers"></div>
+
+<h2>Reports</h2>
+
+<div id="reports"></div>
+
+
+
+<script type="text/javascript">
+var patientName = '{{patientName}}';
+var baseUri = '{{baseUri}}';
+
+// Get cancer summary
+function getCancerSummary(patientName) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/patients/' + patientName + '/cancers',
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json'
+	});
+
+	jqxhr.done(function(data) {
+	    console.log(data);
+	    
+	    // Render data
+	    $('#cancers').html('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get cancer summary");
+	});
+}
+
+// Get reports
+function getReports(patientName) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/patients/' + patientName + '/reports',
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json'
+	});
+
+	jqxhr.done(function(data) {
+	    console.log(data);
+	    
+	    // Render data
+	    $('#reports').html('<pre>' + JSON.stringify(data, null, 4) + '</pre>');
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get reports");
+	});
+}
+
+
+// Get patient cancer symmary and reports
+getCancerSummary(patientName);
+
+getReports(patientName);
+
+</script>
