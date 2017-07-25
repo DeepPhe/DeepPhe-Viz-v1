@@ -177,7 +177,18 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                reply(util.getCancerSummaryJson(body));
+                var cancerSummary = util.getCancerSummaryJson(body);
+                
+                // Render cancerSummary.html
+                var data = {
+                    cancerName: cancerSummary.id,
+                    collatedFacts: cancerSummary.collatedFacts
+                };
+
+                reply.view('cancerSummary', data);
+
+                // Send response
+                //reply(cancerSummary);
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);

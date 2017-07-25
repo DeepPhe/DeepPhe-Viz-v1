@@ -1,6 +1,6 @@
 
 
-<h2>{{patientsName}}</h2>
+<h2>{{patientName}}</h2>
 
 <h2>Cancer Summary</h2>
 
@@ -30,9 +30,10 @@ function getCancerSummary(patientName) {
 
 	jqxhr.done(function(response) {
 	    console.log(response);
-	    
+
 	    // Render response
 	    $('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+	    //$('#cancers').html(response);
 	});
 
 	jqxhr.fail(function () { 
