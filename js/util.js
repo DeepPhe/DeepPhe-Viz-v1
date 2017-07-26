@@ -73,7 +73,9 @@ var util = {
     // E.g., convert "hasBodySite" into " Body Site"
     toNonCamelCase: function(text) {
         var result = text.replace( /([A-Z])/g, " $1" );
-        return result.charAt(0).toUpperCase() + result.slice(1);
+        var str = result.charAt(0).toUpperCase() + result.slice(1);
+        // Trim out the beginning space
+        return str.trim();
     }
 }
 

@@ -25,15 +25,15 @@ function getCancerSummary(patientName) {
 	    url: baseUri + '/patients/' + patientName + '/cancers',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'json'
+	    dataType : 'text' // Use 'text' instead of 'json' for rendered html content
 	});
 
 	jqxhr.done(function(response) {
 	    console.log(response);
 
 	    // Render response
-	    $('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
-	    //$('#cancers').html(response);
+	    //$('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+	    $('#cancers').html(response);
 	});
 
 	jqxhr.fail(function () { 

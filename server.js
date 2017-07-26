@@ -184,11 +184,10 @@ server.route({
                     cancerName: cancerSummary.id,
                     collatedFacts: cancerSummary.collatedFacts
                 };
-
-                reply.view('cancerSummary', data);
-
-                // Send response
-                //reply(cancerSummary);
+                
+                // Specify to use the empty layout instead of the default layout
+                // This way we can send the rendered content as response directly
+                reply.view('cancerSummary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
