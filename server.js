@@ -217,7 +217,15 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
 
-                reply(body);
+                // Render reports.html
+                var data = {
+                    columns: body.columns,
+                    reports: body.data
+                };
+
+                // Specify to use the empty layout instead of the default layout
+                // This way we can send the rendered content as response directly
+                reply.view('reports', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getReports()');
                 console.error(error);

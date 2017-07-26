@@ -48,14 +48,15 @@ function getReports(patientName) {
 	    url: baseUri + '/patients/' + patientName + '/reports',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'json'
+	    dataType : 'text' // Use 'text' instead of 'json' for rendered html content
 	});
 
 	jqxhr.done(function(response) {
 	    console.log(response);
 	    
 	    // Render response
-	    $('#reports').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+	    //$('#reports').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
+	    $('#reports').html(response);
 	});
 
 	jqxhr.fail(function () { 

@@ -19,7 +19,7 @@ var neo4jCypherQueries = {
 
 	getReports: function(patientName) {
 		var query = "MATCH (p:Patient {name:'" + patientName + "'})-->(r:Report) " +
-					"RETURN r";
+					"RETURN r.id, r.principalDate, r.title, r.type, r.text";
 		return query;
 	},
     

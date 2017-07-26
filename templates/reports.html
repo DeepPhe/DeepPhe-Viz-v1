@@ -1,0 +1,19 @@
+
+<table class="table">
+    <thead> 
+        <th>ID</th> 
+        <th>Date</th> 
+        <th>Title</th> 
+        <th>Type</th> 
+    </thead> 
+    <tbody> 
+        {{#each reports}} 
+        <tr> 
+            <td>{{this.[0]}}</td> 
+            <td>{{this.[1]}}</td> 
+            <td>{{this.[2]}}</td> 
+            <td>{{this.[3]}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table>
