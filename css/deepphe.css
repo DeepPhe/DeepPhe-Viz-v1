@@ -12,13 +12,27 @@ color:blue;
 list-style-type: none;
 }
 
-.summary_list li .category_name{
-width:200px;
+.summary_list > li{
+border-bottom:1px solid #ccc;
 }
 
+.summary_list li .category_name{
+width:200px;
+float:left;
+padding:5px 10px;
+}
+
+.summary_list li ul{
+width:800;
+float:left;
+color:blue;
+}
+
+
 .summary_list li ul li{
-display:inline-block;
-padding:0 5px;
+	float:left;
+display:inline;
+padding:5px 10px;
 color:blue;
 }
 
@@ -45,4 +59,15 @@ border:1px solid #ccc;
 
 .table_hover>tbody>tr:hover>td{
 background-color:#fefbd6;
+}
+
+/* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
+.clearfix:before,
+.clearfix:after {
+content: " "; /* 1 */
+display: table; /* 2 */
+}
+
+.clearfix:after {
+clear: both;
 }
