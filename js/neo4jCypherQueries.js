@@ -61,7 +61,14 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-	getTumors: function(patientName, cancerId) {
+    getTumorSummary: function(patientName, cancerId) {
+        var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerTumorReln:hasTumor]->(tumor:Tumor)-[tumorFactReln]->(fact:Fact) " +
+					"WHERE patient.name = '" + patientName + "' AND cancer.id = '" + cancerId + "' " +
+					"RETURN tumor,tumorFactReln,fact";
+		return query;
+	},
+
+	getTumorSummaryOld: function(patientName, cancerId) {
         var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerTumorReln:hasTumor]->(tumor:Tumor)-[tumorFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' AND cancer.id = '" + cancerId + "' " +
 					"WITH tumor,tumorFactReln,fact " +

@@ -1,0 +1,14 @@
+
+<p>{{tumorName}}</p>
+<ul class="cancer_summary_list">
+  {{#each collatedFacts}}
+    <li>
+    {{this.categoryName}}
+    <ul>
+        {{#each this.facts}}
+        <li>{{this.prettyName}}</li>
+        {{/each}}
+    </ul>
+    </li>
+  {{/each}}
+</ul>

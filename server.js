@@ -155,7 +155,7 @@ server.route({
     }
 });
 
-// Cancer summary endpoint called by client ajax, no view rendering
+// Cancer summary endpoint called by client ajax
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/cancers', 
@@ -188,6 +188,48 @@ server.route({
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
                 reply.view('cancerSummary', data, {layout: 'empty'});
+            } else {
+                console.log('Failed to make the neo4j rest api call: getCancerSummary()');
+                console.error(error);
+            }
+        });
+    }
+});
+
+// Tumors summary endpoint called by client ajax
+server.route({
+    method: 'GET',
+    path:'/patients/{patientName}/{cancerId}/tumors', 
+    handler: function (request, reply) {
+        var patientName = request.params.patientName;
+        var cancerId = request.params.cancerId;
+
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: requestUri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getTumorSummary(patientName, cancerId)
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+                
+                // Convert the body into desired json data structure
+                var tumorSummary = util.getCancerSummaryJson(body);
+
+                // Render cancerSummary.html
+                var data = {
+                    tumorName: tumorSummary.id,
+                    collatedFacts: tumorSummary.collatedFacts
+                };
+                
+                // Specify to use the empty layout instead of the default layout
+                // This way we can send the rendered content as response directly
+                reply.view('tumorSummary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
