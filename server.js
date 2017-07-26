@@ -178,7 +178,7 @@ server.route({
                 
                 // Convert the body into desired json data structure
                 var cancerSummary = util.getCancerSummaryJson(body);
-                
+
                 // Render cancerSummary.html
                 var data = {
                     cancerName: cancerSummary.id,
