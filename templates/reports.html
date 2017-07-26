@@ -9,7 +9,7 @@
     <tbody> 
         {{#each reports}} 
         <tr> 
-            <td>{{this.[0]}}</td> 
+            <td><em class="report_id" id="{{this.[0]}}">{{this.[0]}}</em></td> 
             <td>{{this.[1]}}</td> 
             <td>{{this.[2]}}</td> 
             <td>{{this.[3]}}</td> 
@@ -17,3 +17,12 @@
         {{/each}} 
     </tbody> 
 </table>
+
+<script type="text/javascript">
+// JS code has to be in this file
+$('.report_id').click(function() {
+    var reportId = $(this).attr('id');
+    getReport(reportId);
+});
+
+</script>

@@ -71,3 +71,7 @@ display: table; /* 2 */
 .clearfix:after {
 clear: both;
 }
+
+.report_id{
+	cursor: pointer;
+}

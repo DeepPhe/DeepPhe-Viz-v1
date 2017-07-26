@@ -14,9 +14,9 @@
 
 <div id="reports"></div>
 
-<h2>Individual Report: <span id="reportId"></span></h2>
+<h2>Individual Report: <span id="report_id"></span></h2>
 
-<div id="report"></div>
+<div id="report_content"></div>
 
 <script type="text/javascript">
 var patientName = '{{patientName}}';
@@ -33,7 +33,7 @@ function getCancerSummary(patientName) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response);
+	    //console.log(response);
 
 	    // Render response
 	    //$('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
@@ -56,7 +56,7 @@ function getTumorSummary(patientName, cancerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response);
+	    //console.log(response);
 
 	    // Render response
 	    $('#tumors').html(response);
@@ -78,7 +78,7 @@ function getReports(patientName) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response);
+	    //console.log(response);
 	    
 	    // Render response
 	    //$('#reports').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
@@ -102,11 +102,10 @@ function getReport(reportId) {
 
 	jqxhr.done(function(response) {
 	    console.log("Report: " + reportId);
-	    console.log(response);
-	    
+
 	    // Render response
-	    $('#reportId').html(reportId);
-	    $('#report').html('<pre>' + response.data[0][0].data.text + '</pre>');
+	    $('#report_id').html(reportId);
+	    $('#report_content').html('<pre>' + response.data[0][0].data.text + '</pre>');
 	});
 
 	jqxhr.fail(function () { 
@@ -114,13 +113,16 @@ function getReport(reportId) {
 	});
 }
 
+
+
+
 // Get patient cancer symmary and reports
 getCancerSummary(patientName);
 
+// Hard coded cancer ID for now
 getTumorSummary(patientName, 'CancerSummary-Breast');
 
 getReports(patientName);
 
-getReport('REPORT_patient02_report006_RAD_580499229');
 
 </script>
