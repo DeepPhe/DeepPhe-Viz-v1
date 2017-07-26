@@ -1,9 +1,9 @@
 
 <p>{{tumorName}}</p>
-<ul class="cancer_summary_list">
+<ul class="summary_list">
   {{#each collatedFacts}}
     <li>
-    {{this.categoryName}}
+    <span class="category_name">{{this.categoryName}}</span>
     <ul>
         {{#each this.facts}}
         <li>{{this.prettyName}}</li>

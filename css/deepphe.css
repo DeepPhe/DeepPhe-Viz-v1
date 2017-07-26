@@ -6,6 +6,22 @@ color:blue;
 	fill:blue;
 }
 
+/* Cancer/Tumor summary list */
+.summary_list,
+.summary_list li ul{
+list-style-type: none;
+}
+
+.summary_list li .category_name{
+width:200px;
+}
+
+.summary_list li ul li{
+display:inline-block;
+padding:0 5px;
+color:blue;
+}
+
 /* Table */
 .table {
 width:100%;
