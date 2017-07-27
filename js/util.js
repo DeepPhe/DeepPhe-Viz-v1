@@ -70,6 +70,15 @@ var util = {
         return cancerSummary;
     },
 
+    getFactJson: function(neo4jRawJson) {
+    	var factJson = {};
+    	factJson.detail = neo4jRawJson.data[0][0].data;
+    	factJson.relationship = (neo4jRawJson.data[0][1] !== null) ? neo4jRawJson.data[0][1].data : null;
+    	factJson.docSource = (neo4jRawJson.data[0][2] !== null) ? neo4jRawJson.data[0][2].data : null;
+
+    	return factJson;
+    },
+
     // E.g., convert "hasBodySite" into " Body Site"
     toNonCamelCase: function(text) {
         var result = text.replace( /([A-Z])/g, " $1" );

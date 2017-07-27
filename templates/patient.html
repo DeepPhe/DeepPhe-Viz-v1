@@ -10,13 +10,14 @@
 
 <div id="tumors"></div>
 
+<h2>Fact Information</h2>
+
+<div id="fact"></div>
+
 <h2>Reports</h2>
 
 <div id="reports"></div>
 
-<h2>Individual Report: <span id="report_id"></span></h2>
-
-<div id="report_content"></div>
 
 <script type="text/javascript">
 var patientName = '{{patientName}}';
@@ -29,7 +30,7 @@ function getCancerSummary(patientName) {
 	    url: baseUri + '/patients/' + patientName + '/cancers',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'text' // Use 'text' instead of 'json' for rendered html content
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
 	});
 
 	jqxhr.done(function(response) {
@@ -52,7 +53,7 @@ function getTumorSummary(patientName, cancerId) {
 	    url: baseUri + '/patients/' + patientName + '/' + cancerId + '/tumors',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'text' // Use 'text' instead of 'json' for rendered html content
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
 	});
 
 	jqxhr.done(function(response) {
@@ -74,7 +75,7 @@ function getReports(patientName) {
 	    url: baseUri + '/patients/' + patientName + '/reports',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'text' // Use 'text' instead of 'json' for rendered html content
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
 	});
 
 	jqxhr.done(function(response) {
@@ -90,7 +91,7 @@ function getReports(patientName) {
 	});
 }
 
-// Get reports
+// Get report by ID
 function getReport(reportId) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
@@ -104,7 +105,6 @@ function getReport(reportId) {
 	    //console.log("Report: " + reportId);
 
 	    // Render response
-	    $('#report_id').html(reportId);
 	    $('#report_content').html('<pre>' + response.data[0][0].data.text + '</pre>');
 	});
 
@@ -113,7 +113,34 @@ function getReport(reportId) {
 	});
 }
 
+// Get fact details by ID
+function getFact(factId) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/fact/' + factId,
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	});
 
+	jqxhr.done(function(response) {
+	    // console.log("Fact response:");
+	    // console.log(response);
+
+	    // Render response
+	    $('#fact').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get fact");
+	});
+}
+
+
+$('.fact_id').click(function() {
+    var factId = $(this).attr('id');
+    getFact(factId);
+});
 
 
 // Get patient cancer symmary and reports

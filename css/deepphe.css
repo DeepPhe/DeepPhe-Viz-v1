@@ -76,11 +76,20 @@ border:1px solid #ccc;
 margin:20px 0;
 }
 
-.table th {
+.table th.th {
 padding:5px; 
 background:#f7f7f9;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
+}
+
+.table #report_content{
+	text-align:left;
+	padding:10px;
+	font-weight: normal;
+	overflow-y: scroll;
+	height:800px;
+	width:600px;
 }
 
 .table td {
@@ -105,4 +114,18 @@ clear: both;
 
 .report_id{
 	cursor: pointer;
+}
+
+/* Fact */
+.fact_list {
+list-style-type: none;
+}
+
+.fact_list li{
+border-bottom:1px solid #ccc;
+}
+
+.fact_info{
+width:200px;
+padding:5px 10px;
 }

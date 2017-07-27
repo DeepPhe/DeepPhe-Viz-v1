@@ -1,0 +1,24 @@
+
+<p>{{name}}</p>
+
+<ul class="summary_list">
+  {{#each collatedFacts}}
+    <li class="clearfix">
+    <span class="category_name">{{categoryName}}</span>
+    <ul>
+        {{#each facts}}
+        <li class="fact_id" id="{{id}}">{{prettyName}}</li>
+        {{/each}}
+    </ul>
+    </li>
+  {{/each}}
+</ul>
+
+<script type="text/javascript">
+// JS code has to be in this file
+$('.fact_id').click(function() {
+    var factId = $(this).attr('id');
+    getFact(factId);
+});
+
+</script>

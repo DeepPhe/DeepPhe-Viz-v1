@@ -1,21 +1,21 @@
 
 <table class="table">
-    <thead> 
-        <th>ID</th> 
-        <th>Date</th> 
-        <th>Title</th> 
-        <th>Type</th> 
-    </thead> 
-    <tbody> 
+
+    <tr> 
+        <th class="th">ID</th> 
+        <th class="th">Title</th> 
+        <th class="th">Type</th> 
+        <th rowspan="{{rowspan}}" width="45%"><div id="report_content"></div></th> 
+    </tr> 
+
         {{#each reports}} 
         <tr> 
             <td><em class="report_id" id="{{this.[0]}}">{{this.[0]}}</em></td> 
-            <td>{{this.[1]}}</td> 
             <td>{{this.[2]}}</td> 
             <td>{{this.[3]}}</td> 
         </tr> 
         {{/each}} 
-    </tbody> 
+
 </table>
 
 <script type="text/javascript">

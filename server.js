@@ -182,13 +182,13 @@ server.route({
 
                 // Render cancerSummary.html
                 var data = {
-                    cancerName: cancerSummary.id,
+                    name: cancerSummary.id,
                     collatedFacts: cancerSummary.collatedFacts
                 };
                 
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
-                reply.view('cancerSummary', data, {layout: 'empty'});
+                reply.view('summary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
@@ -224,13 +224,13 @@ server.route({
 
                 // Render cancerSummary.html
                 var data = {
-                    tumorName: tumorSummary.id,
+                    name: tumorSummary.id,
                     collatedFacts: tumorSummary.collatedFacts
                 };
                 
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
-                reply.view('tumorSummary', data, {layout: 'empty'});
+                reply.view('summary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
@@ -263,7 +263,8 @@ server.route({
                 // Render reports.html
                 var data = {
                     columns: body.columns,
-                    reports: body.data
+                    reports: body.data,
+                    rowspan: body.data.length + 1
                 };
 
                 // Specify to use the empty layout instead of the default layout
@@ -301,6 +302,46 @@ server.route({
                 reply(body);
             } else {
                 console.log('Failed to make the neo4j rest api call: getReport()');
+                console.error(error);
+            }
+        });
+    }
+});
+
+// Single fact endpoint called by client ajax, no view rendering
+server.route({
+    method: 'GET',
+    path:'/fact/{factId}', 
+    handler: function (request, reply) {
+        var factId = request.params.factId;
+
+        // REST API call: https://neo4j.com/docs/rest-docs/current/
+        HttpRequest({
+            uri: requestUri,
+            method: "POST",
+            headers: {
+                'X-Stream': true // Enable streaming
+            },
+            json: {
+                'query': neo4jCypherQueries.getFact(factId)
+            }
+        }, function (error, response, body) {
+            if ( ! error) {
+                //console.log('response: ' + JSON.stringify(response, null, 4));
+                var factJson = util.getFactJson(body);
+
+                // Render fact.html
+                var data = {
+                    detail: factJson.detail,
+                    relationship: factJson.relationship,
+                    docSource: factJson.docSource
+                };
+
+                // Specify to use the empty layout instead of the default layout
+                // This way we can send the rendered content as response directly
+                reply.view('fact', data, {layout: 'empty'});
+            } else {
+                console.log('Failed to make the neo4j rest api call: getFact()');
                 console.error(error);
             }
         });
