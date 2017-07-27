@@ -1,5 +1,21 @@
-h1 {
-color:blue;
+html{
+	line-height:1.15;
+	-ms-text-size-adjust:100%;
+	-webkit-text-size-adjust:100%;
+	color:#222;
+	font:15px/1.4 'Open Sans',sans-serif;
+}
+
+
+.header {
+color:#fff;
+background:#0a64a0;
+padding:20px;
+margin:0;
+}
+
+.content{
+	padding:20px;
 }
 
 .text{
@@ -25,7 +41,7 @@ padding:5px 10px;
 .summary_list li ul{
 width:800;
 float:left;
-color:blue;
+color:#0275d8;
 }
 
 
@@ -33,10 +49,23 @@ color:blue;
 	float:left;
 display:inline;
 padding:5px 10px;
-color:blue;
 }
 
 /* Table */
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
 .table {
 width:100%;
 border:1px solid #ccc;
@@ -44,15 +73,13 @@ margin:20px 0;
 }
 
 .table th {
-line-height:1.2;
 padding:5px; 
-background:#ebeff9;
+background:#f7f7f9;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
 }
 
 .table td {
-line-height:1.2;
 padding:5px; 
 border:1px solid #ccc;
 }

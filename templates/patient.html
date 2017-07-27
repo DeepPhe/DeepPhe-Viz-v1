@@ -2,11 +2,11 @@
 
 <h2>{{patientName}}</h2>
 
-<h2>Cancers Summary</h2>
+<h2>Cancer Summary</h2>
 
 <div id="cancers"></div>
 
-<h2>Tumors Summary</h2>
+<h2>Tumor Summary</h2>
 
 <div id="tumors"></div>
 
@@ -101,7 +101,7 @@ function getReport(reportId) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log("Report: " + reportId);
+	    //console.log("Report: " + reportId);
 
 	    // Render response
 	    $('#report_id').html(reportId);
