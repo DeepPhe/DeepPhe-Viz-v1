@@ -125,8 +125,9 @@ server.route({
                 // Render patients.html
                 var data = {
                     title: 'All patients',
-                    patientsJson: JSON.stringify(patientsJson), // Converts a JavaScript value to a JSON string.
-                    patients: JSON.stringify(patientsJson, null, 4) 
+                    baseUri: server.info.uri, // Get the base uri via server.info 
+                    patients: patientsJson.patients, // Converts a JavaScript value to a JSON string.
+                    patientsJsonStr: JSON.stringify(patientsJson, null, 4) 
                 };
 
                 reply.view('patients', data);

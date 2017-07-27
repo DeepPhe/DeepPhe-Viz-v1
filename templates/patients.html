@@ -1,37 +1,14 @@
-<svg id="svg"></svg>
-
-<script type="text/javascript">
-// If you don't want Handlebars to escape a value, use the "triple-stash"
-var patientsJson = {{{patientsJson}}};
-console.log(patientsJson.patients);
-
-// Playing with d3
-var svg = d3.select("#svg")
-    .attr("width", 600)
-    .attr("height", 400);    
-
-// Adding title
-svg.append("text")
-    .attr("x", 10)
-    .attr("y", 10)
-    .text("DeepPhe-Viz all patients");
-
-var rect = svg.selectAll(".rect")
-    .data(patientsJson.patients)
-    .enter().append("text")
-        .attr("class", "text")
-        .attr("x", 10)
-        .attr("y", function(d, i) {
-        	return 40 + 40*i;
-        })
-	    .text(function(d) {
-	        return d.name;
-	    });
-
-</script>
-
-
 
 <h2>{{title}}</h2>
 
-<pre>{{patients}}</pre>
+<ul class="patients_list">
+  {{#each patients}}
+    <li class="clearfix">
+    {{! The ../ path segment references the parent template scope that should be what you want. }}
+    <a href="{{../baseUri}}/patients/{{name}}">{{this.name}}</a>
+    </li>
+  {{/each}}
+</ul>
+
+<pre>{{patientsJsonStr}}</pre>
+

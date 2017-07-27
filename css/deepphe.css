@@ -18,8 +18,12 @@ margin:0;
 	padding:20px;
 }
 
-.text{
-	fill:blue;
+.patients_list{
+	list-style-type: none;
+}
+
+.patients_list li{
+padding:5px 10px;
 }
 
 /* Cancer/Tumor summary list */
