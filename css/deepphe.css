@@ -129,3 +129,7 @@ border-bottom:1px solid #ccc;
 width:200px;
 padding:5px 10px;
 }
+
+.highlight{
+	color:red;
+}
