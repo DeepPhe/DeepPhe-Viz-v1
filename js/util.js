@@ -26,15 +26,16 @@ var util = {
 
     	var cancerSummary = {};
     	var dataArr = neo4jRawJson.data;
-    	cancerSummary.id = dataArr[0][0].data.id;
+    	// "id" and "collatedFacts" are the keys of this object
+    	cancerSummary.id = dataArr[0][0];
         cancerSummary.collatedFacts = [];
 
         // Build an arry of unique cancerFactReln
         var uniqueCancerFactRelnArr = [];
 
         for (var i = 0; i < dataArr.length; i++) {
-            if (uniqueCancerFactRelnArr.indexOf(dataArr[i][1].data.name) ===-1) {
-                uniqueCancerFactRelnArr.push(dataArr[i][1].data.name);
+            if (uniqueCancerFactRelnArr.indexOf(dataArr[i][1]) ===-1) {
+                uniqueCancerFactRelnArr.push(dataArr[i][1]);
             }
         }
 
@@ -52,11 +53,11 @@ var util = {
 
             // Loop through the origional data
             for (var k = 0; k < dataArr.length; k++) {
-            	var cancerFactReln = dataArr[k][1].data;
+            	var cancerFactReln = dataArr[k][1];
 	        	var fact = dataArr[k][2].data;
 
                 // Add to facts array
-	            if (cancerFactReln.name === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
+	            if (cancerFactReln === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
 	            	collatedFactObj.facts.push(fact);
 	            	// Need to delete the added fact from dataArr for better performance?
 	            	// So we won't need to check it for the next category?
@@ -68,6 +69,79 @@ var util = {
         }
 
         return cancerSummary;
+    },
+
+    // Multiple tumors
+    getTumorsArr: function(neo4jRawJson) {
+    	//return neo4jRawJson;
+
+    	var tumors = [];
+
+    	var dataArr = neo4jRawJson.data;
+
+        // Build an arry of unique tumors
+        var tumorIdArr = [];
+
+        for (var i = 0; i < dataArr.length; i++) {
+            if (tumorIdArr.indexOf(dataArr[i][0]) ===-1) {
+                tumorIdArr.push(dataArr[i][0]);
+            }
+        }
+
+        // Build new data structure
+        for (var j = 0; j < tumorIdArr.length; j++) {
+            var tumor = this.getTumor(dataArr, tumorIdArr[j]);
+            // Add to tumors array
+            tumors.push(tumor);
+        }
+
+        return tumors;
+    },
+
+    getTumor: function(dataArr, tumorId) {
+        var tumor = {};
+        tumor.id = tumorId;
+        tumor.collatedFacts = [];
+
+        // Build an arry of unique tumorFactReln
+        var uniqueTumorFactRelnArr = [];
+
+        for (var i = 0; i < dataArr.length; i++) {
+        	if (dataArr[i][0] === tumorId && uniqueTumorFactRelnArr.indexOf(dataArr[i][1]) === -1) {
+                uniqueTumorFactRelnArr.push(dataArr[i][1]);
+        	}
+        }
+
+        // Build new data structure
+        for (var j = 0; j < uniqueTumorFactRelnArr.length; j++) {
+            var collatedFactObj = {};
+
+            // The name of category
+            collatedFactObj.category = uniqueTumorFactRelnArr[j];
+            // toNonCamelCase, remove 'has' from beginning
+            collatedFactObj.categoryName = this.toNonCamelCase(uniqueTumorFactRelnArr[j].substring(3));
+
+            // Array of facts of this category
+            collatedFactObj.facts = [];
+
+            // Loop through the origional data
+            for (var k = 0; k < dataArr.length; k++) {
+            	var cancerFactReln = dataArr[k][1];
+	        	var fact = dataArr[k][2].data;
+
+                // Add to facts array
+	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
+	            	collatedFactObj.facts.push(fact);
+	            	// Need to delete the added fact from dataArr for better performance?
+	            	// So we won't need to check it for the next category?
+	            }
+            }
+
+            // Add collatedFactObj to tumor.collatedFacts
+            tumor.collatedFacts.push(collatedFactObj);
+        }
+
+        return tumor;
     },
 
     getFactJson: function(neo4jRawJson) {

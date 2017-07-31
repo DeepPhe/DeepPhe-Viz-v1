@@ -1,0 +1,30 @@
+<script type="text/javascript">
+var tumorSummary = '{{{tumorSummary}}}';
+console.log(tumorSummary);
+</script>
+
+{{#each tumors}}
+<p>{{id}}</p>
+
+<ul class="summary_list">
+  {{#each collatedFacts}}
+    <li class="clearfix">
+    <span class="category_name">{{categoryName}}</span>
+    <ul>
+        {{#each facts}}
+        <li class="fact_id" id="{{id}}">{{prettyName}}</li>
+        {{/each}}
+    </ul>
+    </li>
+  {{/each}}
+</ul>
+{{/each}}
+
+<script type="text/javascript">
+// JS code has to be in this file
+$('.fact_id').click(function() {
+    var factId = $(this).attr('id');
+    getFact(factId);
+});
+
+</script>

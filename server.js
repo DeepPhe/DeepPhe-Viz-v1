@@ -188,7 +188,7 @@ server.route({
                 
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
-                reply.view('summary', data, {layout: 'empty'});
+                reply.view('cancerSummary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
@@ -220,17 +220,16 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var tumorSummary = util.getCancerSummaryJson(body);
+                var tumors = util.getTumorsArr(body);
 
-                // Render cancerSummary.html
+                // Render tumorSummary.html
                 var data = {
-                    name: tumorSummary.id,
-                    collatedFacts: tumorSummary.collatedFacts
+                    tumors: tumors
                 };
                 
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
-                reply.view('summary', data, {layout: 'empty'});
+                reply.view('tumorSummary', data, {layout: 'empty'});
             } else {
                 console.log('Failed to make the neo4j rest api call: getCancerSummary()');
                 console.error(error);
