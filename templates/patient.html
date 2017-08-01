@@ -136,6 +136,14 @@ function getFact(factId) {
 	});
 }
 
+function highlightReport(reportId) {
+    getReport(reportId);
+
+    // Remove previous added highlighting class
+    $('.report_id').removeClass("highlight");
+    // Also highlight this file
+    $('#' + reportId).addClass("highlight");
+}
 
 $('.fact_id').click(function() {
     var factId = $(this).attr('id');
