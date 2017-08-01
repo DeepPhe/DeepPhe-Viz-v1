@@ -18,8 +18,10 @@ var neo4jCypherQueries = {
 	},
 
 	getReports: function(patientName) {
+		// Use DISTINCT to exclude duplicates
 		var query = "MATCH (p:Patient {name:'" + patientName + "'})-->(r:Report) " +
-					"RETURN r.id, r.principalDate, r.title, r.type, r.text";
+					"RETURN DISTINCT r.id, r.principalDate, r.title, r.type, r.text";
+					console.log(query);
 		return query;
 	},
     
