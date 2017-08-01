@@ -21,7 +21,7 @@
     "handlebars": "^4.0.10",
     "hapi": "^16.4.3",
     "inert": "^4.2.0",
-    "neo4j-driver": "^1.4.0",
+    "lodash": "^4.17.4",
     "request": "^2.81.0",
     "vision": "^4.1.1"
   },

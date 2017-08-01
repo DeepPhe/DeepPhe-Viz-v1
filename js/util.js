@@ -1,5 +1,8 @@
 'use strict';
 
+// Load the full build of lodash
+var _ = require('lodash');
+
 var util = {
     getPatientsJson: function(neo4jRawJson) {
         var patientsJson = {};
@@ -59,8 +62,6 @@ var util = {
                 // Add to facts array
 	            if (cancerFactReln === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
 	            	collatedFactObj.facts.push(fact);
-	            	// Need to delete the added fact from dataArr for better performance?
-	            	// So we won't need to check it for the next category?
 	            }
             }
 
@@ -121,21 +122,21 @@ var util = {
             // toNonCamelCase, remove 'has' from beginning
             collatedFactObj.categoryName = this.toNonCamelCase(uniqueTumorFactRelnArr[j].substring(3));
 
-            // Array of facts of this category
-            collatedFactObj.facts = [];
-
+            var factsArr = [];
             // Loop through the origional data
             for (var k = 0; k < dataArr.length; k++) {
             	var cancerFactReln = dataArr[k][1];
 	        	var fact = dataArr[k][2].data;
 
                 // Add to facts array
-	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
-	            	collatedFactObj.facts.push(fact);
-	            	// Need to delete the added fact from dataArr for better performance?
-	            	// So we won't need to check it for the next category?
+	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category) {
+	            	factsArr.push(fact);
 	            }
             }
+
+            // Array of facts of this category
+            // Remove duplicates using lodash's _.uniqWith()
+            collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
 
             // Add collatedFactObj to tumor.collatedFacts
             tumor.collatedFacts.push(collatedFactObj);
@@ -144,11 +145,30 @@ var util = {
         return tumor;
     },
 
+    // One fact can have multiple matching texts
+    // or the same matching text can be found in multiple places in the same report
     getFactJson: function(neo4jRawJson) {
     	var factJson = {};
-    	factJson.detail = neo4jRawJson.data[0][0].data;
-    	factJson.relationship = (neo4jRawJson.data[0][1] !== null) ? neo4jRawJson.data[0][1].data : null;
-    	factJson.docSource = (neo4jRawJson.data[0][2] !== null) ? neo4jRawJson.data[0][2].data : null;
+
+        var dataArr = neo4jRawJson.data;
+
+        // factJson object has only two properties: "detail" and "textProvenances"
+    	factJson.detail = dataArr[0][0].data;
+    	factJson.textProvenances = [];
+
+        // This array may have duplicates
+        var textProvenancesArr = [];
+        for (var i = 0; i < dataArr.length; i++) {
+        	// Only get text provenance in source reports
+        	// Ignore other relationships for now
+        	// We can also specify the relationship in Cypher query
+        	if (dataArr[i][1].data.name === 'hasTextProvenance') {
+        		textProvenancesArr.push(dataArr[i][2].data);
+        	}
+        }
+
+        // Remove duplicates using lodash's _.uniqWith()
+        factJson.textProvenances = _.uniqWith(textProvenancesArr, _.isEqual);
 
     	return factJson;
     },

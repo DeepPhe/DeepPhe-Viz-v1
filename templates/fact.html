@@ -7,16 +7,20 @@
         <li><span class="fact_info">URI: {{detail.uri}}</li>
     </ul>
 
-    <p>Source Document</p>
+    <p>Text Provenances</p>
+    {{#each textProvenances}}
     <ul class="fact_list">
-        <li><span class="fact_info">Report ID: {{docSource.documentId}}</li>
-        <li><span class="fact_info">Report Name: {{docSource.documentName}}</li>
-        <li><span class="fact_info">Text: {{docSource.text}}</li>
+        <li>Report ID: {{documentId}}</li>
+        <li>Report Name: {{documentName}}</li>
+        <li>Text: {{text}}</li>
+        <li>Start: {{startOffset}}</li>
+        <li>End: {{endOffset}}</li>
     </ul>
+    {{/each}}
 </div>
 
 <script type="text/javascript">
-var reportId = '{{docSource.documentId}}';
+var reportId = '{{textProvenances}}';
 highlightReport(reportId);
 
 </script>

@@ -332,8 +332,7 @@ server.route({
                 // Render fact.html
                 var data = {
                     detail: factJson.detail,
-                    relationship: factJson.relationship,
-                    docSource: factJson.docSource
+                    textProvenances: factJson.textProvenances
                 };
 
                 // Specify to use the empty layout instead of the default layout
