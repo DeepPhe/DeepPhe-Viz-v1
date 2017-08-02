@@ -7,6 +7,24 @@
         <li><span class="fact_info">URI: {{detail.uri}}</li>
     </ul>
 
+    {{#if ordinalInterpretations}}
+    <p>OrdinalInterpretation</p>
+    <ul class="fact_list">
+    {{#each ordinalInterpretations}}
+        <li>{{prettyName}}</li>
+    {{/each}}
+    </ul>
+    {{/if}}
+
+    {{#if procedures}}
+    <p>Procedures</p>
+    <ul class="fact_list">
+        {{#each procedures}}
+        <li>{{prettyName}}</li>
+        {{/each}}
+    </ul>
+    {{/if}}
+
     <p>Text Provenances</p>
     {{#each textProvenances}}
     <ul class="fact_list">

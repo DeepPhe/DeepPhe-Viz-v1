@@ -93,7 +93,8 @@ server.register(Vision, (err) => {
         // Tell the server that our templates are located in the templates directory within the current path
         relativeTo: __dirname,
         path: './templates',
-        layoutPath: './templates/layout'
+        layoutPath: './templates/layout',
+        helpersPath: './templates/helpers'
     });
 });
 
@@ -332,6 +333,8 @@ server.route({
                 // Render fact.html
                 var data = {
                     detail: factJson.detail,
+                    ordinalInterpretations: factJson.ordinalInterpretations,
+                    procedures: factJson.procedures,
                     textProvenances: factJson.textProvenances,
                     reportId: factJson.textProvenances[0].documentId
                 };

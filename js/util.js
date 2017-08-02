@@ -152,23 +152,34 @@ var util = {
 
         var dataArr = neo4jRawJson.data;
 
-        // factJson object has only two properties: "detail" and "textProvenances"
+        // factJson object has properties: 
+        // "detail", "textProvenances", "ordinalInterpretations", "procedures"
     	factJson.detail = dataArr[0][0].data;
-    	factJson.textProvenances = [];
 
         // This array may have duplicates
         var textProvenancesArr = [];
+        var ordinalInterpretationsArr = [];
+        var proceduresArr = [];
+
         for (var i = 0; i < dataArr.length; i++) {
-        	// Only get text provenance in source reports
-        	// Ignore other relationships for now
         	// We can also specify the relationship in Cypher query
         	if (dataArr[i][1].data.name === 'hasTextProvenance') {
         		textProvenancesArr.push(dataArr[i][2].data);
+        	}
+
+        	if (dataArr[i][1].data.name === 'OrdinalInterpretation') {
+        		ordinalInterpretationsArr.push(dataArr[i][2].data);
+        	}
+
+        	if (dataArr[i][1].data.name === 'Procedure') {
+        		proceduresArr.push(dataArr[i][2].data);
         	}
         }
 
         // Remove duplicates using lodash's _.uniqWith()
         factJson.textProvenances = _.uniqWith(textProvenancesArr, _.isEqual);
+        factJson.ordinalInterpretations = _.uniqWith(ordinalInterpretationsArr, _.isEqual);
+        factJson.procedures = _.uniqWith(proceduresArr, _.isEqual);
 
     	return factJson;
     },
