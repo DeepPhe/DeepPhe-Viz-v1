@@ -133,3 +133,7 @@ padding:5px 10px;
 .highlight{
 	color:red;
 }
+
+.text_highlight{
+	background-color:orange;
+}

@@ -336,6 +336,7 @@ server.route({
                     ordinalInterpretations: factJson.ordinalInterpretations,
                     procedures: factJson.procedures,
                     textProvenances: factJson.textProvenances,
+                    textProvenancesArr: JSON.stringify(factJson.textProvenances),
                     reportId: factJson.textProvenances[0].documentId
                 };
 

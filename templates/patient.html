@@ -92,7 +92,7 @@ function getReports(patientName) {
 }
 
 // Get report by ID
-function getReport(reportId) {
+function getReport(reportId, textProvenancesArr) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
 	    url: baseUri + '/reports/' + reportId,
@@ -104,8 +104,17 @@ function getReport(reportId) {
 	jqxhr.done(function(response) {
 	    //console.log("Report: " + reportId);
 
+        var reportText = response.data[0][0].data.text;
+
+        // Also highlight the mentioned texts if there's any
+        if (textProvenancesArr.length > 0) {
+            for (var i = 0; i < textProvenancesArr.length; i++) {
+                reportText = reportText.replace(textProvenancesArr[i].text, '<span class="text_highlight">' + textProvenancesArr[i].text + '</span>');
+            }
+        }
+console.log(reportText);
 	    // Render response
-	    $('#report_content').html('<pre>' + response.data[0][0].data.text + '</pre>');
+	    $('#report_content').html('<pre>' + reportText + '</pre>');
 	});
 
 	jqxhr.fail(function () { 
@@ -136,8 +145,9 @@ function getFact(factId) {
 	});
 }
 
-function highlightReport(reportId) {
-    getReport(reportId);
+function highlightReport(reportId, textProvenancesArr) {
+    // First get the report content
+    getReport(reportId, textProvenancesArr);
 
     // Remove previous added highlighting class
     $('.report_id').removeClass("highlight");

@@ -22,7 +22,7 @@
 // JS code has to be in this file
 $('.report_id').click(function() {
     var reportId = $(this).attr('id');
-    getReport(reportId);
+    getReport(reportId, []);
 
     // Remove previous added highlighting class
     $('.report_id').removeClass("highlight");
