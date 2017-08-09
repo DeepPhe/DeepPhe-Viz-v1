@@ -76,7 +76,11 @@ var util = {
     getTumorsArr: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
+        var self = this;
+
     	var tumors = [];
+
+    	var allTumorFactRelnArr = [];
 
     	var dataArr = neo4jRawJson.data;
 
@@ -91,7 +95,30 @@ var util = {
 
         // Build new data structure
         for (var j = 0; j < tumorIdArr.length; j++) {
+            // Collect categories of each tumor
+            var tumorFactRelnArr = this.getTumorCategories(dataArr, tumorIdArr[j]);
+            allTumorFactRelnArr.push(tumorFactRelnArr);
+        }
+
+        // Find the common categories across tumors
+        var commonFactRelationships = allTumorFactRelnArr.shift().filter(function(v) {
+		    return allTumorFactRelnArr.every(function(a) {
+		        return a.indexOf(v) !== -1;
+		    });
+		});
+
+        var commonCategories = [];
+
+        // Convert the 'hasXXX' relationship to category
+	    commonFactRelationships.forEach(function(item) {
+	    	var relationship2Category = self.toNonCamelCase(item.substring(3));
+	    	commonCategories.push(relationship2Category);
+	    });
+
+        for (var j = 0; j < tumorIdArr.length; j++) {
             var tumor = this.getTumor(dataArr, tumorIdArr[j]);
+            // Add commonCategories property
+            tumor.commonCategories = commonCategories;
             // Add to tumors array
             tumors.push(tumor);
         }
@@ -99,11 +126,7 @@ var util = {
         return tumors;
     },
 
-    getTumor: function(dataArr, tumorId) {
-        var tumor = {};
-        tumor.id = tumorId;
-        tumor.collatedFacts = [];
-
+    getTumorCategories: function(dataArr, tumorId) {
         // Build an arry of unique tumorFactReln
         var uniqueTumorFactRelnArr = [];
 
@@ -113,6 +136,20 @@ var util = {
         	}
         }
 
+        return uniqueTumorFactRelnArr;
+    },
+
+    getTumor: function(dataArr, tumorId) {
+        var tumor = {};
+        tumor.id = tumorId;
+        tumor.collatedFacts = [];
+
+        // Build an arry of unique tumorFactReln
+        var uniqueTumorFactRelnArr = this.getTumorCategories(dataArr, tumorId);
+
+        // Need to get the uncommon categories
+       
+
         // Build new data structure
         for (var j = 0; j < uniqueTumorFactRelnArr.length; j++) {
             var collatedFactObj = {};
@@ -121,7 +158,7 @@ var util = {
             collatedFactObj.category = uniqueTumorFactRelnArr[j];
             // toNonCamelCase, remove 'has' from beginning
             collatedFactObj.categoryName = this.toNonCamelCase(uniqueTumorFactRelnArr[j].substring(3));
-
+ 
             var factsArr = [];
             // Loop through the origional data
             for (var k = 0; k < dataArr.length; k++) {

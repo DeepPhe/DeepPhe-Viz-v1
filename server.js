@@ -225,6 +225,7 @@ server.route({
 
                 // Render tumorSummary.html
                 var data = {
+                    categories: tumors[0].commonCategories,
                     tumors: tumors
                 };
                 
