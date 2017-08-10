@@ -53,6 +53,8 @@ DataProcessor.prototype = {
         }
 
         // Build new data structure
+        // This is similar to what getCollatedFacts() does,
+        // except it only handles one cancer ID.
         for (var j = 0; j < uniqueCancerFactRelnArr.length; j++) {
             var collatedFactObj = {};
 
@@ -64,16 +66,22 @@ DataProcessor.prototype = {
             // Array of facts of this category
             collatedFactObj.facts = [];
 
+            var factsArr = [];
+
             // Loop through the origional data
             for (var k = 0; k < dataArr.length; k++) {
             	var cancerFactReln = dataArr[k][1];
 	        	var fact = dataArr[k][2].data;
 
                 // Add to facts array
-	            if (cancerFactReln === collatedFactObj.category && collatedFactObj.facts.indexOf(fact) === -1) {
-	            	collatedFactObj.facts.push(fact);
+	            if (cancerFactReln === collatedFactObj.category) {
+	            	factsArr.push(fact);
 	            }
             }
+
+            // Array of facts of this category
+            // Remove duplicates using lodash's _.uniqWith()
+            collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
 
             // Add collatedFactObj to cancerSummary.collatedFacts
             cancerSummary.collatedFacts.push(collatedFactObj);
