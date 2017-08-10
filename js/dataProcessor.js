@@ -181,53 +181,35 @@ console.log(JSON.stringify(tumors, null, 4));
         });
 
         // Group all common categories and their facts
-        for (var j = 0; j < this.commonFactRelationships.length; j++) {
-            var collatedFactObj = {};
-
-            // The name of category
-            collatedFactObj.category = this.commonFactRelationships[j];
-            // toNonCamelCase, remove 'has' from beginning
-            collatedFactObj.categoryName = this.toNonCamelCase(this.commonFactRelationships[j].substring(3));
- 
-            var factsArr = [];
-            // Loop through the origional data
-            for (var k = 0; k < dataArr.length; k++) {
-            	var cancerFactReln = dataArr[k][1];
-	        	var fact = dataArr[k][2].data;
-
-                // Add to facts array
-	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category) {
-	            	factsArr.push(fact);
-	            }
-            }
-
-            // Array of facts of this category
-            // Remove duplicates using lodash's _.uniqWith()
-            collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
-
-            // Add collatedFactObj to tumor.commonCategories
-            tumor.factsOfCommonCategories.push(collatedFactObj);
-        }
-
+        tumor.factsOfCommonCategories = this.getCollatedTumorFacts(dataArr, tumorId, this.commonFactRelationships);
+        
         // Group all tumor unique/specific categories and their facts
-        for (var j = 0; j < uniqueFactRelationships.length; j++) {
+        tumor.factsOfUniqueCategories = this.getCollatedTumorFacts(dataArr, tumorId, uniqueFactRelationships);
+        
+        return tumor;
+    },
+
+    getCollatedTumorFacts: function(dataArr, tumorId, categoriesArr) {
+        var factsOfCategories = [];
+
+        for (var j = 0; j < categoriesArr.length; j++) {
             var collatedFactObj = {};
 
             // The name of category
-            collatedFactObj.category = uniqueFactRelationships[j];
+            collatedFactObj.category = categoriesArr[j];
             // toNonCamelCase, remove 'has' from beginning
-            collatedFactObj.categoryName = this.toNonCamelCase(uniqueFactRelationships[j].substring(3));
+            collatedFactObj.categoryName = this.toNonCamelCase(categoriesArr[j].substring(3));
  
             var factsArr = [];
             // Loop through the origional data
             for (var k = 0; k < dataArr.length; k++) {
-            	var cancerFactReln = dataArr[k][1];
-	        	var fact = dataArr[k][2].data;
+                var cancerFactReln = dataArr[k][1];
+                var fact = dataArr[k][2].data;
 
                 // Add to facts array
-	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category) {
-	            	factsArr.push(fact);
-	            }
+                if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category) {
+                    factsArr.push(fact);
+                }
             }
 
             // Array of facts of this category
@@ -235,10 +217,10 @@ console.log(JSON.stringify(tumors, null, 4));
             collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
 
             // Add collatedFactObj to tumor.uniqueCategories
-            tumor.factsOfUiqueCategories.push(collatedFactObj);
+            factsOfCategories.push(collatedFactObj);
         }
 
-        return tumor;
+        return factsOfCategories;
     },
 
     // One fact can have multiple matching texts
