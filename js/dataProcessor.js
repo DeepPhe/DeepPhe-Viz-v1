@@ -3,7 +3,17 @@
 // Load the full build of lodash
 var _ = require('lodash');
 
-var util = {
+// Class declaration, constructor
+var DataProcessor = function() {
+    // In the format of "hasXXX"
+    this.commonFactRelationships = [];
+
+    // Space seperated and captalized words
+    this.commonCategories = [];
+};
+
+// Add methods to DataProcessor.prototype
+DataProcessor.prototype = {
     getPatientsJson: function(neo4jRawJson) {
         var patientsJson = {};
         var dataArr = neo4jRawJson.data;
@@ -78,7 +88,10 @@ var util = {
 
         var self = this;
 
-    	var tumors = [];
+    	var tumors = {};
+        // tumors object has two properties: 'commonCategories' and 'data'
+    	tumors.commonCategories = [];
+    	tumors.data = [];
 
     	var allTumorFactRelnArr = [];
 
@@ -96,37 +109,44 @@ var util = {
         // Build new data structure
         for (var j = 0; j < tumorIdArr.length; j++) {
             // Collect categories of each tumor
-            var tumorFactRelnArr = this.getTumorCategories(dataArr, tumorIdArr[j]);
+            var tumorFactRelnArr = this.getTumorFactRelnArr(dataArr, tumorIdArr[j]);
             allTumorFactRelnArr.push(tumorFactRelnArr);
         }
 
         // Find the common categories across tumors
-        var commonFactRelationships = allTumorFactRelnArr.shift().filter(function(v) {
+        this.commonFactRelationships = allTumorFactRelnArr.shift().filter(function(v) {
 		    return allTumorFactRelnArr.every(function(a) {
 		        return a.indexOf(v) !== -1;
 		    });
 		});
 
-        var commonCategories = [];
-
         // Convert the 'hasXXX' relationship to category
-	    commonFactRelationships.forEach(function(item) {
+        var commonCats = [];
+	    this.commonFactRelationships.forEach(function(item) {
 	    	var relationship2Category = self.toNonCamelCase(item.substring(3));
-	    	commonCategories.push(relationship2Category);
+	    	commonCats.push(relationship2Category);
 	    });
 
+        // This ensures reset this.commonCategories every time we call getTumorsArr()
+        // otherwise it will keep appending categories
+        this.commonCategories = commonCats;
+
+        // Add to tumors 
+        tumors.commonCategories = this.commonCategories;
+
+        // Add each tumor to tumors array
         for (var j = 0; j < tumorIdArr.length; j++) {
             var tumor = this.getTumor(dataArr, tumorIdArr[j]);
-            // Add commonCategories property
-            tumor.commonCategories = commonCategories;
-            // Add to tumors array
-            tumors.push(tumor);
+            
+            tumors.data.push(tumor);
         }
+
+console.log(JSON.stringify(tumors, null, 4));
 
         return tumors;
     },
 
-    getTumorCategories: function(dataArr, tumorId) {
+    getTumorFactRelnArr: function(dataArr, tumorId) {
         // Build an arry of unique tumorFactReln
         var uniqueTumorFactRelnArr = [];
 
@@ -140,24 +160,34 @@ var util = {
     },
 
     getTumor: function(dataArr, tumorId) {
+        var self = this;
+
         var tumor = {};
         tumor.id = tumorId;
-        tumor.collatedFacts = [];
+        
+        // Common categories across all tumors
+        tumor.factsOfCommonCategories = [];
 
-        // Build an arry of unique tumorFactReln
-        var uniqueTumorFactRelnArr = this.getTumorCategories(dataArr, tumorId);
+        // Unique categories only found in this tumor
+        tumor.factsOfUiqueCategories = [];
 
-        // Need to get the uncommon categories
-       
+        // Build an arry of unique tumorFactReln, no duplicates
+        // This is not the formatted categories, it a list of "hasXXX"
+        var tumorFactRelnNoDuplicates = this.getTumorFactRelnArr(dataArr, tumorId);
 
-        // Build new data structure
-        for (var j = 0; j < uniqueTumorFactRelnArr.length; j++) {
+        // Need to get the unique categories
+        var uniqueFactRelationships = tumorFactRelnNoDuplicates.filter(function(item) {
+            return (self.commonFactRelationships.indexOf(item) === -1);
+        });
+
+        // Group all common categories and their facts
+        for (var j = 0; j < this.commonFactRelationships.length; j++) {
             var collatedFactObj = {};
 
             // The name of category
-            collatedFactObj.category = uniqueTumorFactRelnArr[j];
+            collatedFactObj.category = this.commonFactRelationships[j];
             // toNonCamelCase, remove 'has' from beginning
-            collatedFactObj.categoryName = this.toNonCamelCase(uniqueTumorFactRelnArr[j].substring(3));
+            collatedFactObj.categoryName = this.toNonCamelCase(this.commonFactRelationships[j].substring(3));
  
             var factsArr = [];
             // Loop through the origional data
@@ -175,8 +205,37 @@ var util = {
             // Remove duplicates using lodash's _.uniqWith()
             collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
 
-            // Add collatedFactObj to tumor.collatedFacts
-            tumor.collatedFacts.push(collatedFactObj);
+            // Add collatedFactObj to tumor.commonCategories
+            tumor.factsOfCommonCategories.push(collatedFactObj);
+        }
+
+        // Group all tumor unique/specific categories and their facts
+        for (var j = 0; j < uniqueFactRelationships.length; j++) {
+            var collatedFactObj = {};
+
+            // The name of category
+            collatedFactObj.category = uniqueFactRelationships[j];
+            // toNonCamelCase, remove 'has' from beginning
+            collatedFactObj.categoryName = this.toNonCamelCase(uniqueFactRelationships[j].substring(3));
+ 
+            var factsArr = [];
+            // Loop through the origional data
+            for (var k = 0; k < dataArr.length; k++) {
+            	var cancerFactReln = dataArr[k][1];
+	        	var fact = dataArr[k][2].data;
+
+                // Add to facts array
+	            if (dataArr[k][0] === tumorId && cancerFactReln === collatedFactObj.category) {
+	            	factsArr.push(fact);
+	            }
+            }
+
+            // Array of facts of this category
+            // Remove duplicates using lodash's _.uniqWith()
+            collatedFactObj.facts = _.uniqWith(factsArr, _.isEqual);
+
+            // Add collatedFactObj to tumor.uniqueCategories
+            tumor.factsOfUiqueCategories.push(collatedFactObj);
         }
 
         return tumor;
@@ -230,5 +289,5 @@ var util = {
     }
 }
 
-module.exports = util;
+module.exports = DataProcessor;
 

@@ -1,41 +1,34 @@
 
-<table>
+<table class="table">
+
 <thead>
-    <th>Tumor</th>
-    {{#each categories}}
-    <th>{{this}}</th>
+    <tr>
+    <th class="th">Tumor</th>
+    {{#each commonCategories}}
+    <th class="th">{{this}}</th>
     {{/each}}
+    </tr>
 </thead>
+
 <tbody>
-    {{#each tumors}}
+    {{#each tumorsData}}
     <tr>
         <td>{{id}}</td>
-        {{#each commonCategories}}
-        <td>{{this}}</td>
+        {{#each factsOfCommonCategories}}
+        <td>
+        <ul class="tumor_fact_list">
+          {{#each facts}}
+            <li class="fact_id" id="{{id}}">{{prettyName}}</li>
+          {{/each}}
+        </ul>
+        </td>
         {{/each}}
     </tr>
     {{/each}}
 </tbody>
+
 </table>
 
-
-
-{{#each tumors}}
-<p>{{id}}</p>
-
-<ul class="summary_list">
-  {{#each collatedFacts}}
-    <li class="clearfix">
-    <span class="category_name">{{categoryName}}</span>
-    <ul>
-        {{#each facts}}
-        <li class="fact_id" id="{{id}}">{{prettyName}}</li>
-        {{/each}}
-    </ul>
-    </li>
-  {{/each}}
-</ul>
-{{/each}}
 
 <script type="text/javascript">
 // JS code has to be in this file

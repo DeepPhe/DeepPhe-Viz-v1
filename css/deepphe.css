@@ -1,9 +1,9 @@
 html{
-	line-height:1.15;
-	-ms-text-size-adjust:100%;
-	-webkit-text-size-adjust:100%;
-	color:#222;
-	font:15px/1.4 'Open Sans',sans-serif;
+line-height:1.15;
+-ms-text-size-adjust:100%;
+-webkit-text-size-adjust:100%;
+color:#222;
+font:15px/1.4 'Open Sans',sans-serif;
 }
 
 
@@ -15,65 +15,64 @@ margin:0;
 }
 
 .content{
-	padding:20px;
+padding:20px;
 }
 
 .patients_list{
-	list-style-type: none;
+list-style-type: none;
 }
 
 .patients_list li{
 padding:5px 10px;
 }
 
-/* Cancer/Tumor summary list */
-.summary_list,
-.summary_list li ul{
+/* Cancer summary */
+.cancer_fact_list {
 list-style-type: none;
+padding:0;
+margin:0;
 }
 
-.summary_list > li{
-border-bottom:1px solid #ccc;
-}
-
-.summary_list li .category_name{
-width:200px;
+.cancer_fact_list li {
 float:left;
-padding:5px 10px;
-}
-
-.summary_list li ul{
-width:800;
-float:left;
+margin-right:20px;
 color:#0275d8;
+padding:0;
 }
 
+/* Tumor summary */
+.tumor_fact_list {
+list-style-type: none;
+padding:0;
+margin:0;
+}
 
-.summary_list li ul li{
-	float:left;
-display:inline;
-padding:5px 10px;
+.tumor_fact_list li {
+color:#0275d8;
+padding:0;
 }
 
 /* Table */
 /**
- * Remove most spacing between table cells.
- */
+* Remove most spacing between table cells.
+*/
 
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+border-collapse: collapse;
+border-spacing: 0;
 }
 
 td,
 th {
-  padding: 0;
+padding: 0;
 }
 
 .table {
 width:100%;
 border:1px solid #ccc;
 margin:20px 0;
+/* Must redefine the font size here */
+font:15px/1.4 'Open Sans',sans-serif;
 }
 
 .table th.th {
@@ -84,12 +83,11 @@ border:1px solid #ccc;
 }
 
 .table #report_content{
-	text-align:left;
-	padding:10px;
-	font-weight: normal;
-	overflow-y: scroll;
-	height:800px;
-	width:600px;
+text-align:left;
+padding:10px;
+font-weight: normal;
+overflow-y: scroll;
+height:800px;
 }
 
 .table td {
@@ -113,7 +111,7 @@ clear: both;
 }
 
 .report_id{
-	cursor: pointer;
+cursor: pointer;
 }
 
 /* Fact */
@@ -131,9 +129,10 @@ padding:5px 10px;
 }
 
 .highlight{
-	color:red;
+color:red;
 }
 
 .text_highlight{
-	background-color:orange;
+background-color:orange;
 }
+

@@ -15,7 +15,9 @@ const HttpRequest = require('request');
 const neo4jCypherQueries = require('./js/neo4jCypherQueries.js');
 
 // Utilities
-const util = require('./js/util.js');
+const DataProcessor = require('./js/dataProcessor.js');
+
+var dataProcessor = new DataProcessor();
 
 // By default, Node.js installations come with the file system module, fs
 const fs = require('fs');
@@ -121,7 +123,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var patientsJson = util.getPatientsJson(body);
+                var patientsJson = dataProcessor.getPatientsJson(body);
 
                 // Render patients.html
                 var data = {
@@ -179,7 +181,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var cancerSummary = util.getCancerSummaryJson(body);
+                var cancerSummary = dataProcessor.getCancerSummaryJson(body);
 
                 // Render cancerSummary.html
                 var data = {
@@ -221,14 +223,14 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var tumors = util.getTumorsArr(body);
+                var tumors = dataProcessor.getTumorsArr(body);
 
                 // Render tumorSummary.html
                 var data = {
-                    categories: tumors[0].commonCategories,
-                    tumors: tumors
+                    commonCategories: tumors.commonCategories,
+                    tumorsData: tumors.data
                 };
-                
+
                 // Specify to use the empty layout instead of the default layout
                 // This way we can send the rendered content as response directly
                 reply.view('tumorSummary', data, {layout: 'empty'});
@@ -329,7 +331,7 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
-                var factJson = util.getFactJson(body);
+                var factJson = dataProcessor.getFactJson(body);
 
                 // Render fact.html
                 var data = {
