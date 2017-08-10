@@ -88,6 +88,7 @@ padding:10px;
 font-weight: normal;
 overflow-y: scroll;
 height:800px;
+max-width:800px;
 }
 
 .table td {
@@ -124,7 +125,8 @@ border-bottom:1px solid #ccc;
 }
 
 .fact_info{
-width:200px;
+display:inline-block;
+width:100px;
 padding:5px 10px;
 }
 

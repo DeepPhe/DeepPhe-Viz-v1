@@ -3,8 +3,8 @@
     <p>Fact Detail</p>
     <ul class="fact_list">
         <li><span class="fact_info">ID:</span> {{detail.id}}</li>
-        <li><span class="fact_info">Name: {{detail.prettyName}}</li>
-        <li><span class="fact_info">URI: {{detail.uri}}</li>
+        <li><span class="fact_info">Name:</span> {{detail.prettyName}}</li>
+        <li><span class="fact_info">URI:</span> {{detail.uri}}</li>
     </ul>
 
     {{#if ordinalInterpretations}}
@@ -28,11 +28,11 @@
     <p>Text Provenances</p>
     {{#each textProvenances}}
     <ul class="fact_list">
-        <li>Report ID: {{documentId}}</li>
-        <li>Report Name: {{documentName}}</li>
-        <li>Text: {{text}}</li>
-        <li>Start: {{startOffset}}</li>
-        <li>End: {{endOffset}}</li>
+        <li><span class="fact_info">Report ID:</span> {{documentId}}</li>
+        <li><span class="fact_info">Report Name:</span> {{documentName}}</li>
+        <li><span class="fact_info">Text:</span> {{text}}</li>
+        <li><span class="fact_info">Start:</span> {{startOffset}}</li>
+        <li><span class="fact_info">End:</span> {{endOffset}}</li>
     </ul>
     {{/each}}
 </div>
