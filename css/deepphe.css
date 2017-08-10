@@ -1,11 +1,7 @@
 html{
-line-height:1.15;
--ms-text-size-adjust:100%;
--webkit-text-size-adjust:100%;
 color:#222;
-font:15px/1.4 'Open Sans',sans-serif;
+font: 15px/1.4 sans-serif;
 }
-
 
 .header {
 color:#fff;
@@ -71,8 +67,6 @@ padding: 0;
 width:100%;
 border:1px solid #ccc;
 margin:20px 0;
-/* Must redefine the font size here */
-font:15px/1.4 'Open Sans',sans-serif;
 }
 
 .table th.th {
