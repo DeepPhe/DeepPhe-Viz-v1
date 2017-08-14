@@ -2,16 +2,16 @@
 <table class="table">
 
     <tr> 
-        <th class="th">ID</th> 
-        <th class="th">Title</th> 
-        <th class="th">Type</th> 
-        <th rowspan="{{rowspan}}" width="45%"><div id="report_content"></div></th> 
+        <th rowspan="{{rowspan}}" width="824"><div id="report_content"></div></th> 
+        <th class="th">Name</th> 
+        <th class="th">Date</th> 
+        <th class="th">Type</th>
     </tr> 
 
         {{#each reports}} 
         <tr> 
-            <td><em class="report_id" id="{{this.[0]}}">{{this.[0]}}</em></td> 
-            <td>{{this.[2]}}</td> 
+            <td><span class="report_name" id="{{this.[0]}}">{{this.[2]}}</span></td> 
+            <td>{{this.[1]}}</td> 
             <td>{{this.[3]}}</td> 
         </tr> 
         {{/each}} 
@@ -20,12 +20,12 @@
 
 <script type="text/javascript">
 // JS code has to be in this file
-$('.report_id').click(function() {
+$('.report_name').click(function() {
     var reportId = $(this).attr('id');
     getReport(reportId, []);
 
     // Remove previous added highlighting class
-    $('.report_id').removeClass("highlight");
+    $('.report_name').removeClass("highlight");
     // Also highlight this file
     $(this).addClass("highlight");
 });

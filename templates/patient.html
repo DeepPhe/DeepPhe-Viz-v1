@@ -150,7 +150,7 @@ function highlightReport(reportId, textProvenancesArr) {
     getReport(reportId, textProvenancesArr);
 
     // Remove previous added highlighting class
-    $('.report_id').removeClass("highlight");
+    $('.report_name').removeClass("highlight");
     // Also highlight this file
     $('#' + reportId).addClass("highlight");
 }

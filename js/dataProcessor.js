@@ -270,7 +270,8 @@ DataProcessor.prototype = {
     	return factJson;
     },
 
-    // Sorted from newest date to oldest date
+    // Sort from newest date to oldest date
+    // Format the report type
     sortReportsByDate: function(arr) {
         // Date format returned by neo4j is "07/19/2006 09:33 AM EDT"
         arr.sort(function(a, b) {
@@ -280,6 +281,22 @@ DataProcessor.prototype = {
         });
 
 //console.log(JSON.stringify(arr, null, 4));
+
+        // Format/normalize the report type (with index 3)
+        // E.g., from "Radiology_report" to "Radiology Report"
+        // Each report is an array
+        arr.forEach(function(currentValue, index, array) {
+            // Lowercase the type and split into an array
+            var typeArr = currentValue[3].toLowerCase().split('_');
+            typeArr.forEach(function(v, i, a) {
+                // Capitalize
+                a[i] = v.charAt(0).toUpperCase() + v.substr(1);
+            });
+
+            // Joins all elements of the typeArr into a string
+            array[index][3] = typeArr.join(' ');
+        });
+
         return arr;
     },
 
