@@ -19,6 +19,7 @@ var neo4jCypherQueries = {
 
 	getReports: function(patientName) {
 		// Use DISTINCT to exclude duplicates
+		// Adding "ORDER BY r.principalDate" to sort the dates doesn't work
 		var query = "MATCH (p:Patient {name:'" + patientName + "'})-->(r:Report) " +
 					"RETURN DISTINCT r.id, r.principalDate, r.title, r.type, r.text";
 		return query;

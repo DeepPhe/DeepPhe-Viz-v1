@@ -266,7 +266,7 @@ server.route({
                 // Render reports.html
                 var data = {
                     columns: body.columns,
-                    reports: body.data,
+                    reports: dataProcessor.sortReportsByDate(body.data), // sort by date
                     rowspan: body.data.length + 1
                 };
 

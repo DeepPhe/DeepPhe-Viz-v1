@@ -149,7 +149,7 @@ DataProcessor.prototype = {
             tumors.data.push(tumor);
         }
 
-console.log(JSON.stringify(tumors, null, 4));
+//console.log(JSON.stringify(tumors, null, 4));
 
         return tumors;
     },
@@ -268,6 +268,19 @@ console.log(JSON.stringify(tumors, null, 4));
         factJson.procedures = _.uniqWith(proceduresArr, _.isEqual);
 
     	return factJson;
+    },
+
+    // Sorted from newest date to oldest date
+    sortReportsByDate: function(arr) {
+        // Date format returned by neo4j is "07/19/2006 09:33 AM EDT"
+        arr.sort(function(a, b) {
+            // Turn strings into dates, and then subtract them
+            // to get a value that is either negative, positive, or zero.
+            return (new Date(b[1]) - new Date(a[1]));
+        });
+
+//console.log(JSON.stringify(arr, null, 4));
+        return arr;
     },
 
     // E.g., convert "hasBodySite" into " Body Site"
