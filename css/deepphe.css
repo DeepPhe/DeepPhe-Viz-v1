@@ -5,8 +5,9 @@ font: 15px/1.4 sans-serif;
 
 .header {
 color:#fff;
-background:#0a64a0;
-padding:20px;
+background-color: #1976d2;
+background: linear-gradient(145deg,#0d47a1,#42a5f5);
+padding:10px 20px;
 margin:0;
 }
 
@@ -67,11 +68,13 @@ padding: 0;
 width:100%;
 border:1px solid #ccc;
 margin:20px 0;
+box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
+border-radius: 2px;
 }
 
 .table th.th {
 padding:5px; 
-background:#f7f7f9;
+background:#fafafa;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
 }
