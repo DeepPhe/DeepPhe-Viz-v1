@@ -77,7 +77,8 @@ border:1px solid #ccc;
 }
 
 .table #report_content{
-text-align:left;
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+text-align: left;
 padding:10px;
 font-weight: normal;
 overflow-y: scroll;
