@@ -54,7 +54,7 @@
 </table>
 
 
-
+{{#if textProvenances}}
 <p>Text Provenances</p>
 
 <table class="table">
@@ -82,7 +82,7 @@
 </tbody>
 
 </table>
-
+{{/if}}
 
 <script type="text/javascript">
 var reportId = '{{reportId}}';
@@ -90,7 +90,8 @@ var textProvenancesArr = {{{textProvenancesArr}}};
 console.log(textProvenancesArr);
 // Is it possible to have multiple associated reports?
 
-// Highlight report ID in list
-highlightReport(reportId, textProvenancesArr);
-
+// Highlight report ID in list if there's text mention
+if (reportId !== '') {
+    highlightReport(reportId, textProvenancesArr);
+}
 </script>

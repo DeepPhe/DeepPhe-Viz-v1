@@ -56,6 +56,8 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
+    // The OPTIONAL MATCH clause is used to search for the pattern described in it, 
+    // while using nulls for missing parts of the pattern.
 	getFact: function(factId) {
         var query = "MATCH (fact:Fact {id:'" + factId +"'}) " +
 					"OPTIONAL MATCH (fact)-[rel]->(n) " +

@@ -238,6 +238,8 @@ DataProcessor.prototype = {
 
         var dataArr = neo4jRawJson.data;
 
+//console.log(JSON.stringify(dataArr, null, 4));
+
         // factJson object has properties: 
         // "detail", "textProvenances", "ordinalInterpretations", "procedures"
     	factJson.detail = dataArr[0][0].data;
@@ -248,18 +250,21 @@ DataProcessor.prototype = {
         var proceduresArr = [];
 
         for (var i = 0; i < dataArr.length; i++) {
-        	// We can also specify the relationship in Cypher query
-        	if (dataArr[i][1].data.name === 'hasTextProvenance') {
-        		textProvenancesArr.push(dataArr[i][2].data);
-        	}
+        	// Due to the use of "OPTIONAL MATCH" in cypher query, we may have nulls
+            if (dataArr[i][1] !== null) {
+                // We can also specify the relationship in Cypher query
+                if (dataArr[i][1].data.name === 'hasTextProvenance') {
+                    textProvenancesArr.push(dataArr[i][2].data);
+                }
 
-        	if (dataArr[i][1].data.name === 'OrdinalInterpretation') {
-        		ordinalInterpretationsArr.push(dataArr[i][2].data);
-        	}
+                if (dataArr[i][1].data.name === 'OrdinalInterpretation') {
+                    ordinalInterpretationsArr.push(dataArr[i][2].data);
+                }
 
-        	if (dataArr[i][1].data.name === 'Procedure') {
-        		proceduresArr.push(dataArr[i][2].data);
-        	}
+                if (dataArr[i][1].data.name === 'Procedure') {
+                    proceduresArr.push(dataArr[i][2].data);
+                }
+            }
         }
 
         // Remove duplicates using lodash's _.uniqWith()

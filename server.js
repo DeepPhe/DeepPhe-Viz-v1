@@ -332,6 +332,13 @@ server.route({
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 var factJson = dataProcessor.getFactJson(body);
+                
+                // No report info if there's no textProvenances data (or it's empty)
+                var reportId = '';
+                // Can we assume all text mentions are found in the same report?
+                if (typeof(factJson.textProvenances[0]) !== 'undefined') {
+                    reportId = factJson.textProvenances[0].documentId;
+                }
 
                 // Render fact.html
                 var data = {
@@ -340,7 +347,7 @@ server.route({
                     procedures: factJson.procedures,
                     textProvenances: factJson.textProvenances,
                     textProvenancesArr: JSON.stringify(factJson.textProvenances),
-                    reportId: factJson.textProvenances[0].documentId
+                    reportId: reportId
                 };
 
                 // Specify to use the empty layout instead of the default layout
