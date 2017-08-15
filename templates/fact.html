@@ -1,41 +1,86 @@
+<p>Fact Detail</p>
 
-<div>
-    <p>Fact Detail</p>
-    <ul class="fact_list">
-        <li><span class="fact_info">ID:</span> {{detail.id}}</li>
-        <li><span class="fact_info">Name:</span> {{detail.prettyName}}</li>
-        <li><span class="fact_info">URI:</span> {{detail.uri}}</li>
-    </ul>
+<table class="table">
+
+<thead>
+    <tr>
+    <th class="th">Fact Name</th>
+    <th class="th">Fact ID</th>
+    <th class="th">Fact URI</th>
 
     {{#if ordinalInterpretations}}
-    <p>OrdinalInterpretation</p>
-    <ul class="fact_list">
-    {{#each ordinalInterpretations}}
-        <li>{{prettyName}}</li>
-    {{/each}}
-    </ul>
+    <th class="th">OrdinalInterpretation</th>
     {{/if}}
 
     {{#if procedures}}
-    <p>Procedures</p>
-    <ul class="fact_list">
-        {{#each procedures}}
-        <li>{{prettyName}}</li>
-        {{/each}}
-    </ul>
+    <th class="th">Procedures</th>
     {{/if}}
+    
+    </tr>
+</thead>
 
-    <p>Text Provenances</p>
+<tbody>
+    <tr>
+        <td>{{detail.prettyName}}</td>
+        <td>{{detail.id}}</td>
+        <td>{{detail.uri}}</td>
+        
+        {{#if ordinalInterpretations}}
+        <td>
+            <ul class="fact_list">
+                {{#each ordinalInterpretations}}
+                <li>{{prettyName}}</li>
+                {{/each}}
+            </ul>
+        </td>
+        {{/if}}
+        
+        
+        {{#if procedures}}
+        <td>
+            <ul class="fact_list">
+                {{#each procedures}}
+                <li>{{prettyName}}</li>
+                {{/each}}
+            </ul>
+        </td>
+        {{/if}}
+        
+    </tr>
+</tbody>
+
+</table>
+
+
+
+<p>Text Provenances</p>
+
+<table class="table">
+
+<thead>
+    <tr>
+    <th class="th">Text</th>
+    <th class="th">Report ID</th>
+    <th class="th">Report Name</th>
+    <th class="th">Start</th>
+    <th class="th">End</th>
+    </tr>
+</thead>
+
+<tbody>
     {{#each textProvenances}}
-    <ul class="fact_list">
-        <li><span class="fact_info">Report ID:</span> {{documentId}}</li>
-        <li><span class="fact_info">Report Name:</span> {{documentName}}</li>
-        <li><span class="fact_info">Text:</span> {{text}}</li>
-        <li><span class="fact_info">Start:</span> {{startOffset}}</li>
-        <li><span class="fact_info">End:</span> {{endOffset}}</li>
-    </ul>
+    <tr>
+        <td>{{text}}</td>
+        <td>{{documentId}}</td>
+        <td>{{documentName}}</td>
+        <td>{{startOffset}}</td>
+        <td>{{endOffset}}</td>
+    </tr>
     {{/each}}
-</div>
+</tbody>
+
+</table>
+
 
 <script type="text/javascript">
 var reportId = '{{reportId}}';

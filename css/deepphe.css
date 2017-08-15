@@ -79,19 +79,6 @@ border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
 }
 
-.table #report_content{
-font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-text-align: left;
-padding:10px;
-font-weight: normal;
-overflow-y: scroll;
-height:800px;
-max-width:800px;
-/* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
-/* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
-white-space:pre-wrap;
-}
-
 .table td {
 padding:5px; 
 border:1px solid #ccc;
@@ -143,3 +130,15 @@ font-weight: 600;
 padding:2px;
 }
 
+#report_content{
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+text-align: left;
+padding:10px;
+font-weight: normal;
+overflow-y: scroll;
+height:800px;
+max-width:800px;
+/* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
+/* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
+white-space:pre-wrap;
+}
