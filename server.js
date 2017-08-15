@@ -91,7 +91,7 @@ server.register(Vision, (err) => {
             html: require('handlebars')
         },
         isCached: false, // Tell Hapi not to cache the view files, no need to restart app
-        layout: true, // Enable the built-in support for view layouts
+        layout: 'default', // Use 'default.html' as the default layout
         // Tell the server that our templates are located in the templates directory within the current path
         relativeTo: __dirname,
         path: './templates',
