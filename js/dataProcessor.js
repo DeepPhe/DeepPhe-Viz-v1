@@ -37,10 +37,12 @@ DataProcessor.prototype = {
     getCancerSummaryJson: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
+        // "id" and "collatedFacts" are the keys of this object
     	var cancerSummary = {};
     	var dataArr = neo4jRawJson.data;
-    	// "id" and "collatedFacts" are the keys of this object
-    	cancerSummary.id = dataArr[0][0];
+
+        // Remove the "CancerSummary-" prefix from "CancerSummary-Breast"
+    	cancerSummary.id = dataArr[0][0].replace('CancerSummary-', '');
         cancerSummary.collatedFacts = [];
 
         // Build an arry of unique cancerFactReln
@@ -169,9 +171,13 @@ DataProcessor.prototype = {
 
     getTumor: function(dataArr, tumorId) {
         var self = this;
-
+        
+        // Each tumor object has the following properties: 
+        // "id", "factsOfCommonCategories", "factsOfUiqueCategories"
         var tumor = {};
-        tumor.id = tumorId;
+
+        // Remove the "TumorSummary-" prefix from "TumorSummary-MergedTumor-23781020"
+        tumor.id = tumorId.replace('TumorSummary-', '');
         
         // Common categories across all tumors
         tumor.factsOfCommonCategories = [];
