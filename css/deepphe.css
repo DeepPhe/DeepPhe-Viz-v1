@@ -111,10 +111,13 @@ cursor: pointer;
 /* Fact */
 .fact_list {
 list-style-type: none;
+margin:0;
+padding:0;
 }
 
 .fact_list li {
-border-bottom:1px solid #ccc;
+display:inline;
+margin-right:10px;
 }
 
 .fact_info {

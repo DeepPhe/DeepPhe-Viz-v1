@@ -19,6 +19,14 @@
     <th class="th">Procedures</th>
     {{/if}}
 
+    {{#if lateralities}}
+    <th class="th">Lateralities</th>
+    {{/if}}
+
+    {{#if bodyModifiers}}
+    <th class="th">Body Modifiers</th>
+    {{/if}}
+
     </tr>
 </thead>
 
@@ -44,6 +52,26 @@
         <td>
             <ul class="fact_list">
                 {{#each procedures}}
+                <li>{{prettyName}}</li>
+                {{/each}}
+            </ul>
+        </td>
+        {{/if}}
+
+        {{#if lateralities}}
+        <td>
+            <ul class="fact_list">
+                {{#each lateralities}}
+                <li>{{prettyName}}</li>
+                {{/each}}
+            </ul>
+        </td>
+        {{/if}}
+
+        {{#if bodyModifiers}}
+        <td>
+            <ul class="fact_list">
+                {{#each bodyModifiers}}
                 <li>{{prettyName}}</li>
                 {{/each}}
             </ul>

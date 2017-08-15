@@ -345,6 +345,8 @@ server.route({
                     detail: factJson.detail,
                     ordinalInterpretations: factJson.ordinalInterpretations,
                     procedures: factJson.procedures,
+                    lateralities: factJson.lateralities,
+                    bodyModifiers: factJson.bodyModifiers,
                     textProvenances: factJson.textProvenances,
                     textProvenancesArr: JSON.stringify(factJson.textProvenances),
                     reportId: reportId

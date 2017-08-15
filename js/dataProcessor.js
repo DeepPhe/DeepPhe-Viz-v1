@@ -254,6 +254,8 @@ DataProcessor.prototype = {
         var textProvenancesArr = [];
         var ordinalInterpretationsArr = [];
         var proceduresArr = [];
+        var lateralitiesArr = [];
+        var bodyModifiersArr = [];
 
         for (var i = 0; i < dataArr.length; i++) {
         	// Due to the use of "OPTIONAL MATCH" in cypher query, we may have nulls
@@ -270,6 +272,14 @@ DataProcessor.prototype = {
                 if (dataArr[i][1].data.name === 'Procedure') {
                     proceduresArr.push(dataArr[i][2].data);
                 }
+
+                if (dataArr[i][1].data.name === 'Laterality') {
+                    lateralitiesArr.push(dataArr[i][2].data);
+                }
+
+                if (dataArr[i][1].data.name === 'BodyModifier') {
+                    bodyModifiersArr.push(dataArr[i][2].data);
+                }
             }
         }
 
@@ -277,6 +287,8 @@ DataProcessor.prototype = {
         factJson.textProvenances = _.uniqWith(textProvenancesArr, _.isEqual);
         factJson.ordinalInterpretations = _.uniqWith(ordinalInterpretationsArr, _.isEqual);
         factJson.procedures = _.uniqWith(proceduresArr, _.isEqual);
+        factJson.lateralities = _.uniqWith(lateralitiesArr, _.isEqual);
+        factJson.bodyModifiers = _.uniqWith(bodyModifiersArr, _.isEqual);
 
     	return factJson;
     },
