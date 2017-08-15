@@ -8,6 +8,7 @@
     <tr>
     <th class="th">Fact Name</th>
     <th class="th">Fact ID</th>
+    <th class="th">Fact Type</th>
     <th class="th">Fact URI</th>
 
     {{#if ordinalInterpretations}}
@@ -25,6 +26,7 @@
     <tr>
         <td>{{detail.prettyName}}</td>
         <td>{{detail.id}}</td>
+        <td>{{detail.type}}</td>
         <td>{{detail.uri}}</td>
         
         {{#if ordinalInterpretations}}
@@ -64,6 +66,7 @@
     <th class="th">Text</th>
     <th class="th">Report ID</th>
     <th class="th">Report Name</th>
+    <th class="th">Report Section</th>
     <th class="th">Start</th>
     <th class="th">End</th>
     </tr>
@@ -75,6 +78,7 @@
         <td>{{text}}</td>
         <td>{{documentId}}</td>
         <td>{{documentName}}</td>
+        <td>{{documentSection}}</td>
         <td>{{startOffset}}</td>
         <td>{{endOffset}}</td>
     </tr>
