@@ -9,7 +9,6 @@
     <th class="th">Fact Name</th>
     <th class="th">Fact ID</th>
     <th class="th">Fact Type</th>
-    <th class="th">Fact URI</th>
 
     {{#if ordinalInterpretations}}
     <th class="th">OrdinalInterpretation</th>
@@ -32,10 +31,9 @@
 
 <tbody>
     <tr>
-        <td>{{detail.prettyName}}</td>
+        <td>{{detail.prettyName}} (<a href="{{detail.uri}}" target="_blank">Ontology</a>)</td>
         <td>{{detail.id}}</td>
         <td>{{detail.type}}</td>
-        <td>{{detail.uri}}</td>
         
         {{#if ordinalInterpretations}}
         <td>
