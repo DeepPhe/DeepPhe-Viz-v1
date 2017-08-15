@@ -11,15 +11,20 @@ padding:10px 20px;
 margin:0;
 }
 
-.content{
+.content {
 padding:20px;
+}
+
+.current_patient {
+font-size:24px;
+font-weight: bold;
 }
 
 .patients_list{
 list-style-type: none;
 }
 
-.patients_list li{
+.patients_list li {
 padding:5px 10px;
 }
 
@@ -99,7 +104,7 @@ display: table; /* 2 */
 clear: both;
 }
 
-.report_id{
+.report_id {
 cursor: pointer;
 }
 
@@ -108,17 +113,17 @@ cursor: pointer;
 list-style-type: none;
 }
 
-.fact_list li{
+.fact_list li {
 border-bottom:1px solid #ccc;
 }
 
-.fact_info{
+.fact_info {
 display:inline-block;
 width:100px;
 padding:5px 10px;
 }
 
-.highlighted_report{
+.highlighted_report {
 color:red;
 }
 
@@ -130,7 +135,7 @@ font-weight: 600;
 padding:2px;
 }
 
-#report_content{
+#report_content {
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 text-align: left;
 padding:10px;
