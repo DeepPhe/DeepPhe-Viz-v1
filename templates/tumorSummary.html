@@ -20,7 +20,7 @@
         <td>
         <ul class="tumor_fact_list">
           {{#each facts}}
-            <li class="fact_id" id="{{id}}">{{prettyName}}</li>
+            <li class="fact" id="{{id}}">{{prettyName}}</li>
           {{/each}}
         </ul>
         </td>
@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
 // JS code has to be in this file
-$('.fact_id').click(function() {
+$('.fact').click(function() {
     var factId = $(this).attr('id');
     getFact(factId);
 });

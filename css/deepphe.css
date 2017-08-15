@@ -42,6 +42,14 @@ color:#0275d8;
 padding:0;
 }
 
+.fact {
+cursor:pointer;
+}
+
+.fact:hover {
+text-decoration: underline;
+}
+
 /* Tumor summary */
 .tumor_fact_list {
 list-style-type: none;
