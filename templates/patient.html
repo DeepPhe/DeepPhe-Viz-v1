@@ -114,7 +114,7 @@ function getReport(reportId, textProvenancesArr) {
         }
 console.log(reportText);
 	    // Render response
-	    $('#report_content').html('<pre>' + reportText + '</pre>');
+	    $('#report_content').html(reportText);
 	});
 
 	jqxhr.fail(function () { 
