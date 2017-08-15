@@ -108,11 +108,11 @@ function getReport(reportId, textProvenancesArr) {
 
         // Also highlight the mentioned texts if there's any
         if (textProvenancesArr.length > 0) {
-            for (var i = 0; i < textProvenancesArr.length; i++) {
-                reportText = reportText.replace(textProvenancesArr[i].text, '<span class="text_highlight">' + textProvenancesArr[i].text + '</span>');
-            }
+            reportText = highlightMentionedTexts(textProvenancesArr, reportText);
         }
+
 console.log(reportText);
+
 	    // Render response
 	    $('#report_content').html(reportText);
 	});
@@ -120,6 +120,70 @@ console.log(reportText);
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
+}
+
+function highlightMentionedTexts(textMentions, reportText){
+    // Sort the textMentions array first based on startOffset
+    textMentions.sort(function(a, b) {
+        var comp =  a.startOffset - b.startOffset;
+        if(comp==0) {
+            return b.endOffset - a.endOffset;
+        } else {
+            return comp;
+        }
+    });
+
+    var textFragments = [];
+
+    if (textMentions.length === 1){
+        var textMention = textMentions[0];
+
+        if (textMention.startOffset == 0) {
+            textFragments.push('');
+        } else {
+            textFragments.push(reportText.substring(0, textMention.startOffset));
+        }
+
+        textFragments.push('<span class="highlighted_text">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+        textFragments.push(reportText.substring(textMention.endOffset));
+    } else {
+        var lastValidTMIndex = 0;
+
+        for (var i = 0; i < textMentions.length; i++) {
+            var textMention = textMentions[i];
+            var lastValidTM = textMentions[lastValidTMIndex];
+
+            // If this is the first textmention, paste the start of the document before the first TM.
+            if (i === 0) {
+                if (textMention.startOffset == 0) {
+                    textFragments.push('');
+                } else {
+                    textFragments.push(reportText.substring(0, textMention.startOffset));
+                }
+            } else { // Otherwise, check if this text mention is valid. if it is, paste the text from last valid TM to this one.
+                if (textMention.startOffset < lastValidTM.endOffset) {
+                        // Push end of the document
+                    continue; // Skipping this TM.
+                } else{
+                    textFragments.push(reportText.substring(lastValidTM.endOffset, textMention.startOffset));
+                }
+            }
+
+            textFragments.push('<span class="highlighted_text">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+            lastValidTMIndex = i;
+        }
+        // Push end of the document
+        textFragments.push(reportText.substring(textMentions[lastValidTMIndex].endOffset));
+    }
+
+    // Assemble the final report content with highlighted texts
+    var highlightedReportText = '';
+
+    for (var j = 0; j < textFragments.length; j++) {
+        highlightedReportText += textFragments[j];
+    }
+
+    return highlightedReportText;
 }
 
 // Get fact details by ID
