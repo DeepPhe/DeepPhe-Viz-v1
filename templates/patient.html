@@ -2,19 +2,11 @@
 
 <h2>{{patientName}}</h2>
 
-<h2>Cancer Summary</h2>
-
-<div id="cancers"></div>
-
-<h2>Tumor Summary</h2>
+<div id="cancer"></div>
 
 <div id="tumors"></div>
 
-<h2>Fact Information</h2>
-
 <div id="fact"></div>
-
-<h2>Reports</h2>
 
 <div id="reports"></div>
 
@@ -37,8 +29,7 @@ function getCancerSummary(patientName) {
 	    //console.log(response);
 
 	    // Render response
-	    //$('#cancers').html('<pre>' + JSON.stringify(response, null, 4) + '</pre>');
-	    $('#cancers').html(response);
+	    $('#cancer').html(response);
 	});
 
 	jqxhr.fail(function () { 
