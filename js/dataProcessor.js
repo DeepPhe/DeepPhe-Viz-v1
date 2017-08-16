@@ -54,16 +54,39 @@ DataProcessor.prototype = {
             }
         }
 
+        // Sort this uniqueCancerFactRelnArr in a specific order
+        // categories not in this order will be listed at the bottom
+        var order = [
+            'hasBodySite', 
+            'hasCancerStage', 
+            'hasClinicalTClassification',
+            'hasClinicalNClassification',
+            'hasClinicalMClassification',
+            'hasDiagnosis',
+            'hasTreatment'
+        ];
+        
+        // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
+        var orderMap = {};
+        // Using lodash's `_.each()`, `_.sortBy` and `_.indexOf`
+        _.each(order, function(i) { 
+            orderMap[i] = _.indexOf(order, i); 
+        });
+
+        var sortedUniqueCancerFactRelnArr = _.sortBy(uniqueCancerFactRelnArr, function(i){ 
+            return orderMap[i];
+        });
+
         // Build new data structure
         // This is similar to what getCollatedFacts() does,
         // except it only handles one cancer ID.
-        for (var j = 0; j < uniqueCancerFactRelnArr.length; j++) {
+        for (var j = 0; j < sortedUniqueCancerFactRelnArr.length; j++) {
             var collatedFactObj = {};
 
             // The name of category
-            collatedFactObj.category = uniqueCancerFactRelnArr[j];
+            collatedFactObj.category = sortedUniqueCancerFactRelnArr[j];
             // toNonCamelCase, remove 'has' from beginning
-            collatedFactObj.categoryName = this.toNonCamelCase(uniqueCancerFactRelnArr[j].substring(3));
+            collatedFactObj.categoryName = this.toNonCamelCase(sortedUniqueCancerFactRelnArr[j].substring(3));
 
             // Array of facts of this category
             collatedFactObj.facts = [];
