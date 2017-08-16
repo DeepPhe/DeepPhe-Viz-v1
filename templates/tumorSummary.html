@@ -4,26 +4,24 @@
 <table class="table">
 
 <thead>
+    
+    <col>
+    <colgroup span="{{numOfCommonCategories}}"></colgroup>
+    <tr>
+    <th class="th" rowspan="2">Tumor ID</th>
+    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">
     {{#if multiTumors}}
-        <col>
-        <colgroup span="{{numOfCommonCategories}}"></colgroup>
-        <tr>
-        <th class="th" rowspan="2">Tumor ID</th>
-        <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Categories</th>
-        </tr>
-        <tr>
-        {{#each commonCategories}}
-            <th class="th" scope="col">{{this}}</th>
-        {{/each}}
-        </tr>
+        Common Fact Categories of All Tumors
     {{else}}
-        <tr>
-        <th class="th">Tumor ID</th>
-        {{#each commonCategories}}
-            <th class="th">{{this}}</th>
-        {{/each}}
-        </tr>
+        All Fact Categories
     {{/if}}
+    </th>
+    </tr>
+    <tr>
+    {{#each commonCategories}}
+        <th class="th" scope="col">{{this}}</th>
+    {{/each}}
+    </tr>
 </thead>
 
 <tbody>

@@ -100,6 +100,8 @@ DataProcessor.prototype = {
 
     	var tumors = {};
         // tumors object has two properties: 'commonCategories' and 'data'
+        // If there's only one tumor, commonCategories contains all categories of this tumor, 
+        // and thus tumor.factsOfUiqueCategories will be empty array
     	tumors.commonCategories = [];
     	tumors.data = [];
 
