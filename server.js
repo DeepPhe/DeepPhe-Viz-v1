@@ -227,7 +227,9 @@ server.route({
 
                 // Render tumorSummary.html
                 var data = {
+                    multiTumors: (tumors.data.length > 1) ? true : false,
                     commonCategories: tumors.commonCategories,
+                    numOfCommonCategories: tumors.commonCategories.length,
                     tumorsData: tumors.data
                 };
 

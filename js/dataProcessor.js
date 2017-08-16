@@ -92,7 +92,7 @@ DataProcessor.prototype = {
         return cancerSummary;
     },
 
-    // Multiple tumors
+    // Multiple tumors sometimes
     getTumorsArr: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
