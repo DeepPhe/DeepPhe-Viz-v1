@@ -67,19 +67,8 @@ DataProcessor.prototype = {
             'hasTreatment'
         ];
         
-        // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
-        var orderMap = {};
-        // Using lodash's `_.forEach()`, `_.sortBy` and `_.indexOf`
-        _.forEach(order, function(item) { 
-            // Remember the index of each item in order array
-            orderMap[item] = _.indexOf(order, item); 
-        });
-
         // Sort the uniqueCancerFactRelnArr by the item's index in the order array
-        var sortedUniqueCancerFactRelnArr = _.sortBy(uniqueCancerFactRelnArr, function(item){ 
-            //console.log(item + "-->" + orderMap[item]);
-            return orderMap[item];
-        });
+        var sortedUniqueCancerFactRelnArr = this.sortByProvidedOrder(uniqueCancerFactRelnArr, order);
 
         // Build new data structure
         // This is similar to what getCollatedFacts() does,
@@ -165,22 +154,13 @@ DataProcessor.prototype = {
         // based on their original order
         var order = [
             'hasTumorType',
-            'hasBodySite'
+            'hasBodySite',
+            'hasDiagnosis',
+            'hasTreatment'
         ];
-        
-        // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
-        var orderMap = {};
-        // Using lodash's `_.forEach()`, `_.sortBy` and `_.indexOf`
-        _.forEach(order, function(item) { 
-            // Remember the index of each item in order array
-            orderMap[item] = _.indexOf(order, item); 
-        });
 
         // Sort the commonFactRelationships by the item's index in the order array
-        this.sortedCommonFactRelationships = _.sortBy(commonFactRelationships, function(item){ 
-            //console.log(item + "-->" + orderMap[item]);
-            return orderMap[item];
-        });
+        this.sortedCommonFactRelationships = this.sortByProvidedOrder(commonFactRelationships, order);
 
 
         // Convert the 'hasXXX' relationship to category
@@ -374,6 +354,24 @@ DataProcessor.prototype = {
         });
 
         return arr;
+    },
+
+    // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
+    sortByProvidedOrder: function(array, orderArr) {
+        var orderMap = {};
+        // Using lodash's `_.forEach()`, `_.sortBy` and `_.indexOf`
+        _.forEach(orderArr, function(item) { 
+            // Remember the index of each item in order array
+            orderMap[item] = _.indexOf(orderArr, item); 
+        });
+
+        // Sort the original array by the item's index in the orderArr
+        var sortedArray = _.sortBy(array, function(item){ 
+            //console.log(item + "-->" + orderMap[item]);
+            return orderMap[item];
+        });
+
+        return sortedArray;
     },
 
     // E.g., convert "hasBodySite" into " Body Site"
