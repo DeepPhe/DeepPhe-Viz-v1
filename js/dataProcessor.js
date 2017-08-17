@@ -56,6 +56,7 @@ DataProcessor.prototype = {
 
         // Sort this uniqueCancerFactRelnArr in a specific order
         // categories not in this order will be listed at the bottom
+        // based on their original order
         var order = [
             'hasBodySite', 
             'hasCancerStage', 
@@ -68,13 +69,16 @@ DataProcessor.prototype = {
         
         // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
         var orderMap = {};
-        // Using lodash's `_.each()`, `_.sortBy` and `_.indexOf`
-        _.each(order, function(i) { 
-            orderMap[i] = _.indexOf(order, i); 
+        // Using lodash's `_.forEach()`, `_.sortBy` and `_.indexOf`
+        _.forEach(order, function(item) { 
+            // Remember the index of each item in order array
+            orderMap[item] = _.indexOf(order, item); 
         });
 
-        var sortedUniqueCancerFactRelnArr = _.sortBy(uniqueCancerFactRelnArr, function(i){ 
-            return orderMap[i];
+        // Sort the uniqueCancerFactRelnArr by the item's index in the order array
+        var sortedUniqueCancerFactRelnArr = _.sortBy(uniqueCancerFactRelnArr, function(item){ 
+            //console.log(item + "-->" + orderMap[item]);
+            return orderMap[item];
         });
 
         // Build new data structure
