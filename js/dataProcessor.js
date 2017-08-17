@@ -6,7 +6,7 @@ var _ = require('lodash');
 // Class declaration, constructor
 var DataProcessor = function() {
     // In the format of "hasXXX"
-    this.commonFactRelationships = [];
+    this.sortedCommonFactRelationships = [];
 
     // Space seperated and captalized words
     this.commonCategories = [];
@@ -153,15 +153,39 @@ DataProcessor.prototype = {
         }
 
         // Find the common categories across tumors
-        this.commonFactRelationships = allTumorFactRelnArr.shift().filter(function(v) {
+        var commonFactRelationships = allTumorFactRelnArr.shift().filter(function(v) {
 		    return allTumorFactRelnArr.every(function(a) {
 		        return a.indexOf(v) !== -1;
 		    });
 		});
 
+        
+        // Sort this commonFactRelationships in a specific order
+        // categories not in this order will be listed at the bottom
+        // based on their original order
+        var order = [
+            'hasTumorType',
+            'hasBodySite'
+        ];
+        
+        // https://stackoverflow.com/questions/18859186/sorting-an-array-of-javascript-objects-a-specific-order-using-existing-function
+        var orderMap = {};
+        // Using lodash's `_.forEach()`, `_.sortBy` and `_.indexOf`
+        _.forEach(order, function(item) { 
+            // Remember the index of each item in order array
+            orderMap[item] = _.indexOf(order, item); 
+        });
+
+        // Sort the commonFactRelationships by the item's index in the order array
+        this.sortedCommonFactRelationships = _.sortBy(commonFactRelationships, function(item){ 
+            //console.log(item + "-->" + orderMap[item]);
+            return orderMap[item];
+        });
+
+
         // Convert the 'hasXXX' relationship to category
         var commonCats = [];
-	    this.commonFactRelationships.forEach(function(item) {
+	    this.sortedCommonFactRelationships.forEach(function(item) {
 	    	var relationship2Category = self.toNonCamelCase(item.substring(3));
 	    	commonCats.push(relationship2Category);
 	    });
@@ -220,11 +244,11 @@ DataProcessor.prototype = {
 
         // Need to get the unique categories
         var uniqueFactRelationships = tumorFactRelnNoDuplicates.filter(function(item) {
-            return (self.commonFactRelationships.indexOf(item) === -1);
+            return (self.sortedCommonFactRelationships.indexOf(item) === -1);
         });
 
         // Group all common categories and their facts
-        tumor.factsOfCommonCategories = this.getCollatedTumorFacts(dataArr, tumorId, this.commonFactRelationships);
+        tumor.factsOfCommonCategories = this.getCollatedTumorFacts(dataArr, tumorId, this.sortedCommonFactRelationships);
         
         // Group all tumor unique/specific categories and their facts
         tumor.factsOfUniqueCategories = this.getCollatedTumorFacts(dataArr, tumorId, uniqueFactRelationships);
