@@ -123,7 +123,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var patientsJson = dataProcessor.getPatientsJson(body);
+                var patientsJson = dataProcessor.getPatients(body);
 
                 // Render patients.html
                 var data = {
@@ -181,7 +181,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var cancerSummary = dataProcessor.getCancerSummaryJson(body);
+                var cancerSummary = dataProcessor.getCancerSummary(body);
 
                 // Render cancerSummary.html
                 var data = {
@@ -223,7 +223,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var tumors = dataProcessor.getTumorsArr(body);
+                var tumors = dataProcessor.getTumors(body);
 
                 // Render tumorSummary.html
                 var data = {
@@ -237,7 +237,7 @@ server.route({
                 // This way we can send the rendered content as response directly
                 reply.view('tumorSummary', data, {layout: 'empty'});
             } else {
-                console.log('Failed to make the neo4j rest api call: getCancerSummary()');
+                console.log('Failed to make the neo4j rest api call: getTumorSummary()');
                 console.error(error);
             }
         });
@@ -333,7 +333,7 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
-                var factJson = dataProcessor.getFactJson(body);
+                var factJson = dataProcessor.getFact(body);
                 
                 // No report info if there's no textProvenances data (or it's empty)
                 var reportId = '';

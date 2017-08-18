@@ -1,6 +1,7 @@
 'use strict';
 
 // Load the full build of lodash
+// Differences between core build and full build: https://github.com/lodash/lodash/wiki/Build-Differences
 var _ = require('lodash');
 
 // Class declaration, constructor
@@ -9,12 +10,15 @@ var DataProcessor = function() {
     this.sortedCommonFactRelationships = [];
 
     // Space seperated and captalized words
+    // Parsed based on this.sortedCommonFactRelationships
+    // So it keeps the sorted order
     this.commonCategories = [];
 };
 
 // Add methods to DataProcessor.prototype
 DataProcessor.prototype = {
-    getPatientsJson: function(neo4jRawJson) {
+    // Convert the neo4jRawJson into a simple client JSON
+    getPatients: function(neo4jRawJson) {
         var patientsJson = {};
         var dataArr = neo4jRawJson.data;
         var patientsArr = [];
@@ -34,7 +38,9 @@ DataProcessor.prototype = {
         return patientsJson;
     },
 
-    getCancerSummaryJson: function(neo4jRawJson) {
+    // Convert the neo4jRawJson into a simple client JSON that
+    // groups the facts by sorted categories
+    getCancerSummary: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
         // "id" and "collatedFacts" are the keys of this object
@@ -109,7 +115,7 @@ DataProcessor.prototype = {
     },
 
     // Multiple tumors sometimes
-    getTumorsArr: function(neo4jRawJson) {
+    getTumors: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
         var self = this;
@@ -170,7 +176,7 @@ DataProcessor.prototype = {
 	    	commonCats.push(relationship2Category);
 	    });
 
-        // This ensures reset this.commonCategories every time we call getTumorsArr()
+        // This ensures reset this.commonCategories every time we call getTumors()
         // otherwise it will keep appending categories
         this.commonCategories = commonCats;
 
@@ -272,7 +278,7 @@ DataProcessor.prototype = {
 
     // One fact can have multiple matching texts
     // or the same matching text can be found in multiple places in the same report
-    getFactJson: function(neo4jRawJson) {
+    getFact: function(neo4jRawJson) {
     	var factJson = {};
 
         var dataArr = neo4jRawJson.data;
