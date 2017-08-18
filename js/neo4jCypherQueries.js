@@ -10,13 +10,6 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-    getPatientSummary: function(patientName) {
-		var query = "MATCH (p:Patient)" +
-					"WHERE p.name = '" + patientName + "' " +
-					"RETURN p";
-		return query;
-	},
-
 	getReports: function(patientName) {
 		// Use DISTINCT to exclude duplicates
 		// Adding "ORDER BY r.principalDate" to sort the dates doesn't work
@@ -31,40 +24,13 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-    // Old cypher query that returns everything
-    getCancerSummaryOld: function(patientName) {
-		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
-					"WHERE patient.name = '" + patientName + "' " +
-					"WITH cancer,cancerFactReln,fact " +
-					"OPTIONAL MATCH (fact)-[factModifier]->(modifierFact:Fact) " +
-					"WHERE factModifier.name <> 'hasProvenance' " +
-					"RETURN cancer,cancerFactReln,fact,factModifier,modifierFact";
-		return query;
-	},
-    
-    getCancer: function(patientName) {
-		var query = "MATCH (patient:Patient)-->(cancer:Cancer) " +
-					"WHERE patient.name = '" + patientName + "' " +
-					"RETURN cancer";
-		return query;
-	},
-
     getCancerSummary: function(patientName) {
 		var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' " +
 					"RETURN cancer.id,cancerFactReln.name,fact";
 		return query;
 	},
-
-    // The OPTIONAL MATCH clause is used to search for the pattern described in it, 
-    // while using nulls for missing parts of the pattern.
-	getFact: function(factId) {
-        var query = "MATCH (fact:Fact {id:'" + factId +"'}) " +
-					"OPTIONAL MATCH (fact)-[rel]->(n) " +
-					"RETURN fact,rel,n";
-		return query;
-	},
-
+    
     getTumorSummary: function(patientName, cancerId) {
         var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerTumorReln:hasTumor]->(tumor:Tumor)-[tumorFactReln]->(fact:Fact) " +
 					"WHERE patient.name = '" + patientName + "' AND cancer.id = '" + cancerId + "' " +
@@ -72,13 +38,12 @@ var neo4jCypherQueries = {
 		return query;
 	},
 
-	getTumorSummaryOld: function(patientName, cancerId) {
-        var query = "MATCH (patient:Patient)-->(cancer:Cancer)-[cancerTumorReln:hasTumor]->(tumor:Tumor)-[tumorFactReln]->(fact:Fact) " +
-					"WHERE patient.name = '" + patientName + "' AND cancer.id = '" + cancerId + "' " +
-					"WITH tumor,tumorFactReln,fact " +
-					"OPTIONAL MATCH (fact)-[factModifier]->(modifierFact:Fact) " +
-					"WHERE factModifier.name <> 'hasProvenance' " +
-					"RETURN tumor,tumorFactReln,fact,factModifier,modifierFact";
+	getFact: function(factId) {
+        // The OPTIONAL MATCH clause is used to search for the pattern described in it, 
+        // while using nulls for missing parts of the pattern.
+        var query = "MATCH (fact:Fact {id:'" + factId +"'}) " +
+					"OPTIONAL MATCH (fact)-[rel]->(n) " +
+					"RETURN fact,rel,n";
 		return query;
 	}
 
