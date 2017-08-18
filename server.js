@@ -12,10 +12,10 @@ const Vision = require('vision');
 const HttpRequest = require('request');
 
 // Neo4j queries
-const neo4jCypherQueries = require('./js/neo4jCypherQueries.js');
+const neo4jCypherQueries = require('./lib/neo4jCypherQueries.js');
 
 // Utility functions that convert the raw neo4j JSON to client JSON
-const DataProcessor = require('./js/dataProcessor.js');
+const DataProcessor = require('./lib/dataProcessor.js');
 // We need to create an instance of DataProcessor
 var dataProcessor = new DataProcessor();
 
