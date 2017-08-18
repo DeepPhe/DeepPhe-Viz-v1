@@ -25,10 +25,10 @@ const fs = require('fs');
 // Load configuration data
 const config = JSON.parse(fs.readFileSync('./config.json'));
 
-// Beo4j REST API cypher endpoint with basic auth
+// Neo4j REST API cypher endpoint with basic auth
 const requestUri = 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri;
 
-// Create a server with a host and port
+// Create a Hapi server instance
 const server = new Hapi.Server();
 
 // If you plan to deploy your hapi application to a PaaS provider, 
@@ -41,40 +41,11 @@ server.connection({
     }
 });
 
-// Default route
-server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-        reply('Hello, this is the default route of DeepPhe-Viz');
-    }
-});
-
-// Register invert plugin and serve CSS and JS files
+// Register invert plugin to serve CSS and JS static files
 server.register(Inert, (err) => {
     if (err) {
         console.log('Errors with registering Inert plugin...');
         throw err;
-    }
-});
-
-// CSS URI route
-server.route({
-    method: 'GET',
-    path:'/css/{file}', 
-    handler: function (request, reply) {
-        // This 'file' handler is only available after registering Inert plugin
-        reply.file(__dirname + '/css/' + request.params.file)
-    }
-});
-
-// JS URI route
-server.route({
-    method: 'GET',
-    path:'/js/{file}', 
-    handler: function (request, reply) {
-        // This 'file' handler is only available after registering Inert plugin
-        reply.file(__dirname + '/js/' + request.params.file)
     }
 });
 
@@ -100,6 +71,35 @@ server.register(Vision, (err) => {
         layoutPath: './templates/layout',
         helpersPath: './templates/helpers'
     });
+});
+
+// Default base URI route
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request, reply) {
+        reply('Hello, this is the default route of DeepPhe-Viz');
+    }
+});
+
+// CSS URI route
+server.route({
+    method: 'GET',
+    path:'/css/{file}', 
+    handler: function (request, reply) {
+        // This 'file' handler is only available after registering Inert plugin
+        reply.file(__dirname + '/css/' + request.params.file)
+    }
+});
+
+// JS URI route
+server.route({
+    method: 'GET',
+    path:'/js/{file}', 
+    handler: function (request, reply) {
+        // This 'file' handler is only available after registering Inert plugin
+        reply.file(__dirname + '/js/' + request.params.file)
+    }
 });
 
 // Patients URI route
@@ -372,5 +372,5 @@ server.start((err) => {
     if (err) {
         throw err;
     }
-    console.log('Server running at:', server.info.uri);
+    console.log('Hapi HTTP Server is running at:', server.info.uri);
 });
