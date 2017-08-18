@@ -14,9 +14,9 @@ const HttpRequest = require('request');
 // Neo4j queries
 const neo4jCypherQueries = require('./js/neo4jCypherQueries.js');
 
-// Utilities
+// Utility functions that convert the raw neo4j JSON to client JSON
 const DataProcessor = require('./js/dataProcessor.js');
-
+// We need to create an instance of DataProcessor
 var dataProcessor = new DataProcessor();
 
 // By default, Node.js installations come with the file system module, fs
@@ -31,8 +31,10 @@ const requestUri = 'http://' + config.neo4j.username + ':' + config.neo4j.passwo
 // Create a server with a host and port
 const server = new Hapi.Server();
 
+// If you plan to deploy your hapi application to a PaaS provider, 
+// you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1
 server.connection({ 
-    host: config.server.host, // If you plan to deploy your hapi application to a PaaS provider, you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1, 
+    host: config.server.host, 
     port: config.server.port,
     router: {
         stripTrailingSlash: true // removes trailing slashes on incoming paths
@@ -56,7 +58,7 @@ server.register(Inert, (err) => {
     }
 });
 
-// CSS route
+// CSS URI route
 server.route({
     method: 'GET',
     path:'/css/{file}', 
@@ -66,7 +68,7 @@ server.route({
     }
 });
 
-// JS route
+// JS URI route
 server.route({
     method: 'GET',
     path:'/js/{file}', 
@@ -100,7 +102,7 @@ server.register(Vision, (err) => {
     });
 });
 
-// All patients route
+// Patients URI route
 server.route({
     method: 'GET',
     path:'/patients', 
@@ -142,7 +144,7 @@ server.route({
     }
 });
 
-// Individual patient page
+// Individual patient URI route
 server.route({
     method: 'GET',
     path:'/patients/{patientName}', 
@@ -159,7 +161,7 @@ server.route({
     }
 });
 
-// Cancer summary endpoint called by client ajax
+// Cancer summary URI route, called by client ajax
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/cancers', 
@@ -200,7 +202,7 @@ server.route({
     }
 });
 
-// Tumors summary endpoint called by client ajax
+// Tumors summary URI route, called by client ajax
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/{cancerId}/tumors', 
@@ -244,7 +246,7 @@ server.route({
     }
 });
 
-// Reports endpoint called by client ajax, no view rendering
+// Reports URI route, called by client ajax, no view template rendering
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/reports', 
@@ -283,7 +285,7 @@ server.route({
     }
 });
 
-// Single report endpoint called by client ajax, no view rendering
+// Single report URI route, called by client ajax, no view template rendering
 server.route({
     method: 'GET',
     path:'/reports/{reportId}', 
@@ -313,7 +315,7 @@ server.route({
     }
 });
 
-// Single fact endpoint called by client ajax, no view rendering
+// Dact information URI route, called by client ajax, no view template rendering
 server.route({
     method: 'GET',
     path:'/fact/{factId}', 
