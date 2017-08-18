@@ -115,7 +115,7 @@ DataProcessor.prototype = {
     },
 
     // Multiple tumors sometimes
-    getTumors: function(neo4jRawJson) {
+    getTumorSummary: function(neo4jRawJson) {
     	//return neo4jRawJson;
 
         var self = this;
@@ -195,6 +195,7 @@ DataProcessor.prototype = {
         return tumors;
     },
 
+    // Get an arry of tumor fact relationships without duplicates
     getTumorFactRelnArr: function(dataArr, tumorId) {
         // Build an arry of unique tumorFactReln
         var uniqueTumorFactRelnArr = [];
@@ -208,6 +209,8 @@ DataProcessor.prototype = {
         return uniqueTumorFactRelnArr;
     },
 
+    // Group tumor facts by common categories and unique categories
+    // If there's only one tumor, tumor.factsOfCommonCategories has all
     getTumor: function(dataArr, tumorId) {
         var self = this;
         
@@ -242,6 +245,7 @@ DataProcessor.prototype = {
         return tumor;
     },
 
+    // Group tumor facts by categories
     getCollatedTumorFacts: function(dataArr, tumorId, categoriesArr) {
         var factsOfCategories = [];
 

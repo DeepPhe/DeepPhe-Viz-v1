@@ -28,7 +28,7 @@ Installing this package and all its depedencies can be done with a simple comman
 npm install
 ````
 
-Then put your neo4j database connection username and password in `config.json`. This assumes that you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
+Then put your neo4j database connection username and password in `config.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
 
 
 ## Launching The Viz Server

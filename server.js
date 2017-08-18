@@ -223,7 +223,7 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 
                 // Convert the body into desired json data structure
-                var tumors = dataProcessor.getTumors(body);
+                var tumors = dataProcessor.getTumorSummary(body);
 
                 // Render tumorSummary.html
                 var data = {
