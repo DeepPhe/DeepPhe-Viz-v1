@@ -177,6 +177,17 @@ function getFact(factId) {
 
 	    // Render response
 	    $('#fact').html(response);
+
+	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
+	    var reportId = response.reportId;
+		var textProvenancesArr = response.textProvenancesArr;
+		console.log(textProvenancesArr);
+		// Is it possible to have multiple associated reports?
+
+		// Highlight report ID in list if there's text mention
+		if (reportId !== '') {
+		    highlightReport(reportId, textProvenancesArr);
+		}
 	});
 
 	jqxhr.fail(function () { 

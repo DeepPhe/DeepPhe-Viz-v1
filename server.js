@@ -246,7 +246,7 @@ server.route({
     }
 });
 
-// Reports URI route, called by client ajax, no view template rendering
+// Reports URI route, called by client ajax
 server.route({
     method: 'GET',
     path:'/patients/{patientName}/reports', 
@@ -315,7 +315,7 @@ server.route({
     }
 });
 
-// Dact information URI route, called by client ajax, no view template rendering
+// Dact information URI route, called by client ajax
 server.route({
     method: 'GET',
     path:'/fact/{factId}', 
@@ -344,21 +344,28 @@ server.route({
                     reportId = factJson.textProvenances[0].documentId;
                 }
 
-                // Render fact.html
+                // Data to render fact.html
                 var data = {
                     detail: factJson.detail,
                     ordinalInterpretations: factJson.ordinalInterpretations,
                     procedures: factJson.procedures,
                     lateralities: factJson.lateralities,
                     bodyModifiers: factJson.bodyModifiers,
-                    textProvenances: factJson.textProvenances,
+                    textProvenances: factJson.textProvenances
+                };
+
+                
+                //reply.view('fact', data, {layout: 'empty'});
+
+                var result = {
+                    // Specify to use the empty layout instead of the default layout
+                    // This way we can send the rendered content as response directly
+                    renderedFact: payload.toString(reply.view('fact', data, {layout: 'empty'})),
                     textProvenancesArr: JSON.stringify(factJson.textProvenances),
                     reportId: reportId
                 };
 
-                // Specify to use the empty layout instead of the default layout
-                // This way we can send the rendered content as response directly
-                reply.view('fact', data, {layout: 'empty'});
+                reply(result);
             } else {
                 console.log('Failed to make the neo4j rest api call: getFact()');
                 console.error(error);

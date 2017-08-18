@@ -18,17 +18,3 @@
         {{/each}} 
 
 </table>
-
-<script type="text/javascript">
-// JS code has to be in this file
-$('.report_name').click(function() {
-    var reportId = $(this).attr('id');
-    getReport(reportId, []);
-
-    // Remove previous added highlighting class
-    $('.report_name').removeClass("highlighted_report");
-    // Also highlight this file
-    $(this).addClass("highlighted_report");
-});
-
-</script>
