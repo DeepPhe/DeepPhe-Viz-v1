@@ -274,7 +274,7 @@ server.route({
             }
         }, function (error, response, body) {
             if ( ! error) {
-                //console.log('response: ' + JSON.stringify(response, null, 4));
+                //console.log('response: ' + JSON.stringify(body, null, 4));
 
                 // Render reports.html
                 var data = {
@@ -315,8 +315,9 @@ server.route({
         }, function (error, response, body) {
             if ( ! error) {
                 //console.log('response: ' + JSON.stringify(response, null, 4));
+                var reportText = dataProcessor.getReportText(body);
 
-                reply(body);
+                reply(reportText);
             } else {
                 console.log('Failed to make the neo4j rest api call: getReport()');
                 console.error(error);

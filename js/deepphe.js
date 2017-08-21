@@ -73,20 +73,16 @@ function getReport(reportId, textProvenancesArr) {
 	    url: baseUri + '/reports/' + reportId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'json'
+	    dataType : 'text'
 	});
 
 	jqxhr.done(function(response) {
-	    //console.log("Report: " + reportId);
-
-        var reportText = response.data[0][0].data.text;
+        var reportText = response;
 
         // Also highlight the mentioned texts if there's any
         if (textProvenancesArr.length > 0) {
             reportText = highlightMentionedTexts(textProvenancesArr, reportText);
         }
-
-console.log(reportText);
 
 	    // Render response
 	    $('#report_content').html(reportText);
