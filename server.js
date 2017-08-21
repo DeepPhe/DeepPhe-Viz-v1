@@ -124,6 +124,8 @@ server.route({
                 'X-Stream': true
             },
             json: {
+                // Neo4j Transactional Cypher HTTP request body
+                // "statements" is an array of statements, we only have one statement/query per request
                 'statements': [neo4jCypherQueries.getPatients()]
             }
         }, function (error, response, body) {
