@@ -315,7 +315,7 @@ server.route({
     }
 });
 
-// Dact information URI route, called by client ajax
+// Fact information URI route, called by client ajax
 server.route({
     method: 'GET',
     path:'/fact/{factId}', 
@@ -337,13 +337,6 @@ server.route({
                 //console.log('response: ' + JSON.stringify(response, null, 4));
                 var factJson = dataProcessor.getFact(body);
                 
-                // No report info if there's no textProvenances data (or it's empty)
-                var reportId = '';
-                // Can we assume all text mentions are found in the same report?
-                if (typeof(factJson.textProvenances[0]) !== 'undefined') {
-                    reportId = factJson.textProvenances[0].documentId;
-                }
-
                 // Data to render fact.html
                 var data = {
                     detail: factJson.detail,
@@ -354,18 +347,26 @@ server.route({
                     textProvenances: factJson.textProvenances
                 };
 
-                
-                //reply.view('fact', data, {layout: 'empty'});
+                // https://github.com/hapijs/vision/blob/master/API.md
+                // Use server.render(template, context, [options], [callback]) to get the rendered string
+                server.render('fact', data, {layout: 'empty'}, (err, rendered, config) => {
+                    // No report info if there's no textProvenances data (or it's empty)
+                    var reportId = '';
+                    // Can we assume all text mentions are found in the same report?
+                    if (typeof(factJson.textProvenances[0]) !== 'undefined') {
+                        reportId = factJson.textProvenances[0].documentId;
+                    }
 
-                var result = {
-                    // Specify to use the empty layout instead of the default layout
-                    // This way we can send the rendered content as response directly
-                    renderedFact: payload.toString(reply.view('fact', data, {layout: 'empty'})),
-                    textProvenancesArr: JSON.stringify(factJson.textProvenances),
-                    reportId: reportId
-                };
+                    // Because we get the rendered view through this callback, the final reply needs to be inside the callback
+                    // Return the rendered view along with other values directly
+                    var result = {
+                        renderedFact: rendered,
+                        textProvenancesArr: factJson.textProvenances,
+                        reportId: reportId
+                    };
 
-                reply(result);
+                    reply(result);
+                })
             } else {
                 console.log('Failed to make the neo4j rest api call: getFact()');
                 console.error(error);

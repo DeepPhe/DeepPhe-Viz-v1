@@ -168,20 +168,20 @@ function getFact(factId) {
 	    url: baseUri + '/fact/' + factId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-	    // console.log("Fact response:");
-	    // console.log(response);
+	    console.log("Fact response:");
+	    console.log(response);
 
 	    // Render response
-	    $('#fact').html(response);
+	    $('#fact').html(response.renderedFact);
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportId = response.reportId;
 		var textProvenancesArr = response.textProvenancesArr;
-		console.log(textProvenancesArr);
+
 		// Is it possible to have multiple associated reports?
 
 		// Highlight report ID in list if there's text mention
