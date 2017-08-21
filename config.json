@@ -4,7 +4,7 @@
         "port": 8383
     },
     "neo4j": {
-        "uri": "localhost:7474/db/data/cypher",
+        "uri": "http://localhost:7474/db/data/cypher",
         "username": "neo4j",
         "password": "123"
     }

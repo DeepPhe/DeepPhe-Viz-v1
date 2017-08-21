@@ -26,7 +26,12 @@ const fs = require('fs');
 const config = JSON.parse(fs.readFileSync('./config.json'));
 
 // Neo4j REST API cypher endpoint with basic auth
-const neo4jRequestUri = 'http://' + config.neo4j.username + ':' + config.neo4j.password + '@' + config.neo4j.uri;
+const neo4jRequestUri = config.neo4j.uri;
+
+const neo4jApiAuth = {
+    'user': config.neo4j.username,
+    'pass': config.neo4j.password
+};
 
 // Create a Hapi server instance
 const server = new Hapi.Server();
@@ -110,6 +115,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 // Enable streaming
@@ -171,6 +177,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -213,6 +220,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -256,6 +264,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -295,6 +304,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
@@ -325,6 +335,7 @@ server.route({
         // REST API call: https://neo4j.com/docs/rest-docs/current/
         HttpRequest({
             uri: neo4jRequestUri,
+            auth: neo4jApiAuth,
             method: "POST",
             headers: {
                 'X-Stream': true // Enable streaming
