@@ -124,7 +124,7 @@ server.route({
                 'X-Stream': true
             },
             json: {
-                'query': neo4jCypherQueries.getPatients()
+                'statements': [neo4jCypherQueries.getPatients()]
             }
         }, function (error, response, body) {
             if ( ! error) {
@@ -183,7 +183,7 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getCancerSummary(patientName)
+                'statements': [neo4jCypherQueries.getCancerSummary(patientName)]
             }
         }, function (error, response, body) {
             if ( ! error) {
@@ -226,7 +226,7 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getTumorSummary(patientName, cancerId)
+                'statements': [neo4jCypherQueries.getTumorSummary(patientName, cancerId)]
             }
         }, function (error, response, body) {
             if ( ! error) {
@@ -270,7 +270,7 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getReports(patientName)
+                'statements': [neo4jCypherQueries.getReports(patientName)]
             }
         }, function (error, response, body) {
             if ( ! error) {
@@ -278,9 +278,9 @@ server.route({
 
                 // Render reports.html
                 var data = {
-                    columns: body.columns,
-                    reports: dataProcessor.sortReportsByDate(body.data), // sort by date
-                    rowspan: body.data.length + 1
+                    columns: body.results[0].columns,
+                    reports: dataProcessor.sortReportsByDate(body.results[0].data), // sort by date
+                    rowspan: body.results[0].data.length + 1
                 };
 
                 // Specify to use the empty layout instead of the default layout
@@ -310,7 +310,7 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getReport(reportId)
+                'statements': [neo4jCypherQueries.getReport(reportId)]
             }
         }, function (error, response, body) {
             if ( ! error) {
@@ -341,7 +341,7 @@ server.route({
                 'X-Stream': true // Enable streaming
             },
             json: {
-                'query': neo4jCypherQueries.getFact(factId)
+                'statements': [neo4jCypherQueries.getFact(factId)]
             }
         }, function (error, response, body) {
             if ( ! error) {
