@@ -72,9 +72,9 @@ server.register(Vision, (err) => {
         layout: 'default', // Use 'default.html' as the default layout
         // Tell the server that our templates are located in the templates directory within the current path
         relativeTo: __dirname,
-        path: './templates',
-        layoutPath: './templates/layout',
-        helpersPath: './templates/helpers'
+        path: './client/templates',
+        layoutPath: './client/templates/layout',
+        helpersPath: './client/templates/helpers'
     });
 });
 
@@ -93,7 +93,7 @@ server.route({
     path:'/css/{file}', 
     handler: function (request, reply) {
         // This 'file' handler is only available after registering Inert plugin
-        reply.file(__dirname + '/css/' + request.params.file)
+        reply.file(__dirname + '/client/css/' + request.params.file)
     }
 });
 
@@ -103,7 +103,7 @@ server.route({
     path:'/js/{file}', 
     handler: function (request, reply) {
         // This 'file' handler is only available after registering Inert plugin
-        reply.file(__dirname + '/js/' + request.params.file)
+        reply.file(__dirname + '/client/js/' + request.params.file)
     }
 });
 
