@@ -2,12 +2,6 @@
 
 const Hapi = require('hapi');
 
-// inert is the static file and directory handlers plugin for hapi
-const Inert = require('inert');
-
-// vision adds template rendering support to hapi
-const Vision = require('vision');
-
 // Routes definitions
 const routes = require('./lib/routes.js');
 
@@ -28,7 +22,7 @@ server.connection({
 });
 
 // Register invert plugin to serve CSS and JS static files
-server.register(Inert, (err) => {
+server.register(require('inert'), (err) => {
     if (err) {
         console.log('Errors with registering Inert plugin...');
         throw err;
@@ -36,7 +30,7 @@ server.register(Inert, (err) => {
 });
 
 // Register vision plugin to render view templates
-server.register(Vision, (err) => {
+server.register(require('vision'), (err) => {
     if (err) {
         console.log('Errors with registering Vision plugin...');
         throw err;
