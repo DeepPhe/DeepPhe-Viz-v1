@@ -1,6 +1,6 @@
 'use strict';
 
-const Hapi = require('hapi');
+const hapi = require('hapi');
 
 // Routes definitions
 const routes = require('./lib/routes.js');
@@ -9,7 +9,7 @@ const routes = require('./lib/routes.js');
 const serverConfig = require('./configs/server.json');
 
 // Create a Hapi server instance
-const server = new Hapi.Server();
+const server = new hapi.Server();
 
 // If you plan to deploy your hapi application to a PaaS provider, 
 // you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1
@@ -37,6 +37,7 @@ server.register(require('vision'), (err) => {
     }
 
     // Template rendering configuration
+    // server.views is available only after registering vision plugin
     server.views({
         // Using handlebars as template engine responsible for
         // rendering templates with an extension of .html
@@ -52,35 +53,9 @@ server.register(require('vision'), (err) => {
     });
 });
 
-// Default base URI route
-server.route(routes.base);
-
-// CSS URI route
-server.route(routes.css);
-
-// JS URI route
-server.route(routes.js);
-
-// Patients URI route
-server.route(routes.patients);
-
-// Individual patient URI route
-server.route(routes.patient);
-
-// Cancer summary URI route, called by client ajax
-server.route(routes.cancers);
-
-// Tumors summary URI route, called by client ajax
-server.route(routes.tumors);
-
-// Reports URI route, called by client ajax
-server.route(routes.reports);
-
-// Single report URI route, called by client ajax, no view template rendering
-server.route(routes.report);
-
-// Fact information URI route, called by client ajax
-server.route(routes.fact);
+// Serve all routes
+// server.route() takes an array of route objects
+server.route(routes);
 
 
 // Start the server
