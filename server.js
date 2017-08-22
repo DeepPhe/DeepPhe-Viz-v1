@@ -1,6 +1,6 @@
 'use strict';
 
-const hapi = require('hapi');
+const Hapi = require('hapi');
 
 // Routes definitions array, local module
 const routes = require('./lib/routes.js');
@@ -9,7 +9,7 @@ const routes = require('./lib/routes.js');
 const serverConfig = require('./configs/server.json');
 
 // Create a Hapi server instance
-const server = new hapi.Server();
+const server = new Hapi.Server();
 
 // If you plan to deploy your hapi application to a PaaS provider, 
 // you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1
