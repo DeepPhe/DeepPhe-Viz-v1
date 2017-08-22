@@ -2,7 +2,7 @@
 
 const hapi = require('hapi');
 
-// Routes definitions
+// Routes definitions array, local module
 const routes = require('./lib/routes.js');
 
 // Load server configuration data
@@ -53,7 +53,7 @@ server.register(require('vision'), (err) => {
     });
 });
 
-// Serve all routes
+// Serve all routes defined in the routes array
 // server.route() takes an array of route objects
 server.route(routes);
 
