@@ -73,8 +73,7 @@ server.register(Vision, (err) => {
         // Tell the server that our templates are located in the templates directory within the current path
         relativeTo: __dirname,
         path: './client/templates',
-        layoutPath: './client/templates/layout',
-        helpersPath: './client/templates/helpers'
+        layoutPath: './client/templates/layout'
     });
 });
 
