@@ -135,7 +135,7 @@ padding:5px 10px;
 }
 
 .highlighted_report {
-color:red;
+color:red !important;
 }
 
 .highlighted_text {
@@ -157,4 +157,13 @@ max-width:800px;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
 white-space:pre-wrap;
+}
+
+.report_name {
+cursor: pointer;
+color:#0275d8;
+}
+
+.report_name:hover {
+text-decoration: underline;
 }
