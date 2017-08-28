@@ -201,4 +201,3 @@ function highlightReport(reportId, textProvenancesArr) {
     $('#' + reportId).addClass("highlighted_report");
 }
 
-
