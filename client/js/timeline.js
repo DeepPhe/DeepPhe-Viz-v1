@@ -42,11 +42,11 @@ var miniHeight = laneLength * 12 + 50;
 var mainHeight = h - miniHeight - 50;
 
 //scales
-var x = d3.scaleLinear()
+var miniX = d3.scaleLinear()
 		.domain([timeBegin, timeEnd])
 		.range([0, w]);
 
-var x1 = d3.scaleLinear()
+var mainX = d3.scaleLinear()
 		.range([0, w]);
 
 var y1 = d3.scaleLinear()
@@ -131,9 +131,9 @@ mini.append("g").selectAll("miniItems")
 	.data(items)
 	.enter().append("rect")
 	.attr("class", function(d) {return "miniItem" + d.lane;})
-	.attr("x", function(d) {return x(d.start);})
+	.attr("x", function(d) {return miniX(d.start);})
 	.attr("y", function(d) {return y2(d.lane + .5) - 5;})
-	.attr("width", function(d) {return x(d.end - d.start);})
+	.attr("width", function(d) {return miniX(d.end - d.start);})
 	.attr("height", 10);
 
 //mini labels
@@ -141,7 +141,7 @@ mini.append("g").selectAll(".miniLabels")
 	.data(items)
 	.enter().append("text")
 	.text(function(d) {return d.id;})
-	.attr("x", function(d) {return x(d.start);})
+	.attr("x", function(d) {return miniX(d.start);})
 	.attr("y", function(d) {return y2(d.lane + .5);})
 	.attr("dy", ".5ex");
 
@@ -150,7 +150,7 @@ var brush = d3.brushX()
                 // sets the brushable extent to the specified array of points [[x0, y0], [x1, y1]]
                 .extent([[0, 0], [w, miniHeight]])
                 // sets the event listener for "brush" type ("start", "brush" or "end") and returns the brush
-				.on("brush", showBrushDetail); 
+				.on("brush", showDetails); 
 
 // Brush overlay
 mini.append("g")
@@ -161,7 +161,7 @@ mini.append("g")
 	.attr("height", miniHeight - 1);
 
 
-function showBrushDetail() {
+function showDetails() {
 	/*
 		The brush attributes are no longer stored 
 		in the brush itself, but rather in the 
@@ -181,36 +181,46 @@ function showBrushDetail() {
 		brush.extent()[0] --> d3.brushSelection(this)[0];
 		brush.extent()[1] --> d3.brushSelection(this)[1];
 	*/
-	var minExtent = d3.brushSelection(this)[0]; // [x0, y0]
-	var maxExtent = d3.brushSelection(this)[1]; // [x1, y1]
+	// For an x-brush, d3.brushSelection(this) is [x0, x1]
+	// But this [x0, x1] is the actual selection range, we'll need to 
+	// convert it back to the miniX range so we can use it to filter
+	// selected items based on item.start, item.end
+	var selectionRange = d3.brushSelection(this).map(miniX.invert);
+	var minExtent = selectionRange[0];
+	var maxExtent = selectionRange[1];
 
-	var visItems = items.filter(function(d) {return d.start < maxExtent && d.end > minExtent;});
+console.log(minExtent + ', ' + maxExtent);
+	var visItems = items.filter(function(d) {return d.end > minExtent && d.start < maxExtent;});
 
-	x1.domain([minExtent, maxExtent]);
 
-	//update main item rects
+console.log(visItems);
+
+    // Set the domain to the specified array of values
+	mainX.domain([minExtent, maxExtent]);
+
+	// update main item rects
 	var rects = itemRects.selectAll("rect")
-	     .data(visItems, function(d) { return d.id; })
-		.attr("x", function(d) {return x1(d.start);})
-		.attr("width", function(d) {return x1(d.end) - x1(d.start);});
+	    .data(visItems, function(d) { return d.id; })
+		.attr("x", function(d) {return mainX(d.start);})
+		.attr("width", function(d) {return mainX(d.end) - mainX(d.start);});
 	
 	rects.enter().append("rect")
 		.attr("class", function(d) {return "miniItem" + d.lane;})
-		.attr("x", function(d) {return x1(d.start);})
+		.attr("x", function(d) {return mainX(d.start);})
 		.attr("y", function(d) {return y1(d.lane) + 10;})
-		.attr("width", function(d) {return x1(d.end) - x1(d.start);})
+		.attr("width", function(d) {return mainX(d.end) - mainX(d.start);})
 		.attr("height", function(d) {return .8 * y1(1);});
 
 	rects.exit().remove();
 
-	//update the item labels
+	// update the item labels
 	var labels = itemRects.selectAll("text")
 		.data(visItems, function (d) { return d.id; })
-		.attr("x", function(d) {return x1(Math.max(d.start, minExtent) + 2);});
+		.attr("x", function(d) {return mainX(Math.max(d.start, minExtent) + 2);});
 
 	labels.enter().append("text")
 		.text(function(d) {return d.id;})
-		.attr("x", function(d) {return x1(Math.max(d.start, minExtent));})
+		.attr("x", function(d) {return mainX(Math.max(d.start, minExtent));})
 		.attr("y", function(d) {return y1(d.lane + .5);})
 		.attr("text-anchor", "start");
 
