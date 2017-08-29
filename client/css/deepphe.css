@@ -181,7 +181,8 @@ font: 9px sans-serif;
 font: 12px sans-serif;	
 }
 
-.brush .extent {
+/* D3 brush creates the selected area with class="selection" */
+.brush .selection {
 stroke: gray;
 fill: dodgerblue;
 fill-opacity: .365;
