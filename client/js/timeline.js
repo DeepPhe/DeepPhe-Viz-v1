@@ -182,7 +182,7 @@ focus.append("g")
 focus.append("g").selectAll(".laneLine")
 	.data(lanes)
 	.enter().append("line")
-	.attr("x1", margin.right)
+	.attr("x1", 0) // relative to main area
 	.attr("y1", function(d, i) {
 		return mainY(i);
 	})
