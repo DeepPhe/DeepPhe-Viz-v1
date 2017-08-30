@@ -207,12 +207,6 @@ focus.append("g").selectAll(".laneText")
 	.attr("text-anchor", "end")
 	.attr("class", "laneText");
 
-// Show total reports count
-focus.append("text")
-    .attr("x", -margin.left)
-    .attr("dy", 0)
-    .attr("text-anchor", "start")
-    .text("Total reports: " + data.length);
 
 // X axis bottom text
 svg.append("text")
@@ -220,7 +214,7 @@ svg.append("text")
           "translate(" + ((width + margin.right + margin.left)/2) + " ," +
                          (height + margin.top + margin.bottom) + ")")
     .style("text-anchor", "middle")
-    .text("Patient Reports Timeline");
+    .text("Patient Timeline (" + data.length + " reports)");
 
 svg.append("rect")
 	.attr("class", "zoom")
