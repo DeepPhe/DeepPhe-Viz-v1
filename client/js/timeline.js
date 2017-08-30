@@ -178,7 +178,7 @@ focus.append("g")
 
 
 
-//main lanes and texts
+// Report type divider lines
 focus.append("g").selectAll(".laneLine")
 	.data(lanes)
 	.enter().append("line")
@@ -193,6 +193,7 @@ focus.append("g").selectAll(".laneLine")
 	.attr("stroke", "lightgray")
 	.attr("class", "laneLine");
 
+// Report types texts
 focus.append("g").selectAll(".laneText")
 	.data(lanes)
 	.enter().append("text")
@@ -205,6 +206,7 @@ focus.append("g").selectAll(".laneText")
 	})
 	.attr("dy", ".5ex")
 	.attr("text-anchor", "end")
+	.style("font-size", '12px')    
 	.attr("class", "laneText");
 
 
@@ -214,6 +216,7 @@ svg.append("text")
           "translate(" + ((width + margin.right + margin.left)/2) + " ," +
                          (height + margin.top + margin.bottom) + ")")
     .style("text-anchor", "middle")
+    .style("font-size", '12px')    
     .text("Patient Timeline (" + data.length + " reports)");
 
 svg.append("rect")
