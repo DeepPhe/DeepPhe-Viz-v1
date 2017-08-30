@@ -271,7 +271,7 @@ function brushed() {
 		return x(d.report_time); 
 	})
 	.attr("cy", function(d) { 
-		return mainY(d.report_type) + 10; 
+		return mainY(d.report_type + .5); 
 	})
 	.style("fill", function(d) {
 		return reportColor(d.report_type);
