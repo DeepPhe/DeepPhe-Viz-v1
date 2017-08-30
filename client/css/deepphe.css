@@ -169,21 +169,20 @@ text-decoration: underline;
 }
 
 /* Timeline */
-.chart {
-shape-rendering: crispEdges;
+.zoom {
+cursor: move;
+fill: none;
+pointer-events: all;
 }
 
-.mini text {
-font: 9px sans-serif;	
+
+
+.axis {
+stroke-width: 0.5px;
+stroke: #888;
+font: 10px avenir next, sans-serif;
 }
 
-.main text {
-font: 12px sans-serif;	
-}
-
-/* D3 brush creates the selected area with class="selection" */
-.brush .selection {
-stroke: gray;
-fill: dodgerblue;
-fill-opacity: .365;
+.axis > path {
+stroke: #888;
 }
