@@ -141,12 +141,20 @@ data.forEach(function(d) {
 });
 
 // The earliest report date
-var xMin = d3.min(data, function(d) { return d.report_time; });
+var xMinDate = d3.min(data, function(d) { return d.report_time; });
+
+// Set the start date of the x axis 30 days before the xMinDate
+var startDate = new Date(xMinDate);
+startDate.setDate(startDate.getDate() - 30);
 
 // The latest report date
-var xMax = d3.max(data, function(d) { return d.report_time; });
+var xMaxDate = d3.max(data, function(d) { return d.report_time; });
 
-x.domain([xMin, xMax]);
+// Set the end date of the x axis 30 days after the xMaxDate
+var endDate = new Date(xMaxDate);
+endDate.setDate(endDate.getDate() + 30);
+
+x.domain([startDate, endDate]);
 y.domain([0, lanes.length]);
 
 overviewX.domain(x.domain());
