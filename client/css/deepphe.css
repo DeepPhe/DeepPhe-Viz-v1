@@ -169,6 +169,10 @@ text-decoration: underline;
 }
 
 /* Timeline */
+.timeline_svg {
+
+}
+
 .zoom {
 cursor: move;
 fill: none;
@@ -190,4 +194,10 @@ stroke: #888;
 stroke: gray;
 fill: dodgerblue;
 fill-opacity: .365;
+}
+
+.report_type_devlider {
+stroke-width: 1px;
+shape-rendering: crispEdges;
+stroke: #ccc;
 }

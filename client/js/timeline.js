@@ -112,6 +112,7 @@ var zoom = d3.zoom()
     .on("zoom", zoomed);
 
 var svg = d3.select("#reports-timeline").append("svg")
+    .attr("class", "timeline_svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
@@ -187,7 +188,7 @@ focus.append("g")
 
 
 // Report type divider lines
-focus.append("g").selectAll(".laneLine")
+focus.append("g").selectAll(".report_type_devlider")
 	.data(lanes)
 	.enter().append("line")
 	.attr("x1", 0) // relative to main area
@@ -198,11 +199,10 @@ focus.append("g").selectAll(".laneLine")
 	.attr("y2", function(d, i) {
 		return mainY(i);
 	})
-	.attr("stroke", "lightgray")
-	.attr("class", "laneLine");
+	.attr("class", "report_type_devlider");
 
 // Report types texts
-focus.append("g").selectAll(".laneText")
+focus.append("g").selectAll(".report_type_text")
 	.data(lanes)
 	.enter().append("text")
 	.text(function(d) {
@@ -215,7 +215,7 @@ focus.append("g").selectAll(".laneText")
 	.attr("dy", ".5ex")
 	.attr("text-anchor", "end")
 	.style("font-size", '12px')    
-	.attr("class", "laneText");
+	.attr("class", "report_type_text");
 
 
 // X axis bottom text
