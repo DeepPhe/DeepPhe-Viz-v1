@@ -101,9 +101,7 @@ var yAxis = d3.axisLeft(y).tickSize(0);
 
 var overviewXAxis = d3.axisBottom(overviewX).tickSize(0);
 
-var brush = d3.brushX()
-    .extent([[0, 0], [width, overviewHeight]])
-    .on("brush", brushed);
+
 
 var zoom = d3.zoom()
     .scaleExtent([1, Infinity])
@@ -130,8 +128,8 @@ var focus = svg.append("g")
 
 
 // Mini overview
-var context = svg.append("g")
-    .attr("class", "context")
+var overview = svg.append("g")
+    .attr("class", "overview")
     .attr("transform", "translate(" + overviewMargin.left + "," + overviewMargin.top + ")");
 
 // Up to 10 color categories for 10 types of reports
@@ -164,9 +162,8 @@ overviewY.domain(y.domain());
 
 
 // append scatter plot to main chart area
-var messages = focus.append("g");
-
-messages.attr("clip-path", "url(#clip)");
+var messages = focus.append("g")
+	.attr("clip-path", "url(#clip)");
 
 messages.selectAll("message")
     .data(data)
@@ -235,9 +232,8 @@ svg.append("rect")
 	.call(zoom);
 
 // append scatter plot to brush chart area
-var messages = context.append("g");
-
-messages.attr("clip-path", "url(#clip)");
+var messages = overview.append("g")
+    .attr("clip-path", "url(#clip)");
 
 messages.selectAll("message")
 	.data(data)
@@ -254,53 +250,106 @@ messages.selectAll("message")
 		return reportColor(d.report_type);
 	});
 
-context.append("g")
+overview.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + overviewHeight + ")")
     .call(overviewXAxis);
 
-context.append("g")
-    .attr("class", "brush")
+// Add brush to overview
+var overviewBrush = overview.append("g")
+    .attr("class", "brush");
+
+
+// Custom brush handle path
+var createCustomBrushHandle = function(d) {
+    var e = +(d.type == "e"),
+        x = e ? 1 : -1,
+        y = overviewHeight / 2;
+
+    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+};
+
+
+// Add custom brush handles
+var customBrushHandle = overviewBrush.selectAll(".handle--custom")
+    .data([{type: "w"}, {type: "e"}]) // two handles
+    .enter().append("path")
+    .attr("class", "handle--custom")
+    .attr("stroke", "#000")
+    .attr("cursor", "ew-resize")
+	.attr("d", createCustomBrushHandle);
+	
+
+// D3 brush
+var brush = d3.brushX()
+    .extent([[0, 0], [width, overviewHeight]])
+    .on("start brush end", brushed);
+
+
+// Add brush to overview
+overviewBrush
     .call(brush)
     .call(brush.move, x.range());
 
 
-//create brush function redraw scatterplot with selection
+
+// Create brush function redraw scatterplot with selection
 function brushed() {
-	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") return; // ignore brush-by-zoom
-	var s = d3.event.selection || overviewX.range();
-	x.domain(s.map(overviewX.invert, overviewX));
+	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
+		return; // ignore brush-by-zoom
+	}
 
+    // Get the current brush selection
+	var selection = d3.event.selection || overviewX.range();
+
+    // Update the position of custom brush handles
+    customBrushHandle
+        .attr("display", null)
+        .attr("transform", function(d, i) { 
+        	return "translate(" + [ selection[i], - overviewHeight / 4] + ")"; 
+        });
+
+    // Set the domain of the focus area based on brush selection
+	x.domain(selection.map(overviewX.invert, overviewX));
+
+    // Update main focus area
 	focus.selectAll(".message")
-	.attr("cx", function(d) { 
-		return x(d.report_time); 
-	})
-	.attr("cy", function(d) { 
-		return mainY(d.report_type + .5); 
-	})
-	.style("fill", function(d) {
-		return reportColor(d.report_type);
-	});
+		.attr("cx", function(d) { 
+			return x(d.report_time); 
+		})
+		.attr("cy", function(d) { 
+			return mainY(d.report_type + .5); 
+		})
+		.style("fill", function(d) {
+			return reportColor(d.report_type);
+		});
 
+    // Update the focus x axis
 	focus.select(".x-axis").call(xAxis);
 
 	svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-		.scale(width / (s[1] - s[0]))
-		.translate(-s[0], 0));
+		.scale(width / (selection[1] - selection[0]))
+		.translate(-selection[0], 0));
 }
 
 function zoomed() {
-	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") return; // ignore zoom-by-brush
+	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
+	    return; // ignore zoom-by-brush
+	}; 
+
 	var t = d3.event.transform;
+
 	x.domain(t.rescaleX(overviewX).domain());
+
 	focus.selectAll(".message")
-	.attr("cx", function(d) { 
-		return x(d.report_time); 
-	})
-	.attr("cy", function(d) { 
-		return mainY(d.report_type + .5); 
-	});
+		.attr("cx", function(d) { 
+			return x(d.report_time); 
+		})
+		.attr("cy", function(d) { 
+			return mainY(d.report_type + .5); 
+		});
 
 	focus.select(".x-axis").call(xAxis);
-	context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
+
+	overview.select(".brush").call(brush.move, x.range().map(t.invertX, t));
 }
