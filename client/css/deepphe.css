@@ -175,8 +175,6 @@ fill: none;
 pointer-events: all;
 }
 
-
-
 .axis {
 stroke-width: 0.5px;
 stroke: #888;
@@ -185,4 +183,11 @@ font: 10px avenir next, sans-serif;
 
 .axis > path {
 stroke: #888;
+}
+
+/* D3 brush creates the selected area with class="selection" */
+.brush .selection {
+stroke: gray;
+fill: dodgerblue;
+fill-opacity: .365;
 }

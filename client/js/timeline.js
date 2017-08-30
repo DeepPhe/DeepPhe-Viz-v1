@@ -163,7 +163,7 @@ messages.selectAll("message")
     .data(data)
     .enter().append("circle")
     .attr('class', 'message')
-    .attr("r", 4)
+    .attr("r", 6)
     .attr("cx", function(d) { 
     	return x(d.report_time); 
     })
