@@ -13,7 +13,7 @@ Currently, we have been successfully using the [nvm](https://github.com/creation
 
 ## Getting Started
 
-First download/clone the `DeepPhe-Viz` repo and do a maven build:
+First download/clone the `DeepPhe-Viz` repo and enter the directory/
 
 ````
 git clone https://github.com/DeepPhe/DeepPhe-Viz.git
@@ -28,7 +28,7 @@ Installing this package and all its depedencies can be done with a simple comman
 npm install
 ````
 
-Then put your neo4j database connection username and password in `config.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
+Then put your neo4j database connection username and password in `configs/neo4j.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data into your Neo4j database.
 
 
 ## Launching The Viz Server
