@@ -1,4 +1,5 @@
 
+<script src="/js/timeline.js"></script>
 
 <div><span class="current_patient">{{patientName}}</span> (<a href="/patients">Choose a different patient</a>)
 
@@ -23,6 +24,9 @@ getCancerSummary(patientName);
 // Hard coded cancer ID for now
 getTumorSummary(patientName, 'CancerSummary-Breast');
 
+// Render timeline to the target container id
+renderTimeline(patientName, "reports-timeline");
+
 getReports(patientName);
 
 // We need to attach the click event to the document or the partial view's parent element
@@ -44,4 +48,3 @@ $(document).on("click", ".report_name", function() {
 
 </script>
 
-<script src="/js/timeline.js"></script>
