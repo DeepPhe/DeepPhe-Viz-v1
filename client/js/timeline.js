@@ -281,8 +281,15 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 
     // Hide the custom brush handles on mousedown ( the start of a brush gesture)
     var hideCustomBrushHandles = function() {
-        customBrushHandle
-		    .style("display", "none");
+        var selection = d3.brushSelection(overviewBrush.node());
+        var mousePosition = d3.mouse(this);
+        
+        // Only hide the brush handles when mouse clicks outside of the selection
+        // Don't hide the handles when clicks inside the selected brush area
+        if (mousePosition[0] == selection[0] || mousePosition[0] == selection[1]) {
+            customBrushHandle
+		    	.style("display", "none");
+        }
     };
 
 	// Function expression to create brush function redraw with selection
