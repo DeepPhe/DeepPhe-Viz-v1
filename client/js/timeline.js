@@ -174,6 +174,9 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	mainReports.selectAll(".main_report")
 	    .data(reportData)
 	    .enter().append("circle")
+	    .attr("id", function(d) {
+            return "timeline_" + d.id;
+	    })
 	    .attr('class', 'main_report')
 	    .attr("r", 6)
 	    .attr("cx", function(d) { 
@@ -182,6 +185,10 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	    .attr("cy", function(d) { 
 	    	return mainY(getIndex(d.type)); 
 	    })
+	    .on("click", function(d) {
+            // Calling highlightReport() from deepphe.js
+            highlightReport(d.id, []);
+	    });
 
 	main.append("g")
 	    .attr("class", "axis x-axis")
