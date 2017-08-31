@@ -1,6 +1,6 @@
 // Data
 
-var lanes = ["Radiology Report", "Progress Note", "Surgical Pathology Report", "Discharge Summary"];
+var reportTypes = ["Radiology Report", "Progress Note", "Surgical Pathology Report", "Discharge Summary"];
 
 var data = [
  {
@@ -67,6 +67,8 @@ var data = [
 
 console.log(data);
 
+
+// Sizing
 var margin = {top: 20, right: 20, bottom: 100, left: 200};
 var width = 960 - margin.left - margin.right;
 var height = 320 - margin.top - margin.bottom;
@@ -74,58 +76,50 @@ var height = 320 - margin.top - margin.bottom;
 var overviewMargin = {top: 250, right: 20, bottom: 30, left: 200};
 var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
 
-
-var mainY = d3.scaleLinear()
-		.domain([0, lanes.length])
-		.range([0, height]);
-
-
+// Convert string to date
 var parseTime = d3.timeParse("%Y-%m-%d");
 
-var x = d3.scaleTime()
+data.forEach(function(d) {
+	d.report_time = parseTime(d.report_time);
+});
+
+
+// Main area and overview area share the same width
+var mainX = d3.scaleTime()
 		.range([0, width]);
 
 var overviewX = d3.scaleTime()
 		.range([0, width]);
 
-var y = d3.scaleLinear()
+// Y scale to handle main area
+var mainY = d3.scaleLinear()
+		.domain([0, reportTypes.length])
 		.range([0, height]);
 
 var overviewY = d3.scaleLinear()
 		.range([0, overviewHeight]);
 
 // https://github.com/d3/d3-axis#axisBottom
-var xAxis = d3.axisBottom(x).tickSize(10);
-
-var yAxis = d3.axisLeft(y).tickSize(0);
+var xAxis = d3.axisBottom(mainX).tickSize(10);
 
 var overviewXAxis = d3.axisBottom(overviewX).tickSize(0);
-
-
-
-var zoom = d3.zoom()
-    .scaleExtent([1, Infinity])
-    .translateExtent([[0, 0], [width, height]])
-    .extent([[0, 0], [width, height]])
-    .on("zoom", zoomed);
 
 var svg = d3.select("#reports-timeline").append("svg")
     .attr("class", "timeline_svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
+// Specify a specific region of an element to display, rather than showing the complete area
 svg.append("defs").append("clipPath")
     .attr("id", "clip")
     .append("rect")
     .attr("width", width)
     .attr("height", height);
 
-// Main focus area
-var focus = svg.append("g")
-    .attr("class", "focus")
+// Main area
+var main = svg.append("g")
+    .attr("class", "main")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
 
 // Mini overview
 var overview = svg.append("g")
@@ -134,10 +128,6 @@ var overview = svg.append("g")
 
 // Up to 10 color categories for 10 types of reports
 var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
-
-data.forEach(function(d) {
-	d.report_time = parseTime(d.report_time);
-});
 
 // The earliest report date
 var xMinDate = d3.min(data, function(d) { return d.report_time; });
@@ -153,40 +143,37 @@ var xMaxDate = d3.max(data, function(d) { return d.report_time; });
 var endDate = new Date(xMaxDate);
 endDate.setDate(endDate.getDate() + 30);
 
-x.domain([startDate, endDate]);
-y.domain([0, lanes.length]);
+// Set the mainX domain based on start and end dates
+mainX.domain([startDate, endDate]);
 
-overviewX.domain(x.domain());
-overviewY.domain(y.domain());
+overviewX.domain(mainX.domain());
+overviewY.domain(mainY.domain());
 
-
-
-// append scatter plot to main chart area
-var messages = focus.append("g")
+// Report dots in main area
+// Reference the clipping path that shows the report dots
+var mainReports = main.append("g")
 	.attr("clip-path", "url(#clip)");
 
-messages.selectAll("message")
+mainReports.selectAll(".main_report")
     .data(data)
     .enter().append("circle")
-    .attr('class', 'message')
+    .attr('class', 'main_report')
     .attr("r", 6)
     .attr("cx", function(d) { 
-    	return x(d.report_time); 
+    	return mainX(d.report_time); 
     })
     .attr("cy", function(d) { 
-    	return y(d.report_type); 
+    	return mainY(d.report_type); 
     })
 
-focus.append("g")
+main.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
 
-
-
 // Report type divider lines
-focus.append("g").selectAll(".report_type_devlider")
-	.data(lanes)
+main.append("g").selectAll(".report_type_devlider")
+	.data(reportTypes)
 	.enter().append("line")
 	.attr("x1", 0) // relative to main area
 	.attr("y1", function(d, i) {
@@ -199,8 +186,8 @@ focus.append("g").selectAll(".report_type_devlider")
 	.attr("class", "report_type_devlider");
 
 // Report types texts
-focus.append("g").selectAll(".report_type_text")
-	.data(lanes)
+main.append("g").selectAll(".report_type_text")
+	.data(reportTypes)
 	.enter().append("text")
 	.text(function(d) {
 		return d;
@@ -224,21 +211,13 @@ svg.append("text")
     .style("font-size", '12px')    
     .text("Patient Timeline (" + data.length + " reports)");
 
-svg.append("rect")
-	.attr("class", "zoom")
-	.attr("width", width)
-	.attr("height", height)
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-	.call(zoom);
 
-// append scatter plot to brush chart area
-var messages = overview.append("g")
-    .attr("clip-path", "url(#clip)");
-
-messages.selectAll("message")
+// Report dots in overview area
+// No need to use clipping path since the overview area contains all the report dots
+var overviewReports = overview.append("g").selectAll(".overview_report")
 	.data(data)
 	.enter().append("circle")
-	.attr('class', 'messageContext')
+	.attr('class', 'overview_report')
 	.attr("r", 3)
 	.attr("cx", function(d) { 
 		return overviewX(d.report_time); 
@@ -250,6 +229,7 @@ messages.selectAll("message")
 		return reportColor(d.report_type);
 	});
 
+// Overview x axis
 overview.append("g")
     .attr("class", "axis x-axis")
     .attr("transform", "translate(0," + overviewHeight + ")")
@@ -259,8 +239,10 @@ overview.append("g")
 var overviewBrush = overview.append("g")
     .attr("class", "brush");
 
+// Add custom brush handles
+var customBrushHandlesData = [{type: "w"}, {type: "e"}];
 
-// Custom brush handle path
+// Function expression to create custom brush handle path
 var createCustomBrushHandle = function(d) {
     var e = +(d.type == "e"),
         x = e ? 1 : -1,
@@ -269,53 +251,96 @@ var createCustomBrushHandle = function(d) {
     return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
 };
 
-
-// Add custom brush handles
 var customBrushHandle = overviewBrush.selectAll(".handle--custom")
-    .data([{type: "w"}, {type: "e"}]) // two handles
+    .data(customBrushHandlesData)
     .enter().append("path")
     .attr("class", "handle--custom")
     .attr("stroke", "#000")
     .attr("cursor", "ew-resize")
 	.attr("d", createCustomBrushHandle);
-	
 
-// D3 brush
-var brush = d3.brushX()
-    .extent([[0, 0], [width, overviewHeight]])
-    .on("start brush end", brushed);
+// Function expression of updating custom handles positions
+var moveCustomBrushHandles = function(selection) {
+	customBrushHandle
+	    .attr("display", null)
+        .attr("transform", function(d, i) { 
+        	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
+        });
+};
+
+// Function expression to handle mouse wheel zoom or drag on main area
+// Need to define this before defining zoom since it's function expression instead of function declariation
+var zoomed = function() {
+	// Ignore zoom-by-brush
+	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
+	    return; 
+	}; 
+
+	var transform = d3.event.transform;
+
+	mainX.domain(transform.rescaleX(overviewX).domain());
+
+    // Update the report dots in main area
+	main.selectAll(".main_report")
+		.attr("cx", function(d) { 
+			return mainX(d.report_time); 
+		})
+		.attr("cy", function(d) { 
+			return mainY(d.report_type + .5); 
+		});
+
+    // Also update the main x axis
+	main.select(".x-axis").call(xAxis);
+
+    // Update the overview as moving
+	overview.select(".brush").call(brush.move, mainX.range().map(transform.invertX, transform));
+
+    // Also need to update the position of custom brush handles
+    // First we need to get the current brush selection
+    // https://github.com/d3/d3-brush#brushSelection
+    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
+	var selection = d3.brushSelection(overviewBrush.node());
+
+	// Then translate the x of each custom brush handle
+	moveCustomBrushHandles(selection);
+};
+
+// Zoom rect that covers the main main area
+var zoom = d3.zoom()
+    .scaleExtent([1, Infinity])
+    .translateExtent([[0, 0], [width, height]])
+    .extent([[0, 0], [width, height]])
+    .on("zoom", zoomed);
+
+svg.append("rect")
+	.attr("class", "zoom")
+	.attr("width", width)
+	.attr("height", height)
+	.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+	.call(zoom);
 
 
-// Add brush to overview
-overviewBrush
-    .call(brush)
-    .call(brush.move, x.range());
-
-
-
-// Create brush function redraw scatterplot with selection
-function brushed() {
+// Function expression to create brush function redraw with selection
+// Need to define this before defining brush since it's function expression instead of function declariation
+var brushed = function() {
+	// Ignore brush-by-zoom
 	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
-		return; // ignore brush-by-zoom
+		return; 
 	}
 
     // Get the current brush selection
 	var selection = d3.event.selection || overviewX.range();
 
     // Update the position of custom brush handles
-    customBrushHandle
-        .attr("display", null)
-        .attr("transform", function(d, i) { 
-        	return "translate(" + [ selection[i], - overviewHeight / 4] + ")"; 
-        });
+    moveCustomBrushHandles(selection);
 
-    // Set the domain of the focus area based on brush selection
-	x.domain(selection.map(overviewX.invert, overviewX));
+    // Set the domain of the main area based on brush selection
+	mainX.domain(selection.map(overviewX.invert, overviewX));
 
-    // Update main focus area
-	focus.selectAll(".message")
+    // Update main main area
+	main.selectAll(".main_report")
 		.attr("cx", function(d) { 
-			return x(d.report_time); 
+			return mainX(d.report_time); 
 		})
 		.attr("cy", function(d) { 
 			return mainY(d.report_type + .5); 
@@ -324,32 +349,28 @@ function brushed() {
 			return reportColor(d.report_type);
 		});
 
-    // Update the focus x axis
-	focus.select(".x-axis").call(xAxis);
+    // Update the main x axis
+	main.select(".x-axis").call(xAxis);
 
+    // Zoom the main main area
 	svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
 		.scale(width / (selection[1] - selection[0]))
 		.translate(-selection[0], 0));
-}
+};
 
-function zoomed() {
-	if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
-	    return; // ignore zoom-by-brush
-	}; 
+// D3 brush
+var brush = d3.brushX()
+    .extent([[0, 0], [width, overviewHeight]])
+    .on("start brush end", brushed);
 
-	var t = d3.event.transform;
+// Applying brush on the overviewBrush element
+// Don't merge this with the overviewBrush definition because
+// brush calls brushed which uses customBrushHandle when it gets called and 
+// we can't define overviewBrush before brush if combined.
+overviewBrush
+    .call(brush)
+    .call(brush.move, mainX.range());
 
-	x.domain(t.rescaleX(overviewX).domain());
 
-	focus.selectAll(".message")
-		.attr("cx", function(d) { 
-			return x(d.report_time); 
-		})
-		.attr("cy", function(d) { 
-			return mainY(d.report_type + .5); 
-		});
 
-	focus.select(".x-axis").call(xAxis);
 
-	overview.select(".brush").call(brush.move, x.range().map(t.invertX, t));
-}

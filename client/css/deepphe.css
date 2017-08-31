@@ -196,6 +196,12 @@ fill: dodgerblue;
 fill-opacity: .365;
 }
 
+.brush .handle--custom {
+fill: #eee;
+stroke: #666
+fill-opacity: .365;	
+}
+
 .report_type_devlider {
 stroke-width: 1px;
 shape-rendering: crispEdges;
