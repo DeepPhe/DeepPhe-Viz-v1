@@ -176,7 +176,12 @@ text-decoration: underline;
 .zoom {
 cursor: move;
 fill: none;
-pointer-events: all;
+/* 
+The pointer-events attribute allows authors to control whether or when an element may be the target of a mouse event 
+https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events
+Without this, the zoom won't work
+*/
+pointer-events: visibleFill;
 }
 
 .axis {

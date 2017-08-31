@@ -78,7 +78,61 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	    .attr("width", width)
 	    .attr("height", height);
 
+	// Function expression to handle mouse wheel zoom or drag on main area
+	// Need to define this before defining zoom since it's function expression instead of function declariation
+	var zoomed = function() {
+		// Ignore zoom-by-brush
+		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
+		    return; 
+		}; 
+
+		var transform = d3.event.transform;
+
+		mainX.domain(transform.rescaleX(overviewX).domain());
+
+	    // Update the report dots in main area
+		main.selectAll(".main_report")
+			.attr("cx", function(d) { 
+				return mainX(d.time); 
+			})
+			.attr("cy", function(d) { 
+				return mainY(getIndex(d.type) + .5);
+			});
+
+	    // Also update the main x axis
+		main.select(".x-axis").call(xAxis);
+
+	    // Update the overview as moving
+		overview.select(".brush").call(brush.move, mainX.range().map(transform.invertX, transform));
+
+	    // Also need to update the position of custom brush handles
+	    // First we need to get the current brush selection
+	    // https://github.com/d3/d3-brush#brushSelection
+	    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
+		var selection = d3.brushSelection(overviewBrush.node());
+
+		// Then translate the x of each custom brush handle
+		showAndMoveCustomBrushHandles(selection);
+	};
+
+	// Zoom rect that covers the main main area
+	var zoom = d3.zoom()
+	    .scaleExtent([1, Infinity])
+	    .translateExtent([[0, 0], [width, height]])
+	    .extent([[0, 0], [width, height]])
+	    .on("zoom", zoomed);
+
+    // Appending zoom rect after the main area will prevent clicking on the report circles/
+    // So we need to create the zoom panel first
+	svg.append("rect")
+		.attr("class", "zoom")
+		.attr("width", width)
+		.attr("height", height)
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+		.call(zoom);
+
 	// Main area
+	// Create main area after zoom panel, so we can select the report circles
 	var main = svg.append("g")
 	    .attr("class", "main")
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -110,6 +164,7 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 
 	overviewX.domain(mainX.domain());
 	overviewY.domain(mainY.domain());
+
 
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
@@ -231,57 +286,6 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	        	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
 	        });
 	};
-
-	// Function expression to handle mouse wheel zoom or drag on main area
-	// Need to define this before defining zoom since it's function expression instead of function declariation
-	var zoomed = function() {
-		// Ignore zoom-by-brush
-		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
-		    return; 
-		}; 
-
-		var transform = d3.event.transform;
-
-		mainX.domain(transform.rescaleX(overviewX).domain());
-
-	    // Update the report dots in main area
-		main.selectAll(".main_report")
-			.attr("cx", function(d) { 
-				return mainX(d.time); 
-			})
-			.attr("cy", function(d) { 
-				return mainY(getIndex(d.type) + .5);
-			});
-
-	    // Also update the main x axis
-		main.select(".x-axis").call(xAxis);
-
-	    // Update the overview as moving
-		overview.select(".brush").call(brush.move, mainX.range().map(transform.invertX, transform));
-
-	    // Also need to update the position of custom brush handles
-	    // First we need to get the current brush selection
-	    // https://github.com/d3/d3-brush#brushSelection
-	    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
-		var selection = d3.brushSelection(overviewBrush.node());
-
-		// Then translate the x of each custom brush handle
-		showAndMoveCustomBrushHandles(selection);
-	};
-
-	// Zoom rect that covers the main main area
-	var zoom = d3.zoom()
-	    .scaleExtent([1, Infinity])
-	    .translateExtent([[0, 0], [width, height]])
-	    .extent([[0, 0], [width, height]])
-	    .on("zoom", zoomed);
-
-	svg.append("rect")
-		.attr("class", "zoom")
-		.attr("width", width)
-		.attr("height", height)
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-		.call(zoom);
 
     // Hide the custom brush handles on mousedown ( the start of a brush gesture)
     var hideCustomBrushHandles = function() {
