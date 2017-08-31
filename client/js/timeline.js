@@ -218,9 +218,11 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 		.attr("d", createCustomBrushHandle);
 
 	// Function expression of updating custom handles positions
-	var moveCustomBrushHandles = function(selection) {
+	var showAndMoveCustomBrushHandles = function(selection) {
 		customBrushHandle
+		    // First remove the "display: none" added by brushStart to show the handles
 		    .style("display", null)
+		    // Then move the handles to desired positions
 	        .attr("transform", function(d, i) { 
 	        	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
 	        });
@@ -260,7 +262,7 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 		var selection = d3.brushSelection(overviewBrush.node());
 
 		// Then translate the x of each custom brush handle
-		moveCustomBrushHandles(selection);
+		showAndMoveCustomBrushHandles(selection);
 	};
 
 	// Zoom rect that covers the main main area
@@ -277,6 +279,11 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 		.call(zoom);
 
+    // Hide the custom brush handles on mousedown ( the start of a brush gesture)
+    var hideCustomBrushHandles = function() {
+        customBrushHandle
+		    .style("display", "none");
+    };
 
 	// Function expression to create brush function redraw with selection
 	// Need to define this before defining brush since it's function expression instead of function declariation
@@ -286,12 +293,11 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 			return; 
 		}
 
-	    // Get the current brush selection
 	    // Can also use d3.event.selection as an alternative to d3.brushSelection(overviewBrush.node())
-		var selection = d3.brushSelection(overviewBrush.node()) || overviewX.range();
+		var selection = d3.brushSelection(overviewBrush.node());
 
 	    // Update the position of custom brush handles
-    	moveCustomBrushHandles(selection);
+    	showAndMoveCustomBrushHandles(selection);
 
 	    // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
@@ -320,6 +326,10 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	// D3 brush
 	var brush = d3.brushX()
 	    .extent([[0, 0], [width, overviewHeight]])
+	    // https://github.com/d3/d3-brush#brush_on
+	    // First to hide the custom handles at the start of a brush gesture(mousedown)
+	    .on("start", hideCustomBrushHandles)
+	    // Then update the UI on brush move
 	    .on("brush", brushed);
 
 	// Applying brush on the overviewBrush element
@@ -327,7 +337,12 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	// brush calls brushed which uses customBrushHandle when it gets called and 
 	// we can't define overviewBrush before brush if combined.
 	overviewBrush
+	    // For the first time of loading this page, no brush movement
 	    .call(brush)
-	    .call(brush.move, mainX.range());
+	    // We use overviewX.range() as the default selection
+	    // https://github.com/d3/d3-selection#selection_call
+	    // call brush.move and pass overviewX.range() as argument
+	    // https://github.com/d3/d3-brush#brush_move
+	    .call(brush.move, overviewX.range());
 
 }
