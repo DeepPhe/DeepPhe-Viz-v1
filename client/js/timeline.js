@@ -27,13 +27,17 @@ function showTimeline(svgContainerId, reportTypes, reportData) {
 	var overviewMargin = {top: 250, right: 20, bottom: 30, left: 200};
 	var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
 
-    var formatTime = d3.timeFormat("%Y-%m-%d");
-    var parseTime = d3.timeParse("%Y-%m-%d");
+    // https://github.com/d3/d3-time-format#d3-time-format
+    var formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
+    var parseTime = d3.timeParse("%Y-%m-%d %I:%M %p");
 
 	// Convert string to date
 	reportData.forEach(function(d) {
-		var timeStr = formatTime(new Date(d.time));
-        d.time = parseTime(timeStr);
+		// Initially d.time is returned as a human-readable string from neo4j
+		// Format the date to a human-readable string first, it takes date instead of string
+		var formattedTimeStr = formatTime(new Date(d.time));
+		// Then convert a string back to a date to be used by d3
+        d.time = parseTime(formattedTimeStr);
 	});
 
     // Get the index position of target element in the reportTypes array
