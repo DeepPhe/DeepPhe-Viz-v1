@@ -173,10 +173,13 @@ function getReport(reportId, textProvenancesArr) {
 
 // Highlight the selected report circle in timeline
 function highlightTimelineReport(reportId) {
-    // Remove previous added highlighting class
+    // Remove previous added highlighting classes
     $('.main_report').removeClass("highlighted_report");
-    // Also highlight this circle
-    $('#' + reportId).addClass("highlighted_report");
+    $('.overview_report').removeClass("highlighted_report");
+
+    // Also highlight the circle in both overview and main areas
+    $('#main_' + reportId).addClass("highlighted_report");
+    $('#overview_' + reportId).addClass("highlighted_report");
 }
 
 // Fetch timeline data and render the SVG
@@ -356,7 +359,8 @@ function renderTimeline(svgContainerId, reportTypes, reportData) {
 	    .data(reportData)
 	    .enter().append("circle")
 	    .attr("id", function(d) {
-            return d.id;
+            // Prefix with "main_"
+            return "main_" + d.id;
 	    })
 	    .attr('class', 'main_report')
 	    .attr("r", 6)
@@ -368,6 +372,7 @@ function renderTimeline(svgContainerId, reportTypes, reportData) {
 	    })
 	    .on("click", function(d) {
             // Highlight the selected report circle
+            // d.id has no prefix, just raw id
             highlightTimelineReport(d.id);
 
             // And show the report content
@@ -425,6 +430,10 @@ function renderTimeline(svgContainerId, reportTypes, reportData) {
 	var overviewReports = overview.append("g").selectAll(".overview_report")
 		.data(reportData)
 		.enter().append("circle")
+		.attr('id', function(d) {
+			// Prefix with "overview_"
+            return "overview_" + d.id;
+		})
 		.attr('class', 'overview_report')
 		.attr("r", 3)
 		.attr("cx", function(d) { 
