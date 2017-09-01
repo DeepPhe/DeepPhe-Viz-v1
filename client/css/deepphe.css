@@ -175,6 +175,11 @@ border-radius: 2px;
 
 .main_report {
 cursor: pointer;
+stroke: #fff;
+}
+
+.overview_report {
+stroke: #fff;	
 }
 
 .zoom {
