@@ -112,9 +112,6 @@ display: table; /* 2 */
 clear: both;
 }
 
-.report_id {
-cursor: pointer;
-}
 
 /* Fact */
 .fact_list {
@@ -135,7 +132,8 @@ padding:5px 10px;
 }
 
 .highlighted_report {
-color:red !important;
+stroke:red;
+stroke-width:2px;
 }
 
 .highlighted_text {
@@ -146,6 +144,14 @@ font-weight: 600;
 padding:2px;
 }
 
+#timeline {
+padding:20px;
+border:1px solid #ccc;
+margin-top:20px;
+box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
+border-radius: 2px;
+}
+
 #report_content {
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 text-align: left;
@@ -153,24 +159,22 @@ padding:10px;
 font-weight: normal;
 overflow-y: scroll;
 height:800px;
-max-width:800px;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
 white-space:pre-wrap;
-}
-
-.report_name {
-cursor: pointer;
-color:#0275d8;
-}
-
-.report_name:hover {
-text-decoration: underline;
+border:1px solid #ccc;
+margin-top:20px;
+box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
+border-radius: 2px;
 }
 
 /* Timeline */
 .timeline_svg {
 
+}
+
+.main_report {
+cursor: pointer;
 }
 
 .zoom {

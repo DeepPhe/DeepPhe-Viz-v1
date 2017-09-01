@@ -7,9 +7,14 @@
 
 <div id="fact"></div>
 
-<div id="reports-timeline"></div>
+<div id="reports">
+<h2>Reports Timeline</h2>
 
-<div id="reports"></div>
+<div id="timeline"></div>
+<div id="report_content"></div>
+</div>
+
+
 
 
 <script type="text/javascript">
@@ -23,25 +28,13 @@ getCancerSummary(patientName);
 getTumorSummary(patientName, 'CancerSummary-Breast');
 
 // Render timeline to the target container id
-renderTimeline(patientName, "reports-timeline");
-
-getReports(patientName);
+getTimeline(patientName, "timeline");
 
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
 $(document).on("click", ".fact", function() {
     var factId = $(this).attr('id');
     getFact(factId);
-});
-
-$(document).on("click", ".report_name", function() {
-    var reportId = $(this).attr('id');
-    getReport(reportId, []);
-
-    // Remove previous added highlighting class
-    $('.report_name').removeClass("highlighted_report");
-    // Also highlight this file
-    $(this).addClass("highlighted_report");
 });
 
 </script>
