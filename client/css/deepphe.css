@@ -145,7 +145,7 @@ padding:2px;
 }
 
 #timeline {
-padding:20px;
+padding:0px;
 border:1px solid #ccc;
 margin-top:20px;
 box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
@@ -198,7 +198,13 @@ font: 10px avenir next, sans-serif;
 stroke: #888;
 }
 
-/* D3 brush creates the selected area with class="selection" */
+/* D3 brush creates the overlay rect with class="overlay" */
+.brush .overlay {
+fill: #ddd;
+fill-opacity: 0.3;
+}
+
+/* D3 brush creates the selected rect with class="selection" */
 .brush .selection {
 stroke: gray;
 fill: dodgerblue;

@@ -204,15 +204,19 @@ function getTimeline(patientName, svgContainerId) {
 
 // Render the timeline to the target SVG container
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
-	console.log(typeCounts);
-	
 	//  SVG sizing
-	var margin = {top: 20, right: 20, bottom: 100, left: 200};
+	var margin = {top: 20, right: 20, bottom: 120, left: 200};
 	var width = 960 - margin.left - margin.right;
 	var height = 320 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 250, right: 20, bottom: 30, left: 200};
+	var overviewMargin = {top: 240, right: 20, bottom: 40, left: 200};
 	var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
+
+    var reportMainRadius = 6;
+    var reportOverviewRadius = 3;
+
+    // Gap between texts and mian area left border
+    var textMargin = 20;
 
     // https://github.com/d3/d3-time-format#d3-time-format
     var formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
@@ -245,14 +249,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 			.domain([0, reportTypes.length])
 			.range([0, height]);
 
+    // Y scale to handle overview area
 	var overviewY = d3.scaleLinear()
 			.range([0, overviewHeight]);
 
-	// https://github.com/d3/d3-axis#axisBottom
-	var xAxis = d3.axisBottom(mainX).tickSize(10);
-
-	var overviewXAxis = d3.axisBottom(overviewX).tickSize(0);
-
+    // SVG
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", width + margin.left + margin.right)
@@ -357,6 +358,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	var mainReports = main.append("g")
 		.attr("clip-path", "url(#clip)");
 
+    // Report circles in main area
 	mainReports.selectAll(".main_report")
 	    .data(reportData)
 	    .enter().append("circle")
@@ -365,7 +367,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             return "main_" + d.id;
 	    })
 	    .attr('class', 'main_report')
-	    .attr("r", 6)
+	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
 	    	return mainX(d.time); 
 	    })
@@ -383,6 +385,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             getReport(d.id, []);
 	    });
 
+    // Main area x axis
+    // https://github.com/d3/d3-axis#axisBottom
+	var xAxis = d3.axisBottom(mainX)
+	    // https://github.com/d3/d3-axis#axis_tickSizeInner
+	    .tickSizeInner(5)
+	    .tickSizeOuter(0);
+
+	// Append x axis to the bottom of main area
 	main.append("g")
 	    .attr("class", "axis x-axis")
 	    .attr("transform", "translate(0," + height + ")")
@@ -409,27 +419,27 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		.text(function(d) {
 			return d + " (" + typeCounts[d] + ")";
 		})
-		.attr("x", -margin.right)
+		.attr("x", -textMargin) // textMargin on the left of main area
 		.attr("y", function(d, i) {
 			return mainY(i + .5);
 		})
 		.attr("dy", ".5ex")
-		.attr("text-anchor", "end")
+		.attr("text-anchor", "end") // right align texts
 		.style("font-size", '12px')    
 		.attr("class", "report_type_text");
 
-	// X axis bottom text
-	svg.append("text")
-	    .attr("transform",
-	          "translate(" + ((width + margin.right + margin.left)/2) + " ," +
-	                         (height + margin.top + margin.bottom) + ")")
-	    .style("text-anchor", "middle")
+	// Overview label text
+	overview.append("text")
+	    .attr("x", -textMargin)
+	    .attr("y", overviewHeight/2) // Relative to the overview area
+	    .attr("dy", ".5ex")
+	    .style("text-anchor", "end")
 	    .style("font-size", '12px')    
 	    .text("Patient Timeline (" + reportData.length + " reports)");
 
 	// Report dots in overview area
 	// No need to use clipping path since the overview area contains all the report dots
-	var overviewReports = overview.append("g").selectAll(".overview_report")
+	overview.append("g").selectAll(".overview_report")
 		.data(reportData)
 		.enter().append("circle")
 		.attr('id', function(d) {
@@ -437,7 +447,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             return "overview_" + d.id;
 		})
 		.attr('class', 'overview_report')
-		.attr("r", 3)
+		.attr("r", reportOverviewRadius)
 		.attr("cx", function(d) { 
 			return overviewX(d.time); 
 		})
@@ -449,9 +459,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		});
 
 	// Overview x axis
+	var overviewXAxis = d3.axisBottom(overviewX)
+	    .tickSizeInner(5)
+	    .tickSizeOuter(0);
+
+	// Append x axis to the bottom of overview area
 	overview.append("g")
 	    .attr("class", "axis x-axis")
-	    .attr("transform", "translate(0," + overviewHeight + ")")
+	    .attr("transform", "translate(0, " + overviewHeight + ")")
 	    .call(overviewXAxis);
 
 	// Add brush to overview
@@ -470,6 +485,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
 	};
 
+    // Add two custom brush handles
 	var customBrushHandle = overviewBrush.selectAll(".handle--custom")
 	    .data(customBrushHandlesData)
 	    .enter().append("path")
