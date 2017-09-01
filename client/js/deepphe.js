@@ -194,7 +194,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.reportData);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.reportData);
 	});
 
 	jqxhr.fail(function () { 
@@ -203,7 +203,9 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, reportData) {
+function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
+	console.log(typeCounts);
+	
 	//  SVG sizing
 	var margin = {top: 20, right: 20, bottom: 100, left: 200};
 	var width = 960 - margin.left - margin.right;
@@ -405,7 +407,7 @@ function renderTimeline(svgContainerId, reportTypes, reportData) {
 		.data(reportTypes)
 		.enter().append("text")
 		.text(function(d) {
-			return d;
+			return d + " (" + typeCounts[d] + ")";
 		})
 		.attr("x", -margin.right)
 		.attr("y", function(d, i) {
