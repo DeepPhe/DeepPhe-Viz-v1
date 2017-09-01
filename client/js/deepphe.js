@@ -413,7 +413,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		.attr("class", "report_type_devlider");
 
 	// Report types texts
-	main.append("g").selectAll(".report_type_text")
+	main.append("g").selectAll(".report_type_label")
 		.data(reportTypes)
 		.enter().append("text")
 		.text(function(d) {
@@ -424,17 +424,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 			return mainY(i + .5);
 		})
 		.attr("dy", ".5ex")
-		.attr("text-anchor", "end") // right align texts
-		.style("font-size", '12px')    
-		.attr("class", "report_type_text");
+		.attr("class", "report_type_label");
 
 	// Overview label text
 	overview.append("text")
 	    .attr("x", -textMargin)
 	    .attr("y", overviewHeight/2) // Relative to the overview area
 	    .attr("dy", ".5ex")
-	    .style("text-anchor", "end")
-	    .style("font-size", '12px')    
+	    .attr("class", "overview_label")
 	    .text("Patient Timeline (" + reportData.length + " reports)");
 
 	// Report dots in overview area

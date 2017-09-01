@@ -220,5 +220,11 @@ fill-opacity: .365;
 .report_type_devlider {
 stroke-width: 1px;
 shape-rendering: crispEdges;
-stroke: #ccc;
+stroke: #ddd;
+}
+
+.report_type_label,
+.overview_label {
+font-size:12px;
+text-anchor: end;
 }
