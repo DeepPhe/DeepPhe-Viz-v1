@@ -206,7 +206,7 @@ function getTimeline(patientName, svgContainerId) {
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
 	var margin = {top: 20, right: 20, bottom: 120, left: 200};
-	var width = 960 - margin.left - margin.right;
+	var width = 1280 - margin.left - margin.right;
 	var height = 320 - margin.top - margin.bottom;
 
 	var overviewMargin = {top: 240, right: 20, bottom: 40, left: 200};
@@ -394,7 +394,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Append x axis to the bottom of main area
 	main.append("g")
-	    .attr("class", "axis x-axis")
+	    .attr("class", "x-axis")
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(xAxis);
 
@@ -462,7 +462,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Append x axis to the bottom of overview area
 	overview.append("g")
-	    .attr("class", "axis x-axis")
+	    .attr("class", "x-axis")
 	    .attr("transform", "translate(0, " + overviewHeight + ")")
 	    .call(overviewXAxis);
 

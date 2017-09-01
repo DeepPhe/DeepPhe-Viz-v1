@@ -188,13 +188,13 @@ Without this, the zoom won't work
 pointer-events: visibleFill;
 }
 
-.axis {
+.x-axis {
 stroke-width: 0.5px;
 stroke: #888;
 font: 10px avenir next, sans-serif;
 }
 
-.axis > path {
+.x-axis > path {
 stroke: #888;
 }
 
@@ -208,13 +208,13 @@ fill-opacity: 0.3;
 .brush .selection {
 stroke: gray;
 fill: dodgerblue;
-fill-opacity: .365;
+fill-opacity: 0.3;
 }
 
 .brush .handle--custom {
 fill: #eee;
 stroke: #666
-fill-opacity: .365;	
+fill-opacity: 0.3;	
 }
 
 .report_type_devlider {
