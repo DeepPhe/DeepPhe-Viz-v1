@@ -132,7 +132,7 @@ padding:5px 10px;
 }
 
 .highlighted_report {
-stroke:red !important;
+stroke:#ccc !important;
 stroke-width:2px;
 }
 
