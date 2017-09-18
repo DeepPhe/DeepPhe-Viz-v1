@@ -1,31 +1,4 @@
-<h2>Cancer Summary: <span id="cancer_name">{{name}}</span></h2>
-
-<table class="table">
-
-<thead>
-    <tr>
-    <th class="th" width="15%">Category</th>
-    <th class="th">Facts</th>
-    </tr>
-</thead>
-
-<tbody>
-    {{#each collatedFacts}}
-    <tr>
-        <td>{{categoryName}}</td>
-        <td>
-        <ul class="cancer_fact_list">
-          {{#each facts}}
-            <li class="fact" id="{{id}}">{{prettyName}}</li>
-          {{/each}}
-        </ul>
-        </td>
-    </tr>
-    {{/each}}
-</tbody>
-
-</table>
-
+<h2><span id="cancer_name">{{name}}</span> Cancer Summary</h2>
 
 <table class="table">
 
