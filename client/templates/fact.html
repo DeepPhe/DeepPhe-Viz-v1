@@ -1,7 +1,5 @@
 <h2>Fact Information</h2>
 
-<p>Fact Detail</p>
-
 <table class="table">
 
 <thead>
@@ -24,6 +22,10 @@
 
     {{#if bodyModifiers}}
     <th class="th">Body Modifiers</th>
+    {{/if}}
+
+    {{#if textProvenances}}
+    <th class="th">Text Provenances</th>
     {{/if}}
 
     </tr>
@@ -75,41 +77,18 @@
             </ul>
         </td>
         {{/if}}
+
+        {{#if textProvenances}}
+        <td>
+            <ul class="fact_list">
+                {{#each textProvenances}}
+                <li>{{text}}</li>
+                {{/each}}
+            </ul>
+        </td>
+        {{/if}}
         
     </tr>
 </tbody>
 
 </table>
-
-
-{{#if textProvenances}}
-<p>Text Provenances</p>
-
-<table class="table">
-
-<thead>
-    <tr>
-    <th class="th">Text</th>
-    <th class="th">Report ID</th>
-    <th class="th">Report Name</th>
-    <th class="th">Report Section</th>
-    <th class="th">Start</th>
-    <th class="th">End</th>
-    </tr>
-</thead>
-
-<tbody>
-    {{#each textProvenances}}
-    <tr>
-        <td>{{text}}</td>
-        <td>{{documentId}}</td>
-        <td>{{documentName}}</td>
-        <td>{{documentSection}}</td>
-        <td>{{startOffset}}</td>
-        <td>{{endOffset}}</td>
-    </tr>
-    {{/each}}
-</tbody>
-
-</table>
-{{/if}}
