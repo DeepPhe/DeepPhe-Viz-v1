@@ -11,11 +11,14 @@
 
 <div id="fact"></div>
 
-<div id="reports">
+<div id="timeline">
 <div class="section_heading">Reports Timeline</div>
+<div id="timeline_main"></div>
+</div>
 
-<div id="timeline"></div>
-<div id="report_content"></div>
+<div id="report_content">
+<div class="section_heading">Report Content</div>
+<div id="report_content_main"></div>
 </div>
 
 </div>
@@ -32,7 +35,7 @@ getCancerSummary(patientName);
 getTumorSummary(patientName, 'CancerSummary-Breast');
 
 // Render timeline to the target container id
-getTimeline(patientName, "timeline");
+getTimeline(patientName, "timeline_main");
 
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work

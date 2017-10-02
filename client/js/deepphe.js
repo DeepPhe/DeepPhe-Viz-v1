@@ -163,7 +163,7 @@ function getReport(reportId, textProvenancesArr) {
         }
 
 	    // Render response
-	    $('#report_content').html(reportText);
+	    $('#report_content_main').html(reportText);
 	});
 
 	jqxhr.fail(function () { 
