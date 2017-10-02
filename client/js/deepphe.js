@@ -206,11 +206,11 @@ function getTimeline(patientName, svgContainerId) {
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
 	var margin = {top: 20, right: 20, bottom: 120, left: 200};
-	var width = 1280 - margin.left - margin.right;
-	var height = 320 - margin.top - margin.bottom;
+	var width = 1040 - margin.left - margin.right;
+	var height = 500 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 240, right: 20, bottom: 40, left: 200};
-	var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
+	var overviewMargin = {top: 420, right: 20, bottom: 40, left: 200};
+	var overviewHeight = 500 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
