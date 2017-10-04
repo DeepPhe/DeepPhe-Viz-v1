@@ -8,20 +8,23 @@
     <col>
     <colgroup span="{{numOfCommonCategories}}"></colgroup>
     <tr>
-    <th class="th" rowspan="2">Tumor ID</th>
-    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">
     {{#if multiTumors}}
-        Common Fact Categories of All Tumors
+    <th class="th" rowspan="2">Tumor ID</th>
+    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Fact Categories of All Tumors</th>
     {{else}}
-        All Fact Categories
+    <th class="th">Tumor ID</th>
+    {{#each commonCategories}}
+        <th class="th" scope="col">{{this}}</th>
+    {{/each}}
     {{/if}}
-    </th>
     </tr>
+    {{#if multiTumors}}
     <tr>
     {{#each commonCategories}}
         <th class="th" scope="col">{{this}}</th>
     {{/each}}
     </tr>
+    {{/if}}
 </thead>
 
 <tbody>
