@@ -41,7 +41,8 @@
         <td>
             <ul class="fact_list">
                 {{#each ordinalInterpretations}}
-                <li>{{prettyName}}</li>
+                <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
+                <li>{{name}}</li>
                 {{/each}}
             </ul>
         </td>
