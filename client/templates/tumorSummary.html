@@ -35,7 +35,13 @@
         <td>
         <ul class="tumor_fact_list">
           {{#each facts}}
-            <li class="fact" id="{{id}}">{{prettyName}}</li>
+            {{#if ordinalinterpretation}}
+                <li class="fact" id="{{id}}">{{ordinalinterpretation}}</li>
+            {{else if laterality}}
+                <li class="fact" id="{{id}}">{{prettyName}}({{laterality}})</li>
+            {{else}}
+                <li class="fact" id="{{id}}">{{prettyName}}</li>
+            {{/if}}
           {{/each}}
         </ul>
         </td>
