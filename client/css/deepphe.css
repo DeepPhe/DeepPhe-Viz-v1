@@ -1,23 +1,32 @@
 html{
 color:#222;
-font: 15px/1.4 sans-serif;
+font: 12px sans-serif;
+}
+
+.content {
+
 }
 
 .header {
 color:#fff;
 background-color: #1976d2;
 background: linear-gradient(145deg,#0d47a1,#42a5f5);
-padding:10px 20px;
+padding:5px 20px;
 margin:0;
 }
 
-.content {
-padding:20px;
+.logo {
+font-size:20px;
+font-weight: bold;
 }
 
 .current_patient {
-font-size:24px;
+font-size:20px;
 font-weight: bold;
+}
+
+.choose_patient_link {
+color:#fff;
 }
 
 .patients_list{
@@ -26,6 +35,15 @@ list-style-type: none;
 
 .patients_list li {
 padding:5px 10px;
+}
+
+.main {
+padding:15px 20px;
+}
+
+.section_heading {
+font-size:16px;
+font-weight: bold;
 }
 
 /* Cancer summary */
@@ -78,11 +96,8 @@ padding: 0;
 }
 
 .table {
-width:100%;
 border:1px solid #ccc;
-margin:20px 0;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
+margin:10px 0 15px;
 }
 
 .table th.th {
@@ -93,7 +108,7 @@ border:1px solid #ccc;
 }
 
 .table td {
-padding:5px; 
+padding:3px; 
 border:1px solid #ccc;
 }
 
@@ -145,27 +160,34 @@ padding:2px;
 }
 
 #timeline {
-padding:0px;
+float:left;
+}
+
+#timeline_main {
+width:1060px;
+height:400px;
+padding:10px 0;
 border:1px solid #ccc;
-margin-top:20px;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
+margin:10px 20px 20px 0;
 }
 
 #report_content {
+float:left;
+}
+
+#report_content_main {
+width:680px;
+height:400px;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 text-align: left;
 padding:10px;
 font-weight: normal;
 overflow-y: scroll;
-height:800px;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
 white-space:pre-wrap;
 border:1px solid #ccc;
-margin-top:20px;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
+margin:10px 0 20px;
 }
 
 /* Timeline */

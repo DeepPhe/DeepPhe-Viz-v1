@@ -1,5 +1,5 @@
 
-<h2>Tumor Summary</h2>
+<div class="section_heading">Tumor Summary</div>
 
 <table class="table">
 
@@ -8,20 +8,23 @@
     <col>
     <colgroup span="{{numOfCommonCategories}}"></colgroup>
     <tr>
-    <th class="th" rowspan="2">Tumor ID</th>
-    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">
     {{#if multiTumors}}
-        Common Fact Categories of All Tumors
+    <th class="th" rowspan="2">Tumor ID</th>
+    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Fact Categories of All Tumors</th>
     {{else}}
-        All Fact Categories
+    <th class="th">Tumor ID</th>
+    {{#each commonCategories}}
+        <th class="th" scope="col">{{this}}</th>
+    {{/each}}
     {{/if}}
-    </th>
     </tr>
+    {{#if multiTumors}}
     <tr>
     {{#each commonCategories}}
         <th class="th" scope="col">{{this}}</th>
     {{/each}}
     </tr>
+    {{/if}}
 </thead>
 
 <tbody>
@@ -32,7 +35,13 @@
         <td>
         <ul class="tumor_fact_list">
           {{#each facts}}
-            <li class="fact" id="{{id}}">{{prettyName}}</li>
+            {{#if ordinalinterpretation}}
+                <li class="fact" id="{{id}}">{{ordinalinterpretation}}</li>
+            {{else if laterality}}
+                <li class="fact" id="{{id}}">{{prettyName}}({{laterality}})</li>
+            {{else}}
+                <li class="fact" id="{{id}}">{{prettyName}}</li>
+            {{/if}}
           {{/each}}
         </ul>
         </td>

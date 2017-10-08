@@ -1,4 +1,4 @@
-<h2><span id="cancer_name">{{name}}</span> Cancer Summary</h2>
+<div class="section_heading"><span id="cancer_name">{{name}}</span> Cancer Summary</div>
 
 <table class="table">
 
@@ -28,23 +28,21 @@
 
 
 {{#if tnm.length}}
-<h3>TNM Staging Classifications</h3>
-
 <table class="table">
 
 <thead>
     <tr>
     <th class="th">Staging Type</th>
-    <th class="th">T Category</th>
-    <th class="th">N Category</th>
-    <th class="th">M Category</th>
+    <th class="th">T</th>
+    <th class="th">N</th>
+    <th class="th">M</th>
     </tr>
 </thead>
 
 <tbody>
     {{#each tnm}}
     <tr>
-        <td>{{type}}</td>
+        <th class="th">{{type}}</th>
 
         <td>
             <ul class="cancer_fact_list">

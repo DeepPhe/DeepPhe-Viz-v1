@@ -163,7 +163,7 @@ function getReport(reportId, textProvenancesArr) {
         }
 
 	    // Render response
-	    $('#report_content').html(reportText);
+	    $('#report_content_main').html(reportText);
 	});
 
 	jqxhr.fail(function () { 
@@ -206,11 +206,11 @@ function getTimeline(patientName, svgContainerId) {
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
 	var margin = {top: 20, right: 20, bottom: 120, left: 200};
-	var width = 1280 - margin.left - margin.right;
-	var height = 320 - margin.top - margin.bottom;
+	var width = 1040 - margin.left - margin.right;
+	var height = 400 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 240, right: 20, bottom: 40, left: 200};
-	var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
+	var overviewMargin = {top: 320, right: 20, bottom: 40, left: 200};
+	var overviewHeight = 400 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;

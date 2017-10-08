@@ -1,4 +1,4 @@
-<h2>Fact Information</h2>
+<div class="section_heading">Fact Detail</div>
 
 <table class="table">
 
@@ -41,7 +41,8 @@
         <td>
             <ul class="fact_list">
                 {{#each ordinalInterpretations}}
-                <li>{{prettyName}}</li>
+                <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
+                <li>{{name}}</li>
                 {{/each}}
             </ul>
         </td>

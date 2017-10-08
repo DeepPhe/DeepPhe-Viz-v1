@@ -1,5 +1,9 @@
 
-<div><span class="current_patient">{{patientName}}</span> (<a href="/patients">Choose a different patient</a>)
+<div class="header">
+<span class="logo">DeepPhe-Viz | </span> <span class="current_patient">{{patientName}}</span> (<a href="/patients" class="choose_patient_link">Choose a different patient</a>)
+</div>
+
+<div class="main">
 
 <div id="cancer"></div>
 
@@ -7,14 +11,17 @@
 
 <div id="fact"></div>
 
-<div id="reports">
-<h2>Reports Timeline</h2>
-
-<div id="timeline"></div>
-<div id="report_content"></div>
+<div id="timeline">
+<div class="section_heading">Reports Timeline</div>
+<div id="timeline_main"></div>
 </div>
 
+<div id="report_content">
+<div class="section_heading">Report Content</div>
+<div id="report_content_main"></div>
+</div>
 
+</div>
 
 
 <script type="text/javascript">
@@ -28,7 +35,7 @@ getCancerSummary(patientName);
 getTumorSummary(patientName, 'CancerSummary-Breast');
 
 // Render timeline to the target container id
-getTimeline(patientName, "timeline");
+getTimeline(patientName, "timeline_main");
 
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
