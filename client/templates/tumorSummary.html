@@ -36,11 +36,11 @@
         <ul class="tumor_fact_list">
           {{#each facts}}
             {{#if ordinalinterpretation}}
-                <li class="fact" id="{{id}}">{{ordinalinterpretation}}</li>
+                <li><span class="fact" id="{{id}}">{{ordinalinterpretation}}</span></li>
             {{else if laterality}}
-                <li class="fact" id="{{id}}">{{prettyName}} ({{laterality}})</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
             {{else}}
-                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
             {{/if}}
           {{/each}}
         </ul>

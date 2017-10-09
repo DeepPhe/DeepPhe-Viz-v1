@@ -16,7 +16,7 @@
         <td>
         <ul class="cancer_fact_list">
           {{#each facts}}
-            <li class="fact" id="{{id}}">{{prettyName}}</li>
+            <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
           {{/each}}
         </ul>
         </td>
@@ -48,7 +48,7 @@
         {{#if data.T}}
             <ul class="cancer_fact_list">
                 {{#each data.T}}
-                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
             </ul>
         {{else}}
@@ -60,7 +60,7 @@
         {{#if data.N}}
             <ul class="cancer_fact_list">
                 {{#each data.N}}
-                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
             </ul>
         {{else}}
@@ -72,7 +72,7 @@
         {{#if data.M}}
             <ul class="cancer_fact_list">
                 {{#each data.M}}
-                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
             </ul>
         {{else}}
