@@ -59,6 +59,7 @@ margin:0;
 float:left;
 margin-right:20px;
 padding:0;
+white-space: nowrap;
 }
 
 .fact {

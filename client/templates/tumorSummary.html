@@ -36,7 +36,20 @@
         <ul class="tumor_fact_list">
           {{#each facts}}
             {{#if ordinalinterpretation}}
-                <li><span class="fact" id="{{id}}">{{ordinalinterpretation}}</span></li>
+                <li>
+                <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                {{#ifEquals ordinalinterpretation "Positive"}} 
+                    (+)
+                {{/ifEquals}}
+                
+                {{#ifEquals ordinalinterpretation "Negative"}}
+                    (-)
+                {{/ifEquals}}
+
+                {{#ifEquals ordinalinterpretation "Unknown"}}
+                    (?)
+                {{/ifEquals}}
+                </li>
             {{else if laterality}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
             {{else}}
