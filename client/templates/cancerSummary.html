@@ -45,27 +45,39 @@
         <th class="th">{{type}}</th>
 
         <td>
+        {{#if data.T}}
             <ul class="cancer_fact_list">
-	            {{#each data.T}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+                {{#each data.T}}
+                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                {{/each}}
             </ul>
+        {{else}}
+            Unknown
+        {{/if}}
         </td>
 
         <td>
+        {{#if data.N}}
             <ul class="cancer_fact_list">
-	            {{#each data.N}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+                {{#each data.N}}
+                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                {{/each}}
             </ul>
+        {{else}}
+            Unknown
+        {{/if}}
         </td>
 
         <td>
+        {{#if data.M}}
             <ul class="cancer_fact_list">
-	            {{#each data.M}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+                {{#each data.M}}
+                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                {{/each}}
             </ul>
+        {{else}}
+            Unknown
+        {{/if}}
         </td>
 
     </tr>
