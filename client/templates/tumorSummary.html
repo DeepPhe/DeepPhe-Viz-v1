@@ -9,10 +9,10 @@
     <colgroup span="{{numOfCommonCategories}}"></colgroup>
     <tr>
     {{#if multiTumors}}
-    <th class="th" rowspan="2">Tumor ID</th>
+    <th class="th" rowspan="2">Tumor Type</th>
     <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Fact Categories of All Tumors</th>
     {{else}}
-    <th class="th">Tumor ID</th>
+    <th class="th">Tumor Type</th>
     {{#each commonCategories}}
         <th class="th" scope="col">{{this}}</th>
     {{/each}}
@@ -30,7 +30,7 @@
 <tbody>
     {{#each tumorsData}}
     <tr>
-        <th class="th">{{id}}</th>
+        <th class="th">{{type}}</th>
         {{#each factsOfCommonCategories}}
         <td>
         <ul class="tumor_fact_list">
