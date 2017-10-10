@@ -163,13 +163,33 @@ function getReport(reportId, textProvenancesArr) {
         }
 
 	    // Render response
-	    $('#report_content_main').html(reportText);
+	    $('#report_text').html(reportText);
 	    // Scroll back to top of the report content div
-	    $("#report_content_main").animate({scrollTop: 0}, "fast");
+	    $("#report_text").animate({scrollTop: 0}, "fast");
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get report");
+	});
+}
+
+// Get all mentioned texts in a given report
+function getMetionedTexts(reportId) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/textmentions/' + reportId,
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	});
+
+	jqxhr.done(function(response) {
+	    // Render response
+	    $('#report_mentioned_texts').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get mentioned texts in a given report");
 	});
 }
 
@@ -385,6 +405,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             // No text mentions array needed in this case
             // so we just pass an empty array
             getReport(d.id, []);
+            // Get all texts mentioned in this report
+            getMetionedTexts(d.id);
 	    });
 
     // Main area x axis
