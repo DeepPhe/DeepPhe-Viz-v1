@@ -133,7 +133,8 @@ function getFact(factId) {
 		// Highlight report ID in timeline there's text mention
 		// and show the highlighted text mentions in report content
 		if (reportId !== '') {
-		    highlightTimelineReport(reportId)
+		    getMetionedTexts(reportId);
+		    highlightTimelineReport(reportId);
 		    getReport(reportId, textProvenancesArr);
 		}
 	});
