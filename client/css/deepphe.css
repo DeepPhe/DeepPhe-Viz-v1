@@ -178,7 +178,6 @@ float:left;
 #report_content_main {
 width:680px;
 height:400px;
-font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 padding:10px;
 font-weight: normal;
 overflow-y: scroll;
@@ -187,7 +186,7 @@ margin:10px 0 20px;
 }
 
 #report_text {
-margin-top:10px;
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 text-align: left;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
@@ -202,11 +201,11 @@ margin:0;
 
 .mentioned_texts_list li {
 float:left;
-margin:0 20px 5px 0;
-padding:2px;
+margin:0 10px 5px 0;
+padding:2px 3px;
 border:1px solid #ddd;
 background:#f2f2f2;
-color:#006be7;
+color:#75438a;
 }
 
 
