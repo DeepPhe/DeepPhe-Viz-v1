@@ -166,7 +166,7 @@ function getReport(reportId, textProvenancesArr) {
 	    // Render response
 	    $('#report_text').html(reportText);
 	    // Scroll back to top of the report content div
-	    $("#report_text").animate({scrollTop: 0}, "fast");
+	    $("#report_content_main").animate({scrollTop: 0}, "fast");
 	});
 
 	jqxhr.fail(function () { 

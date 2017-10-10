@@ -179,7 +179,6 @@ float:left;
 width:680px;
 height:400px;
 padding:10px;
-font-weight: normal;
 overflow-y: scroll;
 border:1px solid #ccc;
 margin:10px 0 20px;
@@ -187,6 +186,7 @@ margin:10px 0 20px;
 
 #report_text {
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+font-weight: normal;
 text-align: left;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
