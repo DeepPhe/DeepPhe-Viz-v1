@@ -42,42 +42,42 @@
 <tbody>
     {{#each tnm}}
     <tr>
-        <th class="th">{{type}}</th>
+        <th class="th_vertical">{{type}}</th>
 
         <td>
-        {{#if data.T}}
             <ul class="cancer_fact_list">
+            {{#if data.T}}
                 {{#each data.T}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
-        {{else}}
-            Unknown
-        {{/if}}
         </td>
 
         <td>
-        {{#if data.N}}
             <ul class="cancer_fact_list">
+            {{#if data.N}}
                 {{#each data.N}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
-        {{else}}
-            Unknown
-        {{/if}}
         </td>
 
         <td>
-        {{#if data.M}}
             <ul class="cancer_fact_list">
+            {{#if data.M}}
                 {{#each data.M}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
-        {{else}}
-            Unknown
-        {{/if}}
         </td>
 
     </tr>

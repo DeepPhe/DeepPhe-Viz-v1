@@ -30,7 +30,7 @@
 <tbody>
     {{#each tumorsData}}
     <tr>
-        <th class="th">{{type}}</th>
+        <th class="th_vertical">{{type}}</th>
         {{#each factsOfCommonCategories}}
         <td>
         <ul class="tumor_fact_list">
@@ -38,6 +38,7 @@
             {{#if ordinalinterpretation}}
                 <li>
                 <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                <!-- Using ifEquals helper to add (+), (-), or (?) -->
                 {{#ifEquals ordinalinterpretation "Positive"}} 
                     (+)
                 {{/ifEquals}}
