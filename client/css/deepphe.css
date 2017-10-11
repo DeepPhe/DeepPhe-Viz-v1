@@ -221,6 +221,11 @@ color:#75438a;
 margin-right:0;
 }
 
+.count {
+font-size: .85em;
+font-family: serif;
+}
+
 /* Timeline */
 .timeline_svg {
 
