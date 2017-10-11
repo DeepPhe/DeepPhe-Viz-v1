@@ -46,8 +46,8 @@ function getTumorSummary(patientName, cancerId) {
 function highlightMentionedTexts(textMentions, reportText) {
     // Sort the textMentions array first based on startOffset
     textMentions.sort(function(a, b) {
-        var comp =  a.startOffset - b.startOffset;
-        if(comp==0) {
+        var comp = a.startOffset - b.startOffset;
+        if(comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
             return comp;
@@ -59,7 +59,7 @@ function highlightMentionedTexts(textMentions, reportText) {
     if (textMentions.length === 1){
         var textMention = textMentions[0];
 
-        if (textMention.startOffset == 0) {
+        if (textMention.startOffset === 0) {
             textFragments.push('');
         } else {
             textFragments.push(reportText.substring(0, textMention.startOffset));
@@ -76,7 +76,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 
             // If this is the first textmention, paste the start of the document before the first TM.
             if (i === 0) {
-                if (textMention.startOffset == 0) {
+                if (textMention.startOffset === 0) {
                     textFragments.push('');
                 } else {
                     textFragments.push(reportText.substring(0, textMention.startOffset));
@@ -228,12 +228,12 @@ function getTimeline(patientName, svgContainerId) {
 // Render the timeline to the target SVG container
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
-	var margin = {top: 20, right: 20, bottom: 120, left: 200};
-	var width = 1040 - margin.left - margin.right;
-	var height = 400 - margin.top - margin.bottom;
+	var margin = {top: 10, right: 20, bottom: 100, left: 190};
+	var width = 960 - margin.left - margin.right;
+	var height = 280 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 320, right: 20, bottom: 40, left: 200};
-	var overviewHeight = 400 - overviewMargin.top - overviewMargin.bottom;
+	var overviewMargin = {top: 210, right: 20, bottom: 10, left: 190};
+	var overviewHeight = 260 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
@@ -425,15 +425,16 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Report type divider lines
 	main.append("g").selectAll(".report_type_devlider")
-		.data(reportTypes)
+	    // Don't create line for the first type
+		.data(reportTypes.slice(1, reportTypes.length))
 		.enter().append("line")
 		.attr("x1", 0) // relative to main area
 		.attr("y1", function(d, i) {
-			return mainY(i);
+			return mainY(i + 1);
 		})
 		.attr("x2", width)
 		.attr("y2", function(d, i) {
-			return mainY(i);
+			return mainY(i + 1);
 		})
 		.attr("class", "report_type_devlider");
 
