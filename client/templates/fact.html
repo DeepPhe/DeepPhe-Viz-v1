@@ -24,7 +24,7 @@
     <th class="th">Body Modifiers</th>
     {{/if}}
 
-    {{#if textProvenances}}
+    {{#if groupedTextMentions}}
     <th class="th">Text Provenances</th>
     {{/if}}
 
@@ -79,11 +79,11 @@
         </td>
         {{/if}}
 
-        {{#if textProvenances}}
+        {{#if groupedTextMentions}}
         <td>
             <ul class="fact_list">
-                {{#each textProvenances}}
-                <li>{{text}}</li>
+                {{#each groupedTextMentions}}
+                <li>{{text}} ({{count}})</li>
                 {{/each}}
             </ul>
         </td>
