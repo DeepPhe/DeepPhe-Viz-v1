@@ -63,6 +63,11 @@ white-space: nowrap;
 color:#555;
 }
 
+.cancer_fact_list li:last-child,
+.tumor_fact_list li:last-child {
+margin-right:0;
+}
+
 .fact {
 color:#0275d8;
 cursor:pointer;
@@ -138,6 +143,10 @@ padding:0;
 .fact_list li {
 display:inline;
 margin-right:10px;
+}
+
+.fact_list li:last-child {
+margin-right:0;
 }
 
 .fact_info {
