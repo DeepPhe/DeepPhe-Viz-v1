@@ -229,7 +229,7 @@ function getTimeline(patientName, svgContainerId) {
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
 	var margin = {top: 10, right: 20, bottom: 100, left: 190};
-	var width = 960 - margin.left - margin.right;
+	var width = 860 - margin.left - margin.right;
 	var height = 280 - margin.top - margin.bottom;
 
 	var overviewMargin = {top: 210, right: 20, bottom: 10, left: 190};
@@ -458,7 +458,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .attr("y", overviewHeight/2) // Relative to the overview area
 	    .attr("dy", ".5ex")
 	    .attr("class", "overview_label")
-	    .text("Patient Timeline (" + reportData.length + " reports)");
+	    .text("Timeline (" + reportData.length + " reports)");
 
 	// Report dots in overview area
 	// No need to use clipping path since the overview area contains all the report dots
