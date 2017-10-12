@@ -4,6 +4,35 @@
 
 <thead>
     <tr>
+    <th class="th">Category</th>
+    <th class="th">Facts</th>
+    </tr>
+</thead>
+
+<tbody>
+    {{#each collatedFacts}}
+    <tr>
+        <th class="th_vertical">{{categoryName}}</th>
+        <td>
+        <ul class="cancer_fact_list">
+          {{#each facts}}
+            <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+          {{/each}}
+        </ul>
+        </td>
+    </tr>
+    {{/each}}
+</tbody>
+
+</table>
+
+
+<!--
+
+<table class="table">
+
+<thead>
+    <tr>
     {{#each collatedFacts}}
         <th class="th">{{categoryName}}</th>
     {{/each}}
@@ -25,7 +54,7 @@
 </tbody>
 
 </table>
-
+-->
 
 {{#if tnm.length}}
 <table class="table">
@@ -86,3 +115,5 @@
 
 </table>
 {{/if}}
+
+

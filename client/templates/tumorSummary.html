@@ -1,6 +1,79 @@
 
 <div class="section_heading">Tumor Summary</div>
 
+
+
+<table class="table">
+
+<thead>
+    <tr>
+        <th class="th">Category</th>
+        {{#each tumors}}
+            <th class="th">{{type}}</th>
+        {{/each}}
+    </tr>
+</thead>
+
+
+
+<tbody>
+    {{#each commonCategories}}
+    <tr>
+        <th class="th_vertical">{{category}}</th>
+        {{#each data}}
+            <td class="th">
+                <ul class="tumor_fact_list">
+                  {{#each facts}}
+                    {{#if ordinalinterpretation}}
+                        <li>
+                        <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                        {{#ifEquals ordinalinterpretation "Positive"}} 
+                            (+)
+                        {{/ifEquals}}
+                        
+                        {{#ifEquals ordinalinterpretation "Negative"}}
+                            (-)
+                        {{/ifEquals}}
+
+                        {{#ifEquals ordinalinterpretation "Unknown"}}
+                            (?)
+                        {{/ifEquals}}
+                        </li>
+                    {{else if laterality}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+                    {{else}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    {{/if}}
+                  {{/each}}
+                </ul>
+            </td>
+        {{/each}}
+    </tr>
+    {{/each}}
+
+</tbody>
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
 <table class="table">
 
 <thead>
@@ -38,7 +111,6 @@
             {{#if ordinalinterpretation}}
                 <li>
                 <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
-                <!-- Using ifEquals helper to add (+), (-), or (?) -->
                 {{#ifEquals ordinalinterpretation "Positive"}} 
                     (+)
                 {{/ifEquals}}
@@ -66,3 +138,4 @@
 
 </table>
 
+-->
