@@ -188,22 +188,22 @@ width:860px;
 }
 
 
-#timeline_main {
+#timeline {
 height:220px;
 border:1px solid #ccc;
 margin:10px 0 20px;
 }
 
+#report_mentioned_texts {
+margin-top:10px;
+}
 
-#report_content_main {
+#report_text {
 height:500px;
 padding:10px;
 overflow-y: scroll;
 border:1px solid #ccc;
 margin:10px 0 20px;
-}
-
-#report_text {
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 font-weight: normal;
 text-align: left;
