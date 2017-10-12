@@ -230,10 +230,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
 	var margin = {top: 10, right: 20, bottom: 100, left: 190};
 	var width = 860 - margin.left - margin.right;
-	var height = 280 - margin.top - margin.bottom;
+	var height = 220 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 210, right: 20, bottom: 10, left: 190};
-	var overviewHeight = 260 - overviewMargin.top - overviewMargin.bottom;
+	var overviewMargin = {top: 150, right: 20, bottom: 10, left: 190};
+	var overviewHeight = 200 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;

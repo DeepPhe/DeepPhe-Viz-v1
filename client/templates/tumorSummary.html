@@ -7,7 +7,7 @@
 
 <thead>
     <tr>
-        <th class="th">Category</th>
+        <th class="th"></th>
         {{#each tumors}}
             <th class="th">{{type}}</th>
         {{/each}}
@@ -21,7 +21,8 @@
     <tr>
         <th class="th_vertical">{{category}}</th>
         {{#each data}}
-            <td class="th">
+            {{#if facts}}
+                <td>
                 <ul class="tumor_fact_list">
                   {{#each facts}}
                     {{#if ordinalinterpretation}}
@@ -46,7 +47,11 @@
                     {{/if}}
                   {{/each}}
                 </ul>
-            </td>
+                </td>
+                {{else}}
+                <td class="empty_cell"></td>
+                {{/if}}
+            
         {{/each}}
     </tr>
     {{/each}}

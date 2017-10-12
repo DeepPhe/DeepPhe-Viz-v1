@@ -59,7 +59,6 @@ margin:0;
 float:left;
 margin-right:20px;
 padding:0;
-white-space: nowrap;
 color:#555;
 }
 
@@ -100,14 +99,12 @@ margin:10px 0 20px;
 
 .table th.th {
 padding:5px; 
-background:#fafafa;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
 }
 
 .table th.th_vertical {
 padding:5px; 
-background:#fafafa;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
 text-align:left;
@@ -118,9 +115,14 @@ padding:3px;
 border:1px solid #ccc;
 }
 
-.table_hover>tbody>tr:hover>td{
+.table>tbody>tr:hover>td{
 background-color:#fefbd6;
 }
+
+.table td.empty_cell {
+background:#e9ecef;
+}
+
 
 /* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
 .clearfix:before,
@@ -144,6 +146,7 @@ padding:0;
 .fact_list li {
 display:inline;
 margin-right:10px;
+word-wrap: break-word;
 }
 
 .fact_list li:last-child {
@@ -173,7 +176,6 @@ padding:2px;
 .left {
 float:left;
 width:860px;
-
 margin-right:20px;
 }
 
@@ -184,14 +186,14 @@ width:860px;
 
 
 #timeline_main {
-height:280px;
+height:220px;
 border:1px solid #ccc;
 margin:10px 0 20px;
 }
 
 
 #report_content_main {
-height:400px;
+height:500px;
 padding:10px;
 overflow-y: scroll;
 border:1px solid #ccc;
