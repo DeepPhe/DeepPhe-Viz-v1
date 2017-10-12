@@ -133,7 +133,6 @@ function getFact(factId) {
 		// Highlight report ID in timeline there's text mention
 		// and show the highlighted text mentions in report content
 		if (reportId !== '') {
-		    getMetionedTexts(reportId);
 		    highlightTimelineReport(reportId);
 		    getReport(reportId, textProvenancesArr);
 		}
@@ -144,18 +143,19 @@ function getFact(factId) {
 	});
 }
 
-// Get report content by ID 
+// Get report content and mentioned terms by ID 
 function getReport(reportId, textProvenancesArr) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
 	    url: baseUri + '/reports/' + reportId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'text'
+	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-        var reportText = response;
+        var reportText = response.reportText;
+        var renderedMentionedTerms = response.renderedMentionedTerms;
 
         // Also highlight the mentioned texts if there's any
         // used by fact only
@@ -163,34 +163,17 @@ function getReport(reportId, textProvenancesArr) {
             reportText = highlightMentionedTexts(textProvenancesArr, reportText);
         }
 
-	    // Render response
+        // Show rendered mentioned terms
+        $('#report_mentioned_terms').html(renderedMentionedTerms);
+
+	    // Show report content, either highlighted or not
 	    $('#report_text').html(reportText);
 	    // Scroll back to top of the report content div
-	    $("#report_content_main").animate({scrollTop: 0}, "fast");
+	    $("#report_text").animate({scrollTop: 0}, "fast");
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get report");
-	});
-}
-
-// Get all mentioned texts in a given report
-function getMetionedTexts(reportId) {
-	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
-	    url: baseUri + '/textmentions/' + reportId,
-	    method: 'GET', 
-	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	});
-
-	jqxhr.done(function(response) {
-	    // Render response
-	    $('#report_mentioned_texts').html(response);
-	});
-
-	jqxhr.fail(function () { 
-	    console.log("Ajax error - can't get mentioned texts in a given report");
 	});
 }
 
@@ -406,8 +389,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             // No text mentions array needed in this case
             // so we just pass an empty array
             getReport(d.id, []);
-            // Get all texts mentioned in this report
-            getMetionedTexts(d.id);
 	    });
 
     // Main area x axis
