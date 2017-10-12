@@ -172,6 +172,9 @@ font-weight: 600;
 padding:2px;
 }
 
+.highlighted_fact {
+color:red;
+}
 
 .left {
 float:left;

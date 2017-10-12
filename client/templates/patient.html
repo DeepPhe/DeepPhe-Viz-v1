@@ -53,8 +53,13 @@ getTimeline(patientName, "timeline_main");
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
 $(document).on("click", ".fact", function() {
+    $('.fact').removeClass('highlighted_fact');
+
     var factId = $(this).attr('id');
     getFact(factId);
+
+    // Highlight the clicked fact
+    $(this).addClass('highlighted_fact');
 });
 
 </script>
