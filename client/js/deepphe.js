@@ -118,9 +118,6 @@ function getFact(factId) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log("Fact response:");
-	    console.log(response);
-
 	    // Render response
 	    $('#fact').html(response.renderedFact);
 
@@ -145,9 +142,17 @@ function getFact(factId) {
 
 // Get report content and mentioned terms by ID 
 function getReport(reportId, textProvenancesArr) {
+	// First get a list of mentioned terms without duplicates
+	var mentionedTermsArr = [];
+	textProvenancesArr.forEach(function(item) {
+    	if (mentionedTermsArr.indexOf(item.text) === -1) {
+            mentionedTermsArr.push(item.text);
+    	}
+    });
+
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/reports/' + reportId,
+	    url: baseUri + '/reports/' + reportId + '/' + mentionedTermsArr.join(','),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
@@ -175,6 +180,13 @@ function getReport(reportId, textProvenancesArr) {
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
+}
+
+function highlightMentionedTerms(textProvenancesArr, renderedMentionedTerms) {
+
+    textProvenancesArr.forEach(function(item) {
+    	console.log(renderedMentionedTerms);
+    });
 }
 
 // Highlight the selected report circle in timeline
