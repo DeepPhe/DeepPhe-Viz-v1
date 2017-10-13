@@ -154,8 +154,9 @@ function getReport(reportId, textProvenancesArr) {
 	}
 	
 	// Separate the ajax request with callbacks
+	// Must use encodeURIComponent() otherwise may have URI parsing issue
 	var jqxhr = $.ajax({
-	    url: baseUri + '/reports/' + reportId + '/' + mentionedTermsArr.join(','), // second parameter is optional
+	    url: baseUri + '/reports/' + reportId + '/' + encodeURIComponent(mentionedTermsArr.join(',')), // second parameter is optional
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
