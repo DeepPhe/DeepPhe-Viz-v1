@@ -1,6 +1,12 @@
 html{
-color:#222;
+color:#363636;
 font: 12px Helvetica;
+}
+
+a {
+color: #3273dc;
+cursor: pointer;
+text-decoration: none;
 }
 
 .content {
@@ -9,9 +15,8 @@ font: 12px Helvetica;
 
 .header {
 color:#fff;
-background-color: #1976d2;
-background: linear-gradient(145deg,#0d47a1,#42a5f5);
-padding:5px 20px;
+background-color:#1779ba;
+padding:10px 20px;
 margin:0;
 }
 
@@ -85,6 +90,7 @@ table {
 border-collapse: collapse;
 border-spacing: 0;
 width:100%;
+border:1px solid #dbdbdb;
 }
 
 td,
@@ -93,26 +99,25 @@ padding: 0;
 }
 
 .table {
-border:1px solid #ccc;
 margin:10px 0 20px;
 }
 
 .table th.th {
 padding:5px; 
-border:1px solid #ccc;
+border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 }
 
 .table th.th_vertical {
 padding:5px; 
-border:1px solid #ccc;
+border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 text-align:left;
 }
 
 .table td {
-padding:3px; 
-border:1px solid #ccc;
+padding:5px; 
+border:1px solid #dbdbdb;
 }
 
 .table>tbody>tr:hover>td{
@@ -182,7 +187,7 @@ width:860px;
 
 #timeline {
 height:220px;
-border:1px solid #ccc;
+border:1px solid #dbdbdb;
 margin:10px 0 20px;
 }
 
@@ -194,8 +199,8 @@ margin-top:10px;
 height:500px;
 padding:10px;
 overflow-y: scroll;
-border:1px solid #ccc;
-margin:10px 0 20px;
+border:1px solid #dbdbdb;
+margin-bottom:20px;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 font-weight: normal;
 text-align: left;
@@ -215,7 +220,7 @@ margin:0;
 float:left;
 margin:0 5px 5px 0;
 padding:3px 2px 0;
-border:1px solid #ddd;
+border:1px solid #dbdbdb;
 background:#f2f2f2;
 color:#75438a;
 }
@@ -279,27 +284,27 @@ stroke: #888;
 
 /* D3 brush creates the overlay rect with class="overlay" */
 .brush .overlay {
-fill: #ddd;
+fill: #dbdbdb;
 fill-opacity: 0.3;
 }
 
 /* D3 brush creates the selected rect with class="selection" */
 .brush .selection {
-stroke: gray;
+stroke: #999;
 fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
 .brush .handle--custom {
 fill: #eee;
-stroke: #666
+stroke: #666;
 fill-opacity: 0.3;	
 }
 
 .report_type_devlider {
 stroke-width: 1px;
 shape-rendering: crispEdges;
-stroke: #ddd;
+stroke: #dbdbdb;
 stroke-dasharray:2,2;
 }
 

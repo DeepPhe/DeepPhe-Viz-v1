@@ -227,18 +227,18 @@ function getTimeline(patientName, svgContainerId) {
 // Render the timeline to the target SVG container
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
-	var margin = {top: 10, right: 20, bottom: 100, left: 190};
+	var margin = {top: 10, right: 20, bottom: 100, left: 180};
 	var width = 860 - margin.left - margin.right;
 	var height = 220 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 150, right: 20, bottom: 10, left: 190};
+	var overviewMargin = {top: 150, right: 20, bottom: 10, left: 180};
 	var overviewHeight = 200 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
 
     // Gap between texts and mian area left border
-    var textMargin = 20;
+    var textMargin = 10;
 
     // https://github.com/d3/d3-time-format#d3-time-format
     var formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
