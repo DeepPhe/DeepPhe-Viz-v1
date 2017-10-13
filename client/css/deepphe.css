@@ -164,14 +164,6 @@ stroke:#ccc !important;
 stroke-width:2px;
 }
 
-.highlighted_text {
-background-color:yellow;
-color:#222;
-/* 400 is the same as normal, and 700 is the same as bold */
-font-weight: 600;
-padding:2px;
-}
-
 .highlighted_fact {
 color:red;
 }
@@ -214,6 +206,7 @@ white-space:pre-wrap;
 
 .mentioned_terms_list {
 list-style-type: none;
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 padding:0;
 margin:0;
 }
@@ -221,10 +214,18 @@ margin:0;
 .mentioned_terms_list li {
 float:left;
 margin:0 5px 5px 0;
-padding:1px 2px 0;
+padding:3px 2px 0;
 border:1px solid #ddd;
 background:#f2f2f2;
 color:#75438a;
+}
+
+.fact_mentioned_term {
+background: #fff;
+}
+
+.fact_mentioned_term > .mentioned_term {
+color:#f6941e;
 }
 
 .mentioned_terms_list li:last-child {
@@ -236,11 +237,16 @@ font-size: .85em;
 font-family: serif;
 }
 
-/* Timeline */
-.timeline_svg {
-
+.highlighted_text {
+background-color:yellow;
+color:#222;
+/* 400 is the same as normal, and 700 is the same as bold */
+font-weight: 600;
+padding:2px;
 }
 
+
+/* Timeline */
 .main_report {
 cursor: pointer;
 stroke: #fff;

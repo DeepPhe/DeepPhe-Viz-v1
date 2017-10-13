@@ -144,15 +144,18 @@ function getFact(factId) {
 function getReport(reportId, textProvenancesArr) {
 	// First get a list of mentioned terms without duplicates
 	var mentionedTermsArr = [];
-	textProvenancesArr.forEach(function(item) {
-    	if (mentionedTermsArr.indexOf(item.text) === -1) {
-            mentionedTermsArr.push(item.text);
-    	}
-    });
 
+	if (textProvenancesArr.length > 0) {
+		textProvenancesArr.forEach(function(item) {
+	    	if (mentionedTermsArr.indexOf(item.text) === -1) {
+	            mentionedTermsArr.push(item.text);
+	    	}
+	    });
+	}
+	
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/reports/' + reportId + '/' + mentionedTermsArr.join(','),
+	    url: baseUri + '/reports/' + reportId + '/' + mentionedTermsArr.join(','), // second parameter is optional
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
