@@ -1,11 +1,10 @@
-<h2>Fact Information</h2>
+<div class="section_heading">Fact Detail</div>
 
 <table class="table">
 
 <thead>
     <tr>
     <th class="th">Fact Name</th>
-    <th class="th">Fact ID</th>
     <th class="th">Fact Type</th>
 
     {{#if ordinalInterpretations}}
@@ -17,14 +16,14 @@
     {{/if}}
 
     {{#if lateralities}}
-    <th class="th">Lateralities</th>
+    <th class="th">Laterality</th>
     {{/if}}
 
     {{#if bodyModifiers}}
     <th class="th">Body Modifiers</th>
     {{/if}}
 
-    {{#if textProvenances}}
+    {{#if groupedTextMentions}}
     <th class="th">Text Provenances</th>
     {{/if}}
 
@@ -33,15 +32,15 @@
 
 <tbody>
     <tr>
-        <td>{{detail.prettyName}} (<a href="{{detail.uri}}" target="_blank">Ontology</a>)</td>
-        <td>{{detail.id}}</td>
+        <td><a href="{{detail.uri}}" target="_blank">{{detail.prettyName}}</a></td>
         <td>{{detail.type}}</td>
         
         {{#if ordinalInterpretations}}
         <td>
             <ul class="fact_list">
                 {{#each ordinalInterpretations}}
-                <li>{{prettyName}}</li>
+                <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
+                <li>{{name}}</li>
                 {{/each}}
             </ul>
         </td>
@@ -78,11 +77,11 @@
         </td>
         {{/if}}
 
-        {{#if textProvenances}}
+        {{#if groupedTextMentions}}
         <td>
             <ul class="fact_list">
-                {{#each textProvenances}}
-                <li>{{text}}</li>
+                {{#each groupedTextMentions}}
+                <li>{{text}} <span class="count">({{count}})</span></li>
                 {{/each}}
             </ul>
         </td>

@@ -1,20 +1,38 @@
 
-<div><span class="current_patient">{{patientName}}</span> (<a href="/patients">Choose a different patient</a>)
+<div class="header">
+<span class="logo">DeepPhe-Viz | </span> <span class="current_patient">{{patientName}}</span> (<a href="/patients" class="choose_patient_link">Choose a different patient</a>)
+</div>
+
+<div class="main">
+
+<div class="left">
 
 <div id="cancer"></div>
 
 <div id="tumors"></div>
 
-<div id="fact"></div>
 
-<div id="reports">
-<h2>Reports Timeline</h2>
 
-<div id="timeline"></div>
-<div id="report_content"></div>
+
+
 </div>
 
 
+<div class="right">
+
+<div id="fact"></div>
+
+<div class="section_heading">Reports Timeline</div>
+<div id="timeline"></div>
+
+
+<div class="section_heading">Text Mentions & Report Content</div>
+<div id="report_mentioned_terms" class="clearfix"></div>
+<div id="report_text"></div>
+
+</div>
+
+</div>
 
 
 <script type="text/javascript">
@@ -33,9 +51,15 @@ getTimeline(patientName, "timeline");
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
 $(document).on("click", ".fact", function() {
+    $('.fact').removeClass('highlighted_fact');
+
     var factId = $(this).attr('id');
     getFact(factId);
+
+    // Highlight the clicked fact
+    $(this).addClass('highlighted_fact');
 });
+
 
 </script>
 

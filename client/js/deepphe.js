@@ -46,8 +46,8 @@ function getTumorSummary(patientName, cancerId) {
 function highlightMentionedTexts(textMentions, reportText) {
     // Sort the textMentions array first based on startOffset
     textMentions.sort(function(a, b) {
-        var comp =  a.startOffset - b.startOffset;
-        if(comp==0) {
+        var comp = a.startOffset - b.startOffset;
+        if(comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
             return comp;
@@ -59,7 +59,7 @@ function highlightMentionedTexts(textMentions, reportText) {
     if (textMentions.length === 1){
         var textMention = textMentions[0];
 
-        if (textMention.startOffset == 0) {
+        if (textMention.startOffset === 0) {
             textFragments.push('');
         } else {
             textFragments.push(reportText.substring(0, textMention.startOffset));
@@ -76,7 +76,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 
             // If this is the first textmention, paste the start of the document before the first TM.
             if (i === 0) {
-                if (textMention.startOffset == 0) {
+                if (textMention.startOffset === 0) {
                     textFragments.push('');
                 } else {
                     textFragments.push(reportText.substring(0, textMention.startOffset));
@@ -118,9 +118,6 @@ function getFact(factId) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log("Fact response:");
-	    console.log(response);
-
 	    // Render response
 	    $('#fact').html(response.renderedFact);
 
@@ -133,7 +130,7 @@ function getFact(factId) {
 		// Highlight report ID in timeline there's text mention
 		// and show the highlighted text mentions in report content
 		if (reportId !== '') {
-		    highlightTimelineReport(reportId)
+		    highlightTimelineReport(reportId);
 		    getReport(reportId, textProvenancesArr);
 		}
 	});
@@ -143,18 +140,31 @@ function getFact(factId) {
 	});
 }
 
-// Get report content by ID 
+// Get report content and mentioned terms by ID 
 function getReport(reportId, textProvenancesArr) {
+	// First get a list of mentioned terms without duplicates
+	var mentionedTermsArr = [];
+
+	if (textProvenancesArr.length > 0) {
+		textProvenancesArr.forEach(function(item) {
+	    	if (mentionedTermsArr.indexOf(item.text) === -1) {
+	            mentionedTermsArr.push(item.text);
+	    	}
+	    });
+	}
+	
 	// Separate the ajax request with callbacks
+	// Must use encodeURIComponent() otherwise may have URI parsing issue
 	var jqxhr = $.ajax({
-	    url: baseUri + '/reports/' + reportId,
+	    url: baseUri + '/reports/' + reportId + '/' + encodeURIComponent(mentionedTermsArr.join(',')), // second parameter is optional
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'text'
+	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-        var reportText = response;
+        var reportText = response.reportText;
+        var renderedMentionedTerms = response.renderedMentionedTerms;
 
         // Also highlight the mentioned texts if there's any
         // used by fact only
@@ -162,13 +172,25 @@ function getReport(reportId, textProvenancesArr) {
             reportText = highlightMentionedTexts(textProvenancesArr, reportText);
         }
 
-	    // Render response
-	    $('#report_content').html(reportText);
+        // Show rendered mentioned terms
+        $('#report_mentioned_terms').html(renderedMentionedTerms);
+
+	    // Show report content, either highlighted or not
+	    $('#report_text').html(reportText);
+	    // Scroll back to top of the report content div
+	    $("#report_text").animate({scrollTop: 0}, "fast");
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
+}
+
+function highlightMentionedTerms(textProvenancesArr, renderedMentionedTerms) {
+
+    textProvenancesArr.forEach(function(item) {
+    	console.log(renderedMentionedTerms);
+    });
 }
 
 // Highlight the selected report circle in timeline
@@ -205,18 +227,18 @@ function getTimeline(patientName, svgContainerId) {
 // Render the timeline to the target SVG container
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	//  SVG sizing
-	var margin = {top: 20, right: 20, bottom: 120, left: 200};
-	var width = 1280 - margin.left - margin.right;
-	var height = 320 - margin.top - margin.bottom;
+	var margin = {top: 10, right: 20, bottom: 100, left: 180};
+	var width = 860 - margin.left - margin.right;
+	var height = 220 - margin.top - margin.bottom;
 
-	var overviewMargin = {top: 240, right: 20, bottom: 40, left: 200};
-	var overviewHeight = 320 - overviewMargin.top - overviewMargin.bottom;
+	var overviewMargin = {top: 150, right: 20, bottom: 10, left: 180};
+	var overviewHeight = 200 - overviewMargin.top - overviewMargin.bottom;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
 
     // Gap between texts and mian area left border
-    var textMargin = 20;
+    var textMargin = 10;
 
     // https://github.com/d3/d3-time-format#d3-time-format
     var formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
@@ -400,15 +422,16 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Report type divider lines
 	main.append("g").selectAll(".report_type_devlider")
-		.data(reportTypes)
+	    // Don't create line for the first type
+		.data(reportTypes.slice(1, reportTypes.length))
 		.enter().append("line")
 		.attr("x1", 0) // relative to main area
 		.attr("y1", function(d, i) {
-			return mainY(i);
+			return mainY(i + 1);
 		})
 		.attr("x2", width)
 		.attr("y2", function(d, i) {
-			return mainY(i);
+			return mainY(i + 1);
 		})
 		.attr("class", "report_type_devlider");
 
@@ -432,7 +455,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .attr("y", overviewHeight/2) // Relative to the overview area
 	    .attr("dy", ".5ex")
 	    .attr("class", "overview_label")
-	    .text("Patient Timeline (" + reportData.length + " reports)");
+	    .text("Timeline (" + reportData.length + " reports)");
 
 	// Report dots in overview area
 	// No need to use clipping path since the overview area contains all the report dots

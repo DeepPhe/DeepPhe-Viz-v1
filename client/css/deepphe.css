@@ -1,23 +1,38 @@
 html{
-color:#222;
-font: 15px/1.4 sans-serif;
+color:#363636;
+background-color: #f5f8fa;
+font: 12px Helvetica;
+}
+
+a {
+color: #3273dc;
+cursor: pointer;
+text-decoration: none;
+}
+
+.content {
+
 }
 
 .header {
 color:#fff;
-background-color: #1976d2;
-background: linear-gradient(145deg,#0d47a1,#42a5f5);
+background-color: #1e88e5;
 padding:10px 20px;
 margin:0;
 }
 
-.content {
-padding:20px;
+.logo {
+font-size:20px;
+font-weight: bold;
 }
 
 .current_patient {
-font-size:24px;
+font-size:20px;
 font-weight: bold;
+}
+
+.choose_patient_link {
+color:#fff;
 }
 
 .patients_list{
@@ -28,38 +43,45 @@ list-style-type: none;
 padding:5px 10px;
 }
 
+.main {
+padding:15px 20px;
+}
+
+.section_heading {
+font-size:16px;
+font-weight: bold;
+padding:5px;
+border-left:3px solid #D66061;
+}
+
 /* Cancer summary */
-.cancer_fact_list {
-list-style-type: none;
-padding:0;
-margin:0;
-}
-
-.cancer_fact_list li {
-float:left;
-margin-right:20px;
-color:#0275d8;
-padding:0;
-}
-
-.fact {
-cursor:pointer;
-}
-
-.fact:hover {
-text-decoration: underline;
-}
-
-/* Tumor summary */
+.cancer_fact_list,
 .tumor_fact_list {
 list-style-type: none;
 padding:0;
 margin:0;
 }
 
+.cancer_fact_list li,
 .tumor_fact_list li {
-color:#0275d8;
+float:left;
+margin-right:20px;
 padding:0;
+color:#555;
+}
+
+.cancer_fact_list li:last-child,
+.tumor_fact_list li:last-child {
+margin-right:0;
+}
+
+.fact {
+color:#0275d8;
+cursor:pointer;
+}
+
+.fact:hover {
+text-decoration: underline;
 }
 
 /* Table */
@@ -68,8 +90,11 @@ padding:0;
 */
 
 table {
+background-color:#fff;
 border-collapse: collapse;
 border-spacing: 0;
+width:100%;
+border:1px solid #dbdbdb;
 }
 
 td,
@@ -78,28 +103,35 @@ padding: 0;
 }
 
 .table {
-width:100%;
-border:1px solid #ccc;
-margin:20px 0;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
+margin:10px 0 20px;
 }
 
 .table th.th {
 padding:5px; 
-background:#fafafa;
-border:1px solid #ccc;
+border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
+}
+
+.table th.th_vertical {
+padding:5px; 
+border:1px solid #dbdbdb;
+/* The text in th are bold and centered by default. */
+text-align:left;
 }
 
 .table td {
 padding:5px; 
-border:1px solid #ccc;
+border:1px solid #dbdbdb;
 }
 
-.table_hover>tbody>tr:hover>td{
+.table>tbody>tr:hover>td{
 background-color:#fefbd6;
 }
+
+.table td.empty_cell {
+background:#e9ecef;
+}
+
 
 /* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
 .clearfix:before,
@@ -123,6 +155,11 @@ padding:0;
 .fact_list li {
 display:inline;
 margin-right:10px;
+word-wrap: break-word;
+}
+
+.fact_list li:last-child {
+margin-right:0;
 }
 
 .fact_info {
@@ -136,6 +173,81 @@ stroke:#ccc !important;
 stroke-width:2px;
 }
 
+.highlighted_fact {
+color:red;
+}
+
+.left {
+float:left;
+width:860px;
+margin-right:20px;
+}
+
+.right {
+float:left;
+width:860px;
+}
+
+
+#timeline {
+background-color:#fff;
+border:1px solid #dbdbdb;
+margin:10px 0 20px;
+}
+
+#report_mentioned_terms {
+margin-top:10px;
+}
+
+#report_text {
+background-color:#fff;
+height:500px;
+padding:10px;
+overflow-y: scroll;
+border:1px solid #dbdbdb;
+margin-bottom:20px;
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+font-weight: normal;
+text-align: left;
+/* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
+/* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
+white-space:pre-wrap;
+}
+
+.mentioned_terms_list {
+list-style-type: none;
+font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+padding:0;
+margin:0;
+}
+
+.mentioned_terms_list li {
+float:left;
+margin:0 5px 5px 0;
+padding:3px 2px 0;
+border:1px solid #dbdbdb;
+background-color:#fff;
+color:#75438a;
+border-radius: 2px;
+}
+
+.fact_mentioned_term {
+background: #fff;
+}
+
+.fact_mentioned_term > .mentioned_term {
+color:#f6941e;
+}
+
+.mentioned_terms_list li:last-child {
+margin-right:0;
+}
+
+.count {
+font-size: .85em;
+font-family: serif;
+}
+
 .highlighted_text {
 background-color:yellow;
 color:#222;
@@ -144,35 +256,8 @@ font-weight: 600;
 padding:2px;
 }
 
-#timeline {
-padding:0px;
-border:1px solid #ccc;
-margin-top:20px;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
-}
-
-#report_content {
-font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-text-align: left;
-padding:10px;
-font-weight: normal;
-overflow-y: scroll;
-height:800px;
-/* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
-/* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
-white-space:pre-wrap;
-border:1px solid #ccc;
-margin-top:20px;
-box-shadow: 0 2px 2px rgba(10,16,20,.24), 0 0 2px rgba(10,16,20,.12);
-border-radius: 2px;
-}
 
 /* Timeline */
-.timeline_svg {
-
-}
-
 .main_report {
 cursor: pointer;
 stroke: #fff;
@@ -205,27 +290,27 @@ stroke: #888;
 
 /* D3 brush creates the overlay rect with class="overlay" */
 .brush .overlay {
-fill: #ddd;
+fill: #dbdbdb;
 fill-opacity: 0.3;
 }
 
 /* D3 brush creates the selected rect with class="selection" */
 .brush .selection {
-stroke: gray;
+stroke: #999;
 fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
 .brush .handle--custom {
 fill: #eee;
-stroke: #666
+stroke: #666;
 fill-opacity: 0.3;	
 }
 
 .report_type_devlider {
 stroke-width: 1px;
 shape-rendering: crispEdges;
-stroke: #ddd;
+stroke: #dbdbdb;
 stroke-dasharray:2,2;
 }
 
@@ -234,3 +319,4 @@ stroke-dasharray:2,2;
 font-size:12px;
 text-anchor: end;
 }
+
