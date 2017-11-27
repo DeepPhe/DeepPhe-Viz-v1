@@ -37,13 +37,14 @@
 
 <script type="text/javascript">
 var patientName = '{{patientName}}';
+var cancerId = '{{cancerId}}';
 var baseUri = '{{baseUri}}';
 
 // Get patient cancer symmary and reports
 getCancerSummary(patientName);
 
-// Hard coded cancer ID for now
-getTumorSummary(patientName, 'CancerSummary-Breast');
+// Hard coded cancer ID for now, 'CancerSummary-Melanoma' or 'CancerSummary-Breast'
+getTumorSummary(patientName, cancerId);
 
 // Render timeline to the target container id
 getTimeline(patientName, "timeline");
