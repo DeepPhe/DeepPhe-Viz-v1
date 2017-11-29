@@ -20,7 +20,7 @@ git clone https://github.com/DeepPhe/DeepPhe-Viz.git
 cd DeepPhe-Viz
 ````
 
-## Installation & Configuration
+## Installation 
 
 Installing this package and all its depedencies can be done with a simple command in the package root directory with no arguments:
 
@@ -28,7 +28,22 @@ Installing this package and all its depedencies can be done with a simple comman
 npm install
 ````
 
-Then put your neo4j database connection username and password in `configs/neo4j.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data into your Neo4j database. If you have set dbms.security.auth_enabled=false for your neo4j installation, you can set the user name and passwords to be empty strings (or ignore them).
+## Configuration
+
+There are three configuration files under the `configs/` directory:
+
+- `cancer.json`
+- `neo4j.josn`
+- `server.json`
+
+First you will need to set the data source depending if you have Breast cancer data or Melanoma cancer data loaded in the Neo4j database. Just put the cancer ID:
+
+- Breast: `CancerSummary-Breast`
+- Melanoma: `CancerSummary-Melanoma`
+
+Then put your neo4j database connection username and password in `neo4j.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data (Breast cancer data or Melanoma cancer data) into your Neo4j database. If you have set `dbms.security.auth_enabled=false` for your neo4j installation, you can set the user name and passwords to be empty strings (or ignore them).
+
+The last configuration file is `server.json` where you can define the HTTP server host and port number.
 
 
 ## Launching The Viz Server
