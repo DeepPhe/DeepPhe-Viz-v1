@@ -2,26 +2,19 @@
 
 <table class="table">
 
-<thead>
-    <tr>
-    {{#each collatedFacts}}
-        <th class="th">{{categoryName}}</th>
-    {{/each}}
-    </tr>
-</thead>
-
 <tbody>
-    <tr>
     {{#each collatedFacts}}
+    <tr>
+        <th class="th_vertical">{{categoryName}}</th>
         <td>
         <ul class="cancer_fact_list">
           {{#each facts}}
-            <li class="fact" id="{{id}}">{{prettyName}}</li>
+            <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
           {{/each}}
         </ul>
         </td>
-    {{/each}}
     </tr>
+    {{/each}}
 </tbody>
 
 </table>
@@ -32,7 +25,7 @@
 
 <thead>
     <tr>
-    <th class="th">Staging Type</th>
+    <th class="th"></th>
     <th class="th">T</th>
     <th class="th">N</th>
     <th class="th">M</th>
@@ -42,29 +35,41 @@
 <tbody>
     {{#each tnm}}
     <tr>
-        <th class="th">{{type}}</th>
+        <th class="th_vertical">{{type}}</th>
 
         <td>
             <ul class="cancer_fact_list">
-	            {{#each data.T}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+            {{#if data.T}}
+                {{#each data.T}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
         </td>
 
         <td>
             <ul class="cancer_fact_list">
-	            {{#each data.N}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+            {{#if data.N}}
+                {{#each data.N}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
         </td>
 
         <td>
             <ul class="cancer_fact_list">
-	            {{#each data.M}}
-	            <li class="fact" id="{{id}}">{{prettyName}}</li>
-	            {{/each}}
+            {{#if data.M}}
+                {{#each data.M}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            {{else}}
+                <li>Unknown</li>
+            {{/if}}
             </ul>
         </td>
 
@@ -74,3 +79,5 @@
 
 </table>
 {{/if}}
+
+

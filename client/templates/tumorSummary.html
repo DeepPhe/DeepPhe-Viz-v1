@@ -1,6 +1,84 @@
 
 <div class="section_heading">Tumor Summary</div>
 
+
+
+<table class="table">
+
+<thead>
+    <tr>
+        <th class="th"></th>
+        {{#each tumors}}
+            <th class="th">{{type}}</th>
+        {{/each}}
+    </tr>
+</thead>
+
+
+
+<tbody>
+    {{#each commonCategories}}
+    <tr>
+        <th class="th_vertical">{{category}}</th>
+        {{#each data}}
+            {{#if facts}}
+                <td>
+                <ul class="tumor_fact_list">
+                  {{#each facts}}
+                    {{#if ordinalinterpretation}}
+                        <li>
+                        <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                        {{#ifEquals ordinalinterpretation "Positive"}} 
+                            (+)
+                        {{/ifEquals}}
+                        
+                        {{#ifEquals ordinalinterpretation "Negative"}}
+                            (-)
+                        {{/ifEquals}}
+
+                        {{#ifEquals ordinalinterpretation "Unknown"}}
+                            (?)
+                        {{/ifEquals}}
+                        </li>
+                    {{else if laterality}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+                    {{else}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    {{/if}}
+                  {{/each}}
+                </ul>
+                </td>
+                {{else}}
+                <td class="empty_cell"></td>
+                {{/if}}
+            
+        {{/each}}
+    </tr>
+    {{/each}}
+
+</tbody>
+
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
+
 <table class="table">
 
 <thead>
@@ -9,10 +87,10 @@
     <colgroup span="{{numOfCommonCategories}}"></colgroup>
     <tr>
     {{#if multiTumors}}
-    <th class="th" rowspan="2">Tumor ID</th>
+    <th class="th" rowspan="2">Tumor Type</th>
     <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Fact Categories of All Tumors</th>
     {{else}}
-    <th class="th">Tumor ID</th>
+    <th class="th">Tumor Type</th>
     {{#each commonCategories}}
         <th class="th" scope="col">{{this}}</th>
     {{/each}}
@@ -30,17 +108,30 @@
 <tbody>
     {{#each tumorsData}}
     <tr>
-        <th class="th">{{id}}</th>
+        <th class="th_vertical">{{type}}</th>
         {{#each factsOfCommonCategories}}
         <td>
         <ul class="tumor_fact_list">
           {{#each facts}}
             {{#if ordinalinterpretation}}
-                <li class="fact" id="{{id}}">{{ordinalinterpretation}}</li>
+                <li>
+                <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                {{#ifEquals ordinalinterpretation "Positive"}} 
+                    (+)
+                {{/ifEquals}}
+                
+                {{#ifEquals ordinalinterpretation "Negative"}}
+                    (-)
+                {{/ifEquals}}
+
+                {{#ifEquals ordinalinterpretation "Unknown"}}
+                    (?)
+                {{/ifEquals}}
+                </li>
             {{else if laterality}}
-                <li class="fact" id="{{id}}">{{prettyName}}({{laterality}})</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
             {{else}}
-                <li class="fact" id="{{id}}">{{prettyName}}</li>
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
             {{/if}}
           {{/each}}
         </ul>
@@ -52,3 +143,4 @@
 
 </table>
 
+-->
