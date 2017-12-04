@@ -43,7 +43,13 @@
                     {{else if laterality}}
                         <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
                     {{else}}
+                        <!-- "../"" is the notation to access outer scope variables -->
+                        {{#inArray prettyName ../../../melanomaAttributes}}
+                        <!-- Melanoma specific -->
+                        <li><span class="fact" id="{{id}}">Present</span></li>
+                        {{else}}
                         <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                        {{/inArray}}
                     {{/if}}
                   {{/each}}
                 </ul>
@@ -57,7 +63,6 @@
     {{/each}}
 
 </tbody>
-
 
 </table>
 
