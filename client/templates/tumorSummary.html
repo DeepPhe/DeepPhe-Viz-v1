@@ -46,7 +46,7 @@
                         <!-- "../"" is the notation to access outer scope variables -->
                         {{#inArray prettyName ../../../melanomaAttributes}}
                         <!-- Melanoma specific -->
-                        <li><span class="fact" id="{{id}}">Present</span></li>
+                        <li><span class="fact" id="{{id}}"><span class="present">&#x2714;</span> Present</span></li>
                         {{else}}
                         <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                         {{/inArray}}
