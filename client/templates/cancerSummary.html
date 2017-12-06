@@ -15,69 +15,47 @@
         </td>
     </tr>
     {{/each}}
+
+    
+    {{#if tnm.length}}
+    <tr>
+        <th class="th_vertical">TNM</th>
+        <td>
+            {{#each tnm}}
+                <span class="tnm_type">{{type}}:</span>
+                <ul class="cancer_tnm_fact_list">
+                {{#if data.T}}
+                    {{#each data.T}}
+                    <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    {{/each}}
+                {{/if}}
+                </ul>
+            
+                <ul class="cancer_tnm_fact_list">
+                {{#if data.N}}
+                    {{#each data.N}}
+                    <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    {{/each}}
+                {{/if}}
+                </ul>
+
+                <ul class="cancer_tnm_fact_list">
+                {{#if data.M}}
+                    {{#each data.M}}
+                    <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    {{/each}}
+                {{/if}}
+                </ul>
+
+            {{/each}}
+        </td>
+    </tr>
+    {{/if}}
+
 </tbody>
 
 </table>
 
 
-{{#if tnm.length}}
-<table class="table">
-
-<thead>
-    <tr>
-    <th class="th"></th>
-    <th class="th">T</th>
-    <th class="th">N</th>
-    <th class="th">M</th>
-    </tr>
-</thead>
-
-<tbody>
-    {{#each tnm}}
-    <tr>
-        <th class="th_vertical">{{type}}</th>
-
-        <td>
-            <ul class="cancer_fact_list">
-            {{#if data.T}}
-                {{#each data.T}}
-                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
-                {{/each}}
-            {{else}}
-                <li>Unknown</li>
-            {{/if}}
-            </ul>
-        </td>
-
-        <td>
-            <ul class="cancer_fact_list">
-            {{#if data.N}}
-                {{#each data.N}}
-                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
-                {{/each}}
-            {{else}}
-                <li>Unknown</li>
-            {{/if}}
-            </ul>
-        </td>
-
-        <td>
-            <ul class="cancer_fact_list">
-            {{#if data.M}}
-                {{#each data.M}}
-                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
-                {{/each}}
-            {{else}}
-                <li>Unknown</li>
-            {{/if}}
-            </ul>
-        </td>
-
-    </tr>
-    {{/each}}
-</tbody>
-
-</table>
-{{/if}}
 
 
