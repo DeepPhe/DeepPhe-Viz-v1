@@ -188,24 +188,33 @@ float:left;
 width:860px;
 }
 
+.report_section {
+margin-top: 10px;
+background-color:#fff;
+border:1px solid #dbdbdb;
+}
 
 #timeline {
 background-color:#fff;
-border:1px solid #dbdbdb;
-margin:10px 0 20px;
+}
+
+.divider {
+border-bottom:1px solid #dbdbdb;
+margin:0 60px 5px;
 }
 
 #report_mentioned_terms {
-margin-top:10px;
+width:175px;
+float:left;
+margin:10px 0 0 10px;
 }
 
 #report_text {
-background-color:#fff;
+float:left;
+width:653px;
 height:500px;
 padding:10px;
 overflow-y: scroll;
-border:1px solid #dbdbdb;
-margin-bottom:20px;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 font-weight: normal;
 text-align: left;
@@ -228,7 +237,6 @@ padding:3px 2px 0;
 border:1px solid #dbdbdb;
 background-color:#fff;
 color:#75438a;
-border-radius: 2px;
 }
 
 .fact_mentioned_term {
