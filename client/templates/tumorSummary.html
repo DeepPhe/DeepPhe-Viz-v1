@@ -1,8 +1,6 @@
 
 <div class="section_heading">Tumor Summary</div>
 
-
-
 <table class="table">
 
 <thead>
@@ -17,7 +15,7 @@
 
 
 <tbody>
-    {{#each commonCategories}}
+    {{#each collatedFactsByCategory}}
     <tr>
         <th class="th_vertical">{{category}}</th>
         {{#each data}}
@@ -56,7 +54,7 @@
                 </td>
                 {{else}}
                 <td class="empty_cell"></td>
-                {{/if}}
+            {{/if}}
             
         {{/each}}
     </tr>
@@ -66,86 +64,3 @@
 
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-
-
-<table class="table">
-
-<thead>
-    
-    <col>
-    <colgroup span="{{numOfCommonCategories}}"></colgroup>
-    <tr>
-    {{#if multiTumors}}
-    <th class="th" rowspan="2">Tumor Type</th>
-    <th class="th" colspan="{{numOfCommonCategories}}" scope="colgroup">Common Fact Categories of All Tumors</th>
-    {{else}}
-    <th class="th">Tumor Type</th>
-    {{#each commonCategories}}
-        <th class="th" scope="col">{{this}}</th>
-    {{/each}}
-    {{/if}}
-    </tr>
-    {{#if multiTumors}}
-    <tr>
-    {{#each commonCategories}}
-        <th class="th" scope="col">{{this}}</th>
-    {{/each}}
-    </tr>
-    {{/if}}
-</thead>
-
-<tbody>
-    {{#each tumorsData}}
-    <tr>
-        <th class="th_vertical">{{type}}</th>
-        {{#each factsOfCommonCategories}}
-        <td>
-        <ul class="tumor_fact_list">
-          {{#each facts}}
-            {{#if ordinalinterpretation}}
-                <li>
-                <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
-                {{#ifEquals ordinalinterpretation "Positive"}} 
-                    (+)
-                {{/ifEquals}}
-                
-                {{#ifEquals ordinalinterpretation "Negative"}}
-                    (-)
-                {{/ifEquals}}
-
-                {{#ifEquals ordinalinterpretation "Unknown"}}
-                    (?)
-                {{/ifEquals}}
-                </li>
-            {{else if laterality}}
-                <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
-            {{else}}
-                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
-            {{/if}}
-          {{/each}}
-        </ul>
-        </td>
-        {{/each}}
-    </tr>
-    {{/each}}
-</tbody>
-
-</table>
-
--->
