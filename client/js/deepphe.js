@@ -119,7 +119,10 @@ function getFact(factId) {
 
 	jqxhr.done(function(response) {
 	    // Render response
-	    $('#fact').html(response.renderedFact);
+	    $('#fact_detail').html(response.renderedFact);
+
+        // Show the fact detail
+	    $('#fact_detail').slideDown();
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportId = response.reportId;
