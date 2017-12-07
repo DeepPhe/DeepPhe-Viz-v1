@@ -2,17 +2,17 @@
 <ul class="fact_detail_list">
 
 <li>
-Name: {{detail.prettyName}}
+<span class="fact_detail_label">Name:</span> {{detail.prettyName}}
 </li>
 
 <li>
-Type: {{detail.type}}
+<span class="fact_detail_label">Type:</span>  {{detail.type}}
 </li>
 
 {{#if ordinalInterpretations}}
-<li>
+<li class="clearfix">
 <span class="fact_detail_label">Ordinal Interpretation:</span> 
-<ul class="fact_list">
+<ul>
     {{#each ordinalInterpretations}}
     <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
     <li>{{name}}</li>
@@ -23,9 +23,9 @@ Type: {{detail.type}}
 
 
 {{#if procedures}}
-<li>
+<li class="clearfix">
 <span class="fact_detail_label">Procedures:</span>
-<ul class="fact_list">
+<ul>
     {{#each procedures}}
     <li>{{prettyName}}</li>
     {{/each}}
@@ -34,9 +34,9 @@ Type: {{detail.type}}
 {{/if}}
 
 {{#if lateralities}}
-<li>
+<li class="clearfix">
 <span class="fact_detail_label">Laterality:</span>
-<ul class="fact_list">
+<ul>
     {{#each lateralities}}
     <li>{{prettyName}}</li>
     {{/each}}
@@ -45,9 +45,9 @@ Type: {{detail.type}}
 {{/if}}
 
 {{#if bodyModifiers}}
-<li>
+<li class="clearfix">
 <span class="fact_detail_label">Body Modifiers:</span>
-<ul class="fact_list">
+<ul>
     {{#each bodyModifiers}}
     <li>{{prettyName}}</li>
     {{/each}}
@@ -55,9 +55,9 @@ Type: {{detail.type}}
 {{/if}}
 
 {{#if groupedTextMentions}}
-<li>
-<span class="fact_detail_label">Text Provenances:</span>
-<ul class="fact_list">
+<li class="clearfix">
+<span class="fact_detail_label">Text Provenances in Report:</span>
+<ul>
     {{#each groupedTextMentions}}
     <li>{{text}} <span class="count">({{count}})</span></li>
     {{/each}}
