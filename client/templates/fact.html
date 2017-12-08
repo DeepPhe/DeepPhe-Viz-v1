@@ -1,93 +1,72 @@
-<div class="section_heading">Fact Detail</div>
 
-<table class="table">
+<ul class="fact_detail_list">
 
-<thead>
-    <tr>
-    <th class="th">Fact Name</th>
-    <th class="th">Fact Type</th>
+<li>
+<span class="fact_detail_label">Name:</span> {{detail.prettyName}}
+</li>
 
-    {{#if ordinalInterpretations}}
-    <th class="th">OrdinalInterpretation</th>
-    {{/if}}
+<li>
+<span class="fact_detail_label">Type:</span>  {{detail.type}}
+</li>
 
-    {{#if procedures}}
-    <th class="th">Procedures</th>
-    {{/if}}
+{{#if ordinalInterpretations}}
+<li class="clearfix">
+<span class="fact_detail_label">Ordinal Interpretation:</span> 
+<ul>
+    {{#each ordinalInterpretations}}
+    <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
+    <li>{{name}}</li>
+    {{/each}}
+</ul>
+</li>
+{{/if}}
 
-    {{#if lateralities}}
-    <th class="th">Laterality</th>
-    {{/if}}
 
-    {{#if bodyModifiers}}
-    <th class="th">Body Modifiers</th>
-    {{/if}}
+{{#if procedures}}
+<li class="clearfix">
+<span class="fact_detail_label">Procedures:</span>
+<ul>
+    {{#each procedures}}
+    <li>{{prettyName}}</li>
+    {{/each}}
+</ul>
+</li>
+{{/if}}
 
-    {{#if groupedTextMentions}}
-    <th class="th">Text Provenances</th>
-    {{/if}}
+{{#if lateralities}}
+<li class="clearfix">
+<span class="fact_detail_label">Laterality:</span>
+<ul>
+    {{#each lateralities}}
+    <li>{{prettyName}}</li>
+    {{/each}}
+</ul>
+</li>
+{{/if}}
 
-    </tr>
-</thead>
+{{#if bodyModifiers}}
+<li class="clearfix">
+<span class="fact_detail_label">Body Modifiers:</span>
+<ul>
+    {{#each bodyModifiers}}
+    <li>{{prettyName}}</li>
+    {{/each}}
+</ul>
+{{/if}}
 
-<tbody>
-    <tr>
-        <td>{{detail.prettyName}}</td>
-        <td>{{detail.type}}</td>
-        
-        {{#if ordinalInterpretations}}
-        <td>
-            <ul class="fact_list">
-                {{#each ordinalInterpretations}}
-                <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
-                <li>{{name}}</li>
-                {{/each}}
-            </ul>
-        </td>
-        {{/if}}
-        
-        
-        {{#if procedures}}
-        <td>
-            <ul class="fact_list">
-                {{#each procedures}}
-                <li>{{prettyName}}</li>
-                {{/each}}
-            </ul>
-        </td>
-        {{/if}}
+{{#if groupedTextMentions}}
+<li class="clearfix">
+<span class="fact_detail_label">Text Provenances in Report:</span>
+<ul>
+    {{#each groupedTextMentions}}
+    <li>{{text}} <span class="count">({{count}})</span></li>
+    {{/each}}
+</ul>
+</li>
+{{/if}}
 
-        {{#if lateralities}}
-        <td>
-            <ul class="fact_list">
-                {{#each lateralities}}
-                <li>{{prettyName}}</li>
-                {{/each}}
-            </ul>
-        </td>
-        {{/if}}
+</ul>
 
-        {{#if bodyModifiers}}
-        <td>
-            <ul class="fact_list">
-                {{#each bodyModifiers}}
-                <li>{{prettyName}}</li>
-                {{/each}}
-            </ul>
-        </td>
-        {{/if}}
 
-        {{#if groupedTextMentions}}
-        <td>
-            <ul class="fact_list">
-                {{#each groupedTextMentions}}
-                <li>{{text}} <span class="count">({{count}})</span></li>
-                {{/each}}
-            </ul>
-        </td>
-        {{/if}}
-        
-    </tr>
-</tbody>
 
-</table>
+

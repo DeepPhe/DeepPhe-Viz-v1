@@ -56,13 +56,25 @@ border-left:3px solid #D66061;
 
 /* Cancer summary */
 .cancer_fact_list,
+.cancer_tnm_fact_list,
 .tumor_fact_list {
 list-style-type: none;
 padding:0;
 margin:0;
 }
 
+.cancer_tnm_fact_list {
+float:left;
+margin-right:20px;
+}
+
+.tnm_type {
+float:left;
+margin-right:5px;
+}
+
 .cancer_fact_list li,
+.cancer_tnm_fact_list li,
 .tumor_fact_list li {
 float:left;
 margin-right:20px;
@@ -71,6 +83,7 @@ color:#555;
 }
 
 .cancer_fact_list li:last-child,
+.cancer_tnm_fact_list li:last-child,
 .tumor_fact_list li:last-child {
 margin-right:0;
 }
@@ -188,24 +201,33 @@ float:left;
 width:860px;
 }
 
+.report_section {
+margin-top: 10px;
+background-color:#fff;
+border:1px solid #dbdbdb;
+}
 
 #timeline {
 background-color:#fff;
-border:1px solid #dbdbdb;
-margin:10px 0 20px;
+}
+
+.divider {
+border-bottom:1px solid #dbdbdb;
+margin:0 60px 5px;
 }
 
 #report_mentioned_terms {
-margin-top:10px;
+width:175px;
+float:left;
+margin:10px 0 0 10px;
 }
 
 #report_text {
-background-color:#fff;
+float:left;
+width:653px;
 height:500px;
 padding:10px;
 overflow-y: scroll;
-border:1px solid #dbdbdb;
-margin-bottom:20px;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 font-weight: normal;
 text-align: left;
@@ -228,7 +250,6 @@ padding:3px 2px 0;
 border:1px solid #dbdbdb;
 background-color:#fff;
 color:#75438a;
-border-radius: 2px;
 }
 
 .fact_mentioned_term {
@@ -320,3 +341,75 @@ font-size:12px;
 text-anchor: end;
 }
 
+/* Melanoma attributes present checkmark */
+.present {
+color:red;
+}
+
+/* Breast cancer biomarkers, ER, PR, Her2 status */
+.positive {
+font-size:1.3em;
+font-weight:bold;
+color: red;
+}
+
+.negative {
+font-size:1.3em;
+font-weight:bold;
+color: green;
+}
+
+.unknown {
+font-size:1.2em;
+font-weight:bold;
+color: orange;
+}
+
+
+#fact_detail {
+display:none;
+max-height:100px;
+padding:5px 15px;
+position: fixed;
+z-index: 101;
+top: 0;
+right: 0;
+background:#d1ecf1;
+color: #0c5460;
+border:1px solid #ccc;
+border-top:none;
+border-bottom-left-radius: 15px;
+border-bottom-right-radius: 15px;
+}
+
+.fact_detail_list,
+.fact_detail_list li ul {
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.fact_detail_list li ul {
+float:left;
+display:inline;
+}
+
+.fact_detail_label{
+float:left;
+font-weight:bold;
+margin-right:5px;
+}
+
+.fact_detail_list li{
+margin:5px 20px 5px 0;
+}
+
+.fact_detail_list li ul li {
+float:left;
+margin:0 20px 0 0;
+}
+
+.fact_detail_list li:last-child,
+.fact_detail_list li ul li:last-child {
+margin-right:0;
+}
