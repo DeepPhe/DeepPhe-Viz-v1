@@ -1,6 +1,77 @@
 
 <div class="section_heading">Tumor Summary</div>
 
+
+<!-- Redesign -->
+
+{{#each tumors}}
+    <h3>{{type}}</h3>
+    <ul class="redesign_tumor_list clearfix">
+        {{#each data}}
+            <li class="redesign_tumor_list_item">
+                {{factsObj.category}}:
+                {{#if factsObj.facts}}
+
+                <ul class="redesign_tumor_fact_list">
+                  {{#each factsObj.facts}}
+                    {{#if ordinalinterpretation}}
+                        <li>
+                        <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                        {{#ifEquals ordinalinterpretation "Positive"}} 
+                            <span class="positive">&plus;</span>
+                        {{/ifEquals}}
+                        
+                        {{#ifEquals ordinalinterpretation "Negative"}}
+                            <span class="negative">&ndash;</span>
+                        {{/ifEquals}}
+
+                        {{#ifEquals ordinalinterpretation "Unknown"}}
+                            <span class="unknown">&quest;</span>
+                        {{/ifEquals}}
+                        </li>
+                    {{else if laterality}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+                    {{else}}
+                        <!-- "../"" is the notation to access outer scope variables -->
+                        {{#inArray prettyName ../../../melanomaAttributes}}
+                        <!-- Melanoma specific -->
+                        <li><span class="fact" id="{{id}}"><span class="present">&#x2714;</span> Present</span></li>
+                        {{else}}
+                        <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                        {{/inArray}}
+                    {{/if}}
+                  {{/each}}
+                </ul>
+
+                {{else}}
+                    Null
+            {{/if}}
+            </li>
+        {{/each}}
+    </ul>
+{{/each}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Old table design -->
+
 <table class="table">
 
 <thead>

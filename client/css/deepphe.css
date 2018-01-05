@@ -413,3 +413,34 @@ margin:0 20px 0 0;
 .fact_detail_list li ul li:last-child {
 margin-right:0;
 }
+
+
+
+
+
+/* Playing redesign */
+.redesign_tumor_list {
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.redesign_tumor_list_item {
+float:left;
+margin-right:10px;
+margin-bottom: 5px;
+border:1px solid grey;
+padding:3px 5px;
+}
+
+.redesign_tumor_list_item ul {
+display:inline;
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.redesign_tumor_list_item ul li {
+display:inline;
+margin-right:5px;
+}
