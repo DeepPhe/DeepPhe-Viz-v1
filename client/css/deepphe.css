@@ -431,6 +431,11 @@ margin-right:10px;
 margin-bottom: 5px;
 border:1px solid grey;
 padding:3px 5px;
+color:#333;
+}
+
+.redesign_tumor_list_item .fact {
+color:#333;
 }
 
 .redesign_tumor_list_item ul {
@@ -443,4 +448,85 @@ margin:0;
 .redesign_tumor_list_item ul li {
 display:inline;
 margin-right:5px;
+}
+
+/* d3 category20 - http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
+.category0 {
+background:#1f77b4;
+}
+
+.category1 {
+background:#aec7e8;
+}
+
+.category2 {
+background:#ff7f0e;
+}
+
+.category3 {
+background:#ffbb78;
+}
+
+.category4 {
+background:#2ca02c;
+}
+
+.category5 {
+background:#98df8a;
+}
+
+.category6 {
+background:#d62728;
+}
+
+.category7 {
+background:#ff9896;
+}
+
+.category8 {
+background:#9467bd;
+}
+
+.category9 {
+background:#c5b0d5;
+}
+
+.category10 {
+background:#8c564b;
+}
+
+.category11 {
+background:#c49c94;
+}
+
+.category12 {
+background:#e377c2;
+}
+
+.category13 {
+background:#f7b6d2;
+}
+
+.category14 {
+background:#7f7f7f;
+}
+
+.category15 {
+background:#c7c7c7;
+}
+
+.category16 {
+background:#bcbd22;
+}
+
+.category17 {
+background:#dbdb8d;
+}
+
+.category18 {
+background:#17becf;
+}
+
+.category19 {
+background:#9edae5;
 }
