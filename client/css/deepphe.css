@@ -419,7 +419,20 @@ margin-right:0;
 
 
 /* Playing redesign */
+.redesign_tumor {
+margin: 10px 0;
+}
+
+.redesign_tumor_type {
+width:110px;
+float:left;
+font-weight:bold;
+margin-right:20px;
+}
+
 .redesign_tumor_list {
+width:730px;
+float:left;
 list-style-type: none;
 padding:0;
 margin:0;
@@ -429,7 +442,6 @@ margin:0;
 float:left;
 margin-right:10px;
 margin-bottom: 5px;
-border:1px solid grey;
 padding:3px 5px;
 color:#333;
 }

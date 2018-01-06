@@ -5,7 +5,8 @@
 <!-- Redesign -->
 
 {{#each tumors}}
-    <h3>{{type}}</h3>
+<div class="redesign_tumor clearfix">
+    <div class="redesign_tumor_type">{{type}}</div>
     <ul class="redesign_tumor_list clearfix">
         {{#each data}}
             <li class="redesign_tumor_list_item category{{@index}}">
@@ -48,6 +49,7 @@
             </li>
         {{/each}}
     </ul>
+</div>
 {{/each}}
 
 
