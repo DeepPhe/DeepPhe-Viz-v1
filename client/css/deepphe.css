@@ -68,18 +68,35 @@ float:left;
 margin-right:20px;
 }
 
+.tnm {
+margin-bottom:20px;
+}
+
 .tnm_type {
 float:left;
 margin-right:5px;
+font-weight: bold;
+padding:2px 0;
 }
 
 .cancer_fact_list li,
-.cancer_tnm_fact_list li,
 .tumor_fact_list li {
 float:left;
 margin-right:20px;
 padding:0;
 color:#555;
+}
+
+.cancer_tnm_fact_list li {
+float:left;
+margin-right:20px;
+padding:0;
+background:#fdd0a2;
+padding:2px 5px;
+}
+
+.cancer_tnm_fact_list li .fact {
+color:#333;
 }
 
 .cancer_fact_list li:last-child,
