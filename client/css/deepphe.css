@@ -477,35 +477,41 @@ display:inline;
 margin-right:5px;
 }
 
-/* http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
-.category0 {
+/* Colors from http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
+.hasBodySite {
 background:#9edae5;
 }
 
-.category1 {
+.hasDiagnosis {
 background:#aec7e8;
 }
 
-.category2 {
+.hasERStatus,
+.hasPRStatus,
+.hasHer2Status,
+.hasKi67Status {
 background:#cedb9c;
 }
 
-.category3 {
+.hasTumorSize,
+.hasRadiologicTumorSize,
+.hasPathologicTumorSize,
+.hasPathologicAggregateTumorSize {
 background:#fdd0a2;
 }
 
-.category4 {
+.hasNuclearGrade {
 background:#98df8a;
 }
 
-.category5 {
+.hasCancerCellLine {
 background:#f7b6d2;
 }
 
-.category6 {
+.hasHistologicType {
 background:#dadaeb;
 }
 
-.category7 {
+.hasTumorExtent {
 background:#e7cb94;
 }
