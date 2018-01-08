@@ -76,7 +76,7 @@ margin-bottom:20px;
 float:left;
 margin-right:5px;
 font-weight: bold;
-padding:2px 0;
+padding-top:4px;
 }
 
 .cancer_fact_list li,
@@ -91,7 +91,8 @@ color:#555;
 float:left;
 margin-right:20px;
 padding:0;
-background:#fd8d3c;
+background:#fff;
+border:1px solid #dbdbdb;
 padding:2px 5px;
 }
 
@@ -365,19 +366,16 @@ color:red;
 
 /* Breast cancer biomarkers, ER, PR, Her2 status */
 .positive {
-font-size:1.3em;
 font-weight:bold;
 color: red;
 }
 
 .negative {
-font-size:1.3em;
 font-weight:bold;
 color: green;
 }
 
 .unknown {
-font-size:1.2em;
 font-weight:bold;
 color: orange;
 }
