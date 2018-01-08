@@ -16,18 +16,19 @@
                   {{#each factsObj.facts}}
                     {{#if ordinalinterpretation}}
                         <li>
-                        <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
-                        {{#ifEquals ordinalinterpretation "Positive"}} 
-                            <span class="positive">&plus;</span>
-                        {{/ifEquals}}
-                        
-                        {{#ifEquals ordinalinterpretation "Negative"}}
-                            <span class="negative">&ndash;</span>
-                        {{/ifEquals}}
+	                        <span class="fact" id="{{id}}">
+	                        {{#ifEquals ordinalinterpretation "Positive"}} 
+	                            <span class="positive">&plus;</span>
+	                        {{/ifEquals}}
+	                        
+	                        {{#ifEquals ordinalinterpretation "Negative"}}
+	                            <span class="negative">&ndash;</span>
+	                        {{/ifEquals}}
 
-                        {{#ifEquals ordinalinterpretation "Unknown"}}
-                            <span class="unknown">&quest;</span>
-                        {{/ifEquals}}
+	                        {{#ifEquals ordinalinterpretation "Unknown"}}
+	                            <span class="unknown">&quest;</span>
+	                        {{/ifEquals}}
+	                        </span>
                         </li>
                     {{else if laterality}}
                         <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
