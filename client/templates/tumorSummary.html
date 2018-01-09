@@ -39,6 +39,7 @@
                     </ul>
                 <!-- Display prefix for all other categories -->
                 {{else}}
+                    <div class="toggleable">
                     {{factsObj.category}}:
 	                <ul class="redesign_tumor_fact_list">
 	                {{#each factsObj.facts}}
@@ -69,6 +70,7 @@
 	                    {{/if}}
 	                  {{/each}}
 	                </ul>
+	                </div>
                 {{/ifEquals}}
             </li>
             {{/if}}

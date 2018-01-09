@@ -78,8 +78,9 @@ $(document).on("click", "#switch_table_view", function() {
 	$("#table_view").show();
 });
 
+// Toggle for each tumor type
 $(document).on("click", ".redesign_tumor_type", function() {
-    $(this).next().toggle("fast");
+    $(this).next().find(".toggleable").toggle("fast");
 });
 
 </script>

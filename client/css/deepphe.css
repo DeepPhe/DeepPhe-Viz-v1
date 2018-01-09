@@ -439,7 +439,7 @@ margin: 10px 0;
 }
 
 .redesign_tumor_type {
-width:120px;
+width:116px;
 float:left;
 font-weight:bold;
 margin-right:10px;
@@ -447,35 +447,40 @@ cursor:pointer;
 }
 
 .redesign_tumor_list {
-width:730px;
+width:734px;
 float:left;
 list-style-type: none;
 padding:0;
 margin:0;
+}
+
+.redesign_tumor_list li:last-child {
+margin-right:0;
 }
 
 .redesign_tumor_list_item {
 float:left;
+height:15px;
 margin-right:3px;
 margin-bottom: 3px;
-padding:3px 3px 1px;
+padding:3px 2px 1px;
 color:#333;
 }
 
-.redesign_tumor_list_item .fact {
+.redesign_tumor_fact_list .fact {
 color:#333;
 }
 
-.redesign_tumor_list_item ul {
+.redesign_tumor_fact_list {
 display:inline;
 list-style-type: none;
 padding:0;
 margin:0;
 }
 
-.redesign_tumor_list_item ul li {
+.redesign_tumor_fact_list li {
 display:inline;
-margin-right:5px;
+margin-right:3px;
 }
 
 /* Colors from http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
