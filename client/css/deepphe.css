@@ -443,6 +443,7 @@ width:120px;
 float:left;
 font-weight:bold;
 margin-right:10px;
+cursor:pointer;
 }
 
 .redesign_tumor_list {
@@ -514,4 +515,53 @@ background:#dadaeb;
 
 .hasTumorExtent {
 background:#e7cb94;
+}
+
+
+/* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
+.tumor_summary_title,
+.switch-field { /* Align the title and siwtch vertically */
+display:inline-block;
+vertical-align: middle;
+}
+
+#table_view {
+display:none;
+}
+
+.switch-field {
+margin-left:10px;
+}
+
+.switch-field input {
+position: absolute !important;
+clip: rect(0, 0, 0, 0);
+height: 1px;
+width: 1px;
+border: 0;
+overflow: hidden;
+}
+
+.switch-field label {
+float: left;
+}
+
+.switch-field label {
+display: inline-block;
+width: 80px;
+background-color: #e4e4e4;
+color: rgba(0, 0, 0, 0.6);
+text-align: center;
+font-size: .75em;
+font-weight:normal;
+padding: 3px 10px 1px;
+border: 1px solid #ccc;
+}
+
+.switch-field label:hover {
+cursor: pointer;
+}
+
+.switch-field input:checked + label {
+background-color: #A5DC86;
 }

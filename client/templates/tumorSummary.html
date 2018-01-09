@@ -1,9 +1,17 @@
 
-<div class="section_heading">Tumor Summary</div>
+<div class="section_heading">
+<div class="tumor_summary_title">Tumor Summary</div>
+<div class="switch-field">
+<input type="radio" id="switch_color_view" name="tumor_summary_switch" value="Color View" checked/>
+<label for="switch_color_view">Color View</label>
+<input type="radio" id="switch_table_view" name="tumor_summary_switch" value="Table View" />
+<label for="switch_table_view">Table View</label>
+</div>
+</div>
 
 
 <!-- Redesign -->
-
+<div id="color_view">
 {{#each tumors}}
 <div class="redesign_tumor clearfix">
     <div class="redesign_tumor_type">{{type}}</div>
@@ -49,7 +57,7 @@
     </ul>
 </div>
 {{/each}}
-
+</div>
 
 
 
@@ -70,7 +78,7 @@
 
 
 <!-- Old table design -->
-
+<div id="table_view">
 <table class="table">
 
 <thead>
@@ -133,4 +141,4 @@
 </tbody>
 
 </table>
-
+</div>

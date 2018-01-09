@@ -66,5 +66,21 @@ $(document).on("click", ".fact", function() {
 });
 
 
+
+// Tumor summary
+$(document).on("click", "#switch_color_view", function() {
+	$("#table_view").hide();
+    $("#color_view").show();
+});
+
+$(document).on("click", "#switch_table_view", function() {
+	$("#color_view").hide();
+	$("#table_view").show();
+});
+
+$(document).on("click", ".redesign_tumor_type", function() {
+    $(this).next().toggle("fast");
+});
+
 </script>
 
