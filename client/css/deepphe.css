@@ -138,20 +138,20 @@ margin:10px 0 20px;
 }
 
 .table th.th {
-padding:5px; 
+padding:4px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 }
 
 .table th.th_vertical {
-padding:5px; 
+padding:4px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 text-align:left;
 }
 
 .table td {
-padding:5px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 }
 
@@ -456,9 +456,9 @@ margin:0;
 
 .redesign_tumor_list_item {
 float:left;
-margin-right:5px;
-margin-bottom: 5px;
-padding:3px 4px;
+margin-right:3px;
+margin-bottom: 3px;
+padding:3px 3px 1px;
 color:#333;
 }
 
@@ -539,7 +539,6 @@ clip: rect(0, 0, 0, 0);
 height: 1px;
 width: 1px;
 border: 0;
-overflow: hidden;
 }
 
 .switch-field label {
@@ -549,7 +548,7 @@ float: left;
 .switch-field label {
 display: inline-block;
 width: 80px;
-background-color: #e4e4e4;
+background-color: #fff;
 color: rgba(0, 0, 0, 0.6);
 text-align: center;
 font-size: .75em;
@@ -564,4 +563,12 @@ cursor: pointer;
 
 .switch-field input:checked + label {
 background-color: #A5DC86;
+}
+
+.switch-field label:first-of-type {
+  border-radius: 8px 0 0 8px;
+}
+
+.switch-field label:last-of-type {
+  border-radius: 0 8px 8px 0;
 }
