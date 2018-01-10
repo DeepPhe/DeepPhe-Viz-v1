@@ -525,7 +525,7 @@ background:#e7cb94;
 
 /* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
 .tumor_summary_title,
-.switch-field { /* Align the title and siwtch vertically */
+.view_options { /* Align the title and siwtch vertically */
 display:inline-block;
 vertical-align: middle;
 }
@@ -534,11 +534,11 @@ vertical-align: middle;
 display:none;
 }
 
-.switch-field {
+.view_options {
 margin-left:10px;
 }
 
-.switch-field input {
+.view_options input {
 position: absolute !important;
 clip: rect(0, 0, 0, 0);
 height: 1px;
@@ -546,11 +546,11 @@ width: 1px;
 border: 0;
 }
 
-.switch-field label {
+.view_options label {
 float: left;
 }
 
-.switch-field label {
+.view_options label {
 display: inline-block;
 width: 80px;
 background-color: #fff;
@@ -562,18 +562,18 @@ padding: 3px 10px 1px;
 border: 1px solid #ccc;
 }
 
-.switch-field label:hover {
+.view_options label:hover {
 cursor: pointer;
 }
 
-.switch-field input:checked + label {
+.view_options input:checked + label {
 background-color: #A5DC86;
 }
 
-.switch-field label:first-of-type {
+.view_options label:first-of-type {
   border-radius: 8px 0 0 8px;
 }
 
-.switch-field label:last-of-type {
+.view_options label:last-of-type {
   border-radius: 0 8px 8px 0;
 }

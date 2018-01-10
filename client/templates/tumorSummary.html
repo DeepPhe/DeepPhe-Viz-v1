@@ -1,17 +1,17 @@
 
 <div class="section_heading">
 <div class="tumor_summary_title">Tumor Summary</div>
-<div class="switch-field">
-<input type="radio" id="switch_color_view" name="switch" value="Color View" checked/>
-<label for="switch_color_view">Color View</label>
-<input type="radio" id="switch_table_view" name="switch" value="Table View" />
-<label for="switch_table_view">Table View</label>
+<div class="view_options">
+<input type="radio" id="list_view_option" name="view_options" value="List View" checked/>
+<label for="list_view_option">List View</label>
+<input type="radio" id="table_view_option" name="view_options" value="Table View" />
+<label for="table_view_option">Table View</label>
 </div>
 </div>
 
 
 <!-- Redesign -->
-<div id="color_view">
+<div id="list_view">
 {{#each tumors}}
 <div class="redesign_tumor clearfix">
     <div class="redesign_tumor_type">{{type}}</div>
