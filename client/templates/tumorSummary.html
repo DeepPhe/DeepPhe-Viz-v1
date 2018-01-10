@@ -24,9 +24,9 @@
                     <ul class="redesign_tumor_fact_list">
                 	{{#each factsObj.facts}}
 	                    {{#if laterality}}
-	                    <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+	                    <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
 	                    {{else}}
-	                    <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+	                    <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
 	                    {{/if}}
                     {{/each}}
                     </ul>
@@ -34,7 +34,7 @@
                 {{else ifEquals factsObj.category "Diagnosis"}} 
                     <ul class="redesign_tumor_fact_list">
                 	{{#each factsObj.facts}}
-                    	<li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                    	<li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
                     {{/each}}
                     </ul>
                 <!-- Display prefix for all other categories -->
@@ -45,7 +45,7 @@
 	                {{#each factsObj.facts}}
 	                    {{#if ordinalinterpretation}}
 	                        <li>
-		                        <span class="fact" id="{{id}}">
+		                        <span class="fact" id="list_view_{{id}}">
 		                        {{#ifEquals ordinalinterpretation "Positive"}} 
 		                            <span class="positive">&plus;</span>
 		                        {{/ifEquals}}
@@ -63,9 +63,9 @@
 	                        <!-- "../"" is the notation to access outer scope variables -->
 	                        {{#inArray prettyName ../../../melanomaAttributes}}
 	                            <!-- Melanoma specific -->
-	                            <li><span class="fact" id="{{id}}"><span class="present">&#x2714;</span> Present</span></li>
+	                            <li><span class="fact" id="list_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
 	                        {{else}}
-	                            <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+	                            <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
 	                        {{/inArray}}
 	                    {{/if}}
 	                  {{/each}}
@@ -113,7 +113,7 @@
                   {{#each facts}}
                     {{#if ordinalinterpretation}}
                         <li>
-                        <span class="fact" id="{{id}}">{{ordinalinterpretation}}</span>
+                        <span class="fact" id="table_view_{{id}}">{{ordinalinterpretation}}</span>
                         {{#ifEquals ordinalinterpretation "Positive"}} 
                             <span class="positive">&plus;</span>
                         {{/ifEquals}}
@@ -127,14 +127,14 @@
                         {{/ifEquals}}
                         </li>
                     {{else if laterality}}
-                        <li><span class="fact" id="{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+                        <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
                     {{else}}
                         <!-- "../"" is the notation to access outer scope variables -->
                         {{#inArray prettyName ../../../melanomaAttributes}}
                         <!-- Melanoma specific -->
-                        <li><span class="fact" id="{{id}}"><span class="present">&#x2714;</span> Present</span></li>
+                        <li><span class="fact" id="table_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
                         {{else}}
-                        <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                        <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span></li>
                         {{/inArray}}
                     {{/if}}
                   {{/each}}

@@ -55,17 +55,56 @@ getTimeline(patientName, "timeline");
 
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
-$(document).on("click", ".fact", function() {
-    $('.fact').removeClass('highlighted_fact');
+// Cancer fact click
+$(document).on("click", "#cancer .fact", function() {
+    var cssClass = 'highlighted_fact';
+    
+    $('#cancer .fact').removeClass(cssClass);
 
     var factId = $(this).attr('id');
     getFact(factId);
 
     // Highlight the clicked fact
-    $(this).addClass('highlighted_fact');
+    $(this).addClass(cssClass);
 });
 
+// Tumor fact click - List View
+$(document).on("click", "#list_view .fact", function() {
+    var cssClass = 'highlighted_fact';
 
+    $('#list_view .fact').removeClass(cssClass);
+    $('#table_view .fact').removeClass(cssClass);
+
+    // "list_view_{{id}}"
+    var id = $(this).attr('id');
+    var factId = id.substring(10);
+    getFact(factId);
+
+    // Highlight the clicked fact
+    $(this).addClass(cssClass);
+
+    // Also highlight the same fact in table view
+    $("#table_view_"+factId).addClass(cssClass);
+});
+
+// Tumor fact click - Table View
+$(document).on("click", "#table_view .fact", function() {
+    var cssClass = 'highlighted_fact';
+
+    $('#list_view .fact').removeClass(cssClass);
+    $('#table_view .fact').removeClass(cssClass);
+
+    // "table_view_{{id}}"
+    var id = $(this).attr('id');
+    var factId = id.substring(11);
+    getFact(factId);
+
+    // Highlight the clicked fact
+    $(this).addClass(cssClass);
+
+    // Also highlight the same fact in list view
+    $("#list_view_"+factId).addClass(cssClass);
+});
 
 // Tumor summary
 $(document).on("click", "#list_view_option", function() {

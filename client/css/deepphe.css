@@ -208,10 +208,6 @@ stroke:#ccc !important;
 stroke-width:2px;
 }
 
-.highlighted_fact {
-color:red;
-}
-
 .left {
 float:left;
 width:860px;
@@ -371,17 +367,14 @@ color:red;
 /* Breast cancer biomarkers, ER, PR, Her2 status */
 .positive {
 font-weight:bold;
-color: red;
 }
 
 .negative {
 font-weight:bold;
-color: green;
 }
 
 .unknown {
 font-weight:bold;
-color: orange;
 }
 
 
@@ -495,6 +488,9 @@ background-color: #A5DC86;
 /* Tumor list */
 #list_view {
 margin:10px 0;
+background-color:#fff;
+border:1px solid #dbdbdb;
+padding:10px 5px;
 }
 
 .redesign_tumor {
@@ -523,7 +519,7 @@ cursor:pointer;
 }
 
 .redesign_tumor_list {
-width:728px;
+width:716px;
 float:left;
 list-style-type: none;
 padding:0;
@@ -540,11 +536,19 @@ height:15px;
 margin-right:3px;
 margin-bottom: 3px;
 padding:3px 2px 1px;
-color:#333;
+color:#333;}
+
+.redesign_tumor_list_item:hover {
+background-color:#FFDC00;
 }
 
 .redesign_tumor_fact_list .fact {
 color:#333;
+}
+
+
+.highlighted_fact {
+color:red!important;
 }
 
 .redesign_tumor_fact_list {
@@ -591,9 +595,13 @@ background:#f7b6d2;
 }
 
 .hasHistologicType {
-background:#dadaeb;
+background:#c5b0d5;
 }
 
 .hasTumorExtent {
 background:#e7cb94;
+}
+
+.unspecified {
+background:#f3f2f2;
 }
