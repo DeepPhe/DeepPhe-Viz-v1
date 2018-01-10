@@ -54,7 +54,6 @@ padding:5px;
 border-left:3px solid #D66061;
 }
 
-/* Cancer summary */
 .cancer_fact_list,
 .cancer_tnm_fact_list,
 .tumor_fact_list {
@@ -65,11 +64,19 @@ margin:0;
 
 .cancer_tnm_fact_list {
 float:left;
-margin-right:20px;
+margin-right:10px;
+background:#fff;
+border:1px solid #dbdbdb;
+padding:2px 5px;
 }
 
 .tnm {
 margin-bottom:20px;
+}
+
+.tnm_by_type {
+display:inline-block;
+margin-right:20px;
 }
 
 .tnm_type {
@@ -82,22 +89,19 @@ padding-top:4px;
 .cancer_fact_list li,
 .tumor_fact_list li {
 float:left;
-margin-right:20px;
+margin-right:10px;
 padding:0;
 color:#555;
 }
 
 .cancer_tnm_fact_list li {
 float:left;
-margin-right:20px;
+margin-right:10px;
 padding:0;
-background:#fff;
-border:1px solid #dbdbdb;
-padding:2px 5px;
 }
 
 .cancer_tnm_fact_list li .fact {
-color:#333;
+color:#e6550d;
 }
 
 .cancer_fact_list li:last-child,

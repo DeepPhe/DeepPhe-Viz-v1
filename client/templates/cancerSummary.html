@@ -25,31 +25,33 @@
 {{#if tnm.length}}
     <div class="tnm clearfix">
         {{#each tnm}}
+        <div class="tnm_by_type">
             <span class="tnm_type">{{type}} TNM:</span>
-            <ul class="cancer_tnm_fact_list">
+            
             {{#if data.T}}
+            <ul class="cancer_tnm_fact_list">
                 {{#each data.T}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
-            {{/if}}
             </ul>
-        
-            <ul class="cancer_tnm_fact_list">
+            {{/if}}
+            
             {{#if data.N}}
+            <ul class="cancer_tnm_fact_list">
                 {{#each data.N}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
-            {{/if}}
             </ul>
-
-            <ul class="cancer_tnm_fact_list">
+            {{/if}}
+  
             {{#if data.M}}
+            <ul class="cancer_tnm_fact_list">
                 {{#each data.M}}
                 <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
                 {{/each}}
-            {{/if}}
             </ul>
-
+            {{/if}}
+        </div>
         {{/each}}
 
     </div>
