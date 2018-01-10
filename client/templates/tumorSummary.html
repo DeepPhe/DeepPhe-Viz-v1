@@ -10,7 +10,7 @@
 </div>
 
 
-<!-- Redesign -->
+<!-- List View -->
 <div id="list_view">
 {{#each tumors}}
 <div class="redesign_tumor clearfix">
@@ -87,7 +87,7 @@
 
 
 
-<!-- Old table design -->
+<!-- Table View -->
 <div id="table_view">
 <table class="table">
 
@@ -100,12 +100,10 @@
     </tr>
 </thead>
 
-
-
 <tbody>
     {{#each collatedFactsByCategory}}
     <tr>
-        <th class="th_vertical">{{category}}</th>
+        <th class="th_vertical {{categoryClass}}">{{category}}</th>
         {{#each data}}
             {{#if facts}}
                 <td>

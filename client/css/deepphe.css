@@ -367,14 +367,17 @@ color:red;
 /* Breast cancer biomarkers, ER, PR, Her2 status */
 .positive {
 font-weight:bold;
+color: red;
 }
 
 .negative {
 font-weight:bold;
+color: green;
 }
 
 .unknown {
 font-weight:bold;
+color: orange;
 }
 
 
@@ -548,6 +551,7 @@ color:#333;
 
 
 .highlighted_fact {
+font-style: italic;
 color:red!important;
 }
 
