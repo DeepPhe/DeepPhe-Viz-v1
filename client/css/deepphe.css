@@ -434,24 +434,96 @@ margin-right:0;
 }
 
 
+/* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
+.tumor_summary_title,
+.view_options { /* Align the title and siwtch vertically */
+display:inline-block;
+vertical-align: middle;
+}
 
+/* Hide the table view and expanded arrow as well as all toggleable facts by default */
+#table_view,
+.fa-caret-down,
+.toggleable {
+display:none;
+}
 
+.view_options {
+margin-left:10px;
+}
 
-/* Playing redesign */
+.view_options input {
+position: absolute !important;
+clip: rect(0, 0, 0, 0);
+height: 1px;
+width: 1px;
+border: 0;
+}
+
+.view_options label {
+float: left;
+}
+
+.view_options label {
+display: inline-block;
+width: 80px;
+background-color: #fff;
+color: rgba(0, 0, 0, 0.6);
+text-align: center;
+font-size: .75em;
+font-weight:normal;
+padding: 3px 10px 2px;
+border: 1px solid #ccc;
+}
+
+.view_options label:hover {
+cursor: pointer;
+}
+
+.view_options input:checked + label {
+background-color: #A5DC86;
+}
+
+.view_options label:first-of-type {
+  border-radius: 8px 0 0 8px;
+}
+
+.view_options label:last-of-type {
+  border-radius: 0 8px 8px 0;
+}
+
+/* Tumor list */
+#list_view {
+margin:10px 0;
+}
+
 .redesign_tumor {
-margin: 10px 0;
+margin-bottom:5px;
+}
+
+.arrow {
+display: inline-block;
+width:8px;
+}
+
+.fa-caret-right {
+color:#1f77b4;
+}
+
+.fa-caret-down {
+color:#e6550d;
 }
 
 .redesign_tumor_type {
-width:116px;
+width:127px;
 float:left;
 font-weight:bold;
-margin-right:10px;
+margin-right:5px;
 cursor:pointer;
 }
 
 .redesign_tumor_list {
-width:734px;
+width:728px;
 float:left;
 list-style-type: none;
 padding:0;
@@ -524,60 +596,4 @@ background:#dadaeb;
 
 .hasTumorExtent {
 background:#e7cb94;
-}
-
-
-/* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
-.tumor_summary_title,
-.view_options { /* Align the title and siwtch vertically */
-display:inline-block;
-vertical-align: middle;
-}
-
-#table_view {
-display:none;
-}
-
-.view_options {
-margin-left:10px;
-}
-
-.view_options input {
-position: absolute !important;
-clip: rect(0, 0, 0, 0);
-height: 1px;
-width: 1px;
-border: 0;
-}
-
-.view_options label {
-float: left;
-}
-
-.view_options label {
-display: inline-block;
-width: 80px;
-background-color: #fff;
-color: rgba(0, 0, 0, 0.6);
-text-align: center;
-font-size: .75em;
-font-weight:normal;
-padding: 3px 10px 1px;
-border: 1px solid #ccc;
-}
-
-.view_options label:hover {
-cursor: pointer;
-}
-
-.view_options input:checked + label {
-background-color: #A5DC86;
-}
-
-.view_options label:first-of-type {
-  border-radius: 8px 0 0 8px;
-}
-
-.view_options label:last-of-type {
-  border-radius: 0 8px 8px 0;
 }
