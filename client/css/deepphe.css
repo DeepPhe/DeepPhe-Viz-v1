@@ -496,7 +496,7 @@ border:1px solid #dbdbdb;
 padding:10px 5px;
 }
 
-.redesign_tumor {
+.list_view_tumor {
 margin-bottom:5px;
 }
 
@@ -513,7 +513,7 @@ color:#1f77b4;
 color:#e6550d;
 }
 
-.redesign_tumor_type {
+.list_view_tumor_type {
 width:127px;
 float:left;
 font-weight:bold;
@@ -521,7 +521,7 @@ margin-right:5px;
 cursor:pointer;
 }
 
-.redesign_tumor_list {
+.list_view_tumor_list {
 width:716px;
 float:left;
 list-style-type: none;
@@ -529,11 +529,11 @@ padding:0;
 margin:0;
 }
 
-.redesign_tumor_list li:last-child {
+.list_view_tumor_list li:last-child {
 margin-right:0;
 }
 
-.redesign_tumor_list_item {
+.list_view_tumor_list_item {
 float:left;
 height:15px;
 margin-right:3px;
@@ -541,11 +541,11 @@ margin-bottom: 3px;
 padding:3px 2px 1px;
 color:#333;}
 
-.redesign_tumor_list_item:hover {
+.list_view_tumor_list_item:hover {
 background-color:#FFDC00;
 }
 
-.redesign_tumor_fact_list .fact {
+.list_view_tumor_fact_list .fact {
 color:#333;
 }
 
@@ -555,14 +555,14 @@ font-style: italic;
 color:red!important;
 }
 
-.redesign_tumor_fact_list {
+.list_view_tumor_fact_list {
 display:inline;
 list-style-type: none;
 padding:0;
 margin:0;
 }
 
-.redesign_tumor_fact_list li {
+.list_view_tumor_fact_list li {
 display:inline;
 margin-right:3px;
 }
