@@ -397,8 +397,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    	return mainX(d.time); 
 	    })
 	    .attr("cy", function(d) { 
-	    	return mainY(getIndex(d.type)); 
+	    	return mainY(getIndex(d.type) + .5); 
 	    })
+	    .style("fill", function(d) {
+			return reportColor(d.type);
+		})
 	    .on("click", function(d) {
             // Highlight the selected report circle
             // d.id has no prefix, just raw id
@@ -558,7 +561,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
 
-	    // Update main main area
+	    // Update main area
 		main.selectAll(".main_report")
 			.attr("cx", function(d) { 
 				return mainX(d.time); 
