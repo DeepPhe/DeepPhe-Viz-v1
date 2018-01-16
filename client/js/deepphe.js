@@ -518,7 +518,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .attr("class", "handle--custom")
 	    .attr("stroke", "#000")
 	    .attr("cursor", "ew-resize")
-		.attr("d", createCustomBrushHandle);
+		.attr("d", createCustomBrushHandle)
+		.attr("transform", function(d, i) { 
+        	// Position the custom handles based on the default selection range
+        	var selection = [0, width];
+        	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
+        });
 
 	// Function expression of updating custom handles positions
 	var showAndMoveCustomBrushHandles = function(selection) {
