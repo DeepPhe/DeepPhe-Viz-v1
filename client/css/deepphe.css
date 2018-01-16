@@ -142,13 +142,13 @@ margin:10px 0 20px;
 }
 
 .table th.th {
-padding:4px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 }
 
 .table th.th_vertical {
-padding:4px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 text-align:left;

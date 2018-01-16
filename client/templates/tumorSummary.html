@@ -14,7 +14,7 @@
 <div id="list_view">
 {{#each tumors}}
 <div class="redesign_tumor clearfix">
-    <div class="redesign_tumor_type"><span class="arrow"><i class="fas fa-caret-right"></i><i class="fas fa-caret-down"></i></span> {{type}}</div>
+    <div class="redesign_tumor_type" title="Click to expand/collapse"><span class="arrow"><i class="fas fa-caret-right"></i><i class="fas fa-caret-down"></i></span> {{type}}</div>
     <ul class="redesign_tumor_list clearfix">
         {{#each data}}
             {{#if factsObj.facts}} <!-- Don't show empty facts for now, use categoryClass as CSS selectors -->
