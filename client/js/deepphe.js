@@ -504,7 +504,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Function expression to create custom brush handle path
 	var createCustomBrushHandle = function(d) {
-	    var e = +(d.type == "e"),
+	    var e = +(d.type === "e"),
 	        x = e ? 1 : -1,
 	        y = overviewHeight / 2;
 
@@ -538,15 +538,21 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
     // Hide the custom brush handles on mousedown ( the start of a brush gesture)
     var hideCustomBrushHandles = function() {
-        var selection = d3.brushSelection(overviewBrush.node());
-        var mousePosition = d3.mouse(this);
-        
-        // Only hide the brush handles when mouse clicks outside of the selection
-        // Don't hide the handles when clicks inside the selected brush area
-        if (mousePosition[0] == selection[0] || mousePosition[0] == selection[1]) {
-            customBrushHandle
-		    	.style("display", "none");
-        }
+        // Check if an user event exists
+        // Otherwise we'll see the following error in firefox:
+        // TypeError: Value being assigned to SVGPoint.x is not a finite floating-point value.
+        // Because itss not supported to call d3.mouse when there is not a current user event.
+        if (d3.event.sourceEvent) {
+        	var selection = d3.brushSelection(overviewBrush.node());
+        	var mousePosition = d3.mouse(this);
+	        
+	        // Only hide the brush handles when mouse clicks outside of the selection
+	        // Don't hide the handles when clicks inside the selected brush area
+	        if (mousePosition[0] === selection[0] || mousePosition[0] === selection[1]) {
+	            customBrushHandle
+			    	.style("display", "none");
+	        }
+        }  
     };
 
 	// Function expression to create brush function redraw with selection
