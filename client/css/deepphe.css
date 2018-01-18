@@ -54,7 +54,6 @@ padding:5px;
 border-left:3px solid #D66061;
 }
 
-/* Cancer summary */
 .cancer_fact_list,
 .cancer_tnm_fact_list,
 .tumor_fact_list {
@@ -65,21 +64,44 @@ margin:0;
 
 .cancer_tnm_fact_list {
 float:left;
+margin-right:10px;
+background:#fff;
+border:1px solid #dbdbdb;
+padding:2px 5px;
+}
+
+.tnm {
+margin-bottom:20px;
+}
+
+.tnm_by_type {
+display:inline-block;
 margin-right:20px;
 }
 
 .tnm_type {
 float:left;
 margin-right:5px;
+font-weight: bold;
+padding-top:4px;
 }
 
 .cancer_fact_list li,
-.cancer_tnm_fact_list li,
 .tumor_fact_list li {
 float:left;
-margin-right:20px;
+margin-right:10px;
 padding:0;
 color:#555;
+}
+
+.cancer_tnm_fact_list li {
+float:left;
+margin-right:10px;
+padding:0;
+}
+
+.cancer_tnm_fact_list li .fact {
+color:#e6550d;
 }
 
 .cancer_fact_list li:last-child,
@@ -120,20 +142,20 @@ margin:10px 0 20px;
 }
 
 .table th.th {
-padding:5px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 }
 
 .table th.th_vertical {
-padding:5px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 /* The text in th are bold and centered by default. */
 text-align:left;
 }
 
 .table td {
-padding:5px; 
+padding:3px; 
 border:1px solid #dbdbdb;
 }
 
@@ -184,10 +206,6 @@ padding:5px 10px;
 .highlighted_report {
 stroke:#ccc !important;
 stroke-width:2px;
-}
-
-.highlighted_fact {
-color:red;
 }
 
 .left {
@@ -348,19 +366,16 @@ color:red;
 
 /* Breast cancer biomarkers, ER, PR, Her2 status */
 .positive {
-font-size:1.3em;
 font-weight:bold;
 color: red;
 }
 
 .negative {
-font-size:1.3em;
 font-weight:bold;
 color: green;
 }
 
 .unknown {
-font-size:1.2em;
 font-weight:bold;
 color: orange;
 }
@@ -412,4 +427,185 @@ margin:0 20px 0 0;
 .fact_detail_list li:last-child,
 .fact_detail_list li ul li:last-child {
 margin-right:0;
+}
+
+
+/* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
+.tumor_summary_title,
+.view_options { /* Align the title and siwtch vertically */
+display:inline-block;
+vertical-align: middle;
+}
+
+/* Hide the table view and expanded arrow as well as all toggleable facts by default */
+#table_view,
+.fa-caret-down,
+.toggleable {
+display:none;
+}
+
+.view_options {
+margin-left:10px;
+}
+
+.view_options input {
+position: absolute !important;
+clip: rect(0, 0, 0, 0);
+height: 1px;
+width: 1px;
+border: 0;
+}
+
+.view_options label {
+float: left;
+}
+
+.view_options label {
+display: inline-block;
+width: 80px;
+background-color: #fff;
+color: rgba(0, 0, 0, 0.6);
+text-align: center;
+font-size: .75em;
+font-weight:normal;
+padding: 3px 10px 2px;
+border: 1px solid #ccc;
+}
+
+.view_options label:hover {
+cursor: pointer;
+}
+
+.view_options input:checked + label {
+background-color: #A5DC86;
+}
+
+.view_options label:first-of-type {
+  border-radius: 8px 0 0 8px;
+}
+
+.view_options label:last-of-type {
+  border-radius: 0 8px 8px 0;
+}
+
+/* Tumor list */
+#list_view {
+margin:10px 0;
+background-color:#fff;
+border:1px solid #dbdbdb;
+padding:10px 5px;
+}
+
+.list_view_tumor {
+margin-bottom:5px;
+}
+
+.arrow {
+display: inline-block;
+width:8px;
+}
+
+.fa-caret-right {
+color:#1f77b4;
+}
+
+.fa-caret-down {
+color:#e6550d;
+}
+
+.list_view_tumor_type {
+width:127px;
+float:left;
+font-weight:bold;
+margin-right:5px;
+cursor:pointer;
+}
+
+.list_view_tumor_list {
+width:716px;
+float:left;
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.list_view_tumor_list li:last-child {
+margin-right:0;
+}
+
+.list_view_tumor_list_item {
+float:left;
+height:15px;
+margin-right:3px;
+margin-bottom: 3px;
+padding:3px 2px 1px;
+color:#333;}
+
+.list_view_tumor_list_item:hover {
+background-color:#FFDC00;
+}
+
+.list_view_tumor_fact_list .fact {
+color:#333;
+}
+
+
+.highlighted_fact {
+font-style: italic;
+color:red!important;
+}
+
+.list_view_tumor_fact_list {
+display:inline;
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.list_view_tumor_fact_list li {
+display:inline;
+margin-right:3px;
+}
+
+/* Colors from http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
+.hasBodySite {
+background:#9edae5;
+}
+
+.hasDiagnosis {
+background:#aec7e8;
+}
+
+.hasERStatus,
+.hasPRStatus,
+.hasHer2Status,
+.hasKi67Status {
+background:#cedb9c;
+}
+
+.hasTumorSize,
+.hasRadiologicTumorSize,
+.hasPathologicTumorSize,
+.hasPathologicAggregateTumorSize {
+background:#fdd0a2;
+}
+
+.hasNuclearGrade {
+background:#98df8a;
+}
+
+.hasCancerCellLine {
+background:#f7b6d2;
+}
+
+.hasHistologicType {
+background:#c5b0d5;
+}
+
+.hasTumorExtent {
+background:#e7cb94;
+}
+
+.unspecified {
+background:#f3f2f2;
 }
