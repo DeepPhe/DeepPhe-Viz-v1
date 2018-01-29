@@ -43,6 +43,25 @@ list-style-type: none;
 padding:5px 10px;
 }
 
+.patients_list li .cancer_stage_list {
+list-style-type: none;
+padding:0;
+margin:0;
+display:inline-block;
+}
+
+.patients_list li .cancer_stage_list li {
+display:inline-block;
+padding:0;
+margin:0;
+width:200px;
+margin-right:10px;
+}
+
+.patients_list li .cancer_stage_list li:last-child {
+margin-right:0;
+}
+
 .main {
 padding:15px 20px;
 }
