@@ -249,9 +249,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 
 	// Convert string to date
 	reportData.forEach(function(d) {
-		// Initially d.time is returned as a human-readable string from neo4j
-		// Format the date to a human-readable string first, it takes date instead of string
-		var formattedTimeStr = formatTime(new Date(d.time));
+		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
+		// d.time.slice(0, 19) returns the time string without the time zone part.
+		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
+		var formattedTimeStr = formatTime(new Date(d.time.slice(0, 19)));
 		// Then convert a string back to a date to be used by d3
         d.time = parseTime(formattedTimeStr);
 	});
