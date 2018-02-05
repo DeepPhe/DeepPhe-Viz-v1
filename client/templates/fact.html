@@ -54,12 +54,18 @@
 </ul>
 {{/if}}
 
-{{#if groupedTextMentions}}
+{{#if groupedTextProvenances}}
 <li class="clearfix">
-<span class="fact_detail_label">Text Provenances in Report:</span>
+<span class="fact_detail_label">Text Provenances:</span>
 <ul>
-    {{#each groupedTextMentions}}
-    <li>{{text}} <span class="count">({{count}})</span></li>
+    {{#each groupedTextProvenances}}
+    <li>{{docId}} 
+        <ul>
+        {{#each groupedTexts}}
+            <li>{{text}} <span class="count">({{count}})</span></li>
+        {{/each}}
+        </ul>
+    </li>
     {{/each}}
 </ul>
 </li>
