@@ -44,10 +44,12 @@ function getTumorSummary(patientName, cancerId) {
 }
 
 function highlightMentionedTexts(textMentions, reportText) {
+    console.log(textMentions);
+
     // Sort the textMentions array first based on startOffset
     textMentions.sort(function(a, b) {
         var comp = a.startOffset - b.startOffset;
-        if(comp === 0) {
+        if (comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
             return comp;
@@ -56,7 +58,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 
     var textFragments = [];
 
-    if (textMentions.length === 1){
+    if (textMentions.length === 1) {
         var textMention = textMentions[0];
 
         if (textMention.startOffset === 0) {
