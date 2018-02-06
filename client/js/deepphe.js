@@ -1,3 +1,10 @@
+// Global settings
+var highlighted_report_icon = {
+    offsetX: 5,
+    offsetY: 18,
+    size: 8
+};
+
 
 // Get cancer summary
 function getCancerSummary(patientName) {
@@ -215,20 +222,18 @@ function highlightTimelineReport(reportId) {
     $('#overview_' + reportId).addClass("highlighted_report");
 
     // Add a font awesome icon next to the current report circle
-    var reportMainRadius = 6;
+    // It doesn't work with the "text" element
+    // It works with direct use of "i" element but zooming and brushing won't move the icon
+    // I finally got it work with "foreignObject"
     var circle = d3.select('#main_' + reportId);
-    d3.select(circle.node().parentNode).append("text")
+    d3.select(circle.node().parentNode).append("foreignObject")
         .attr('class', 'main_report_font_awesome_icon')
-        .attr('x', circle.attr("cx"))
-        .attr('y', circle.attr("cy") - reportMainRadius)
-        .attr('width', 6)
-        .attr('height', 6)
-        .style('font-size', '10px')
-        .attr("text-anchor", "middle")
-        .attr('font-family', 'FontAwesome')
-        .text(function(d) {
-            return '\uf107'; // Need to convert HTML/CSS unicode to javascript unicode
-        });
+        .attr('x', circle.attr("cx") - highlighted_report_icon.offsetX)
+        .attr('y', circle.attr("cy") - highlighted_report_icon.offsetY)
+        .attr('width', highlighted_report_icon.size)
+        .attr('height', highlighted_report_icon.size)
+        .append("xhtml:body")
+        .html('<i class="far fa-hand-point-down"></i>');
 }
 
 // Fetch timeline data and render the SVG
@@ -253,13 +258,13 @@ function getTimeline(patientName, svgContainerId) {
 
 // Render the timeline to the target SVG container
 function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
-	//  SVG sizing
-	var margin = {top: 10, right: 20, bottom: 100, left: 180};
-	var width = 860 - margin.left - margin.right;
-	var height = 220 - margin.top - margin.bottom;
-
-	var overviewMargin = {top: 150, right: 20, bottom: 10, left: 180};
-	var overviewHeight = 200 - overviewMargin.top - overviewMargin.bottom;
+	//  SVG sizing, use numOfReportTypes to determine the height of main area
+	var numOfReportTypes = Object.keys(typeCounts).length;
+	var margin = {top: 10, right: 20, bottom: 10, left: 180};
+	var width = 660;
+	var height = 40*numOfReportTypes;
+    var pad = 35;
+	var overviewHeight = 10*numOfReportTypes;
 
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
@@ -306,8 +311,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
     // SVG
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", height + margin.top + margin.bottom);
+	    .attr("width", margin.left + width + margin.right)
+	    .attr("height", margin.top + height + pad + overviewHeight + pad + margin.bottom);
 
 	// Specify a specific region of an element to display, rather than showing the complete area
 	svg.append("defs").append("clipPath")
@@ -340,10 +345,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
         // Also need to move the font awesome icons accordlingly
         main.selectAll(".main_report_font_awesome_icon")
 			.attr("x", function(d) { 
-				return mainX(d.time); 
+				console.log(d);
+				return mainX(d.time) - highlighted_report_icon.offsetX; 
 			})
 			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) - reportMainRadius;
+				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
 			});
 
 	    // Also update the main x axis
@@ -387,7 +393,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + overviewMargin.left + "," + overviewMargin.top + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (height + pad) + ")");
 
 	// Up to 10 color categories for 10 types of reports
 	var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
@@ -622,10 +628,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
         // Also need to move the font awesome icons accordlingly
         main.selectAll(".main_report_font_awesome_icon")
 			.attr("x", function(d) { 
-				return mainX(d.time); 
+				return mainX(d.time) - highlighted_report_icon.offsetX; 
 			})
 			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) - reportMainRadius;
+				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
 			});
 
 	    // Update the main x axis
