@@ -146,7 +146,7 @@ function getFact(factId) {
 
 			reportIds.forEach(function(id) {
 				console.log(id);
-                highlightTimelineReport(id);
+                highlightReportBasedOnFact(id);
 			});
 		    
 		    //getReport(reportId, textProvenancesArr);
@@ -204,23 +204,20 @@ function getReport(reportId, textProvenancesArr) {
 	});
 }
 
-function highlightMentionedTerms(textProvenancesArr, renderedMentionedTerms) {
+// Highlight the selected report circle in timeline
+function highlightSelectedTimelineReport(reportId) {
+    var css = "selected_report";
+    // Remove previous added highlighting classes
+    $('.main_report').removeClass(css);
+    $('.overview_report').removeClass(css);
 
-    textProvenancesArr.forEach(function(item) {
-    	console.log(renderedMentionedTerms);
-    });
+    // Highlight the selected circle in both overview and main areas
+    $('#main_' + reportId).addClass(css);
+    $('#overview_' + reportId).addClass(css);
 }
 
-// Highlight the selected report circle in timeline
-function highlightTimelineReport(reportId) {
-    // Remove previous added highlighting classes
-    $('.main_report').removeClass("highlighted_report");
-    $('.overview_report').removeClass("highlighted_report");
-
-    // Also highlight the circle in both overview and main areas
-    $('#main_' + reportId).addClass("highlighted_report");
-    $('#overview_' + reportId).addClass("highlighted_report");
-
+// Highlight the selected report circle with font awesome icon in timeline
+function highlightReportBasedOnFact(reportId) {
     // Add a font awesome icon next to the current report circle
     // It doesn't work with the "text" element
     // It works with direct use of "i" element but zooming and brushing won't move the icon
@@ -446,7 +443,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .on("click", function(d) {
             // Highlight the selected report circle
             // d.id has no prefix, just raw id
-            highlightTimelineReport(d.id);
+            highlightSelectedTimelineReport(d.id);
 
             // And show the report content
             // No text mentions array needed in this case

@@ -222,9 +222,9 @@ width:100px;
 padding:5px 10px;
 }
 
-.highlighted_report {
+.selected_report {
 stroke:#ccc !important;
-stroke-width:2px;
+stroke-width:4px;
 }
 
 .left {
