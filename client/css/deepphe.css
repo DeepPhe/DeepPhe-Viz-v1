@@ -440,12 +440,28 @@ margin:5px 20px 5px 0;
 
 .fact_detail_list li ul li {
 float:left;
-margin:0 20px 0 0;
+margin:0 10px 0 0;
 }
 
 .fact_detail_list li:last-child,
 .fact_detail_list li ul li:last-child {
 margin-right:0;
+}
+
+/* Grouped text mentions */
+.grouped_text_provenance {
+margin-right:20px !important;
+}
+
+.grouped_text_provenance:last-child {
+margin-right:0;
+}
+
+.report_id {
+float:left;
+display:inline-block;
+font-weight:bold;
+margin-right:10px;
 }
 
 
@@ -628,3 +644,4 @@ background:#e7cb94;
 .unspecified {
 background:#f3f2f2;
 }
+

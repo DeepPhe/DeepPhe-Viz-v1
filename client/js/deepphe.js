@@ -127,16 +127,22 @@ function getFact(factId) {
 	    $('#fact_detail').slideDown();
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
-	    var reportId = response.reportId;
+	    var reportIds = response.reportIds;
 		var textProvenancesArr = response.textProvenancesArr;
 
 		// Is it possible to have multiple associated reports?
 
-		// Highlight report ID in timeline there's text mention
-		// and show the highlighted text mentions in report content
-		if (reportId !== '') {
-		    highlightTimelineReport(reportId);
-		    getReport(reportId, textProvenancesArr);
+		// Highlight report circles in timeline
+		if (reportIds.length > 0) {
+			// Remove previous added font awesome icons
+			$('.main_report_font_awesome_icon').remove();
+
+			reportIds.forEach(function(id) {
+				console.log(id);
+                highlightTimelineReport(id);
+			});
+		    
+		    //getReport(reportId, textProvenancesArr);
 		}
 	});
 
@@ -207,6 +213,19 @@ function highlightTimelineReport(reportId) {
     // Also highlight the circle in both overview and main areas
     $('#main_' + reportId).addClass("highlighted_report");
     $('#overview_' + reportId).addClass("highlighted_report");
+
+    // Add a font awesome icon next to the current report circle
+    var reportMainRadius = 6;
+    var circle = d3.select('#main_' + reportId);
+    d3.select(circle.node().parentNode).append("text")
+        .attr('class', 'main_report_font_awesome_icon')
+        .attr('x', circle.attr("cx") - reportMainRadius)
+        .attr('y', circle.attr("cy") - reportMainRadius)
+        .attr('font-family', 'FontAwesome')
+        .style('font-size', '11px')
+        .text(function(d) {
+            return '\uf107'; // Need to convert HTML/CSS unicode to javascript unicode
+        });
 }
 
 // Fetch timeline data and render the SVG
@@ -389,12 +408,13 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
     // Report circles in main area
 	mainReports.selectAll(".main_report")
 	    .data(reportData)
-	    .enter().append("circle")
+	    .enter().append("g")
+	    .append("circle")
+	    .attr('class', 'main_report')
 	    .attr("id", function(d) {
             // Prefix with "main_"
             return "main_" + d.id;
 	    })
-	    .attr('class', 'main_report')
 	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
 	    	return mainX(d.time); 
@@ -470,7 +490,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	// No need to use clipping path since the overview area contains all the report dots
 	overview.append("g").selectAll(".overview_report")
 		.data(reportData)
-		.enter().append("circle")
+		.enter().append("g").append("circle")
 		.attr('id', function(d) {
 			// Prefix with "overview_"
             return "overview_" + d.id;
