@@ -334,6 +334,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 				return mainY(getIndex(d.type) + .5);
 			});
 
+        // Also need to move the font awesome icons accordlingly
+        main.selectAll(".main_report_font_awesome_icon")
+			.attr("x", function(d) { 
+				return mainX(d.time) - reportMainRadius; 
+			})
+			.attr("y", function(d) { 
+				return mainY(getIndex(d.type) + .5) - reportMainRadius;
+			});
+
 	    // Also update the main x axis
 		main.select(".x-axis").call(xAxis);
 
@@ -607,6 +616,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 				return reportColor(d.type);
 			});
 
+        // Also need to move the font awesome icons accordlingly
+        main.selectAll(".main_report_font_awesome_icon")
+			.attr("x", function(d) { 
+				return mainX(d.time) - reportMainRadius; 
+			})
+			.attr("y", function(d) { 
+				return mainY(getIndex(d.type) + .5) - reportMainRadius;
+			});
+			
 	    // Update the main x axis
 		main.select(".x-axis").call(xAxis);
 
