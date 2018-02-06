@@ -219,10 +219,13 @@ function highlightTimelineReport(reportId) {
     var circle = d3.select('#main_' + reportId);
     d3.select(circle.node().parentNode).append("text")
         .attr('class', 'main_report_font_awesome_icon')
-        .attr('x', circle.attr("cx") - reportMainRadius)
+        .attr('x', circle.attr("cx"))
         .attr('y', circle.attr("cy") - reportMainRadius)
+        .attr('width', 6)
+        .attr('height', 6)
+        .style('font-size', '10px')
+        .attr("text-anchor", "middle")
         .attr('font-family', 'FontAwesome')
-        .style('font-size', '11px')
         .text(function(d) {
             return '\uf107'; // Need to convert HTML/CSS unicode to javascript unicode
         });
@@ -337,7 +340,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
         // Also need to move the font awesome icons accordlingly
         main.selectAll(".main_report_font_awesome_icon")
 			.attr("x", function(d) { 
-				return mainX(d.time) - reportMainRadius; 
+				return mainX(d.time); 
 			})
 			.attr("y", function(d) { 
 				return mainY(getIndex(d.type) + .5) - reportMainRadius;
@@ -619,12 +622,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
         // Also need to move the font awesome icons accordlingly
         main.selectAll(".main_report_font_awesome_icon")
 			.attr("x", function(d) { 
-				return mainX(d.time) - reportMainRadius; 
+				return mainX(d.time); 
 			})
 			.attr("y", function(d) { 
 				return mainY(getIndex(d.type) + .5) - reportMainRadius;
 			});
-			
+
 	    // Update the main x axis
 		main.select(".x-axis").call(xAxis);
 
