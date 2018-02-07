@@ -1,6 +1,6 @@
 // Global settings
 var highlighted_report_icon = {
-    offsetX: 6,
+    offsetX: 5,
     offsetY: 18,
     size: 8
 };
@@ -142,7 +142,7 @@ function getFact(factId) {
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
 			// Remove previous added font awesome icons
-			$('.main_report_font_awesome_icon').remove();
+			$('.fact_directed_report_icon').remove();
 
 			reportIds.forEach(function(id) {
 				console.log(id);
@@ -219,28 +219,36 @@ function highlightSelectedTimelineReport(reportId) {
     $('#overview_' + reportId).addClass(css);
 
     // Add the arrow icon to make it more eye-catching
-    addFontAwesomeIcon(reportId, '<i class="fas fa-arrow-down"></i>', 'selected_report_icon');
+    var circle = d3.select('#main_' + reportId);
+    d3.select(circle.node().parentNode).append("foreignObject")
+        .attr('class', 'selected_report_icon')
+        // Use the unary plus operator (+varname) to convert circle.attr("cx") to number first, 
+        // otherwise they'll be concatenated instead
+        .attr('x', (+circle.attr("cx")) - highlighted_report_icon.offsetX) 
+        .attr('y', (+circle.attr("cy")) + highlighted_report_icon.offsetX)
+        .attr('width', highlighted_report_icon.size)
+        .attr('height', highlighted_report_icon.size)
+        .append("xhtml:body")
+        .html('<i class="far fa-file-alt"></i>');
+
+        console.log(circle.attr("cy") + highlighted_report_icon.offsetY*2);
 }
 
 // Highlight the selected report circle with font awesome icon in timeline
 function highlightReportBasedOnFact(reportId) {
-    addFontAwesomeIcon(reportId, '<i class="far fa-hand-point-down"></i>', 'main_report_font_awesome_icon');
-}
-
-function addFontAwesomeIcon(reportId, faIcon, cssClass) {
     // Add a font awesome icon next to the current report circle
     // It doesn't work with the "text" element
     // It works with direct use of "i" element but zooming and brushing won't move the icon
     // I finally got it work with "foreignObject"
     var circle = d3.select('#main_' + reportId);
     d3.select(circle.node().parentNode).append("foreignObject")
-        .attr('class', cssClass)
-        .attr('x', circle.attr("cx") - highlighted_report_icon.offsetX)
-        .attr('y', circle.attr("cy") - highlighted_report_icon.offsetY)
+        .attr('class', 'fact_directed_report_icon')
+        .attr('x', (+circle.attr("cx")) - highlighted_report_icon.offsetX)
+        .attr('y', (+circle.attr("cy")) - highlighted_report_icon.offsetY)
         .attr('width', highlighted_report_icon.size)
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
-        .html(faIcon);
+        .html('<i class="far fa-hand-point-down"></i>');
 }
 
 // Fetch timeline data and render the SVG
@@ -328,6 +336,40 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .attr("width", width)
 	    .attr("height", height);
 
+    var updateMainArea = function() {
+    	// Update main area
+		main.selectAll(".main_report")
+			.attr("cx", function(d) { 
+				return mainX(d.time); 
+			})
+			.attr("cy", function(d) { 
+				return mainY(getIndex(d.type) + .5); 
+			})
+			.style("fill", function(d) {
+				return reportColor(d.type);
+			});
+
+        // Also need to move the font awesome icons accordlingly
+        main.selectAll(".fact_directed_report_icon")
+			.attr("x", function(d) { 
+				return mainX(d.time) - highlighted_report_icon.offsetX; 
+			})
+			.attr("y", function(d) { 
+				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
+			});
+
+        main.selectAll(".selected_report_icon")
+			.attr("x", function(d) { 
+				return mainX(d.time) - highlighted_report_icon.offsetX; 
+			})
+			.attr("y", function(d) { 
+				return mainY(getIndex(d.type) + .5) + highlighted_report_icon.offsetX; // Use offsetX
+			});
+
+	    // Update the main x axis
+		main.select(".x-axis").call(xAxis);
+    };
+
 	// Function expression to handle mouse wheel zoom or drag on main area
 	// Need to define this before defining zoom since it's function expression instead of function declariation
 	var zoomed = function() {
@@ -341,26 +383,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		mainX.domain(transform.rescaleX(overviewX).domain());
 
 	    // Update the report dots in main area
-		main.selectAll(".main_report")
-			.attr("cx", function(d) { 
-				return mainX(d.time); 
-			})
-			.attr("cy", function(d) { 
-				return mainY(getIndex(d.type) + .5);
-			});
-
-        // Also need to move the font awesome icons accordlingly
-        main.selectAll(".main_report_font_awesome_icon")
-			.attr("x", function(d) { 
-				console.log(d);
-				return mainX(d.time) - highlighted_report_icon.offsetX; 
-			})
-			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
-			});
-
-	    // Also update the main x axis
-		main.select(".x-axis").call(xAxis);
+		updateMainArea();
 
 	    // Update the overview as moving
 		overview.select(".brush").call(brush.move, mainX.range().map(transform.invertX, transform));
@@ -620,29 +643,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
 
-	    // Update main area
-		main.selectAll(".main_report")
-			.attr("cx", function(d) { 
-				return mainX(d.time); 
-			})
-			.attr("cy", function(d) { 
-				return mainY(getIndex(d.type) + .5); 
-			})
-			.style("fill", function(d) {
-				return reportColor(d.type);
-			});
-
-        // Also need to move the font awesome icons accordlingly
-        main.selectAll(".main_report_font_awesome_icon")
-			.attr("x", function(d) { 
-				return mainX(d.time) - highlighted_report_icon.offsetX; 
-			})
-			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
-			});
-
-	    // Update the main x axis
-		main.select(".x-axis").call(xAxis);
+	    updateMainArea();
 
 	    // Zoom the main main area
 		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
