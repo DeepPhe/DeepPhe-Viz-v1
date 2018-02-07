@@ -1,6 +1,6 @@
 // Global settings
 var highlighted_report_icon = {
-    offsetX: 5,
+    offsetX: 6,
     offsetY: 18,
     size: 8
 };
@@ -211,26 +211,36 @@ function highlightSelectedTimelineReport(reportId) {
     $('.main_report').removeClass(css);
     $('.overview_report').removeClass(css);
 
+    // Remove previous added font awesome icon
+	$('.selected_report_icon').remove();
+
     // Highlight the selected circle in both overview and main areas
     $('#main_' + reportId).addClass(css);
     $('#overview_' + reportId).addClass(css);
+
+    // Add the arrow icon to make it more eye-catching
+    addFontAwesomeIcon(reportId, '<i class="fas fa-arrow-down"></i>', 'selected_report_icon');
 }
 
 // Highlight the selected report circle with font awesome icon in timeline
 function highlightReportBasedOnFact(reportId) {
+    addFontAwesomeIcon(reportId, '<i class="far fa-hand-point-down"></i>', 'main_report_font_awesome_icon');
+}
+
+function addFontAwesomeIcon(reportId, faIcon, cssClass) {
     // Add a font awesome icon next to the current report circle
     // It doesn't work with the "text" element
     // It works with direct use of "i" element but zooming and brushing won't move the icon
     // I finally got it work with "foreignObject"
     var circle = d3.select('#main_' + reportId);
     d3.select(circle.node().parentNode).append("foreignObject")
-        .attr('class', 'main_report_font_awesome_icon')
+        .attr('class', cssClass)
         .attr('x', circle.attr("cx") - highlighted_report_icon.offsetX)
         .attr('y', circle.attr("cy") - highlighted_report_icon.offsetY)
         .attr('width', highlighted_report_icon.size)
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
-        .html('<i class="far fa-hand-point-down"></i>');
+        .html(faIcon);
 }
 
 // Fetch timeline data and render the SVG
