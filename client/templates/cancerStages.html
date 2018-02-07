@@ -1,0 +1,14 @@
+<div>
+
+{{#if stages}}
+Show all patients of the chosen cancer stage:
+
+<select>
+  <option value="">Select cancer stage...</option>
+  {{#each stages}}
+    <option value="{{name}}">{{name}}</option>
+  {{/each}}
+</select>
+{{/if}}
+
+</div>

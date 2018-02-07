@@ -2,6 +2,15 @@
 <span class="logo">DeepPhe-Viz | </span> <span class="current_patient">All Patients</span>
 </div>
 
+
+<div id="cancerstages"></div>
+
+
+
+
+
+
+
 <ul class="patients_list">
   {{#each patients}}
     <li class="clearfix">
@@ -15,3 +24,12 @@
     </li>
   {{/each}}
 </ul>
+
+
+<script type="text/javascript">
+var baseUri = '{{baseUri}}';
+
+// Get all cancer stages
+getCancerStages();
+</script>
+

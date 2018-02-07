@@ -5,6 +5,26 @@ var highlighted_report_icon = {
     size: 8
 };
 
+function getCancerStages() {
+    // Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/cancerstages',
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	});
+
+	jqxhr.done(function(response) {
+	    //console.log(response);
+
+	    // Render response
+	    $('#cancerstages').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get cancer stages");
+	});
+}
 
 // Get cancer summary
 function getCancerSummary(patientName) {
