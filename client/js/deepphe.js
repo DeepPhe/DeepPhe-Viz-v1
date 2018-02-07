@@ -26,6 +26,30 @@ function getCancerStages() {
 	});
 }
 
+// Filter the patients by given cancer stage
+// without stage, get all patients
+// Must use encodeURIComponent() otherwise may have URI parsing issue
+function getCohort(stage) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/cohort/' + encodeURIComponent(stage), // stage is optional
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	});
+
+	jqxhr.done(function(response) {
+	    //console.log(response);
+
+	    // Render response
+	    $('#cohort').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get cohort");
+	});
+}
+
 // Get cancer summary
 function getCancerSummary(patientName) {
 	// Separate the ajax request with callbacks

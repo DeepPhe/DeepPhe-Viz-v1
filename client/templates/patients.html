@@ -6,24 +6,12 @@
 <div id="cancerstages"></div>
 
 
+<div id="cohort"></div>
 
 
 
 
 
-<ul class="patients_list">
-  {{#each patients}}
-    <li class="clearfix">
-    {{! The ../ path segment references the parent template scope that should be what you want. }}
-    <a href="{{../baseUri}}/patients/{{name}}">{{name}}</a>:
-    <ul class="cancer_stage_list">
-       {{#each cancerStage}}
-           <li class="cancer_stage">{{this}}</li>
-       {{/each}}
-    </ul>
-    </li>
-  {{/each}}
-</ul>
 
 
 <script type="text/javascript">
@@ -31,5 +19,15 @@ var baseUri = '{{baseUri}}';
 
 // Get all cancer stages
 getCancerStages();
+
+// Use empty string to get all patients by default
+getCohort('');
+
+$(document).on("change", "#select_cancer_stage", function() {
+    //console.log(this.value);
+    getCohort(this.value);
+});
+
+
 </script>
 
