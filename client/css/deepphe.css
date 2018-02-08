@@ -26,6 +26,17 @@ font-size:20px;
 font-weight: bold;
 }
 
+.main {
+padding:15px 20px;
+}
+
+.section_heading {
+font-size:16px;
+font-weight: bold;
+padding:5px;
+border-left:3px solid #D66061;
+}
+
 .current_patient {
 font-size:20px;
 font-weight: bold;
@@ -35,8 +46,21 @@ font-weight: bold;
 color:#fff;
 }
 
+/* patients cohort filtering */
+.cohort_filter {
+margin:10px;
+}
+
+.form_select {
+padding: 0.5em;
+height: 2.3125em;
+border: 1px solid #ccc;
+}
+
 .patients_list{
 list-style-type: none;
+margin:0;
+padding:0;
 }
 
 .patients_list li {
@@ -60,17 +84,6 @@ margin-right:10px;
 
 .patients_list li .cancer_stage_list li:last-child {
 margin-right:0;
-}
-
-.main {
-padding:15px 20px;
-}
-
-.section_heading {
-font-size:16px;
-font-weight: bold;
-padding:5px;
-border-left:3px solid #D66061;
 }
 
 .cancer_fact_list,

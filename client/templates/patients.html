@@ -2,13 +2,14 @@
 <span class="logo">DeepPhe-Viz | </span> <span class="current_patient">All Patients</span>
 </div>
 
-
+<div class="main">
+  
 <div id="cancerstages"></div>
 
 
 <div id="cohort"></div>
 
-
+</div>
 
 
 
@@ -20,8 +21,8 @@ var baseUri = '{{baseUri}}';
 // Get all cancer stages
 getCancerStages();
 
-// Use empty string to get all patients by default
-getCohort('');
+// Show all patients by default
+getCohort();
 
 $(document).on("change", "#select_cancer_stage", function() {
     //console.log(this.value);

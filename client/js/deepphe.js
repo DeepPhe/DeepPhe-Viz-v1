@@ -30,9 +30,13 @@ function getCancerStages() {
 // without stage, get all patients
 // Must use encodeURIComponent() otherwise may have URI parsing issue
 function getCohort(stage) {
+	// stage is optional
+	// undefined means a variable has been declared but has not yet been assigned a value
+	var url = (typeof(stage) === 'undefined') ? '/cohort' : '/cohort/' + encodeURIComponent(stage);
+
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/cohort/' + encodeURIComponent(stage), // stage is optional
+	    url: baseUri + url, 
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
