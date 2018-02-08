@@ -326,7 +326,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	var margin = {top: 10, right: 20, bottom: 10, left: 180};
 	var width = 660;
 	var height = 40*numOfReportTypes;
-    var pad = 35;
+    var pad = 30;
 	var overviewHeight = 10*numOfReportTypes;
 
     var reportMainRadius = 6;
@@ -471,7 +471,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + height + pad) + ")");
 
 	// Up to 10 color categories for 10 types of reports
 	var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
