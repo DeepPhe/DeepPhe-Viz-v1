@@ -595,10 +595,10 @@ background-color:#FFDC00;
 color:#333;
 }
 
-
 .highlighted_fact {
 font-style: italic;
 color:red!important;
+text-decoration: underline;
 }
 
 .list_view_tumor_fact_list {
