@@ -273,6 +273,7 @@ margin:10px 0 0 10px;
 }
 
 #report_text {
+position: relative; /* Must explicitly specify the position of this dive for dynamic scrolling */
 float:left;
 width:653px;
 height:500px;
@@ -293,25 +294,23 @@ padding:0;
 margin:0;
 }
 
-.mentioned_terms_list li {
+.report_mentioned_term {
 float:left;
 margin:0 5px 5px 0;
 padding:3px 2px 0;
 border:1px solid #dbdbdb;
+cursor:pointer;
 background-color:#fff;
 color:#75438a;
 }
 
-.fact_mentioned_term {
-background: #fff;
-}
-
-.fact_mentioned_term > .mentioned_term {
-color:#f6941e;
-}
-
-.mentioned_terms_list li:last-child {
+.mentioned_terms_list:last-child {
 margin-right:0;
+}
+
+.current_mentioned_term {
+background: #fff;
+color:#f6941e;
 }
 
 .count {
@@ -319,12 +318,11 @@ font-size: .85em;
 font-family: serif;
 }
 
-.highlighted_text {
+.highlighted_term {
 background-color:yellow;
 color:#222;
 /* 400 is the same as normal, and 700 is the same as bold */
 font-weight: 600;
-padding:2px;
 }
 
 

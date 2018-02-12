@@ -1,10 +1,6 @@
 
 <ul class="mentioned_terms_list">
     {{#each mentionedTerms}}
-	    {{#if factMention}}
-	        <li class="fact_mentioned_term"><span class="mentioned_term">{{text}}</span> <span class="count">({{count}})</span></li>
-	    {{else}}
-	        <li>{{text}} <span class="count">({{count}})</span></li>
-	    {{/if}}
+	    <li class="report_mentioned_term" data-start="{{startOffset}}" data-end="{{endOffset}}">{{text}}</li>
     {{/each}}
 </ul>

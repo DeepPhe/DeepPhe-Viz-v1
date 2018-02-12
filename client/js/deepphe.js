@@ -99,7 +99,7 @@ function getTumorSummary(patientName, cancerId) {
 }
 
 function highlightMentionedTexts(textMentions, reportText) {
-    console.log(textMentions);
+    var cssClass = "highlighted_term";
 
     // Sort the textMentions array first based on startOffset
     textMentions.sort(function(a, b) {
@@ -122,7 +122,7 @@ function highlightMentionedTexts(textMentions, reportText) {
             textFragments.push(reportText.substring(0, textMention.startOffset));
         }
 
-        textFragments.push('<span class="highlighted_text">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+        textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
         textFragments.push(reportText.substring(textMention.endOffset));
     } else {
         var lastValidTMIndex = 0;
@@ -147,7 +147,7 @@ function highlightMentionedTexts(textMentions, reportText) {
                 }
             }
 
-            textFragments.push('<span class="highlighted_text">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+            textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
             lastValidTMIndex = i;
         }
         // Push end of the document
@@ -196,8 +196,6 @@ function getFact(factId) {
 				console.log(id);
                 highlightReportBasedOnFact(id);
 			});
-		    
-		    //getReport(reportId, textProvenancesArr);
 		}
 	});
 
@@ -207,22 +205,11 @@ function getFact(factId) {
 }
 
 // Get report content and mentioned terms by ID 
-function getReport(reportId, textProvenancesArr) {
-	// First get a list of mentioned terms without duplicates
-	var mentionedTermsArr = [];
-
-	if (textProvenancesArr.length > 0) {
-		textProvenancesArr.forEach(function(item) {
-	    	if (mentionedTermsArr.indexOf(item.text) === -1) {
-	            mentionedTermsArr.push(item.text);
-	    	}
-	    });
-	}
-	
+function getReport(reportId) {
 	// Separate the ajax request with callbacks
 	// Must use encodeURIComponent() otherwise may have URI parsing issue
 	var jqxhr = $.ajax({
-	    url: baseUri + '/reports/' + reportId + '/' + encodeURIComponent(mentionedTermsArr.join(',')), // second parameter is optional
+	    url: baseUri + '/reports/' + reportId ,
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
@@ -231,12 +218,6 @@ function getReport(reportId, textProvenancesArr) {
 	jqxhr.done(function(response) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
-
-        // Also highlight the mentioned texts if there's any
-        // used by fact only
-        if (textProvenancesArr.length > 0) {
-            reportText = highlightMentionedTexts(textProvenancesArr, reportText);
-        }
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
@@ -527,9 +508,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
             highlightSelectedTimelineReport(d.id);
 
             // And show the report content
-            // No text mentions array needed in this case
-            // so we just pass an empty array
-            getReport(d.id, []);
+            getReport(d.id);
 	    });
 
     // Main area x axis
