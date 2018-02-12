@@ -59,7 +59,8 @@ getTimeline(patientName, "timeline");
 $(document).on("click", "#cancer .fact", function() {
     var cssClass = 'highlighted_fact';
     
-    $('#cancer .fact').removeClass(cssClass);
+    // Remove the previous highlighting
+    $('.fact').removeClass(cssClass);
 
     var factId = $(this).attr('id');
     getFact(factId);
@@ -72,8 +73,8 @@ $(document).on("click", "#cancer .fact", function() {
 $(document).on("click", "#list_view .fact", function() {
     var cssClass = 'highlighted_fact';
 
-    $('#list_view .fact').removeClass(cssClass);
-    $('#table_view .fact').removeClass(cssClass);
+    // Remove the previous highlighting
+    $('.fact').removeClass(cssClass);
 
     // "list_view_{{id}}"
     var id = $(this).attr('id');
@@ -91,8 +92,8 @@ $(document).on("click", "#list_view .fact", function() {
 $(document).on("click", "#table_view .fact", function() {
     var cssClass = 'highlighted_fact';
 
-    $('#list_view .fact').removeClass(cssClass);
-    $('#table_view .fact').removeClass(cssClass);
+    // Remove the previous highlighting
+    $('.fact').removeClass(cssClass);
 
     // "table_view_{{id}}"
     var id = $(this).attr('id');
