@@ -475,6 +475,10 @@ font-weight:bold;
 margin-right:10px;
 }
 
+#report_id {
+margin:10px 10px 0;
+font-weight:bold;
+}
 
 /* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
 .tumor_summary_title,

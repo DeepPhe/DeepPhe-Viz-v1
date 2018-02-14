@@ -219,6 +219,8 @@ function getReport(reportId) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
 
+        $('#report_id').html(reportId);
+
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
 
