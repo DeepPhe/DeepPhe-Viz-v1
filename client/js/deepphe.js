@@ -233,12 +233,16 @@ function getReport(reportId) {
 }
 
 // "REPORT_patient10_report051_NOTE_2076902750" -> "Report051"
+// This utility funtion can also be found in dataProcessor.js
+// But we can't reuse it due to the fact of different componments
+// Functions in deepphe.js are used by client side
+// and functions in dataProcessor.js are used by server side
 function getShortDocId(id) {
-        var partsArr = id.split('_');
-        var str = partsArr[2];
-        // Also capitalize the first letter
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+    var partsArr = id.split('_');
+    var str = partsArr[2];
+    // Also capitalize the first letter
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 // Highlight the selected report circle in timeline
 function highlightSelectedTimelineReport(reportId) {
