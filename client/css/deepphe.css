@@ -266,10 +266,79 @@ border-bottom:1px solid #dbdbdb;
 margin:0 10px;
 }
 
-#report_mentioned_terms {
-width:175px;
+/* Fact detail area */
+#fact_detail {
+margin:10px;
+}
+
+.fact_detail_list,
+.fact_detail_list li ul {
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.fact_detail_list {
+border-bottom:1px solid #dbdbdb;
+padding-bottom:10px;
+}
+
+.fact_detail_list li ul {
 float:left;
-margin:10px 0 0 10px;
+display:inline;
+}
+
+.fact_detail_label {
+float:left;
+font-weight:bold;
+margin-right:5px;
+}
+
+.fact_detail_list li {
+margin:5px 10px;
+}
+
+/* Remove the margin of last child due to the bottom border of fact_detail_list */ 
+.fact_detail_list li:last-child {
+margin-bottom:0;
+}
+
+.fact_detail_list li ul li {
+float:left;
+margin:0 10px 0 0;
+}
+
+.fact_detail_list li:last-child,
+.fact_detail_list li ul li:last-child {
+margin-right:0;
+}
+
+/* Grouped text mentions */
+.grouped_text_provenance {
+margin-right:20px !important;
+}
+
+.grouped_text_provenance:last-child {
+margin-right:0;
+}
+
+.fact_detail_report_id {
+float:left;
+display:inline-block;
+font-weight:bold;
+margin-right:10px;
+}
+
+
+/* Report content area */
+.report_area_left {
+width:165px;
+float:left;
+padding:10px 5px 10px 10px;
+}
+
+#report_id {
+margin-bottom:10px;
 }
 
 #report_text {
@@ -277,7 +346,7 @@ position: relative; /* Must explicitly specify the position of this dive for dyn
 float:left;
 width:653px;
 height:500px;
-padding:10px;
+padding:10px 10px 10px 5px;
 overflow-y: scroll;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
 font-weight: normal;
@@ -286,11 +355,6 @@ text-align: left;
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
 white-space:pre-wrap;
 }
-
-#report_id {
-margin:10px 20px 0 195px;
-}
-
 
 .display_report_id {
 margin-left:3px;
@@ -418,69 +482,6 @@ color: green;
 .unknown {
 font-weight:bold;
 color: orange;
-}
-
-
-#fact_detail {
-margin:10px;
-}
-
-.fact_detail_list,
-.fact_detail_list li ul {
-list-style-type: none;
-padding:0;
-margin:0;
-}
-
-.fact_detail_list {
-border-bottom:1px solid #dbdbdb;
-padding-bottom:10px;
-}
-
-.fact_detail_list li ul {
-float:left;
-display:inline;
-}
-
-.fact_detail_label {
-float:left;
-font-weight:bold;
-margin-right:5px;
-}
-
-.fact_detail_list li {
-margin:5px 10px;
-}
-
-/* Remove the margin of last child due to the bottom border of fact_detail_list */ 
-.fact_detail_list li:last-child {
-margin-bottom:0;
-}
-
-.fact_detail_list li ul li {
-float:left;
-margin:0 10px 0 0;
-}
-
-.fact_detail_list li:last-child,
-.fact_detail_list li ul li:last-child {
-margin-right:0;
-}
-
-/* Grouped text mentions */
-.grouped_text_provenance {
-margin-right:20px !important;
-}
-
-.grouped_text_provenance:last-child {
-margin-right:0;
-}
-
-.fact_detail_report_id {
-float:left;
-display:inline-block;
-font-weight:bold;
-margin-right:10px;
 }
 
 

@@ -216,7 +216,7 @@ function getReport(reportId) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
 
-        $('#report_id').html('<i class="far fa-file-alt"></i><span class="display_report_id">' + getShortDocId(reportId) + '</span>');
+        $('#report_id').html('<i class="fas fa-file-alt"></i><span class="display_report_id">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
@@ -269,7 +269,7 @@ function highlightSelectedTimelineReport(reportId) {
         .attr('width', highlighted_report_icon.size)
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
-        .html('<i class="far fa-file-alt"></i>');
+        .html('<i class="fas fa-file-alt"></i>');
 
         console.log(circle.attr("cy") + highlighted_report_icon.offsetY*2);
 }
@@ -288,7 +288,7 @@ function highlightReportBasedOnFact(reportId) {
         .attr('width', highlighted_report_icon.size)
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
-        .html('<i class="fas fa-arrow-down"></i>');
+        .html('<i class="far fa-file"></i>');
 }
 
 // Fetch timeline data and render the SVG
