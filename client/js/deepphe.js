@@ -232,11 +232,10 @@ function getReport(reportId) {
 	});
 }
 
-// "REPORT_patient10_report051_NOTE_2076902750" -> "report051_NOTE_2076902750"
+// "REPORT_patient10_report051_NOTE_2076902750" -> "Report051"
 function getShortDocId(id) {
         var partsArr = id.split('_');
-        var newPartsArr = partsArr.slice(2);
-        var str = newPartsArr.join('_');
+        var str = partsArr[2];
         // Also capitalize the first letter
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
