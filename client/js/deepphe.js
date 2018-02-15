@@ -219,7 +219,7 @@ function getReport(reportId) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
 
-        $('#report_id').html(reportId);
+        $('#report_id').html('<i class="far fa-file-alt"></i><span class="display_report_id">' + reportId + '</span>');
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
@@ -279,7 +279,7 @@ function highlightReportBasedOnFact(reportId) {
         .attr('width', highlighted_report_icon.size)
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
-        .html('<i class="far fa-hand-point-down"></i>');
+        .html('<i class="fas fa-arrow-down"></i>');
 }
 
 // Fetch timeline data and render the SVG

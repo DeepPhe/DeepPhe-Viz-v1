@@ -263,7 +263,7 @@ background-color:#fff;
 
 .divider {
 border-bottom:1px solid #dbdbdb;
-margin:0 60px 5px;
+margin:0 20px 5px;
 }
 
 #report_mentioned_terms {
@@ -285,6 +285,16 @@ text-align: left;
 /* Whitespace is preserved by the browser. Text will wrap when necessary, and on line breaks */
 /* Using <pre> will cause horizontal scroll bar. We use CSS instead for a better rendering. */
 white-space:pre-wrap;
+}
+
+#report_id {
+margin:10px 20px 0 195px;
+}
+
+
+.display_report_id {
+margin-left:3px;
+font-weight:bold;
 }
 
 .mentioned_terms_list {
@@ -475,10 +485,6 @@ font-weight:bold;
 margin-right:10px;
 }
 
-#report_id {
-margin:10px 10px 0 195px;
-font-weight:bold;
-}
 
 /* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
 .tumor_summary_title,
