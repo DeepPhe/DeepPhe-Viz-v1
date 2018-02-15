@@ -178,9 +178,6 @@ function getFact(factId) {
 	    // Render response
 	    $('#fact_detail').html(response.renderedFact);
 
-        // Show the fact detail
-	    $('#fact_detail').slideDown();
-
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportIds = response.reportIds;
 		var textProvenancesArr = response.textProvenancesArr;
@@ -219,7 +216,7 @@ function getReport(reportId) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
 
-        $('#report_id').html('<i class="far fa-file-alt"></i><span class="display_report_id">' + reportId + '</span>');
+        $('#report_id').html('<i class="far fa-file-alt"></i><span class="display_report_id">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
@@ -234,6 +231,15 @@ function getReport(reportId) {
 	    console.log("Ajax error - can't get report");
 	});
 }
+
+// "REPORT_patient10_report051_NOTE_2076902750" -> "report051_NOTE_2076902750"
+function getShortDocId(id) {
+        var partsArr = id.split('_');
+        var newPartsArr = partsArr.slice(2);
+        var str = newPartsArr.join('_');
+        // Also capitalize the first letter
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
 // Highlight the selected report circle in timeline
 function highlightSelectedTimelineReport(reportId) {

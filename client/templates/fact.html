@@ -2,7 +2,7 @@
 <ul class="fact_detail_list">
 
 <li>
-<span class="fact_detail_label">Name:</span> {{detail.prettyName}}
+<span class="fact_detail_label">Selected Fact Name:</span> {{detail.prettyName}}
 </li>
 
 <li>
@@ -59,7 +59,7 @@
 <span class="fact_detail_label">Text Provenances:</span>
 <ul>
     {{#each groupedTextProvenances}}
-    <li class="grouped_text_provenance"><span class="report_id">{{docId}} --></span>
+    <li class="grouped_text_provenance"><span class="fact_detail_report_id">{{shortDocId}} --></span>
         <ul>
         {{#each groupedTexts}}
             <li>{{text}} <span class="count">({{count}})</span></li>
