@@ -315,7 +315,7 @@ function getTimeline(patientName, svgContainerId) {
 function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, reportData) {
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
-	var margin = {top: 10, right: 20, bottom: 10, left: 180};
+	var margin = {top: 20, right: 20, bottom: 10, left: 180};
 	var legendHeight = 22;
 	var width = 660;
 	var height = 40*numOfReportTypes;
@@ -392,6 +392,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     var episodeLegendGrp = svg.append("g")
         .attr('class', 'episode_legend_group')
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Overview label text
+	episodeLegendGrp.append("text")
+	    .attr("x", -textMargin)
+	    .attr("y", 6) // Relative to the overview area
+	    .attr("dy", ".5ex")
+	    .attr("class", "overview_label")
+	    .text("Episodes:");
 
     // Divider line
     episodeLegendGrp.append("line")
@@ -613,7 +621,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 		.data(reportTypes)
 		.enter().append("text")
 		.text(function(d) {
-			return d + " (" + typeCounts[d] + ")";
+			return d + " (" + typeCounts[d] + "):";
 		})
 		.attr("x", -textMargin) // textMargin on the left of main area
 		.attr("y", function(d, i) {
