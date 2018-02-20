@@ -303,7 +303,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.reportData);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.reportData);
 	});
 
 	jqxhr.fail(function () { 
@@ -312,10 +312,11 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
+function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, reportData) {
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 10, right: 20, bottom: 10, left: 180};
+	var legendHeight = 22;
 	var width = 660;
 	var height = 40*numOfReportTypes;
     var pad = 30;
@@ -347,6 +348,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
     	return reportTypes.indexOf(element);
     };
     
+    // Up to 10 color categories for 10 types of reports
+	var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
+
 	// Main area and overview area share the same width
 	var mainX = d3.scaleTime()
 			.range([0, width]);
@@ -367,7 +371,62 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
-	    .attr("height", margin.top + height + pad + overviewHeight + pad + margin.bottom);
+	    .attr("height", margin.top + legendHeight + height + pad + overviewHeight + pad + margin.bottom);
+
+    // Episode legend
+    var legendRectSize = 10;
+    var legendSpacing = 2;
+    var widthPerLetter = 9;
+    
+    // Dynamically calculate the x posiiton of each lengend rect
+    var lengendX = function(index) {
+    	var x = 0;
+
+    	for (var i = 0; i < index; i++) {
+            x += episodes[i].length * widthPerLetter + i * (legendRectSize + legendSpacing);
+    	}
+
+    	return x;
+    };
+
+    var episodeLegendGrp = svg.append("g")
+        .attr('class', 'episode_legend_group')
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Divider line
+    episodeLegendGrp.append("line")
+		.attr("x1", 0)
+		.attr("y1", legendHeight)
+		.attr("x2", width)
+		.attr("y2", legendHeight)
+		.attr("class", "legend_group_divider");
+
+    var legend = episodeLegendGrp.selectAll('.episode_legend')
+        .data(episodes)
+        .enter()
+        .append('g')
+        .attr('class', 'episode_legend');
+
+    legend.append('rect')
+        .attr('x', function(d, i) {
+            return lengendX(i);
+        })
+        .attr('y', 1)
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .style('fill', function(d) {
+            return reportColor(d);
+        });
+
+    // Legend label text
+    legend.append('text')
+        .attr('x', function(d, i) {
+            return legendRectSize + legendSpacing + lengendX(i);
+        })
+        .attr('y', 10)
+        .text(function(d) { 
+            return d; 
+        });
 
 	// Specify a specific region of an element to display, rather than showing the complete area
 	svg.append("defs").append("clipPath")
@@ -386,7 +445,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 				return mainY(getIndex(d.type) + .5); 
 			})
 			.style("fill", function(d) {
-				return reportColor(d.type);
+				return reportColor(d.episode);
 			});
 
         // Also need to move the font awesome icons accordlingly
@@ -451,22 +510,21 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		.attr("class", "zoom")
 		.attr("width", width)
 		.attr("height", height)
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+		.attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) + ")")
 		.call(zoom);
 
 	// Main area
 	// Create main area after zoom panel, so we can select the report circles
 	var main = svg.append("g")
 	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) + ")");
 
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + height + pad) + ")");
 
-	// Up to 10 color categories for 10 types of reports
-	var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
+	
 
 	// The earliest report date
 	var xMinDate = d3.min(reportData, function(d) { return d.time; });
@@ -511,7 +569,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    	return mainY(getIndex(d.type) + .5); 
 	    })
 	    .style("fill", function(d) {
-			return reportColor(d.type);
+			return reportColor(d.episode);
 		})
 	    .on("click", function(d) {
             // Highlight the selected report circle
@@ -536,7 +594,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 	    .call(xAxis);
 
 	// Report type divider lines
-	main.append("g").selectAll(".report_type_devlider")
+	main.append("g").selectAll(".report_type_divider")
 	    // Don't create line for the first type
 		.data(reportTypes.slice(1, reportTypes.length))
 		.enter().append("line")
@@ -548,7 +606,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 		.attr("y2", function(d, i) {
 			return mainY(i + 1);
 		})
-		.attr("class", "report_type_devlider");
+		.attr("class", "report_type_divider");
 
 	// Report types texts
 	main.append("g").selectAll(".report_type_label")
@@ -590,7 +648,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, reportData) {
 			return overviewY(getIndex(d.type) + .5); 
 		})
 		.style("fill", function(d) {
-			return reportColor(d.type);
+			return reportColor(d.episode);
 		});
 
 	// Overview x axis
