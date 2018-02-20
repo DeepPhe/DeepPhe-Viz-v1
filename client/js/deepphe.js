@@ -303,7 +303,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.reportData);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.reportData);
 	});
 
 	jqxhr.fail(function () { 
@@ -312,7 +312,7 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, reportData) {
+function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, reportData) {
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 10, right: 20, bottom: 10, left: 180};
@@ -376,7 +376,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, repor
     // Episode legend
     var legendRectSize = 10;
     var legendSpacing = 2;
-    var widthPerLetter = 9;
+    var widthPerLetter = 10;
     
     // Dynamically calculate the x posiiton of each lengend rect
     var lengendX = function(index) {
@@ -425,7 +425,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, repor
         })
         .attr('y', 10)
         .text(function(d) { 
-            return d; 
+            return d + " (" + episodeCounts[d] + ")"; 
         });
 
 	// Specify a specific region of an element to display, rather than showing the complete area
