@@ -175,8 +175,8 @@ function getFact(factId) {
 	});
 
 	jqxhr.done(function(response) {
-	    // Render response
-	    $('#fact_detail').html(response.renderedFact);
+	    // Fade in the fact detail. Need to hide the div in order to fade in.
+	    $('#fact_detail').hide().html(response.renderedFact).fadeIn('slow');
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportIds = response.reportIds;
