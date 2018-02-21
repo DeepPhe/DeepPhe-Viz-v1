@@ -277,8 +277,8 @@ function highlightSelectedTimelineReport(reportId) {
         console.log(circle.attr("cy") + highlighted_report_icon.offsetY*2);
 
     // Dim all other reports
-    $('.main_report').css("opacity", "0.2");
-    $('.' + css).css("opacity", "1");
+    $('.main_report').addClass("dim_out");
+    $('.' + css).removeClass("dim_out");
 }
 
 // Highlight the selected report circle with font awesome icon in timeline

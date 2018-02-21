@@ -57,112 +57,114 @@ getTumorSummary(patientName, cancerId);
 // Render timeline to the target container id
 getTimeline(patientName, "timeline");
 
+// Shorthand for $( document ).ready(), recommended
 // We need to attach the click event to the document or the partial view's parent element
 // otherwise we'll have to put the client event listener in the individual view template to get it work
-// Cancer fact click
-$(document).on("click", "#cancer .fact", function() {
-    var cssClass = 'highlighted_fact';
+$(function() {
+    // Cancer fact click
+    $(document).on("click", "#cancer .fact", function() {
+        var cssClass = 'highlighted_fact';
+        
+        // Remove the previous highlighting
+        $('.fact').removeClass(cssClass);
+
+        var factId = $(this).attr('id');
+        getFact(factId);
+
+        // Highlight the clicked fact
+        $(this).addClass(cssClass);
+    });
+
+    // Tumor fact click - List View
+    $(document).on("click", "#list_view .fact", function() {
+        var cssClass = 'highlighted_fact';
+
+        // Remove the previous highlighting
+        $('.fact').removeClass(cssClass);
+
+        // "list_view_{{id}}"
+        var id = $(this).attr('id');
+        var factId = id.substring(10);
+        getFact(factId);
+
+        // Highlight the clicked fact
+        $(this).addClass(cssClass);
+
+        // Also highlight the same fact in table view
+        $("#table_view_"+factId).addClass(cssClass);
+    });
+
+    // Tumor fact click - Table View
+    $(document).on("click", "#table_view .fact", function() {
+        var cssClass = 'highlighted_fact';
+
+        // Remove the previous highlighting
+        $('.fact').removeClass(cssClass);
+
+        // "table_view_{{id}}"
+        var id = $(this).attr('id');
+        var factId = id.substring(11);
+        getFact(factId);
+
+        // Highlight the clicked fact
+        $(this).addClass(cssClass);
+
+        // Also highlight the same fact in list view
+        $("#list_view_"+factId).addClass(cssClass);
+    });
+
+    // Tumor summary
+    $(document).on("click", "#list_view_option", function() {
+        $("#table_view").hide();
+        $("#list_view").show();
+    });
+
+    $(document).on("click", "#table_view_option", function() {
+        $("#list_view").hide();
+        $("#table_view").show();
+    });
+
+    // Toggle for each tumor type under list view
+    $(document).on("click", ".list_view_tumor_type", function() {
+        $(this).next().find(".toggleable").toggle("fast");
+        $(this).find(".fa-caret-right, .fa-caret-down").toggle();
+    });
+
+    // Click the report mentioned term to show it in the report text
+    $(document).on("click", ".report_mentioned_term", function() {
+        // Highlight the selected term in the term list
+        var cssClass = 'current_mentioned_term';
+        // First remove the previously added highlighting
+        $('.report_mentioned_term').removeClass(cssClass);
+        // Then add to this one
+        $(this).addClass(cssClass);
+
+        var reportTextDiv = $("#report_text");
+
+        // Use text() instead of html() to only get the combined text without any html tags
+        var reportText = reportTextDiv.text();
+
+        var textMentions = [];
+
+        var termObj = {};
+        termObj.text = $(this).text();
+        termObj.startOffset = $(this).data('start');
+        termObj.endOffset = $(this).data('end');
+        
+        textMentions.push(termObj);
+
+        // Highlight this term in the report text
+        var highlightedReportText = highlightMentionedTexts(textMentions, reportText);
+
+        // Use html() for html rendering
+        $("#report_text").html(highlightedReportText);
+
+        // Scroll to that position inside the report text div
+        // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
+        // 5 is position tweak
+        reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
+    });
+
+});
     
-    // Remove the previous highlighting
-    $('.fact').removeClass(cssClass);
-
-    var factId = $(this).attr('id');
-    getFact(factId);
-
-    // Highlight the clicked fact
-    $(this).addClass(cssClass);
-});
-
-// Tumor fact click - List View
-$(document).on("click", "#list_view .fact", function() {
-    var cssClass = 'highlighted_fact';
-
-    // Remove the previous highlighting
-    $('.fact').removeClass(cssClass);
-
-    // "list_view_{{id}}"
-    var id = $(this).attr('id');
-    var factId = id.substring(10);
-    getFact(factId);
-
-    // Highlight the clicked fact
-    $(this).addClass(cssClass);
-
-    // Also highlight the same fact in table view
-    $("#table_view_"+factId).addClass(cssClass);
-});
-
-// Tumor fact click - Table View
-$(document).on("click", "#table_view .fact", function() {
-    var cssClass = 'highlighted_fact';
-
-    // Remove the previous highlighting
-    $('.fact').removeClass(cssClass);
-
-    // "table_view_{{id}}"
-    var id = $(this).attr('id');
-    var factId = id.substring(11);
-    getFact(factId);
-
-    // Highlight the clicked fact
-    $(this).addClass(cssClass);
-
-    // Also highlight the same fact in list view
-    $("#list_view_"+factId).addClass(cssClass);
-});
-
-// Tumor summary
-$(document).on("click", "#list_view_option", function() {
-	$("#table_view").hide();
-    $("#list_view").show();
-});
-
-$(document).on("click", "#table_view_option", function() {
-	$("#list_view").hide();
-	$("#table_view").show();
-});
-
-// Toggle for each tumor type under list view
-$(document).on("click", ".list_view_tumor_type", function() {
-    $(this).next().find(".toggleable").toggle("fast");
-    $(this).find(".fa-caret-right, .fa-caret-down").toggle();
-});
-
-
-// Click the report mentioned term to show it in the report text
-$(document).on("click", ".report_mentioned_term", function() {
-    // Highlight the selected term in the term list
-    var cssClass = 'current_mentioned_term';
-    // First remove the previously added highlighting
-    $('.report_mentioned_term').removeClass(cssClass);
-    // Then add to this one
-    $(this).addClass(cssClass);
-
-    var reportTextDiv = $("#report_text");
-
-    // Use text() instead of html() to only get the combined text without any html tags
-    var reportText = reportTextDiv.text();
-
-    var textMentions = [];
-
-    var termObj = {};
-    termObj.text = $(this).text();
-    termObj.startOffset = $(this).data('start');
-    termObj.endOffset = $(this).data('end');
-    
-    textMentions.push(termObj);
-
-    // Highlight this term in the report text
-    var highlightedReportText = highlightMentionedTexts(textMentions, reportText);
-
-    // Use html() for html rendering
-    $("#report_text").html(highlightedReportText);
-
-    // Scroll to that position inside the report text div
-    // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
-    // 5 is position tweak
-    reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
-});
-
 </script>
-

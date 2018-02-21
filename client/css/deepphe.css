@@ -237,7 +237,7 @@ padding:5px 10px;
 
 .selected_report {
 stroke:#ccc !important;
-stroke-width:4px;
+stroke-width:2px;
 }
 
 .left {
@@ -404,6 +404,10 @@ font-weight: 600;
 .main_report {
 cursor: pointer;
 stroke: #fff;
+}
+
+.dim_out {
+opacity: 0.2;
 }
 
 .overview_report {
