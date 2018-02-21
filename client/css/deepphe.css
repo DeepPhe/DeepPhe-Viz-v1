@@ -450,7 +450,13 @@ stroke: #666;
 fill-opacity: 0.3;	
 }
 
-.report_type_devlider {
+.legend_group_divider {
+stroke-width: 1px;
+stroke: #999;
+shape-rendering: crispEdges;
+}
+
+.report_type_divider {
 stroke-width: 1px;
 shape-rendering: crispEdges;
 stroke: #dbdbdb;
