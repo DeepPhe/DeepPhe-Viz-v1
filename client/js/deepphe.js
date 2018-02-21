@@ -182,17 +182,20 @@ function getFact(factId) {
 	    var reportIds = response.reportIds;
 		var textProvenancesArr = response.textProvenancesArr;
 
-		// Is it possible to have multiple associated reports?
-
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
 			// Remove previous added font awesome icons
 			$('.fact_directed_report_icon').remove();
 
 			reportIds.forEach(function(id) {
-				console.log(id);
                 highlightReportBasedOnFact(id);
 			});
+
+			// Also show the content of the first report
+			getReport(reportIds[0]);
+
+			// And highlight the current report in timeline
+			highlightSelectedTimelineReport(reportIds[0])
 		}
 	});
 
