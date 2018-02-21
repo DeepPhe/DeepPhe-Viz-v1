@@ -275,6 +275,10 @@ function highlightSelectedTimelineReport(reportId) {
         .html('<i class="fas fa-file-alt"></i>');
 
         console.log(circle.attr("cy") + highlighted_report_icon.offsetY*2);
+
+    // Dim all other reports
+    $('.main_report').css("opacity", "0.2");
+    $('.' + css).css("opacity", "1");
 }
 
 // Highlight the selected report circle with font awesome icon in timeline
