@@ -324,7 +324,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 20, right: 20, bottom: 10, left: 180};
 	var legendHeight = 22;
-	var episodeSpansHeight = 22;
+	var episodeAreaHeight = 22;
 	var width = 660;
 	var height = 40*numOfReportTypes;
     var pad = 30;
@@ -360,7 +360,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     	return reportTypes.indexOf(element);
     };
     
-    // Up to 10 color categories for types of reports and types of episodes
+    // Up to 10 color categories for types of episodes
 	var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 	// Main area and overview area share the same width
@@ -422,7 +422,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
-	    .attr("height", margin.top + legendHeight + height + pad + overviewHeight + pad + margin.bottom);
+	    .attr("height", margin.top + episodeAreaHeight + height + pad + overviewHeight + pad + margin.bottom);
 
 /*
     // Episode legend
@@ -491,15 +491,22 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 
 	// Specify a specific region of an element to display, rather than showing the complete area
+	// Any parts of the drawing that lie outside of the region bounded by the currently active clipping path are not drawn.
 	svg.append("defs").append("clipPath")
-	    .attr("id", "clip")
+	    .attr("id", "episodeAreaClip")
+	    .append("rect")
+	    .attr("width", width)
+	    .attr("height", episodeAreaHeight);
+
+	svg.append("defs").append("clipPath")
+	    .attr("id", "mainAreaClip")
 	    .append("rect")
 	    .attr("width", width)
 	    .attr("height", height);
 
-    var updateMainArea = function() {
+    var update = function() {
     	// Update the episode bars
-    	episodeSpansGrp.selectAll(".episode_span")
+    	episodes.selectAll(".episode_bar")
 	        .attr("x", function(d) { 
 				return mainX(d.startDate) - reportMainRadius; 
 			})
@@ -528,7 +535,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 				return mainY(getIndex(d.type) + .5); 
 			})
 			.style("fill", function(d) {
-				return color(d.type);
+				return color(d.episode);
 			});
 
         // Also need to move the font awesome icons accordlingly
@@ -565,7 +572,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 		mainX.domain(transform.rescaleX(overviewX).domain());
 
 	    // Update the report dots in main area
-		updateMainArea();
+		update();
 
 	    // Update the overview as moving
 		overview.select(".brush").call(brush.move, mainX.range().map(transform.invertX, transform));
@@ -583,8 +590,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Zoom rect that covers the main main area
 	var zoom = d3.zoom()
 	    .scaleExtent([1, Infinity])
-	    .translateExtent([[0, 0], [width, height + episodeSpansHeight]])
-	    .extent([[0, 0], [width, height + episodeSpansHeight]])
+	    .translateExtent([[0, 0], [width, height + episodeAreaHeight]])
+	    .extent([[0, 0], [width, height + episodeAreaHeight]])
 	    .on("zoom", zoomed);
 
     // Appending zoom rect after the main area will prevent clicking on the report circles/
@@ -592,7 +599,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	svg.append("rect")
 		.attr("class", "zoom")
 		.attr("width", width)
-		.attr("height", height + episodeSpansHeight)
+		.attr("height", height + episodeAreaHeight)
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 		.call(zoom);
 
@@ -600,12 +607,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Create main area after zoom panel, so we can select the report circles
 	var main = svg.append("g")
 	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeSpansHeight) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeAreaHeight) + ")");
 
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeSpansHeight + height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeAreaHeight + height + pad) + ")");
 
 	// The earliest report date
 	var xMinDate = d3.min(reportData, function(d) {return d.time;});
@@ -629,18 +636,30 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 
     // Episode interval spans
-    var episodeSpansGrp = svg.append("g")
-        .attr('class', 'episode_spans_group')
+    var episodes = svg.append("g")
+        .attr('class', 'episodes')
 	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var episodeSpanGrp = episodeSpansGrp.selectAll('.episode_span')
+    // Episode label text
+    episodes.append("text")
+	    .attr("x", -textMargin)
+	    .attr("y", 6) // Relative to the overview area
+	    .attr("dy", ".5ex")
+	    .attr("class", "overview_label")
+	    .text("Episodes:");
+
+    var episodeBarsGrp = episodes.append('g')
+        .attr("clip-path", "url(#episodeAreaClip)")
+        .attr('class', 'episode_bars');
+
+    var episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
         .data(episodeSpansData)
         .enter()
         .append('g')
-        .attr('class', 'episode_span_group');
+        .attr('class', 'episode_bar_group');
 
-    episodeSpanGrp.append('rect')
-        .attr('class', 'episode_span')
+    episodeBarGrp.append('rect')
+        .attr('class', 'episode_bar')
         .attr("x", function(d) { 
 			return mainX(d.startDate) - reportMainRadius; 
 		})
@@ -664,7 +683,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
 	var mainReports = main.append("g")
-		.attr("clip-path", "url(#clip)");
+		.attr("clip-path", "url(#mainAreaClip)");
 
     // Report circles in main area
 	mainReports.selectAll(".main_report")
@@ -676,6 +695,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
             // Prefix with "main_"
             return "main_" + d.id;
 	    })
+	    .attr("data-episode", function(d) {
+            // For debugging
+            return d.episode;
+	    })
 	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
 	    	return mainX(d.time); 
@@ -684,7 +707,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    	return mainY(getIndex(d.type) + .5); 
 	    })
 	    .style("fill", function(d) {
-			return color(d.type);
+			return color(d.episode);
 		})
 	    .on("click", function(d) {
             // Highlight the selected report circle
@@ -763,7 +786,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 			return overviewY(getIndex(d.type) + .5); 
 		})
 		.style("fill", function(d) {
-			return color(d.type);
+			return color(d.episode);
 		});
 
 	// Overview x axis
@@ -854,7 +877,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
 
-	    updateMainArea();
+	    update();
 
 	    // Zoom the main main area
 		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
