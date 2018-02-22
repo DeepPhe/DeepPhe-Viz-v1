@@ -310,7 +310,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.reportData);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.episodeDates, response.reportData);
 	});
 
 	jqxhr.fail(function () { 
@@ -319,11 +319,12 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, reportData) {
+function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, episodeDates, reportData) {
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 20, right: 20, bottom: 10, left: 180};
 	var legendHeight = 22;
+	var episodeSpansHeight = 22;
 	var width = 660;
 	var height = 40*numOfReportTypes;
     var pad = 30;
@@ -359,8 +360,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     	return reportTypes.indexOf(element);
     };
     
-    // Up to 10 color categories for 10 types of reports
-	var reportColor = d3.scaleOrdinal(d3.schemeCategory10);
+    // Up to 10 color categories for types of reports and types of episodes
+	var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 	// Main area and overview area share the same width
 	var mainX = d3.scaleTime()
@@ -378,12 +379,52 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var overviewY = d3.scaleLinear()
 			.range([0, overviewHeight]);
 
+
+
+    // Process episode dates
+    var episodeSpansData = [];
+
+    episodes.forEach(function(episode) {
+    	var obj = {};
+    	var datesArr = episodeDates[episode];
+        var newDatesArr = [];
+
+    	datesArr.forEach(function(d) {
+			// Format the date to a human-readable string first, formatTime() takes Date object instead of string
+			// d.time.slice(0, 19) returns the time string without the time zone part.
+			// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
+			var formattedTimeStr = formatTime(new Date(d.slice(0, 19)));
+			// Then convert a string back to a date to be used by d3
+	        var date = parseTime(formattedTimeStr);
+
+	        newDatesArr.push(date);
+		});
+
+		var minDate = d3.min(newDatesArr, function(d) {return d;});
+    	var maxDate = d3.max(newDatesArr, function(d) {return d;});
+
+        // Assemble the obj properties
+        obj.episode = episode;
+        obj.startDate = minDate;
+        obj.endDate = maxDate;
+
+        episodeSpansData.push(obj);
+    });
+
+
+
+
+
+
+
+
     // SVG
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
 	    .attr("height", margin.top + legendHeight + height + pad + overviewHeight + pad + margin.bottom);
 
+/*
     // Episode legend
     var legendRectSize = 10;
     var legendSpacing = 2;
@@ -434,7 +475,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         .attr('width', legendRectSize)
         .attr('height', legendRectSize)
         .style('fill', function(d) {
-            return reportColor(d);
+            return color(d);
         });
 
     // Legend label text
@@ -446,6 +487,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
         });
+*/
+
 
 	// Specify a specific region of an element to display, rather than showing the complete area
 	svg.append("defs").append("clipPath")
@@ -455,6 +498,27 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    .attr("height", height);
 
     var updateMainArea = function() {
+    	// Update the episode bars
+    	episodeSpansGrp.selectAll(".episode_span")
+	        .attr("x", function(d) { 
+				return mainX(d.startDate) - reportMainRadius; 
+			})
+	        .attr('y', function(d, i) {
+	        	// Stagger the bars
+	        	if (i % 2 === 0) {
+	                return 1;
+	        	} else {
+	        		return 8;
+	        	}
+	        })
+	        .attr('width', function(d) {
+	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
+	        })
+	        .attr('height', 6)
+	        .style('fill', function(d) {
+	            return color(d.episode);
+	        });
+
     	// Update main area
 		main.selectAll(".main_report")
 			.attr("cx", function(d) { 
@@ -464,7 +528,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 				return mainY(getIndex(d.type) + .5); 
 			})
 			.style("fill", function(d) {
-				return reportColor(d.episode);
+				return color(d.type);
 			});
 
         // Also need to move the font awesome icons accordlingly
@@ -519,8 +583,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Zoom rect that covers the main main area
 	var zoom = d3.zoom()
 	    .scaleExtent([1, Infinity])
-	    .translateExtent([[0, 0], [width, height]])
-	    .extent([[0, 0], [width, height]])
+	    .translateExtent([[0, 0], [width, height + episodeSpansHeight]])
+	    .extent([[0, 0], [width, height + episodeSpansHeight]])
 	    .on("zoom", zoomed);
 
     // Appending zoom rect after the main area will prevent clicking on the report circles/
@@ -528,30 +592,30 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	svg.append("rect")
 		.attr("class", "zoom")
 		.attr("width", width)
-		.attr("height", height)
-		.attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) + ")")
+		.attr("height", height + episodeSpansHeight)
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 		.call(zoom);
 
 	// Main area
 	// Create main area after zoom panel, so we can select the report circles
 	var main = svg.append("g")
 	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeSpansHeight) + ")");
 
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeSpansHeight + height + pad) + ")");
 
 	// The earliest report date
-	var xMinDate = d3.min(reportData, function(d) { return d.time; });
+	var xMinDate = d3.min(reportData, function(d) {return d.time;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
 	var startDate = new Date(xMinDate);
 	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
-	var xMaxDate = d3.max(reportData, function(d) { return d.time; });
+	var xMaxDate = d3.max(reportData, function(d) {return d.time;});
 
 	// Set the end date of the x axis 10 days after the xMaxDate
 	var endDate = new Date(xMaxDate);
@@ -562,6 +626,40 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 	overviewX.domain(mainX.domain());
 	overviewY.domain(mainY.domain());
+
+
+    // Episode interval spans
+    var episodeSpansGrp = svg.append("g")
+        .attr('class', 'episode_spans_group')
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var episodeSpanGrp = episodeSpansGrp.selectAll('.episode_span')
+        .data(episodeSpansData)
+        .enter()
+        .append('g')
+        .attr('class', 'episode_span_group');
+
+    episodeSpanGrp.append('rect')
+        .attr('class', 'episode_span')
+        .attr("x", function(d) { 
+			return mainX(d.startDate) - reportMainRadius; 
+		})
+        .attr('y', function(d, i) {
+        	// Stagger the bars
+        	if (i % 2 === 0) {
+                return 1;
+        	} else {
+        		return 8;
+        	}
+        })
+        .attr('width', function(d) {
+            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
+        })
+        .attr('height', 6)
+        .style('fill', function(d) {
+            return color(d.episode);
+        });
+
 
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
@@ -586,7 +684,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    	return mainY(getIndex(d.type) + .5); 
 	    })
 	    .style("fill", function(d) {
-			return reportColor(d.episode);
+			return color(d.type);
 		})
 	    .on("click", function(d) {
             // Highlight the selected report circle
@@ -665,7 +763,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 			return overviewY(getIndex(d.type) + .5); 
 		})
 		.style("fill", function(d) {
-			return reportColor(d.episode);
+			return color(d.type);
 		});
 
 	// Overview x axis
