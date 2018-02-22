@@ -323,8 +323,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 20, right: 20, bottom: 10, left: 180};
+
 	var legendHeight = 22;
+    var legendRectSize = 9;
+    var legendSpacing = 2;
+    var widthPerLetter = 12;
+
 	var episodeAreaHeight = 22;
+
 	var width = 660;
 	var height = 40*numOfReportTypes;
     var pad = 30;
@@ -411,25 +417,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         episodeSpansData.push(obj);
     });
 
-
-
-
-
-
-
-
     // SVG
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
-	    .attr("height", margin.top + episodeAreaHeight + height + pad + overviewHeight + pad + margin.bottom);
+	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + margin.bottom);
 
-/*
-    // Episode legend
-    var legendRectSize = 10;
-    var legendSpacing = 2;
-    var widthPerLetter = 10;
-    
     // Dynamically calculate the x posiiton of each lengend rect
     var lengendX = function(index) {
     	var x = 0;
@@ -438,26 +431,26 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
             x += episodes[i].length * widthPerLetter + i * (legendRectSize + legendSpacing);
     	}
 
-    	return x;
+    	return 110 + x;
     };
 
     var episodeLegendGrp = svg.append("g")
         .attr('class', 'episode_legend_group')
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    .attr("transform", "translate(10," + margin.top + ")");
 
     // Overview label text
 	episodeLegendGrp.append("text")
-	    .attr("x", -textMargin)
+	    .attr("x", 100)
 	    .attr("y", 6) // Relative to the overview area
 	    .attr("dy", ".5ex")
 	    .attr("class", "overview_label")
-	    .text("Episodes:");
+	    .text("Episodes legend:");
 
     // Divider line
     episodeLegendGrp.append("line")
 		.attr("x1", 0)
 		.attr("y1", legendHeight)
-		.attr("x2", width)
+		.attr("x2", margin.left + width)
 		.attr("y2", legendHeight)
 		.attr("class", "legend_group_divider");
 
@@ -487,7 +480,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
         });
-*/
+
 
 
 	// Specify a specific region of an element to display, rather than showing the complete area
@@ -513,15 +506,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	        .attr('y', function(d, i) {
 	        	// Stagger the bars
 	        	if (i % 2 === 0) {
-	                return 1;
+	                return 10;
 	        	} else {
-	        		return 8;
+	        		return 17;
 	        	}
 	        })
 	        .attr('width', function(d) {
 	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
 	        })
-	        .attr('height', 6)
+	        .attr('height', 5)
 	        .style('fill', function(d) {
 	            return color(d.episode);
 	        });
@@ -607,12 +600,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Create main area after zoom panel, so we can select the report circles
 	var main = svg.append("g")
 	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeAreaHeight) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
 
 	// Mini overview
 	var overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + episodeAreaHeight + height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
 
 	// The earliest report date
 	var xMinDate = d3.min(reportData, function(d) {return d.time;});
@@ -638,15 +631,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     // Episode interval spans
     var episodes = svg.append("g")
         .attr('class', 'episodes')
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // Episode label text
-    episodes.append("text")
-	    .attr("x", -textMargin)
-	    .attr("y", 6) // Relative to the overview area
-	    .attr("dy", ".5ex")
-	    .attr("class", "overview_label")
-	    .text("Episodes:");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
 
     var episodeBarsGrp = episodes.append('g')
         .attr("clip-path", "url(#episodeAreaClip)")
@@ -666,15 +651,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         .attr('y', function(d, i) {
         	// Stagger the bars
         	if (i % 2 === 0) {
-                return 1;
+                return 10;
         	} else {
-        		return 8;
+        		return 17;
         	}
         })
         .attr('width', function(d) {
             return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
         })
-        .attr('height', 6)
+        .attr('height', 5)
         .style('fill', function(d) {
             return color(d.episode);
         });
