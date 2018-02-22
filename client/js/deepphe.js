@@ -332,6 +332,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     var reportMainRadius = 6;
     var reportOverviewRadius = 3;
 
+    // Set the timeline start date 10 days before the min date
+    // and end date 10 days after the max date
+    var numOfDays = 10;
+
     // Gap between texts and mian area left border
     var textMargin = 10;
 
@@ -539,21 +543,19 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    .attr("class", "overview")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + height + pad) + ")");
 
-	
-
 	// The earliest report date
 	var xMinDate = d3.min(reportData, function(d) { return d.time; });
 
-	// Set the start date of the x axis 30 days before the xMinDate
+	// Set the start date of the x axis 10 days before the xMinDate
 	var startDate = new Date(xMinDate);
-	startDate.setDate(startDate.getDate() - 30);
+	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
 	var xMaxDate = d3.max(reportData, function(d) { return d.time; });
 
-	// Set the end date of the x axis 30 days after the xMaxDate
+	// Set the end date of the x axis 10 days after the xMaxDate
 	var endDate = new Date(xMaxDate);
-	endDate.setDate(endDate.getDate() + 30);
+	endDate.setDate(endDate.getDate() + numOfDays);
 
 	// Set the mainX domain based on start and end dates
 	mainX.domain([startDate, endDate]);
