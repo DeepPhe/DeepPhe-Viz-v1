@@ -330,6 +330,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     var widthPerLetter = 12;
 
 	var episodeAreaHeight = 22;
+	var episodeLegendAnchorPositionX = 110;
+	var episodeLegendAnchorPositionY = 6;
 
 	var width = 660;
 	var height = 40*numOfReportTypes;
@@ -431,20 +433,20 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
             x += episodes[i].length * widthPerLetter + i * (legendRectSize + legendSpacing);
     	}
 
-    	return 110 + x;
+    	return episodeLegendAnchorPositionX + legendSpacing + x;
     };
 
     var episodeLegendGrp = svg.append("g")
         .attr('class', 'episode_legend_group')
-	    .attr("transform", "translate(10," + margin.top + ")");
+	    .attr("transform", "translate(10, " + margin.top + ")");
 
     // Overview label text
 	episodeLegendGrp.append("text")
-	    .attr("x", 100)
-	    .attr("y", 6) // Relative to the overview area
+	    .attr("x", episodeLegendAnchorPositionX) // Relative to episodeLegendGrp
+	    .attr("y", episodeLegendAnchorPositionY) 
 	    .attr("dy", ".5ex")
-	    .attr("class", "overview_label")
-	    .text("Episodes legend:");
+	    .attr("text-anchor", "end") // the end of the text string is at the initial current text position
+	    .text("Episodes:");
 
     // Divider line
     episodeLegendGrp.append("line")
