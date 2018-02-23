@@ -326,12 +326,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 	var legendHeight = 22;
     var legendRectSize = 9;
-    var legendSpacing = 2;
+    var legendSpacing = 3;
     var widthPerLetter = 12;
 
 	var episodeAreaHeight = 22;
 	var episodeLegendAnchorPositionX = 110;
 	var episodeLegendAnchorPositionY = 6;
+	var episodeBarHeight = 5;
+	var episodeBarY1 = 10;
+	var episodeBarY2 = 16;
 
 	var width = 660;
 	var height = 40*numOfReportTypes;
@@ -508,15 +511,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	        .attr('y', function(d, i) {
 	        	// Stagger the bars
 	        	if (i % 2 === 0) {
-	                return 10;
+	                return episodeBarY1;
 	        	} else {
-	        		return 17;
+	        		return episodeBarY2;
 	        	}
 	        })
 	        .attr('width', function(d) {
 	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
 	        })
-	        .attr('height', 5)
+	        .attr('height', episodeBarHeight)
 	        .style('fill', function(d) {
 	            return color(d.episode);
 	        });
@@ -653,15 +656,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
         .attr('y', function(d, i) {
         	// Stagger the bars
         	if (i % 2 === 0) {
-                return 10;
+                return episodeBarY1;
         	} else {
-        		return 17;
+        		return episodeBarY2;
         	}
         })
         .attr('width', function(d) {
             return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
         })
-        .attr('height', 5)
+        .attr('height', episodeBarHeight)
         .style('fill', function(d) {
             return color(d.episode);
         });
