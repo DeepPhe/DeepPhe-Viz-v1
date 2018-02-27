@@ -329,12 +329,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     var legendSpacing = 3;
     var widthPerLetter = 12;
 
-	var episodeAreaHeight = 22;
+	var episodeAreaHeight = 20;
 	var episodeLegendAnchorPositionX = 110;
 	var episodeLegendAnchorPositionY = 6;
-	var episodeBarHeight = 5;
+	var episodeBarHeight = 3;
 	var episodeBarY1 = 10;
-	var episodeBarY2 = 16;
+	var episodeBarY2 = 14;
 
 	var width = 660;
 	var height = 40*numOfReportTypes;
