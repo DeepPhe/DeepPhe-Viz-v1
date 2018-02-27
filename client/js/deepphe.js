@@ -325,7 +325,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var margin = {top: 20, right: 20, bottom: 10, left: 180};
 
 	var legendHeight = 22;
-    var legendRectSize = 9;
+    var legendRectSize = 10;
     var legendSpacing = 3;
     var widthPerLetter = 12;
 
@@ -389,8 +389,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     // Y scale to handle overview area
 	var overviewY = d3.scaleLinear()
 			.range([0, overviewHeight]);
-
-
 
     // Process episode dates
     var episodeSpansData = [];
@@ -470,6 +468,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
             return lengendX(i);
         })
         .attr('y', 1)
+        // The attributes rx and ry determine how round the corners will be.
+        .attr('rx', 3)
+        .attr('ry', 3)
         .attr('width', legendRectSize)
         .attr('height', legendRectSize)
         .style('fill', function(d) {
