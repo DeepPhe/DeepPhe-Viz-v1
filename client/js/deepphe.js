@@ -494,13 +494,13 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Specify a specific region of an element to display, rather than showing the complete area
 	// Any parts of the drawing that lie outside of the region bounded by the currently active clipping path are not drawn.
 	svg.append("defs").append("clipPath")
-	    .attr("id", "episodeAreaClip")
+	    .attr("id", "episode_area_clip")
 	    .append("rect")
 	    .attr("width", width)
 	    .attr("height", episodeAreaHeight);
 
 	svg.append("defs").append("clipPath")
-	    .attr("id", "mainAreaClip")
+	    .attr("id", "main_area_clip")
 	    .append("rect")
 	    .attr("width", width)
 	    .attr("height", height);
@@ -601,7 +601,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 		.attr("class", "zoom")
 		.attr("width", width)
 		.attr("height", height + episodeAreaHeight)
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+		.attr("transform", "translate(" + margin.left + "," + (margin.top + + episodeAreaHeight) + ")")
 		.call(zoom);
 
 	// Main area
@@ -642,7 +642,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
 
     var episodeBarsGrp = episodes.append('g')
-        .attr("clip-path", "url(#episodeAreaClip)")
+        .attr("clip-path", "url(#episode_area_clip)")
         .attr('class', 'episode_bars');
 
     var episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
@@ -676,7 +676,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
 	var mainReports = main.append("g")
-		.attr("clip-path", "url(#mainAreaClip)");
+		.attr("clip-path", "url(#main_area_clip)");
 
     // Report circles in main area
 	mainReports.selectAll(".main_report")
