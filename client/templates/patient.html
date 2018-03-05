@@ -130,6 +130,21 @@ $(function() {
         $(this).find(".fa-caret-right, .fa-caret-down").toggle();
     });
 
+    // Click the fact based report id to display report content
+    $(document).on("click", ".fact_based_report_id", function() {
+        var cssClass = 'current_displaying_report';
+        // First remove the previously added highlighting
+        $('.fact_based_report_id').removeClass(cssClass);
+        // Then add to this one
+        $(this).addClass(cssClass);
+
+        var reportId = $(this).attr('id');
+        getReport(reportId);
+
+        // Also highlight the selected report circle in timeline
+        highlightSelectedTimelineReport(reportId)
+    });
+
     // Click the report mentioned term to show it in the report text
     $(document).on("click", ".report_mentioned_term", function() {
         // Highlight the selected term in the term list

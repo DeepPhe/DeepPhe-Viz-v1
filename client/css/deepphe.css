@@ -325,8 +325,16 @@ margin-right:0;
 .fact_detail_report_id {
 float:left;
 display:inline-block;
-font-weight:bold;
 margin-right:10px;
+}
+
+.fact_based_report_id {
+cursor:pointer;
+font-weight:bold;
+}
+
+.current_displaying_report {
+color:orange;
 }
 
 

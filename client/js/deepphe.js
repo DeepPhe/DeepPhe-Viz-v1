@@ -192,6 +192,7 @@ function getFact(factId) {
 			});
 
 			// Also show the content of the first report
+			// The reportIds is sorted
 			getReport(reportIds[0]);
 
 			// And highlight the current report in timeline
@@ -219,7 +220,12 @@ function getReport(reportId) {
         var reportText = response.reportText;
         var renderedMentionedTerms = response.renderedMentionedTerms;
 
-        $('#report_id').html('<i class="fas fa-file-alt"></i><span class="display_report_id">' + getShortDocId(reportId) + '</span>');
+        // If there are fact based reports, highlight the displaying one
+        var cssClass = 'current_displaying_report';
+        $('.fact_based_report_id').removeClass(cssClass);
+        $('#' + reportId).addClass(cssClass);
+
+        $('#report_id').html('<i class="fas fa-file-alt"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
