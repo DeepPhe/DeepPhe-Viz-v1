@@ -280,8 +280,6 @@ function highlightSelectedTimelineReport(reportId) {
         .append("xhtml:body")
         .html('<i class="fas fa-file-alt"></i>');
 
-        console.log(circle.attr("cy") + highlighted_report_icon.offsetY*2);
-
     // Dim all other reports
     $('.main_report').addClass("dim_out");
     $('.' + css).removeClass("dim_out");
