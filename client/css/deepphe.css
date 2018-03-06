@@ -132,10 +132,6 @@ margin-right:10px;
 padding:0;
 }
 
-.cancer_tnm_fact_list li .fact {
-color:#e6550d;
-}
-
 .cancer_fact_list li:last-child,
 .cancer_tnm_fact_list li:last-child,
 .tumor_fact_list li:last-child {
@@ -554,7 +550,7 @@ cursor: pointer;
 }
 
 .view_options input:checked + label {
-background-color: #A5DC86;
+background-color: rgb(141, 211, 199);
 }
 
 .view_options label:first-of-type {
@@ -628,7 +624,7 @@ color:#333;
 
 .highlighted_fact {
 font-style: italic;
-color:red!important;
+color:orange !important;
 text-decoration: underline;
 }
 
@@ -644,46 +640,46 @@ display:inline;
 margin-right:3px;
 }
 
-/* Colors from http://bl.ocks.org/aaizemberg/78bd3dade9593896a59d */
+/* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
 .hasBodySite {
-background:#9edae5;
+background:rgb(253, 208, 162);
 }
 
 .hasDiagnosis {
-background:#aec7e8;
+background:rgb(198, 219, 239);
 }
 
 .hasERStatus,
 .hasPRStatus,
 .hasHer2Status,
 .hasKi67Status {
-background:#cedb9c;
+background:rgb(229, 216, 189);
 }
 
 .hasTumorSize,
 .hasRadiologicTumorSize,
 .hasPathologicTumorSize,
 .hasPathologicAggregateTumorSize {
-background:#fdd0a2;
+background:rgb(204, 235, 197);
 }
 
 .hasNuclearGrade {
-background:#98df8a;
+background:rgb(218, 218, 235);
 }
 
 .hasCancerCellLine {
-background:#f7b6d2;
+background:rgb(255, 255, 204);
 }
 
 .hasHistologicType {
-background:#c5b0d5;
+background:rgb(206, 219, 156);
 }
 
 .hasTumorExtent {
-background:#e7cb94;
+background:rgb(253, 218, 236);
 }
 
 .unspecified {
-background:#f3f2f2;
+background:rgb(242, 242, 242);
 }
 

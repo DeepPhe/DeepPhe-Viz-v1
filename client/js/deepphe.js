@@ -375,8 +375,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
     	return reportTypes.indexOf(element);
     };
     
-    // Up to 10 color categories for types of episodes
-	var color = d3.scaleOrdinal(d3.schemeCategory10);
+    // Color categories for types of episodes
+    // https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
+	var color = d3.scaleOrdinal()
+	        .domain(['PreDiagnostics', 'Diagnostic', 'Decision', 'Treatment', 'Follow-up'])
+	        .range(['rgb(49, 130, 189)', 'rgb(230, 85, 13)', 'rgb(49, 163, 84)', 'rgb(140, 86, 75)', 'rgb(117, 107, 177)']);
 
 	// Main area and overview area share the same width
 	var mainX = d3.scaleTime()
