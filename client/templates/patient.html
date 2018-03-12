@@ -180,6 +180,22 @@ $(function() {
         reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
     });
 
+    // Reset button event
+    $(document).on("click", "#reset", function() {
+        // Remove highlighted fact
+        $('.fact').removeClass('highlighted_fact');
+
+        // Reload timeline
+        $('#timeline').html('');
+        getTimeline(patientName, "timeline");
+
+        // Reset the fact detail and displaying document content
+        $('#fact_detail').html('');
+        $('#report_id').html('');
+        $('#report_mentioned_terms').html('');
+        $('#report_text').html('');
+    });
+
 });
     
 </script>

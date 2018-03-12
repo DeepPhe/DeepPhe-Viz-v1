@@ -165,6 +165,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 }
 
 // Get fact details by ID
+// We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
@@ -181,7 +182,7 @@ function getFact(patientId, factId) {
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportIds = response.reportIds;
 		var textProvenancesArr = response.textProvenancesArr;
-console.log(reportIds);
+
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
 			// Remove previous added font awesome icons
@@ -906,5 +907,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    // call brush.move and pass overviewX.range() as argument
 	    // https://github.com/d3/d3-brush#brush_move
 	    .call(brush.move, overviewX.range());
+
+	// Reset button
+	svg.append("foreignObject")
+	    .attr('id', 'reset')
+	    .attr("transform", "translate(10, " + (margin.top + + legendHeight + height + overviewHeight + pad*2) + ")")
+	    .append("xhtml:body")
+        .html('<button>Reset</button>');
 
 }
