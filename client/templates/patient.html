@@ -69,7 +69,7 @@ $(function() {
         $('.fact').removeClass(cssClass);
 
         var factId = $(this).attr('id');
-        getFact(factId);
+        getFact(patientName, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
@@ -85,7 +85,7 @@ $(function() {
         // "list_view_{{id}}"
         var id = $(this).attr('id');
         var factId = id.substring(10);
-        getFact(factId);
+        getFact(patientName, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
@@ -104,7 +104,7 @@ $(function() {
         // "table_view_{{id}}"
         var id = $(this).attr('id');
         var factId = id.substring(11);
-        getFact(factId);
+        getFact(patientName, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);

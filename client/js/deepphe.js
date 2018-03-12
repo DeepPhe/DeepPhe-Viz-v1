@@ -165,10 +165,10 @@ function highlightMentionedTexts(textMentions, reportText) {
 }
 
 // Get fact details by ID
-function getFact(factId) {
+function getFact(patientId, factId) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/fact/' + factId,
+	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
@@ -181,7 +181,7 @@ function getFact(factId) {
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
 	    var reportIds = response.reportIds;
 		var textProvenancesArr = response.textProvenancesArr;
-
+console.log(reportIds);
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
 			// Remove previous added font awesome icons
