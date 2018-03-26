@@ -11,14 +11,19 @@ function getCancerStages() {
 	    url: baseUri + '/cancerstages',
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-	    //console.log(response);
+	    console.log(response);
+        
+// Bar chart
+		var data = response.stagesData;
+		console.log(data);
+        // Draw the bar chart here
 
 	    // Render response
-	    $('#cancerstages').html(response);
+	    $('#cancerstages').html(response.renderedStages);
 	});
 
 	jqxhr.fail(function () { 

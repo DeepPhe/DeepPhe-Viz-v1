@@ -6,7 +6,7 @@
 	<select id="select_cancer_stage" class="form_select">
 	  <option value="">All stages</option>
 	  {{#each stages}}
-	    <option value="{{name}}">{{name}}</option>
+	    <option value="{{stage}}">{{stage}} ({{patientsCount}})</option>
 	  {{/each}}
 	</select>
 
