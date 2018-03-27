@@ -46,9 +46,10 @@ font-weight: bold;
 color:#fff;
 }
 
-/* Patients cohort chart */
+/* Cohort Analysis - stages bar chart */
 .bar { 
 fill:rgb(253, 141, 60);
+cursor: pointer;
 }
 
 .clicked_stage {

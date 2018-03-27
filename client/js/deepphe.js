@@ -68,6 +68,16 @@ function showStagesChart(svgContainerId, data) {
 		.attr("y", function(d) { 
 			return y(d.stage); 
 		})
+		.on("mouseover", function(d) {
+            d3.select(this)           
+            .style("stroke", "rgb(82, 84, 163)")
+            .style("stroke-width", 1);
+		})
+		.on("mouseout", function(d) {
+            d3.select(this)           
+            .style("stroke", "")
+            .style("stroke-width", 0);
+		})
 		// Must add the clickable before transition
 		.on("click", function(d) {
             console.log(d);
