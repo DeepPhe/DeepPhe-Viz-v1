@@ -8,21 +8,15 @@ var highlighted_report_icon = {
 function getCancerStages() {
     // Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/cancerstages',
+	    url: baseUri + '/cancerStages',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-        // Bar chart data
-		var data = response.stagesData;
-
         // Draw the bar chart
-        showCohortChart("cohort_container", data);
-
-	    // Render response
-	    $('#stages_selection').html(response.renderedStages);
+        showStagesChart("stages", response.stagesInfo);
 
 	    // Show all patients by default
         showPatients();
@@ -33,7 +27,7 @@ function getCancerStages() {
 	});
 }
 
-function showCohortChart(svgContainerId, data) {
+function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 140};
 	var width = 900 - margin.left - margin.right;
@@ -74,6 +68,25 @@ function showCohortChart(svgContainerId, data) {
 		.attr("y", function(d) { 
 			return y(d.stage); 
 		})
+		// Must add the clickable before transition
+		.on("click", function(d) {
+            console.log(d);
+            var clickedStage = d3.select(this);
+            var css = "clicked_stage";
+
+            // Toggle
+            if (!clickedStage.classed(css)) {
+            	// Remove previouly added css class
+	            d3.selectAll(".bar").classed(css, false);
+                // Highlight the clicked bar and show corresponding patients
+            	clickedStage.classed(css, true);
+            	showPatients(d.stage);
+            } else {
+            	// When clicked again, remove highlight and show all patients
+            	clickedStage.classed(css, false);
+            	showPatients();
+            }
+		})
 		.transition()
         .duration(800) // time in ms
 		.attr("width", function(d) { 
@@ -97,7 +110,7 @@ function showCohortChart(svgContainerId, data) {
 function showPatients(stage) {
 	// stage is optional
 	// undefined means a variable has been declared but has not yet been assigned a value
-	var url = (typeof(stage) === 'undefined') ? '/cohort' : '/cohort/' + encodeURIComponent(stage);
+	var url = (typeof(stage) === 'undefined') ? '/patients' : '/patients/' + encodeURIComponent(stage);
 
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
@@ -115,7 +128,7 @@ function showPatients(stage) {
 	});
 
 	jqxhr.fail(function () { 
-	    console.log("Ajax error - can't get cohort");
+	    console.log("Ajax error - can't get target patients");
 	});
 }
 
@@ -123,7 +136,7 @@ function showPatients(stage) {
 function getCancerSummary(patientName) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/patients/' + patientName + '/cancers',
+	    url: baseUri + '/patient/' + patientName + '/cancers',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -145,7 +158,7 @@ function getCancerSummary(patientName) {
 function getTumorSummary(patientName, cancerId) {
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/patients/' + patientName + '/' + cancerId + '/tumors',
+	    url: baseUri + '/patient/' + patientName + '/' + cancerId + '/tumors',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -373,7 +386,7 @@ function getTimeline(patientName, svgContainerId) {
 	// First get the data needed for timeline rendering
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/patients/' + patientName + '/timeline',
+	    url: baseUri + '/patient/' + patientName + '/timeline',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 

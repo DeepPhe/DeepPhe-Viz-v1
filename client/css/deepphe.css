@@ -51,6 +51,10 @@ color:#fff;
 fill:rgb(253, 141, 60);
 }
 
+.clicked_stage {
+fill:rgb(55, 163, 214);
+}
+
 /* patients cohort filtering */
 .cohort_filter {
 margin:10px;

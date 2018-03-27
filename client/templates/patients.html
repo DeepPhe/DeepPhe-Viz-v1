@@ -1,33 +1,16 @@
-<div class="header">
-<span class="logo">DeepPhe-Viz | </span> <span class="current_patient">All Patients</span>
-</div>
 
-<div class="main">
-  
-<div id="cohort_container" class="clearfix"></div>
+<p>Displaying <b>{{numOfPatients}}</b> patients of <b>{{targetStage}}</b></p>
 
-<div id="stages_selection"></div>
-
-<div id="patients"></div>
-
-
-</div>
-
-
-
-
-
-<script type="text/javascript">
-var baseUri = '{{baseUri}}';
-
-// Get all cancer stages
-getCancerStages();
-
-$(document).on("change", "#select_cancer_stage", function() {
-    //console.log(this.value);
-    showPatients(this.value);
-});
-
-
-</script>
-
+<ul class="patients_list">
+  {{#each patients}}
+    <li class="clearfix">
+    {{! The ../ path segment references the parent template scope that should be what you want. }}
+    <a href="{{../baseUri}}/patient/{{name}}">{{name}}</a>:
+    <ul class="cancer_stage_list">
+       {{#each cancerStage}}
+           <li class="cancer_stage">{{this}}</li>
+       {{/each}}
+    </ul>
+    </li>
+  {{/each}}
+</ul>

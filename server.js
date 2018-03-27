@@ -17,6 +17,7 @@ server.connection({
     host: serverConfig.host, 
     port: serverConfig.port,
     router: {
+        isCaseSensitive: false,
         stripTrailingSlash: true // removes trailing slashes on incoming paths
     }
 });
