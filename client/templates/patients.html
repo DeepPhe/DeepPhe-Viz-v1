@@ -4,12 +4,12 @@
 
 <div class="main">
   
-<div id="cancerstages"></div>
+<div id="cohort_container" class="clearfix"></div>
 
+<div id="stages_selection"></div>
 
-<div id="cohort"></div>
+<div id="patients"></div>
 
-<svg width="960" height="500"></svg>
 
 </div>
 
@@ -23,12 +23,9 @@ var baseUri = '{{baseUri}}';
 // Get all cancer stages
 getCancerStages();
 
-// Show all patients by default
-getCohort();
-
 $(document).on("change", "#select_cancer_stage", function() {
     //console.log(this.value);
-    getCohort(this.value);
+    showPatients(this.value);
 });
 
 

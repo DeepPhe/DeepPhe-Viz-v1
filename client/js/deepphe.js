@@ -15,15 +15,17 @@ function getCancerStages() {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response);
-        
-// Bar chart
+        // Bar chart data
 		var data = response.stagesData;
-		console.log(data);
-        // Draw the bar chart here
+
+        // Draw the bar chart
+        showCohortChart("cohort_container", data);
 
 	    // Render response
-	    $('#cancerstages').html(response.renderedStages);
+	    $('#stages_selection').html(response.renderedStages);
+
+	    // Show all patients by default
+        showPatients();
 	});
 
 	jqxhr.fail(function () { 
@@ -31,10 +33,68 @@ function getCancerStages() {
 	});
 }
 
+function showCohortChart(svgContainerId, data) {
+	// set the dimensions and margins of the graph
+	var margin = {top: 20, right: 20, bottom: 30, left: 140};
+	var width = 900 - margin.left - margin.right;
+	var height = 360 - margin.top - margin.bottom;
+
+	// set the ranges
+	var x = d3.scaleLinear()
+	    .range([0, width]);
+	    
+
+	var y = d3.scaleBand()
+		.range([0, height]) // top to bottom: stages by patients count in ascending order 
+		.padding(0.2); // blank space between bands
+		
+
+	var svg = d3.select("#" + svgContainerId).append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+	// Scale the range of the data in the domains
+	x.domain([0, d3.max(data, function(d) { 
+		return d.patientsCount; 
+	})]);
+
+	y.domain(data.map(function(d) { 
+		return d.stage; 
+	}));
+
+	// append the rectangles for the bar chart
+	svg.selectAll(".bar")
+		.data(data)
+		.enter().append("rect")
+		.attr("class", "bar")
+		.attr("x", 0)
+		.attr("y", function(d) { 
+			return y(d.stage); 
+		})
+		.transition()
+        .duration(800) // time in ms
+		.attr("width", function(d) { 
+			return x(d.patientsCount)
+		})
+		.attr("height", y.bandwidth());
+		
+	// add the x Axis
+	svg.append("g")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x));
+
+	// add the y Axis
+	svg.append("g")
+		.call(d3.axisLeft(y));
+}
+
 // Filter the patients by given cancer stage
 // without stage, get all patients
 // Must use encodeURIComponent() otherwise may have URI parsing issue
-function getCohort(stage) {
+function showPatients(stage) {
 	// stage is optional
 	// undefined means a variable has been declared but has not yet been assigned a value
 	var url = (typeof(stage) === 'undefined') ? '/cohort' : '/cohort/' + encodeURIComponent(stage);
@@ -51,7 +111,7 @@ function getCohort(stage) {
 	    //console.log(response);
 
 	    // Render response
-	    $('#cohort').html(response);
+	    $('#patients').html(response);
 	});
 
 	jqxhr.fail(function () { 
