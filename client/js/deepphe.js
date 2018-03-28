@@ -30,8 +30,8 @@ function getCancerStages() {
 function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 140};
-	var width = 900 - margin.left - margin.right;
-	var height = 360 - margin.top - margin.bottom;
+	var width = 560 - margin.left - margin.right;
+	var height = 240 - margin.top - margin.bottom;
 
 	// set the ranges
 	var x = d3.scaleLinear()
