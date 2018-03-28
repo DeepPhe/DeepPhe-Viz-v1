@@ -5,6 +5,48 @@ var highlighted_report_icon = {
     size: 8
 };
 
+// Add birthdays to all patient nodes
+function addBirthdays() {
+    // Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/generateBirthday',
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json'
+	});
+
+	jqxhr.done(function(response) {
+        var patients = response.patients;
+
+        patients.forEach(function(patient) {
+            addBirthday(patient.name, patient.birthday)
+        });
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't add patient birthdays");
+	});
+}
+
+// Add birthday to the specified patient
+function addBirthday(patientName, birthday) {
+    // Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/addBirthday/' + encodeURIComponent(patientName) + "/" + encodeURIComponent(birthday),
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'text'
+	});
+
+	jqxhr.done(function(response) {
+        console.log(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't add patient birthday");
+	});
+}
+
 function getCancerStages() {
     // Separate the ajax request with callbacks
 	var jqxhr = $.ajax({

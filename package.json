@@ -25,5 +25,8 @@
     "request": "^2.81.0",
     "vision": "^4.1.1"
   },
-  "main": "server.js"
+  "main": "server.js",
+  "devDependencies": {
+    "random-birthday": "^1.0.1"
+  }
 }
