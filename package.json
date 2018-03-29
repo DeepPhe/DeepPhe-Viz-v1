@@ -27,6 +27,6 @@
   },
   "main": "server.js",
   "devDependencies": {
-    "random-birthday": "^1.0.1"
+    "neo4j-driver": "^1.5.3"
   }
 }
