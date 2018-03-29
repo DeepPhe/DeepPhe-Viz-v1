@@ -6,12 +6,7 @@ const neo4j = require('neo4j-driver').v1;
 const neo4jConfig = require('../configs/neo4j.json');
 
 // Create a driver instance
-const maxRetryTimeMs = 15 * 1000; // 15 seconds
-const driver = neo4j.driver("bolt://localhost", neo4j.auth.basic(neo4jConfig.username, neo4jConfig.password), {maxTransactionRetryTime: maxRetryTimeMs});
-
-driver.onError = error => {
-    console.log(error);
-};
+const driver = neo4j.driver("bolt://localhost", neo4j.auth.basic(neo4jConfig.username, neo4jConfig.password));
 
 // Create a session to run Cypher statements in
 const readSession = driver.session();
@@ -35,24 +30,24 @@ readTxPromise.then(function (result) {
     readSession.close();
     
     // Add birthday for each patient
-    result.records.forEach(function (record) {
+    result.records.forEach(function(record) {
         var patientName = record.get('patientName');
 
         // Generate random birthday
         var birthday = randomBirthday(new Date(1955, 0, 1), new Date(1985, 0, 1));
         
-        // Write to neo4j
-        var writeSession = driver.session(neo4j.WRITE);
+        // Create a new session for each write
+        var writeSession = driver.session();
 
         var writeTxPromise = writeSession.writeTransaction(function (transaction) {
             return addBirthday(transaction, patientName, birthday);
         });
 
-        writeTxPromise.then(function (result) {
+        writeTxPromise.then(function(result) {
             writeSession.close();
 
             if (result) {
-                console.log('Birthday attribute added to ' + patientName);
+                console.log('Birthday attribute added to ' + patientName + ': ' + birthday);
             }
         }).catch(function (error) {
             console.log(error);
