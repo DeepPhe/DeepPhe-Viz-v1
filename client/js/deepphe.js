@@ -72,7 +72,7 @@ function getCancerStages() {
 function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 140};
-	var width = 560 - margin.left - margin.right;
+	var width = 600 - margin.left - margin.right;
 	var height = 240 - margin.top - margin.bottom;
 
 	// set the ranges
@@ -156,6 +156,68 @@ function showStagesChart(svgContainerId, data) {
 		.call(d3.axisLeft(y));
 }
 
+
+function showAgesChart(svgContainerId, data) {
+	// set the dimensions and margins of the graph
+	var margin = {top: 20, right: 20, bottom: 60, left: 140};
+	var width = 600 - margin.left - margin.right;
+	var height = 240 - margin.top - margin.bottom;
+    
+    var xDomain = [];
+    
+    data.forEach(function(d) {
+    	xDomain.push(d.name);
+    });
+
+	// set the ranges
+	var x = d3.scalePoint()
+	    .range([10, width])
+	    .domain(xDomain);
+	    
+	var y = d3.scaleLinear()
+		.range([height, 0])
+		.domain([10, 80]); // 10 years to 80 years old
+		
+	// Empty the container each time
+    var container = d3.select("#" + svgContainerId);
+    container.html("");
+
+	var svg = container.append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	// append the rectangles for the bar chart
+	svg.selectAll(".patient")
+		.data(data)
+		.enter().append("circle")
+		.attr("class", "patient")
+		.attr("cx", function(d, i) {
+            return x(d.name);
+		})
+		.attr("cy", function(d) { 
+            return y(d.age);
+		})
+		.attr("r", 4)
+		.attr("fill", "#1e88e5");
+		
+	// add the x Axis
+	svg.append("g")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x))
+		.selectAll("text")	
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+
+	// add the y Axis
+	svg.append("g")
+		.call(d3.axisLeft(y));
+}
+
+
 // Filter the patients by given cancer stage
 // without stage, get all patients
 // Must use encodeURIComponent() otherwise may have URI parsing issue
@@ -169,14 +231,17 @@ function showPatients(stage) {
 	    url: baseUri + url, 
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
 	    //console.log(response);
 
+	    // Show bar chart of patient age distribution
+	    showAgesChart("ages", response.patients);
+
 	    // Render response
-	    $('#patients').html(response);
+	    $('#patients').html(response.renderedPatientsList);
 	});
 
 	jqxhr.fail(function () { 

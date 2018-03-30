@@ -18,7 +18,7 @@ function addBirthday(tx, patientName, birthday) {
 
 function randomBirthday(start, end) {
     var date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    return date.getFullYear() + "/" + date.getMonth() + "/" + date.getDate();
+    return date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
 }
 
 // Get all patients
@@ -34,7 +34,7 @@ readTxPromise.then(function (result) {
         var patientName = record.get('patientName');
 
         // Generate random birthday
-        var birthday = randomBirthday(new Date(1955, 0, 1), new Date(1985, 0, 1));
+        var birthday = randomBirthday(new Date(1955, 1, 1), new Date(1995, 12, 31));
         
         // Create a new session for each write
         var writeSession = driver.session();
