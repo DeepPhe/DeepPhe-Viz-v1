@@ -407,7 +407,7 @@ font-family: serif;
 }
 
 .highlighted_term {
-background-color:yellow;
+background:#FFDC00;
 color:#222;
 /* 400 is the same as normal, and 700 is the same as bold */
 font-weight: 600;
