@@ -510,7 +510,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.episodeDates, response.reportData);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDate);
 	});
 
 	jqxhr.fail(function () { 
@@ -519,10 +519,11 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, episodeDates, reportData) {
+function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, episodeDates, reportData, reportsGroupedByDate) {
 	//  SVG sizing, use numOfReportTypes to determine the height of main area
 	var numOfReportTypes = Object.keys(typeCounts).length;
 	var margin = {top: 20, right: 20, bottom: 10, left: 170};
+	var reportTypeRowHeight = 60;
 
 	var legendHeight = 22;
     var legendRectSize = 10;
@@ -537,11 +538,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var episodeBarY2 = 14;
 
 	var width = 660;
-	var height = 40*numOfReportTypes;
+	var height = reportTypeRowHeight * numOfReportTypes;
     var pad = 30;
 	var overviewHeight = 10*numOfReportTypes;
 
-    var reportMainRadius = 6;
+    var reportMainRadius = 5;
     var reportOverviewRadius = 3;
 
     // Set the timeline start date 10 days before the min date
@@ -557,6 +558,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 	// Convert string to date
 	reportData.forEach(function(d) {
+		d.origTime = d.time;
 		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
 		// d.time.slice(0, 19) returns the time string without the time zone part.
 		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
@@ -736,8 +738,24 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 				return mainX(d.time); 
 			})
 			.attr("cy", function(d) { 
-				return mainY(getIndex(d.type) + .5); 
-			})
+	            var arr = reportsGroupedByDate[d.origTime];
+
+	            if (arr.length > 1) {
+	                var index = 0;
+	                for (var i = 0; i < arr.length; i++) {
+	                    if (arr[i].id === d.id) {
+	                        index = i;
+	                        break;
+	                    }
+	                }
+	                
+	                var h = reportTypeRowHeight/arr.length;
+
+	                return mainY(getIndex(d.type)) + h * (index + 1) - h/2; 
+	            } else {
+	            	return mainY(getIndex(d.type)) + reportTypeRowHeight/2; // Vertically center the dot if only one
+	            }
+		    })
 			.style("fill", function(d) {
 				return color(d.episode);
 			});
@@ -899,8 +917,25 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    .attr("cx", function(d) { 
 	    	return mainX(d.time); 
 	    })
+	    // Vertically spread the dots with same time
 	    .attr("cy", function(d) { 
-	    	return mainY(getIndex(d.type) + .5); 
+            var arr = reportsGroupedByDate[d.origTime];
+
+            if (arr.length > 1) {
+                var index = 0;
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].id === d.id) {
+                        index = i;
+                        break;
+                    }
+                }
+                
+                var h = reportTypeRowHeight/arr.length;
+
+                return mainY(getIndex(d.type)) + h * (index + 1/2); 
+            } else {
+            	return mainY(getIndex(d.type)) + reportTypeRowHeight/2; // Vertically center the dot if only one
+            }
 	    })
 	    .style("fill", function(d) {
 			return color(d.episode);
