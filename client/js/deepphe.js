@@ -510,7 +510,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDate);
+	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.maxVerticalCountsPerType, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDateAndTypeObj);
 	});
 
 	jqxhr.fail(function () { 
@@ -519,11 +519,24 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episodeCounts, episodeDates, reportData, reportsGroupedByDate) {
-	//  SVG sizing, use numOfReportTypes to determine the height of main area
-	var numOfReportTypes = Object.keys(typeCounts).length;
+function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCountsPerType, episodes, episodeCounts, episodeDates, reportData, reportsGroupedByDateAndTypeObj) {
+    // Vertical count position of each report type
+    // E.g., "Progress Note" has max 6 vertical reports, "Surgical Pathology Report" has 3
+    // then the vertical position of "Progress Note" bottom line is 6, and "Surgical Pathology Report" is 6+3=9
+    var verticalPositions = {};
+    // Vertical max counts from top to bottom
+    // This is used to decide the domain range of mainY and overviewY
+    var totalMaxVerticalCounts = 0;
+	Object.keys(maxVerticalCountsPerType).forEach(function(key) {
+        totalMaxVerticalCounts += maxVerticalCountsPerType[key];
+        if (typeof verticalPositions[key] === 'undefined') {
+        	verticalPositions[key] = totalMaxVerticalCounts;
+        }
+    });
+
 	var margin = {top: 20, right: 20, bottom: 10, left: 170};
-	var reportTypeRowHeight = 60;
+	var mainReportTypeRowHeightPerCount = 20;
+	var overviewReportTypeRowHeightPerCount = 6;
 
 	var legendHeight = 22;
     var legendRectSize = 10;
@@ -538,12 +551,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	var episodeBarY2 = 14;
 
 	var width = 660;
-	var height = reportTypeRowHeight * numOfReportTypes;
+	// Dynamic height based on vertical counts
+	var height = totalMaxVerticalCounts * mainReportTypeRowHeightPerCount;
+
     var pad = 30;
-	var overviewHeight = 10*numOfReportTypes;
+    // Dynamic height based on vertical counts
+	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
 
     var reportMainRadius = 5;
-    var reportOverviewRadius = 3;
+    var reportOverviewRadius = 2;
 
     // Set the timeline start date 10 days before the min date
     // and end date 10 days after the max date
@@ -558,13 +574,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 	// Convert string to date
 	reportData.forEach(function(d) {
-		d.origTime = d.time;
 		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
-		// d.time.slice(0, 19) returns the time string without the time zone part.
+		// d.origTime.slice(0, 19) returns the time string without the time zone part.
 		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
-		var formattedTimeStr = formatTime(new Date(d.time.slice(0, 19)));
+		var formattedTimeStr = formatTime(new Date(d.origTime.slice(0, 19)));
 		// Then convert a string back to a date to be used by d3
-        d.time = parseTime(formattedTimeStr);
+        d.formattedTime = parseTime(formattedTimeStr);
 	});
 
     // Get the index position of target element in the reportTypes array
@@ -588,11 +603,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
 	// Y scale to handle main area
 	var mainY = d3.scaleLinear()
-			.domain([0, reportTypes.length])
+			.domain([0, totalMaxVerticalCounts])
 			.range([0, height]);
 
     // Y scale to handle overview area
 	var overviewY = d3.scaleLinear()
+	        .domain([0, totalMaxVerticalCounts])
 			.range([0, overviewHeight]);
 
     // Process episode dates
@@ -605,7 +621,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 
     	datesArr.forEach(function(d) {
 			// Format the date to a human-readable string first, formatTime() takes Date object instead of string
-			// d.time.slice(0, 19) returns the time string without the time zone part.
+			// d.slice(0, 19) returns the time string without the time zone part.
 			// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
 			var formattedTimeStr = formatTime(new Date(d.slice(0, 19)));
 			// Then convert a string back to a date to be used by d3
@@ -716,65 +732,26 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	        .attr("x", function(d) { 
 				return mainX(d.startDate) - reportMainRadius; 
 			})
-	        .attr('y', function(d, i) {
-	        	// Stagger the bars
-	        	if (i % 2 === 0) {
-	                return episodeBarY1;
-	        	} else {
-	        		return episodeBarY2;
-	        	}
-	        })
 	        .attr('width', function(d) {
 	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
-	        })
-	        .attr('height', episodeBarHeight)
-	        .style('fill', function(d) {
-	            return color(d.episode);
 	        });
 
     	// Update main area
 		main.selectAll(".main_report")
 			.attr("cx", function(d) { 
-				return mainX(d.time); 
-			})
-			.attr("cy", function(d) { 
-	            var arr = reportsGroupedByDate[d.origTime];
-
-	            if (arr.length > 1) {
-	                var index = 0;
-	                for (var i = 0; i < arr.length; i++) {
-	                    if (arr[i].id === d.id) {
-	                        index = i;
-	                        break;
-	                    }
-	                }
-	                
-	                var h = reportTypeRowHeight/arr.length;
-
-	                return mainY(getIndex(d.type)) + h * (index + 1) - h/2; 
-	            } else {
-	            	return mainY(getIndex(d.type)) + reportTypeRowHeight/2; // Vertically center the dot if only one
-	            }
-		    })
-			.style("fill", function(d) {
-				return color(d.episode);
+				return mainX(d.formattedTime); 
 			});
 
         // Also need to move the font awesome icons accordlingly
-        main.selectAll(".fact_directed_report_icon")
-			.attr("x", function(d) { 
-				return mainX(d.time) - highlighted_report_icon.offsetX; 
-			})
-			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) - highlighted_report_icon.offsetY;
-			});
-
+        // Only need to update x position
         main.selectAll(".selected_report_icon")
 			.attr("x", function(d) { 
-				return mainX(d.time) - highlighted_report_icon.offsetX; 
-			})
-			.attr("y", function(d) { 
-				return mainY(getIndex(d.type) + .5) + highlighted_report_icon.offsetX; // Use offsetX
+				return d3.select("#main_" + d.id).attr("cx") - highlighted_report_icon.offsetX; 
+			});
+
+        main.selectAll(".fact_directed_report_icon")
+			.attr("x", function(d) { 
+				return d3.select("#main_" + d.id).attr("cx") - highlighted_report_icon.offsetX; 
 			});
 
 	    // Update the main x axis
@@ -837,14 +814,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
 
 	// The earliest report date
-	var xMinDate = d3.min(reportData, function(d) {return d.time;});
+	var xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
 	var startDate = new Date(xMinDate);
 	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
-	var xMaxDate = d3.max(reportData, function(d) {return d.time;});
+	var xMaxDate = d3.max(reportData, function(d) {return d.formattedTime;});
 
 	// Set the end date of the x axis 10 days after the xMaxDate
 	var endDate = new Date(xMaxDate);
@@ -915,11 +892,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	    })
 	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
-	    	return mainX(d.time); 
+	    	return mainX(d.formattedTime); 
 	    })
 	    // Vertically spread the dots with same time
 	    .attr("cy", function(d) { 
-            var arr = reportsGroupedByDate[d.origTime];
+            var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
 
             if (arr.length > 1) {
                 var index = 0;
@@ -930,11 +907,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
                     }
                 }
                 
-                var h = reportTypeRowHeight/arr.length;
+                var h = maxVerticalCountsPerType[d.type] * mainReportTypeRowHeightPerCount / arr.length;
 
-                return mainY(getIndex(d.type)) + h * (index + 1/2); 
+                return mainY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2); 
             } else {
-            	return mainY(getIndex(d.type)) + reportTypeRowHeight/2; // Vertically center the dot if only one
+            	return mainY(verticalPositions[d.type] - maxVerticalCountsPerType[d.type]/2); // Vertically center the dot if only one
             }
 	    })
 	    .style("fill", function(d) {
@@ -965,15 +942,15 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 	// Report type divider lines
 	main.append("g").selectAll(".report_type_divider")
 	    // Don't create line for the first type
-		.data(reportTypes.slice(1, reportTypes.length))
+		.data(reportTypes)
 		.enter().append("line")
 		.attr("x1", 0) // relative to main area
-		.attr("y1", function(d, i) {
-			return mainY(i + 1);
+		.attr("y1", function(d) {
+			return mainY(verticalPositions[d]);
 		})
 		.attr("x2", width)
-		.attr("y2", function(d, i) {
-			return mainY(i + 1);
+		.attr("y2", function(d) {
+			return mainY(verticalPositions[d]);
 		})
 		.attr("class", "report_type_divider");
 
@@ -986,7 +963,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 		})
 		.attr("x", -textMargin) // textMargin on the left of main area
 		.attr("y", function(d, i) {
-			return mainY(i + .5);
+			return mainY(verticalPositions[d] - maxVerticalCountsPerType[d]/2);
 		})
 		.attr("dy", ".5ex")
 		.attr("class", "report_type_label");
@@ -1011,11 +988,27 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, episodes, episo
 		.attr('class', 'overview_report')
 		.attr("r", reportOverviewRadius)
 		.attr("cx", function(d) { 
-			return overviewX(d.time); 
+			return overviewX(d.formattedTime); 
 		})
 		.attr("cy", function(d) { 
-			return overviewY(getIndex(d.type) + .5); 
-		})
+            var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
+
+            if (arr.length > 1) {
+                var index = 0;
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i].id === d.id) {
+                        index = i;
+                        break;
+                    }
+                }
+                
+                var h = maxVerticalCountsPerType[d.type] * overviewReportTypeRowHeightPerCount / arr.length;
+
+                return overviewY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2);  
+            } else {
+            	return overviewY(verticalPositions[d.type]) - overviewReportTypeRowHeightPerCount/2; // Vertically center the dot if only one
+            }
+	    })
 		.style("fill", function(d) {
 			return color(d.episode);
 		});
