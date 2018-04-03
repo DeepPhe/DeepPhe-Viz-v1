@@ -559,7 +559,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
 
     var reportMainRadius = 5;
-    var reportOverviewRadius = 2;
+    var reportOverviewRadius = 2.5;
 
     // Set the timeline start date 10 days before the min date
     // and end date 10 days after the max date
@@ -907,11 +907,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
                     }
                 }
                 
+                // The height of per chunk 
                 var h = maxVerticalCountsPerType[d.type] * mainReportTypeRowHeightPerCount / arr.length;
-
                 return mainY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2); 
             } else {
-            	return mainY(verticalPositions[d.type] - maxVerticalCountsPerType[d.type]/2); // Vertically center the dot if only one
+            	// Vertically center the dot if only one
+            	return mainY(verticalPositions[d.type]) - mainReportTypeRowHeightPerCount * maxVerticalCountsPerType[d.type] / 2; 
             }
 	    })
 	    .style("fill", function(d) {
@@ -1002,11 +1003,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
                     }
                 }
                 
+                // The height of per chunk
                 var h = maxVerticalCountsPerType[d.type] * overviewReportTypeRowHeightPerCount / arr.length;
-
                 return overviewY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2);  
             } else {
-            	return overviewY(verticalPositions[d.type]) - overviewReportTypeRowHeightPerCount/2; // Vertically center the dot if only one
+            	// Vertically center the dot if only one
+            	return overviewY(verticalPositions[d.type]) - overviewReportTypeRowHeightPerCount * maxVerticalCountsPerType[d.type] / 2; 
             }
 	    })
 		.style("fill", function(d) {
