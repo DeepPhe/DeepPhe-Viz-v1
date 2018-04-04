@@ -242,8 +242,7 @@ padding:5px 10px;
 }
 
 .selected_report {
-stroke:#ccc !important;
-stroke-width:2px;
+fill-opacity:1 !important;
 }
 
 .left {
@@ -416,12 +415,12 @@ font-weight: 600;
 
 /* Timeline */
 .main_report {
-cursor: pointer;
-stroke: #fff;
+fill-opacity:0.5;
 }
 
-.dim_out {
-opacity: 0.2;
+.main_report:hover {
+fill-opacity:1;
+stroke-width: 6px;
 }
 
 .overview_report {

@@ -475,10 +475,6 @@ function highlightSelectedTimelineReport(reportId) {
         .attr('height', highlighted_report_icon.size)
         .append("xhtml:body")
         .html('<i class="fas fa-file-alt"></i>');
-
-    // Dim all other reports
-    $('.main_report').addClass("dim_out");
-    $('.' + css).removeClass("dim_out");
 }
 
 // Highlight the selected report circle with font awesome icon in timeline
@@ -916,6 +912,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             }
 	    })
 	    .style("fill", function(d) {
+			return color(d.episode);
+		})
+		.style("stroke", function(d) {
 			return color(d.episode);
 		})
 	    .on("click", function(d) {
