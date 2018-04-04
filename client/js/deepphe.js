@@ -535,8 +535,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
     });
 
 	var margin = {top: 20, right: 20, bottom: 10, left: 170};
-	var mainReportTypeRowHeightPerCount = 20;
-	var overviewReportTypeRowHeightPerCount = 6;
+	var mainReportTypeRowHeightPerCount = 13;
+	var overviewReportTypeRowHeightPerCount = 3;
 
 	var legendHeight = 22;
     var legendRectSize = 10;
@@ -559,7 +559,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
 
     var reportMainRadius = 5;
-    var reportOverviewRadius = 2.5;
+    var reportOverviewRadius = 1.5;
 
     // Set the timeline start date 10 days before the min date
     // and end date 10 days after the max date
