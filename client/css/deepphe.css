@@ -428,7 +428,6 @@ stroke: #fff;
 }
 
 .zoom {
-cursor: move;
 fill: none;
 /* 
 The pointer-events attribute allows authors to control whether or when an element may be the target of a mouse event 

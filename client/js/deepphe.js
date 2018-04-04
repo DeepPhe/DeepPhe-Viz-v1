@@ -531,7 +531,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
     });
 
 	var margin = {top: 20, right: 20, bottom: 10, left: 170};
-	var mainReportTypeRowHeightPerCount = 13;
+	var mainReportTypeRowHeightPerCount = 14;
 	var overviewReportTypeRowHeightPerCount = 3;
 
 	var legendHeight = 22;
@@ -542,9 +542,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var episodeAreaHeight = 20;
 	var episodeLegendAnchorPositionX = 110;
 	var episodeLegendAnchorPositionY = 6;
-	var episodeBarHeight = 3;
+	var episodeBarHeight = 2;
 	var episodeBarY1 = 10;
-	var episodeBarY2 = 14;
+	var episodeBarY2 = 13;
 
 	var width = 660;
 	// Dynamic height based on vertical counts
@@ -866,6 +866,36 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return color(d.episode);
         });
 
+    // Mian report type divider lines
+    // Put this before rendering the report dots so the enlarged dot on hover will cover the divider line
+	main.append("g").selectAll(".report_type_divider")
+	    // Don't create line for the first type
+		.data(reportTypes)
+		.enter().append("line")
+		.attr("x1", 0) // relative to main area
+		.attr("y1", function(d) {
+			return mainY(verticalPositions[d]);
+		})
+		.attr("x2", width)
+		.attr("y2", function(d) {
+			return mainY(verticalPositions[d]);
+		})
+		.attr("class", "report_type_divider");
+
+	// Report types texts
+	main.append("g").selectAll(".report_type_label")
+		.data(reportTypes)
+		.enter().append("text")
+		.text(function(d) {
+			return d + " (" + typeCounts[d] + "):";
+		})
+		.attr("x", -textMargin) // textMargin on the left of main area
+		.attr("y", function(d, i) {
+			return mainY(verticalPositions[d] - maxVerticalCountsPerType[d]/2);
+		})
+		.attr("dy", ".5ex")
+		.attr("class", "report_type_label");
+
 
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
@@ -939,35 +969,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(xAxis);
 
-	// Report type divider lines
-	main.append("g").selectAll(".report_type_divider")
-	    // Don't create line for the first type
-		.data(reportTypes)
-		.enter().append("line")
-		.attr("x1", 0) // relative to main area
-		.attr("y1", function(d) {
-			return mainY(verticalPositions[d]);
-		})
-		.attr("x2", width)
-		.attr("y2", function(d) {
-			return mainY(verticalPositions[d]);
-		})
-		.attr("class", "report_type_divider");
-
-	// Report types texts
-	main.append("g").selectAll(".report_type_label")
-		.data(reportTypes)
-		.enter().append("text")
-		.text(function(d) {
-			return d + " (" + typeCounts[d] + "):";
-		})
-		.attr("x", -textMargin) // textMargin on the left of main area
-		.attr("y", function(d, i) {
-			return mainY(verticalPositions[d] - maxVerticalCountsPerType[d]/2);
-		})
-		.attr("dy", ".5ex")
-		.attr("class", "report_type_label");
-
+	
 	// Overview label text
 	overview.append("text")
 	    .attr("x", -textMargin)
