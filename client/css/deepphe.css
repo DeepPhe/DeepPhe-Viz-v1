@@ -414,8 +414,17 @@ font-weight: 600;
 
 
 /* Timeline */
+.episode_legend_circle,
 .main_report {
 fill-opacity:0.5;
+}
+
+.hide {
+display:none;
+}
+
+.selected_episode_legend {
+fill-opacity:0 !important;
 }
 
 .main_report:hover {

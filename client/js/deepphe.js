@@ -535,12 +535,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var overviewReportTypeRowHeightPerCount = 3;
 
 	var legendHeight = 22;
-    var legendRectSize = 10;
-    var legendSpacing = 3;
+    var legendSpacing = 2;
     var widthPerLetter = 12;
 
 	var episodeAreaHeight = 20;
-	var episodeLegendAnchorPositionX = 110;
+	var episodeLegendAnchorPositionX = 100;
 	var episodeLegendAnchorPositionY = 6;
 	var episodeBarHeight = 2;
 	var episodeBarY1 = 10;
@@ -645,10 +644,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
     // Dynamically calculate the x posiiton of each lengend rect
     var lengendX = function(index) {
-    	var x = 0;
+    	var x = 10;
 
     	for (var i = 0; i < index; i++) {
-            x += episodes[i].length * widthPerLetter + i * (legendRectSize + legendSpacing);
+            x += episodes[i].length * widthPerLetter + i * (reportMainRadius*2 + legendSpacing);
     	}
 
     	return episodeLegendAnchorPositionX + legendSpacing + x;
@@ -681,24 +680,39 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         .append('g')
         .attr('class', 'episode_legend');
 
-    legend.append('rect')
-        .attr('x', function(d, i) {
+    legend.append('circle')
+        .attr("class", "episode_legend_circle")
+        .attr("id", function(d) {
+            return d;
+        })
+        .attr('cx', function(d, i) {
             return lengendX(i);
         })
-        .attr('y', 1)
-        // The attributes rx and ry determine how round the corners will be.
-        .attr('rx', 3)
-        .attr('ry', 3)
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
+        .attr('cy', 6)
+        .attr('r', reportMainRadius)
         .style('fill', function(d) {
             return color(d);
+        })
+        .style('stroke', function(d) {
+            return color(d);
+        })
+        .on("click", function(d) {
+            // Toggle (hide/show reports of the clicked episode)
+            var nodes = d3.selectAll("." + d);
+            nodes.each(function() {
+            	var node = d3.select(this);
+                node.classed("hide", !node.classed("hide"));
+            });
+
+            // Also toggle the episode legend look
+            var legendRect = d3.select(this);
+            legendRect.classed("selected_episode_legend", !legendRect.classed("selected_episode_legend"));
         });
 
     // Legend label text
     legend.append('text')
         .attr('x', function(d, i) {
-            return legendRectSize + legendSpacing + lengendX(i);
+            return reportMainRadius*2 + legendSpacing + lengendX(i);
         })
         .attr('y', 10)
         .attr('class', 'legend_text')
@@ -907,7 +921,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .data(reportData)
 	    .enter().append("g")
 	    .append("circle")
-	    .attr('class', 'main_report')
+	    .attr('class', function(d) {
+	    	return 'main_report ' + d.episode;
+	    })
 	    .attr("id", function(d) {
             // Prefix with "main_"
             return "main_" + d.id;
