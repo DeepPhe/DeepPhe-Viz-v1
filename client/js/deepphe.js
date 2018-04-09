@@ -79,18 +79,15 @@ function showStagesChart(svgContainerId, data) {
 	var x = d3.scaleLinear()
 	    .range([0, width]);
 	    
-
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
 		.padding(0.2); // blank space between bands
 		
-
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 
 	// Scale the range of the data in the domains
 	x.domain([0, d3.max(data, function(d) { 
