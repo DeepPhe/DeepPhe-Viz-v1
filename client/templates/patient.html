@@ -7,6 +7,8 @@
 
 <div class="left">
 
+<div id="info"></div>
+
 <div id="cancer"></div>
 
 <div id="tumors"></div>
@@ -47,6 +49,9 @@
 var patientName = '{{patientName}}';
 var cancerId = '{{cancerId}}';
 var baseUri = '{{baseUri}}';
+
+// Get pateint info
+getPatientInfo(patientName);
 
 // Get patient cancer symmary and reports
 getCancerSummary(patientName);

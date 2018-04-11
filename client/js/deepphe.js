@@ -119,7 +119,6 @@ function showStagesChart(svgContainerId, data) {
 		})
 		// Must add the clickable before transition
 		.on("click", function(d) {
-            console.log(d);
             var clickedStage = d3.select(this);
             var css = "clicked_stage";
 
@@ -243,6 +242,28 @@ function showPatients(stage) {
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get target patients");
+	});
+}
+
+// Show patient info
+function getPatientInfo(patientName) {
+	// Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/patient/' + patientName + '/info',
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
+	});
+
+	jqxhr.done(function(response) {
+	    //console.log(response);
+
+	    // Render response
+	    $('#info').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get pateint info");
 	});
 }
 
