@@ -241,10 +241,6 @@ width:100px;
 padding:5px 10px;
 }
 
-.selected_report {
-fill-opacity:1 !important;
-}
-
 .left {
 float:left;
 width:860px;
@@ -425,6 +421,17 @@ display:none;
 
 .selected_episode_legend {
 fill-opacity:0 !important;
+}
+
+
+.selected_report {
+fill-opacity:1 !important;
+stroke-width: 6px;
+}
+
+
+.fact_highlighted_report {
+fill-opacity:1 !important;
 }
 
 .main_report:hover {

@@ -1,9 +1,5 @@
 // Global settings
-var highlighted_report_icon = {
-    offsetX: 5,
-    offsetY: 18,
-    size: 8
-};
+var factBasedReports = [];
 
 // Add birthdays to all patient nodes
 function addBirthdays() {
@@ -398,10 +394,14 @@ function getFact(patientId, factId) {
 
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
-			// Remove previous added font awesome icons
-			$('.fact_directed_report_icon').remove();
+			// Add to the global factBasedReports array for later use
+            factBasedReports = reportIds;
+
+			// Remove the previouly fact-based highlighting
+			$('.main_report').removeClass("fact_highlighted_report");
 
 			reportIds.forEach(function(id) {
+				// Set fill-opacity to 1
                 highlightReportBasedOnFact(id);
 			});
 
@@ -409,7 +409,7 @@ function getFact(patientId, factId) {
 			// The reportIds is sorted
 			getReport(reportIds[0]);
 
-			// And highlight the current report in timeline
+			// And highlight the current displaying report circle with a thicker stroke
 			highlightSelectedTimelineReport(reportIds[0])
 		}
 	});
@@ -439,7 +439,7 @@ function getReport(reportId) {
         $('.fact_based_report_id').removeClass(cssClass);
         $('#' + reportId).addClass(cssClass);
 
-        $('#report_id').html('<i class="fas fa-file-alt"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
+        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
         $('#report_mentioned_terms').html(renderedMentionedTerms);
@@ -469,8 +469,8 @@ function getShortDocId(id) {
 
 // Highlight the selected report circle in timeline
 function highlightSelectedTimelineReport(reportId) {
-    var css = "selected_report";
     // Remove previous added highlighting classes
+    var css = "selected_report";
     $('.main_report').removeClass(css);
     $('.overview_report').removeClass(css);
 
@@ -480,36 +480,11 @@ function highlightSelectedTimelineReport(reportId) {
     // Highlight the selected circle in both overview and main areas
     $('#main_' + reportId).addClass(css);
     $('#overview_' + reportId).addClass(css);
-
-    // Add the arrow icon to make it more eye-catching
-    var circle = d3.select('#main_' + reportId);
-    d3.select(circle.node().parentNode).append("foreignObject")
-        .attr('class', 'selected_report_icon')
-        // Use the unary plus operator (+varname) to convert circle.attr("cx") to number first, 
-        // otherwise they'll be concatenated instead
-        .attr('x', (+circle.attr("cx")) - highlighted_report_icon.offsetX) 
-        .attr('y', (+circle.attr("cy")) + highlighted_report_icon.offsetX)
-        .attr('width', highlighted_report_icon.size)
-        .attr('height', highlighted_report_icon.size)
-        .append("xhtml:body")
-        .html('<i class="fas fa-file-alt"></i>');
 }
 
-// Highlight the selected report circle with font awesome icon in timeline
+// Highlight the selected report circle 
 function highlightReportBasedOnFact(reportId) {
-    // Add a font awesome icon next to the current report circle
-    // It doesn't work with the "text" element
-    // It works with direct use of "i" element but zooming and brushing won't move the icon
-    // I finally got it work with "foreignObject"
-    var circle = d3.select('#main_' + reportId);
-    d3.select(circle.node().parentNode).append("foreignObject")
-        .attr('class', 'fact_directed_report_icon')
-        .attr('x', (+circle.attr("cx")) - highlighted_report_icon.offsetX)
-        .attr('y', (+circle.attr("cy")) - highlighted_report_icon.offsetY)
-        .attr('width', highlighted_report_icon.size)
-        .attr('height', highlighted_report_icon.size)
-        .append("xhtml:body")
-        .html('<i class="far fa-file"></i>');
+    d3.select('#main_' + reportId).classed("fact_highlighted_report", true);
 }
 
 // Fetch timeline data and render the SVG
@@ -770,18 +745,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 				return mainX(d.formattedTime); 
 			});
 
-        // Also need to move the font awesome icons accordlingly
-        // Only need to update x position
-        main.selectAll(".selected_report_icon")
-			.attr("x", function(d) { 
-				return d3.select("#main_" + d.id).attr("cx") - highlighted_report_icon.offsetX; 
-			});
-
-        main.selectAll(".fact_directed_report_icon")
-			.attr("x", function(d) { 
-				return d3.select("#main_" + d.id).attr("cx") - highlighted_report_icon.offsetX; 
-			});
-
 	    // Update the main x axis
 		main.select(".x-axis").call(xAxis);
     };
@@ -982,8 +945,19 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 			return color(d.episode);
 		})
 	    .on("click", function(d) {
-            // Highlight the selected report circle
+            // Check to see if this report is one of the fact-based reports that are being highlighted
+            console.log(factBasedReports);
+            console.log(d.id);
             // d.id has no prefix, just raw id
+            if (factBasedReports.indexOf(d.id) === -1) {
+                // Remove the fact related highlighting
+                $('.fact').removeClass("highlighted_fact");
+                $('.main_report').removeClass("fact_highlighted_report");
+                // Also remove the fact detail
+                $('#fact_detail').hide().html("").fadeIn('slow');
+            }
+
+            // Highlight the selected report circle with solid fill and thicker stroke
             highlightSelectedTimelineReport(d.id);
 
             // And show the report content
