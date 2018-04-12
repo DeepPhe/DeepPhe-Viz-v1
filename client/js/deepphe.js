@@ -419,6 +419,13 @@ function getFact(patientId, factId) {
 	});
 }
 
+function removeFactBasedHighlighting(reportId) {
+	$('.fact').removeClass("highlighted_fact");
+    $('.main_report').removeClass("fact_highlighted_report");
+    // Also remove the fact detail
+    $('#fact_detail').hide().html("").fadeIn('slow');
+}
+
 // Get report content and mentioned terms by ID 
 function getReport(reportId) {
 	// Separate the ajax request with callbacks
@@ -946,15 +953,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		})
 	    .on("click", function(d) {
             // Check to see if this report is one of the fact-based reports that are being highlighted
-            console.log(factBasedReports);
-            console.log(d.id);
             // d.id has no prefix, just raw id
             if (factBasedReports.indexOf(d.id) === -1) {
                 // Remove the fact related highlighting
-                $('.fact').removeClass("highlighted_fact");
-                $('.main_report').removeClass("fact_highlighted_report");
-                // Also remove the fact detail
-                $('#fact_detail').hide().html("").fadeIn('slow');
+                removeFactBasedHighlighting(d.id);
             }
 
             // Highlight the selected report circle with solid fill and thicker stroke
