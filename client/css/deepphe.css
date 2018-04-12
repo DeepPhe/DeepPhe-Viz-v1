@@ -423,6 +423,9 @@ display:none;
 fill-opacity:0 !important;
 }
 
+.episode_bar:hover {
+height:6px;
+}
 
 .selected_report {
 fill-opacity:1 !important;

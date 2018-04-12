@@ -543,7 +543,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var episodeLegendAnchorPositionY = 6;
 	var episodeBarHeight = 2;
 	var episodeBarY1 = 10;
-	var episodeBarY2 = 13;
+	var episodeBarY2 = 13; // episodeBarY1 + episodeBarHeight + 1px gap
 
 	var width = 660;
 	// Dynamic height based on vertical counts
@@ -866,6 +866,25 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         .attr('height', episodeBarHeight)
         .style('fill', function(d) {
             return color(d.episode);
+        })
+        .on("click", function(d) {
+            // Span the episode coverage across the whole main area
+            mainX.domain([d.startDate, d.endDate]);
+	        
+	        update();
+
+            // Move the brush
+			// https://github.com/d3/d3-selection#selection_call
+			overview.select(".brush").call(brush.move, [overviewX(d.startDate), overviewX(d.endDate)]);
+
+		    // Also need to update the position of custom brush handles
+		    // First we need to get the current brush selection
+		    // https://github.com/d3/d3-brush#brushSelection
+		    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
+			var selection = d3.brushSelection(overviewBrush.node());
+
+			// Then translate the x of each custom brush handle
+			showAndMoveCustomBrushHandles(selection);
         });
 
     // Mian report type divider lines
