@@ -674,13 +674,13 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		.attr("y2", legendHeight)
 		.attr("class", "legend_group_divider");
 
-    var legend = episodeLegendGrp.selectAll('.episode_legend')
+    var episodeLegend = episodeLegendGrp.selectAll('.episode_legend')
         .data(episodes)
         .enter()
         .append('g')
         .attr('class', 'episode_legend');
 
-    legend.append('circle')
+    episodeLegend.append('circle')
         .attr("class", "episode_legend_circle")
         .attr("id", function(d) {
             return d;
@@ -704,13 +704,17 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
                 node.classed("hide", !node.classed("hide"));
             });
 
+            // Toggle and episode bar
+            var episodeBar = d3.select("#" + d + "_bar");
+            episodeBar.classed("hide", !episodeBar.classed("hide"));
+
             // Also toggle the episode legend look
             var legendRect = d3.select(this);
             legendRect.classed("selected_episode_legend", !legendRect.classed("selected_episode_legend"));
         });
 
     // Legend label text
-    legend.append('text')
+    episodeLegend.append('text')
         .attr('x', function(d, i) {
             return reportMainRadius*2 + legendSpacing + lengendX(i);
         })
@@ -849,6 +853,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
     episodeBarGrp.append('rect')
         .attr('class', 'episode_bar')
+        .attr("id", function(d) {
+            return d.episode + "_bar";
+        })
         .attr("x", function(d) { 
 			return mainX(d.startDate) - reportMainRadius; 
 		})
