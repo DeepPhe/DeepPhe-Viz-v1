@@ -868,14 +868,27 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return color(d.episode);
         })
         .on("click", function(d) {
-            // Span the episode coverage across the whole main area
-            mainX.domain([d.startDate, d.endDate]);
-	        
+            // Here we we add extra days before the start and after the end date to have a little cushion
+            var daysDiff = Math.floor((d.endDate - d.startDate) / (1000 * 60 * 60 * 24));
+            var numOfDays = daysDiff > 30 ? 3 : 1;
+
+            // setDate() will change the start and end dates, and we still need the origional dates to update the episode bar
+            // so we clone the date objects
+            var newStartDate = new Date(d.startDate.getTime());
+            var newEndDate = new Date(d.endDate.getTime());
+
+            // The setDate() method sets the day of the month to the date object.
+			newStartDate.setDate(newStartDate.getDate() - numOfDays);
+			newEndDate.setDate(newEndDate.getDate() + numOfDays);
+
+            // Span the episode coverage across the whole main area using this new domain
+            mainX.domain([newStartDate, newEndDate]);
+
 	        update();
 
             // Move the brush
 			// https://github.com/d3/d3-selection#selection_call
-			overview.select(".brush").call(brush.move, [overviewX(d.startDate), overviewX(d.endDate)]);
+			overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
 
 		    // Also need to update the position of custom brush handles
 		    // First we need to get the current brush selection
