@@ -577,7 +577,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         d.formattedTime = parseTime(formattedTimeStr);
 	});
 
-    // The earliest report date
+	// The earliest report date
 	var xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
@@ -754,20 +754,8 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("width", width)
 	    .attr("height", height);
 
-    // Main area
-	// Create main area after zoom panel, so we can select the report circles
-	var main = svg.append("g")
-	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
-
-	// Mini overview
-	var overview = svg.append("g")
-	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
-
-	// Update episode bars and main reports
     var update = function() {
-    	// Update the episode bars
+        // Update the episode bars
     	episodes.selectAll(".episode_bar")
 	        .attr("x", function(d) { 
 				return mainX(d.startDate) - reportMainRadius; 
@@ -781,6 +769,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 			.attr("cx", function(d) { 
 				return mainX(d.formattedTime); 
 			});
+	
 
 	    // Update the main x axis
 		main.select(".x-axis").call(xAxis);
@@ -829,7 +818,19 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		.attr("height", height + episodeAreaHeight)
 		.attr("transform", "translate(" + margin.left + "," + (margin.top + + episodeAreaHeight) + ")")
 		.call(zoom);
-		
+
+	// Main area
+	// Create main area after zoom panel, so we can select the report circles
+	var main = svg.append("g")
+	    .attr("class", "main")
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
+
+	// Mini overview
+	var overview = svg.append("g")
+	    .attr("class", "overview")
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
+
+	
     // Episode interval spans
     var episodes = svg.append("g")
         .attr('class', 'episodes')
