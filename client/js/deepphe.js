@@ -1,4 +1,5 @@
 // Global settings
+var updateMain = true;
 var factBasedReports = [];
 
 // Add birthdays to all patient nodes
@@ -755,8 +756,28 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("height", height);
 
     var update = function() {
+        // Update the episode bars
+    	d3.selectAll(".episode_bar")
+	        .attr("x", function(d) { 
+				return mainX(d.startDate) - reportMainRadius; 
+			})
+	        .attr('width', function(d) {
+	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
+	        });
+
+    	// Update main area
+		d3.selectAll(".main_report")
+			.attr("cx", function(d) { 
+				return mainX(d.formattedTime); 
+			});
+	
+	    // Update the main x axis
+		d3.select(".main-x-axis").call(xAxis);
+    };
+
+    var updateWithTransition = function() {
         var transt = d3.transition()
-		    .duration(750)
+		    .duration(500)
 		    .ease(d3.easeLinear);
 
         // Update the episode bars
@@ -872,6 +893,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return color(d.episode);
         })
         .on("click", function(d) {
+            // Disable the main area update caused by brush move
+            updateMain = false;
+
             // Here we we add extra days before the start and after the end date to have a little cushion
             var daysDiff = Math.floor((d.endDate - d.startDate) / (1000 * 60 * 60 * 24));
             var numOfDays = daysDiff > 30 ? 3 : 1;
@@ -888,11 +912,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             // Span the episode coverage across the whole main area using this new domain
             mainX.domain([newStartDate, newEndDate]);
 
-	        update();
+	        updateWithTransition();
 
             // Move the brush
 			// https://github.com/d3/d3-selection#selection_call
-			overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
+            //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
+            overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
 
 		    // Also need to update the position of custom brush handles
 		    // First we need to get the current brush selection
@@ -902,6 +927,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
 			// Then translate the x of each custom brush handle
 			showAndMoveCustomBrushHandles(selection);
+
+            // Reset, so the regular brush move still updates the main area
+			updateMain = true;
         });
 
     // Mian report type divider lines
@@ -1147,15 +1175,20 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    // Update the position of custom brush handles
     	showAndMoveCustomBrushHandles(selection);
 
-	    // Set the domain of the main area based on brush selection
-		mainX.domain(selection.map(overviewX.invert, overviewX));
+        // Only update the main area on regular brush move
+        // Brush move caused by episode bar span will overwrite the transion animation
+        // so we'll disable this main update when span the episode bar
+		if (updateMain === true) {
+            // Set the domain of the main area based on brush selection
+			mainX.domain(selection.map(overviewX.invert, overviewX));
 
-	    update();
+		    update();
 
-	    // Zoom the main main area
-		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-			.scale(width / (selection[1] - selection[0]))
-			.translate(-selection[0], 0));
+		    // Zoom the main main area
+			svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+				.scale(width / (selection[1] - selection[0]))
+				.translate(-selection[0], 0));
+		}
 	};
 
 	// D3 brush
