@@ -739,6 +739,12 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         .attr('class', 'legend_text')
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
+        })
+        .on("click", function(d, i) {
+            // episodeSpansData maintains the same order of episodes as the episodes array
+            // so we can safely use i to get the corresponding startDate and endDate
+            var episodeSpanObj = episodeSpansData[i];
+            focusEpisode(episodeSpanObj);
         });
 
 	// Specify a specific region of an element to display, rather than showing the complete area
@@ -858,6 +864,46 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
 	
     // Episode interval spans
+    var focusEpisode = function(episode) {
+    	// Here we we add extra days before the start and after the end date to have a little cushion
+        var daysDiff = Math.floor((episode.endDate - episode.startDate) / (1000 * 60 * 60 * 24));
+        var numOfDays = daysDiff > 30 ? 3 : 1;
+
+        // setDate() will change the start and end dates, and we still need the origional dates to update the episode bar
+        // so we clone the date objects
+        var newStartDate = new Date(episode.startDate.getTime());
+        var newEndDate = new Date(episode.endDate.getTime());
+
+        // The setDate() method sets the day of the month to the date object.
+		newStartDate.setDate(newStartDate.getDate() - numOfDays);
+		newEndDate.setDate(newEndDate.getDate() + numOfDays);
+
+        // Span the episode coverage across the whole main area using this new domain
+        mainX.domain([newStartDate, newEndDate]);
+
+        updateWithTransition();
+
+        // Disable the main area update caused by brush move
+        updateMain = false;
+
+        // Move the brush
+		// https://github.com/d3/d3-selection#selection_call
+        //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
+        overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
+
+        // Reset, so the regular brush move still updates the main area
+		updateMain = true;
+
+	    // Also need to update the position of custom brush handles
+	    // First we need to get the current brush selection
+	    // https://github.com/d3/d3-brush#brushSelection
+	    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
+		var selection = d3.brushSelection(overviewBrush.node());
+
+		// Then translate the x of each custom brush handle
+		showAndMoveCustomBrushHandles(selection);
+    };
+
     var episodeBarsGrp = svg.append("g")
         .attr("clip-path", "url(#episode_area_clip)")
         .attr('class', 'episode_bars')
@@ -893,43 +939,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return color(d.episode);
         })
         .on("click", function(d) {
-            // Disable the main area update caused by brush move
-            updateMain = false;
-
-            // Here we we add extra days before the start and after the end date to have a little cushion
-            var daysDiff = Math.floor((d.endDate - d.startDate) / (1000 * 60 * 60 * 24));
-            var numOfDays = daysDiff > 30 ? 3 : 1;
-
-            // setDate() will change the start and end dates, and we still need the origional dates to update the episode bar
-            // so we clone the date objects
-            var newStartDate = new Date(d.startDate.getTime());
-            var newEndDate = new Date(d.endDate.getTime());
-
-            // The setDate() method sets the day of the month to the date object.
-			newStartDate.setDate(newStartDate.getDate() - numOfDays);
-			newEndDate.setDate(newEndDate.getDate() + numOfDays);
-
-            // Span the episode coverage across the whole main area using this new domain
-            mainX.domain([newStartDate, newEndDate]);
-
-	        updateWithTransition();
-
-            // Move the brush
-			// https://github.com/d3/d3-selection#selection_call
-            //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
-            overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
-
-		    // Also need to update the position of custom brush handles
-		    // First we need to get the current brush selection
-		    // https://github.com/d3/d3-brush#brushSelection
-		    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
-			var selection = d3.brushSelection(overviewBrush.node());
-
-			// Then translate the x of each custom brush handle
-			showAndMoveCustomBrushHandles(selection);
-
-            // Reset, so the regular brush move still updates the main area
-			updateMain = true;
+            focusEpisode(d);
         });
 
     // Mian report type divider lines
