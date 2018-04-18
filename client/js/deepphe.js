@@ -1181,14 +1181,13 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		if (updateMain === true) {
             // Set the domain of the main area based on brush selection
 			mainX.domain(selection.map(overviewX.invert, overviewX));
-
 		    update();
-
-		    // Zoom the main main area
-			svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
-				.scale(width / (selection[1] - selection[0]))
-				.translate(-selection[0], 0));
 		}
+
+		// Zoom the main main area
+		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
+			.scale(width / (selection[1] - selection[0]))
+			.translate(-selection[0], 0));
 	};
 
 	// D3 brush
