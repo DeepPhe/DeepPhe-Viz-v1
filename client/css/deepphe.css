@@ -456,13 +456,15 @@ Without this, the zoom won't work
 pointer-events: visibleFill;
 }
 
-.x-axis {
+.main-x-axis,
+.overview-x-axis {
 stroke-width: 0.5px;
 stroke: #888;
 font: 10px avenir next, sans-serif;
 }
 
-.x-axis > path {
+.main-x-axis > path,
+.overview-x-axis > path {
 stroke: #888;
 }
 

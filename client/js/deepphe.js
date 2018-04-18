@@ -755,8 +755,13 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("height", height);
 
     var update = function() {
+        var transt = d3.transition()
+		    .duration(750)
+		    .ease(d3.easeLinear);
+
         // Update the episode bars
-    	episodes.selectAll(".episode_bar")
+    	d3.selectAll(".episode_bar")
+    	    .transition(transt)
 	        .attr("x", function(d) { 
 				return mainX(d.startDate) - reportMainRadius; 
 			})
@@ -765,14 +770,14 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	        });
 
     	// Update main area
-		main.selectAll(".main_report")
+		d3.selectAll(".main_report")
+		    .transition(transt)
 			.attr("cx", function(d) { 
 				return mainX(d.formattedTime); 
 			});
 	
-
 	    // Update the main x axis
-		main.select(".x-axis").call(xAxis);
+		d3.select(".main-x-axis").call(xAxis);
     };
 
 	// Function expression to handle mouse wheel zoom or drag on main area
@@ -832,13 +837,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
 	
     // Episode interval spans
-    var episodes = svg.append("g")
-        .attr('class', 'episodes')
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
-
-    var episodeBarsGrp = episodes.append('g')
+    var episodeBarsGrp = svg.append("g")
         .attr("clip-path", "url(#episode_area_clip)")
-        .attr('class', 'episode_bars');
+        .attr('class', 'episode_bars')
+        .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
 
     var episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
         .data(episodeSpansData)
@@ -1009,7 +1011,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
 	// Append x axis to the bottom of main area
 	main.append("g")
-	    .attr("class", "x-axis")
+	    .attr("class", "main-x-axis")
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(xAxis);
 
@@ -1067,7 +1069,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
 	// Append x axis to the bottom of overview area
 	overview.append("g")
-	    .attr("class", "x-axis")
+	    .attr("class", "overview-x-axis")
 	    .attr("transform", "translate(0, " + overviewHeight + ")")
 	    .call(overviewXAxis);
 
