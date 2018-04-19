@@ -931,25 +931,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         .attr('height', episodeBarHeight)
         .style('fill', function(d) {
             return color(d.episode);
-        })
-        .on("click", function(d) {
-            // Toggle
-            var bar = d3.select(this);
-            var cssClass = "selected_episode_bar";
-
-            if (bar.classed(cssClass)) {
-                bar.classed(cssClass, false);
-                
-                // Reset to show all
-                defocusEpisode();
-            } else {
-            	// Remove previously added class on other legend text
-            	$(".episode_bar").removeClass(cssClass);
-
-            	bar.classed(cssClass, true);
-
-                focusEpisode(d);
-            }
         });
 
     // Mian report type divider lines
