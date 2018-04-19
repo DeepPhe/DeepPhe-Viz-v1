@@ -781,11 +781,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		d3.select(".main-x-axis").call(xAxis);
     };
 
-    var updateWithTransition = function() {
-        var transt = d3.transition()
-		    .duration(500)
-		    .ease(d3.easeLinear);
-
+    var updateWithTransition = function(transt) {
         // Update the episode bars
     	d3.selectAll(".episode_bar")
     	    .transition(transt)
@@ -881,15 +877,19 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
         // Span the episode coverage across the whole main area using this new domain
         mainX.domain([newStartDate, newEndDate]);
 
-        updateWithTransition();
+        var transt = d3.transition()
+		    .duration(500)
+		    .ease(d3.easeLinear);
+
+        updateWithTransition(transt);
 
         // Disable the main area update caused by brush move
         updateMain = false;
 
-        // Move the brush
+        // Move the brush with transition
 		// https://github.com/d3/d3-selection#selection_call
         //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
-        overview.select(".brush").call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
+        overview.select(".brush").transition(transt).call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
 
         // Reset, so the regular brush move still updates the main area
 		updateMain = true;
