@@ -1,5 +1,4 @@
 // Global settings
-var updateMain = true;
 var factBasedReports = [];
 
 // Add birthdays to all patient nodes
@@ -604,6 +603,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	        .domain(['PreDiagnostics', 'Diagnostic', 'Decision', 'Treatment', 'Follow-up'])
 	        .range(['rgb(49, 130, 189)', 'rgb(230, 85, 13)', 'rgb(49, 163, 84)', 'rgb(140, 86, 75)', 'rgb(117, 107, 177)']);
 
+    // Transition used by focus/defocus episode
+    var transt = d3.transition()
+		    .duration(500)
+		    .ease(d3.easeLinear);
+
 	// Main area and overview area share the same width
 	var mainX = d3.scaleTime()
 	        .domain([startDate, endDate])
@@ -726,8 +730,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             episodeBar.classed("hide", !episodeBar.classed("hide"));
 
             // Also toggle the episode legend look
-            var legendRect = d3.select(this);
-            legendRect.classed("selected_episode_legend", !legendRect.classed("selected_episode_legend"));
+            var legendCircle = d3.select(this);
+            var cssClass = "selected_episode_legend_circle";
+            legendCircle.classed(cssClass, !legendCircle.classed(cssClass));
         });
 
     // Legend label text
@@ -741,10 +746,26 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return d + " (" + episodeCounts[d] + ")"; 
         })
         .on("click", function(d, i) {
-            // episodeSpansData maintains the same order of episodes as the episodes array
-            // so we can safely use i to get the corresponding startDate and endDate
-            var episodeSpanObj = episodeSpansData[i];
-            focusEpisode(episodeSpanObj);
+            // Toggle
+            var legendText = d3.select(this);
+            var cssClass = "selected_episode_legend_text";
+
+            if (legendText.classed(cssClass)) {
+                legendText.classed(cssClass, false);
+                
+                // Reset to show all
+                defocusEpisode();
+            } else {
+            	// Remove previously added class on other legend text
+            	$(".legend_text").removeClass(cssClass);
+
+            	legendText.classed(cssClass, true);
+
+                // episodeSpansData maintains the same order of episodes as the episodes array
+                // so we can safely use i to get the corresponding startDate and endDate
+            	var episodeSpanObj = episodeSpansData[i];
+                focusEpisode(episodeSpanObj);
+            }
         });
 
 	// Specify a specific region of an element to display, rather than showing the complete area
@@ -773,28 +794,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
     	// Update main area
 		d3.selectAll(".main_report")
-			.attr("cx", function(d) { 
-				return mainX(d.formattedTime); 
-			});
-	
-	    // Update the main x axis
-		d3.select(".main-x-axis").call(xAxis);
-    };
-
-    var updateWithTransition = function(transt) {
-        // Update the episode bars
-    	d3.selectAll(".episode_bar")
-    	    .transition(transt)
-	        .attr("x", function(d) { 
-				return mainX(d.startDate) - reportMainRadius; 
-			})
-	        .attr('width', function(d) {
-	            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
-	        });
-
-    	// Update main area
-		d3.selectAll(".main_report")
-		    .transition(transt)
 			.attr("cx", function(d) { 
 				return mainX(d.formattedTime); 
 			});
@@ -881,27 +880,22 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 		    .duration(500)
 		    .ease(d3.easeLinear);
 
-        updateWithTransition(transt);
+        // Move the brush with transition
+        // The brush move will cause the report circles move accordingly
+        // So no need to call update() with transition
+		// https://github.com/d3/d3-selection#selection_call
+        //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
+        overview.select(".brush").transition(transt).call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
+    };
 
-        // Disable the main area update caused by brush move
-        updateMain = false;
+    var defocusEpisode = function() {
+        // Reset the mainX domain
+        mainX.domain([startDate, endDate]);
 
         // Move the brush with transition
 		// https://github.com/d3/d3-selection#selection_call
         //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
-        overview.select(".brush").transition(transt).call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
-
-        // Reset, so the regular brush move still updates the main area
-		updateMain = true;
-
-	    // Also need to update the position of custom brush handles
-	    // First we need to get the current brush selection
-	    // https://github.com/d3/d3-brush#brushSelection
-	    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
-		var selection = d3.brushSelection(overviewBrush.node());
-
-		// Then translate the x of each custom brush handle
-		showAndMoveCustomBrushHandles(selection);
+        overview.select(".brush").transition(transt).call(brush.move, [overviewX(startDate), overviewX(endDate)]);
     };
 
     var episodeBarsGrp = svg.append("g")
@@ -939,7 +933,23 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
             return color(d.episode);
         })
         .on("click", function(d) {
-            focusEpisode(d);
+            // Toggle
+            var bar = d3.select(this);
+            var cssClass = "selected_episode_bar";
+
+            if (bar.classed(cssClass)) {
+                bar.classed(cssClass, false);
+                
+                // Reset to show all
+                defocusEpisode();
+            } else {
+            	// Remove previously added class on other legend text
+            	$(".episode_bar").removeClass(cssClass);
+
+            	bar.classed(cssClass, true);
+
+                focusEpisode(d);
+            }
         });
 
     // Mian report type divider lines
@@ -1185,14 +1195,9 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    // Update the position of custom brush handles
     	showAndMoveCustomBrushHandles(selection);
 
-        // Only update the main area on regular brush move
-        // Brush move caused by episode bar span will overwrite the transion animation
-        // so we'll disable this main update when span the episode bar
-		if (updateMain === true) {
-            // Set the domain of the main area based on brush selection
-			mainX.domain(selection.map(overviewX.invert, overviewX));
-		    update();
-		}
+        // Set the domain of the main area based on brush selection
+		mainX.domain(selection.map(overviewX.invert, overviewX));
+	    update();
 
 		// Zoom the main main area
 		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity

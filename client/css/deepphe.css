@@ -419,9 +419,14 @@ fill-opacity:0.5;
 display:none;
 }
 
-.selected_episode_legend {
+.selected_episode_legend_circle {
 fill-opacity:0 !important;
 }
+
+.selected_episode_legend_text {
+font-weight: bold;
+}
+
 
 .episode_bar:hover {
 height:6px;
