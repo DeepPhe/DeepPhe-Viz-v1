@@ -1178,9 +1178,10 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
         // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
+		
 	    update();
 
-		// Zoom the main main area
+		// Zoom the main area
 		svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
 			.scale(width / (selection[1] - selection[0]))
 			.translate(-selection[0], 0));
