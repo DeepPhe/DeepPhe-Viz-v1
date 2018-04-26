@@ -497,11 +497,18 @@ stroke: #dbdbdb;
 shape-rendering: crispEdges;
 }
 
-.report_type_divider {
+.report_type_divider{
 stroke-width: 1px;
 shape-rendering: crispEdges;
 stroke: #dbdbdb;
 stroke-dasharray:2,2;
+}
+
+.encounter_age_guideline {
+stroke-width: 1px;
+shape-rendering: crispEdges;
+stroke: red;
+stroke-dasharray:1,1;
 }
 
 .report_type_label,

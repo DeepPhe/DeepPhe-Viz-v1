@@ -514,12 +514,13 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Dynamic height based on vertical counts
 	var height = totalMaxVerticalCounts * mainReportTypeRowHeightPerCount;
 
-    var pad = 30;
+    var pad = 25;
 
     // Dynamic height based on vertical counts
 	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
 
-    var ageAreaHeight = 20;
+    var ageAreaHeight = 16;
+    var ageAreaBottomPad = 10;
 
     var reportMainRadius = 5;
     var reportOverviewRadius = 1.5;
@@ -820,15 +821,15 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("class", "main")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
 
-	// Mini overview
-	var overview = svg.append("g")
-	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
-
     // Encounter ages
     var age = svg.append("g")
 	    .attr("class", "age")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
+
+	// Mini overview
+	var overview = svg.append("g")
+	    .attr("class", "overview")
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + ageAreaHeight + ageAreaBottomPad) + ")");
 
     // Episode interval spans
     var focusEpisode = function(episode) {
@@ -1016,6 +1017,46 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(xAxis);
 
+    // Encounter ages
+    age.append("text")
+	    .attr("x", -textMargin)
+	    .attr("y", ageAreaHeight/2) // Relative to the overview area
+	    .attr("dy", ".5ex")
+	    .attr("class", "age_label")
+	    .text("Patient Age");
+
+    // Date objects, not strings
+    var encounterDates = [xMinDate, xMaxDate];
+    
+    age.selectAll(".encounter_age")
+        .data(encounterDates)
+        .enter()
+        .append("text")
+	    .attr("x", function(d) {
+	    	return mainX(d);
+	    })
+	    .attr("y", ageAreaHeight/2)
+	    .attr("dy", ".5ex")
+	    .attr("class", "encounter_age")
+	    .text(function(d) {
+	    	return getPatientAge(d, patientInfo.birthday);
+	    });
+
+    // Vertical guidelines
+    age.selectAll(".encounter_age_guideline")
+        .data(encounterDates)
+        .enter()
+        .append("line")
+	    .attr("x1", function(d) {
+	    	return mainX(d);
+	    })
+	    .attr("y1", 12)
+	    .attr("x2", function(d) {
+	    	return mainX(d);
+	    })
+	    .attr("y2", 25)
+	    .attr("class", "encounter_age_guideline");
+
 	// Overview label text
 	overview.append("text")
 	    .attr("x", -textMargin)
@@ -1180,35 +1221,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    // https://github.com/d3/d3-brush#brush_move
 	    .call(brush.move, overviewX.range());
 
-    // Encounter ages
-    age.append("text")
-	    .attr("x", -textMargin)
-	    .attr("y", ageAreaHeight/2) // Relative to the overview area
-	    .attr("dy", ".5ex")
-	    .attr("class", "age_label")
-	    .text("Patient Age");
-
-    var encounterDates = [xMinDate, xMaxDate];
-    
-    age.selectAll(".encounter_age")
-        .data(encounterDates)
-        .enter()
-        .append("text")
-	    .attr("x", function(d) {
-	    	return mainX(d);
-	    })
-	    .attr("y", ageAreaHeight/2)
-	    .attr("dy", ".5ex")
-	    .attr("class", "encounter_age")
-	    .text(function(d) {
-	    	console.log(d);
-	    	return getPatientAge(d, patientInfo.birthday);
-	    });
-
 	// Reset button
 	svg.append("foreignObject")
 	    .attr('id', 'reset')
-	    .attr("transform", "translate(20, " + (margin.top + legendHeight + height + overviewHeight + ageAreaHeight + pad*2) + ")")
+	    .attr("transform", "translate(20, " + (margin.top + legendHeight + pad + height + pad + ageAreaHeight + ageAreaBottomPad + overviewHeight) + ")")
 	    .append("xhtml:body")
         .html('<button>Reset</button>');
 
