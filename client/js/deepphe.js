@@ -1208,7 +1208,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Reset button
 	svg.append("foreignObject")
 	    .attr('id', 'reset')
-	    .attr("transform", "translate(10, " + (margin.top + + legendHeight + height + overviewHeight + pad*2) + ")")
+	    .attr("transform", "translate(20, " + (margin.top + legendHeight + height + overviewHeight + ageAreaHeight + pad*2) + ")")
 	    .append("xhtml:body")
         .html('<button>Reset</button>');
 
