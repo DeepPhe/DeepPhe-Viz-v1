@@ -24,25 +24,6 @@ function addBirthdays() {
 	});
 }
 
-// Add birthday to the specified patient
-function addBirthday(patientName, birthday) {
-    // Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
-	    url: baseUri + '/addBirthday/' + encodeURIComponent(patientName) + "/" + encodeURIComponent(birthday),
-	    method: 'GET', 
-	    async : true,
-	    dataType : 'text'
-	});
-
-	jqxhr.done(function(response) {
-        console.log(response);
-	});
-
-	jqxhr.fail(function () { 
-	    console.log("Ajax error - can't add patient birthday");
-	});
-}
-
 function getCancerStages() {
     // Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
@@ -1178,7 +1159,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 
         // Set the domain of the main area based on brush selection
 		mainX.domain(selection.map(overviewX.invert, overviewX));
-		
+
 	    update();
 
 		// Zoom the main area
