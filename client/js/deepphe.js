@@ -1,27 +1,10 @@
 // Global settings
 var factBasedReports = [];
 
-// Add birthdays to all patient nodes
-function addBirthdays() {
-    // Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
-	    url: baseUri + '/generateBirthday',
-	    method: 'GET', 
-	    async : true,
-	    dataType : 'json'
-	});
-
-	jqxhr.done(function(response) {
-        var patients = response.patients;
-
-        patients.forEach(function(patient) {
-            addBirthday(patient.name, patient.birthday)
-        });
-	});
-
-	jqxhr.fail(function () { 
-	    console.log("Ajax error - can't add patient birthdays");
-	});
+function getPatientAge(encounterDate, birthday) {
+    var ageDiffMs = new Date(encounterDate).getTime() - new Date(birthday).getTime();
+    var ageDate = new Date(ageDiffMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 function getCancerStages() {
