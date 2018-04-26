@@ -2,7 +2,8 @@
 var factBasedReports = [];
 
 function getPatientAge(encounterDate, birthday) {
-    var ageDiffMs = new Date(encounterDate).getTime() - new Date(birthday).getTime();
+	// encounterDate is Date object while birthday is a string
+    var ageDiffMs = encounterDate.getTime() - new Date(birthday).getTime();
     var ageDate = new Date(ageDiffMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
@@ -1187,19 +1188,22 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("class", "age_label")
 	    .text("Patient Age");
 
-    age.append("text")
-	    .attr("x", mainX(xMinDate))
+    var encounterDates = [xMinDate, xMaxDate];
+    
+    age.selectAll(".encounter_age")
+        .data(encounterDates)
+        .enter()
+        .append("text")
+	    .attr("x", function(d) {
+	    	return mainX(d);
+	    })
 	    .attr("y", ageAreaHeight/2)
 	    .attr("dy", ".5ex")
 	    .attr("class", "encounter_age")
-	    .text(getPatientAge(patientInfo.firstEncounterDate, patientInfo.birthday));
-
-	age.append("text")
-	    .attr("x", mainX(xMaxDate))
-	    .attr("y", ageAreaHeight/2)
-	    .attr("dy", ".5ex")
-	    .attr("class", "encounter_age")
-	    .text(getPatientAge(patientInfo.lastEncounterDate, patientInfo.birthday));
+	    .text(function(d) {
+	    	console.log(d);
+	    	return getPatientAge(d, patientInfo.birthday);
+	    });
 
 	// Reset button
 	svg.append("foreignObject")
