@@ -505,9 +505,16 @@ stroke-dasharray:2,2;
 }
 
 .report_type_label,
-.overview_label {
+.overview_label,
+.age_label {
 font-size:11px;
 text-anchor: end;
+}
+
+.encounter_age {
+font-size:11px;
+fill:#444;
+text-anchor: middle;
 }
 
 /* Melanoma attributes present checkmark */

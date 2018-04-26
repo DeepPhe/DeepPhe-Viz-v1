@@ -470,7 +470,7 @@ function getTimeline(patientName, svgContainerId) {
 	});
 
 	jqxhr.done(function(response) {
-	    renderTimeline(svgContainerId, response.reportTypes, response.typeCounts, response.maxVerticalCountsPerType, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDateAndTypeObj);
+	    renderTimeline(svgContainerId, response.patientInfo, response.reportTypes, response.typeCounts, response.maxVerticalCountsPerType, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDateAndTypeObj);
 	});
 
 	jqxhr.fail(function () { 
@@ -479,7 +479,7 @@ function getTimeline(patientName, svgContainerId) {
 }
 
 // Render the timeline to the target SVG container
-function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCountsPerType, episodes, episodeCounts, episodeDates, reportData, reportsGroupedByDateAndTypeObj) {
+function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, maxVerticalCountsPerType, episodes, episodeCounts, episodeDates, reportData, reportsGroupedByDateAndTypeObj) {
     // Vertical count position of each report type
     // E.g., "Progress Note" has max 6 vertical reports, "Surgical Pathology Report" has 3
     // then the vertical position of "Progress Note" bottom line is 6, and "Surgical Pathology Report" is 6+3=9
@@ -514,8 +514,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var height = totalMaxVerticalCounts * mainReportTypeRowHeightPerCount;
 
     var pad = 30;
+
     // Dynamic height based on vertical counts
 	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
+
+    var ageAreaHeight = 20;
 
     var reportMainRadius = 5;
     var reportOverviewRadius = 1.5;
@@ -625,7 +628,7 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
-	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + margin.bottom);
+	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + ageAreaHeight + margin.bottom);
 
     // Dynamically calculate the x posiiton of each lengend rect
     var lengendX = function(index) {
@@ -821,7 +824,11 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("class", "overview")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
 
-	
+    // Encounter ages
+    var age = svg.append("g")
+	    .attr("class", "age")
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad) + ")");
+
     // Episode interval spans
     var focusEpisode = function(episode) {
     	// Here we we add extra days before the start and after the end date to have a little cushion
@@ -1008,7 +1015,6 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(xAxis);
 
-	
 	// Overview label text
 	overview.append("text")
 	    .attr("x", -textMargin)
@@ -1172,6 +1178,28 @@ function renderTimeline(svgContainerId, reportTypes, typeCounts, maxVerticalCoun
 	    // call brush.move and pass overviewX.range() as argument
 	    // https://github.com/d3/d3-brush#brush_move
 	    .call(brush.move, overviewX.range());
+
+    // Encounter ages
+    age.append("text")
+	    .attr("x", -textMargin)
+	    .attr("y", ageAreaHeight/2) // Relative to the overview area
+	    .attr("dy", ".5ex")
+	    .attr("class", "age_label")
+	    .text("Patient Age");
+
+    age.append("text")
+	    .attr("x", mainX(xMinDate))
+	    .attr("y", ageAreaHeight/2)
+	    .attr("dy", ".5ex")
+	    .attr("class", "encounter_age")
+	    .text(getPatientAge(patientInfo.firstEncounterDate, patientInfo.birthday));
+
+	age.append("text")
+	    .attr("x", mainX(xMaxDate))
+	    .attr("y", ageAreaHeight/2)
+	    .attr("dy", ".5ex")
+	    .attr("class", "encounter_age")
+	    .text(getPatientAge(patientInfo.lastEncounterDate, patientInfo.birthday));
 
 	// Reset button
 	svg.append("foreignObject")
