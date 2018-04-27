@@ -1,9 +1,9 @@
 // Global settings
 var factBasedReports = [];
 
-function getPatientAge(encounterDate, birthday) {
-	// encounterDate is Date object while birthday is a string
-    var ageDiffMs = encounterDate.getTime() - new Date(birthday).getTime();
+function getPatientEncounterAge(encounterDateObj, birthday) {
+	// encounterDateObj is Date object while birthday is a string
+    var ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
     var ageDate = new Date(ageDiffMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
@@ -1039,7 +1039,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("dy", ".5ex")
 	    .attr("class", "encounter_age")
 	    .text(function(d) {
-	    	return getPatientAge(d, patientInfo.birthday);
+	    	return getPatientEncounterAge(d, patientInfo.birthday);
 	    });
 
     // Vertical guidelines
