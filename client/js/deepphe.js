@@ -179,12 +179,12 @@ function showBoxPlot(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 60, left: 140};
 	var width = 600 - margin.left - margin.right;
-	var height = 120 - margin.top - margin.bottom;
+	var height = 100 - margin.top - margin.bottom;
     var boxHeight = 20;
     var textBottomPadding = 2;
+    var pad = 15;
 
-    console.log(data);
-
+    // Ages array
     var ages = [];
     data.forEach(function(patient) {
     	ages.push(patient.age);
@@ -210,8 +210,6 @@ function showBoxPlot(svgContainerId, data) {
     ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
     ageStats.maxVal = ages[ages.length - 1];
 
-    console.log(ageStats);
-
     //initialize the x scale
 	var x = d3.scaleLinear()
 		.range([0, width])
@@ -223,29 +221,31 @@ function showBoxPlot(svgContainerId, data) {
 
 	var svg = container.append("svg")
 		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
+		.attr("height", height + margin.top + margin.bottom + pad)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	// Append the axis
 	svg.append("g")
-		.attr("class", "axis")
-		.attr("transform", "translate(0, " + height + ")")
+		.attr("class", "boxplot_axis")
+		.attr("transform", "translate(0, " + (margin.top + height + pad) + ")")
 		.call(d3.axisBottom(x));
+
+    var topY = margin.top + height/2;
 
 	// Verical line of min age
 	svg.append("line")
 		.attr("class", "boxplot_min")
 		.attr("x1", x(ageStats.minVal))
-		.attr("y1", height/2 - boxHeight/2)
+		.attr("y1", topY - boxHeight/2)
 		.attr("x2", x(ageStats.minVal))
-		.attr("y2", height/2 + boxHeight/2);
+		.attr("y2", topY + boxHeight/2);
 
 	// Text of min age
 	svg.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.minVal))
-		.attr("y", height/2 - boxHeight/2 - textBottomPadding)
+		.attr("y", topY - boxHeight/2 - textBottomPadding)
 		.attr("text-anchor", "middle")
 		.text(ageStats.minVal);
 
@@ -253,15 +253,15 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("line")  
 		.attr("class", "boxplot_max")
 		.attr("x1", x(ageStats.maxVal))
-		.attr("y1", height/2 - boxHeight/2)
+		.attr("y1", topY - boxHeight/2)
 		.attr("x2", x(ageStats.maxVal))
-		.attr("y2", height/2 + boxHeight/2);
+		.attr("y2", topY + boxHeight/2);
 
     // Text of max age
 	svg.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.maxVal))
-		.attr("y", height/2 - boxHeight/2 - textBottomPadding)
+		.attr("y", topY - boxHeight/2 - textBottomPadding)
 		.attr("text-anchor", "middle")
 		.text(ageStats.maxVal);
 
@@ -269,15 +269,15 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("line")
 		.attr("class", "boxplot_whisker")
 		.attr("x1",  x(ageStats.minVal))
-		.attr("y1", height/2)
+		.attr("y1", topY)
 		.attr("x2",  x(ageStats.maxVal))
-		.attr("y2", height/2);
+		.attr("y2", topY);
 
 	// Rect for iqr
 	svg.append("rect")    
 		.attr("class", "boxplot_box")
 		.attr("x", x(ageStats.q1Val))
-		.attr("y", height/2 - boxHeight/2)
+		.attr("y", topY - boxHeight/2)
 		.attr("width", x(ageStats.q3Val) - x(ageStats.q1Val))
 		.attr("height", boxHeight);
     
@@ -285,7 +285,7 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.q1Val))
-		.attr("y", height/2 - boxHeight/2 - textBottomPadding)
+		.attr("y", topY - boxHeight/2 - textBottomPadding)
 		.attr("text-anchor", "middle")
 		.text(ageStats.q1Val);
 
@@ -293,7 +293,7 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.q3Val))
-		.attr("y", height/2 - boxHeight/2 - textBottomPadding)
+		.attr("y", topY - boxHeight/2 - textBottomPadding)
 		.attr("text-anchor", "middle")
 		.text(ageStats.q3Val);
 
@@ -302,15 +302,15 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("line")
 		.attr("class", "boxplot_median")
 		.attr("x1", x(ageStats.medianVal))
-		.attr("y1", height/2 - 10)
+		.attr("y1", topY - boxHeight/2)
 		.attr("x2", x(ageStats.medianVal))
-		.attr("y2", height/2 + 10);
+		.attr("y2", topY + boxHeight/2);
 
 	// Text of median age
 	svg.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.medianVal))
-		.attr("y", height/2 - boxHeight/2 - textBottomPadding)
+		.attr("y", topY - boxHeight/2 - textBottomPadding)
 		.attr("text-anchor", "middle")
 		.text(ageStats.medianVal);
 

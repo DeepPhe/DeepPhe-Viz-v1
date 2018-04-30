@@ -46,6 +46,11 @@ font-weight: bold;
 color:#fff;
 }
 
+.cohort_chart {
+border:1px solid #ddd;
+margin:10px;
+}
+
 /* Cohort Analysis - stages bar chart */
 .bar { 
 fill:rgb(253, 141, 60);
