@@ -197,7 +197,7 @@ function showBoxPlot(svgContainerId, data) {
         q1Val: Infinity,
         medianVal: 0,
         q3Val: -Infinity,
-        iqr: 0,
+        iqr: 0, // Interquartile range or IQR
         upperWhisker: -Infinity,
         maxVal: -Infinity
     };
@@ -338,8 +338,12 @@ function showPatients(stage) {
 	    // Show bar chart of patient age distribution
 	    showAgesChart("ages", response.patients);
 
-        // Draw the bar chart
-        showBoxPlot("boxplot", response.patients);
+        // Draw the box plot if more than one patients
+        if (response.patients.length > 1) {
+            showBoxPlot("boxplot", response.patients);
+        } else {
+        	$('#boxplot').html("");
+        }
 
 	    // Render response
 	    $('#patients').html(response.renderedPatientsList);
