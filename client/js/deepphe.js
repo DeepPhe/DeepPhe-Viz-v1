@@ -1004,6 +1004,27 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("class", "overview")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + ageAreaHeight + ageAreaBottomPad) + ")");
 
+    var getReportCirclePositionY = function(d, yScaleCallback, reportTypeRowHeightPerCount) {
+    	var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
+
+        if (arr.length > 1) {
+            var index = 0;
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i].id === d.id) {
+                    index = i;
+                    break;
+                }
+            }
+            
+            // The height of per chunk 
+            var h = maxVerticalCountsPerType[d.type] * reportTypeRowHeightPerCount / arr.length;
+            return yScaleCallback(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2); 
+        } else {
+        	// Vertically center the dot if only one
+        	return yScaleCallback(verticalPositions[d.type]) - reportTypeRowHeightPerCount * maxVerticalCountsPerType[d.type] / 2; 
+        }
+    };
+
     // Episode interval spans
     var focusEpisode = function(episode) {
     	// Here we we add extra days before the start and after the end date to have a little cushion
@@ -1137,24 +1158,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    })
 	    // Vertically spread the dots with same time
 	    .attr("cy", function(d) { 
-            var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
-
-            if (arr.length > 1) {
-                var index = 0;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i].id === d.id) {
-                        index = i;
-                        break;
-                    }
-                }
-                
-                // The height of per chunk 
-                var h = maxVerticalCountsPerType[d.type] * mainReportTypeRowHeightPerCount / arr.length;
-                return mainY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2); 
-            } else {
-            	// Vertically center the dot if only one
-            	return mainY(verticalPositions[d.type]) - mainReportTypeRowHeightPerCount * maxVerticalCountsPerType[d.type] / 2; 
-            }
+	    	return getReportCirclePositionY(d, mainY, mainReportTypeRowHeightPerCount);
 	    })
 	    .style("fill", function(d) {
 			return color(d.episode);
@@ -1253,24 +1257,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 			return overviewX(d.formattedTime); 
 		})
 		.attr("cy", function(d) { 
-            var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
-
-            if (arr.length > 1) {
-                var index = 0;
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i].id === d.id) {
-                        index = i;
-                        break;
-                    }
-                }
-                
-                // The height of per chunk
-                var h = maxVerticalCountsPerType[d.type] * overviewReportTypeRowHeightPerCount / arr.length;
-                return overviewY(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2);  
-            } else {
-            	// Vertically center the dot if only one
-            	return overviewY(verticalPositions[d.type]) - overviewReportTypeRowHeightPerCount * maxVerticalCountsPerType[d.type] / 2; 
-            }
+			return getReportCirclePositionY(d, overviewY, overviewReportTypeRowHeightPerCount);
 	    })
 		.style("fill", function(d) {
 			return color(d.episode);
