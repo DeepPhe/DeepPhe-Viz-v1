@@ -106,7 +106,13 @@ function showStagesChart(svgContainerId, data) {
 	// add the x Axis
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x));
+		.call(d3.axisBottom(x))
+		// Append axis label
+		.append("text")
+		.attr("class", "stages_chart_axis_label")
+		.attr("x", width)
+		.attr("y", -6)
+		.text("Number of patients");
 
 	// add the y Axis
 	svg.append("g")
@@ -128,7 +134,7 @@ function showAgesChart(svgContainerId, data) {
 
 	// set the ranges
 	var x = d3.scalePoint()
-	    .range([10, width])
+	    .range([20, width])
 	    .domain(xDomain);
 	    
 	var y = d3.scaleLinear()
@@ -161,6 +167,7 @@ function showAgesChart(svgContainerId, data) {
 		
 	// add the x Axis
 	svg.append("g")
+	    .attr("id", "ages_chart_x_axis")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x))
 		.selectAll("text")	
@@ -168,10 +175,26 @@ function showAgesChart(svgContainerId, data) {
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
         .attr("transform", "rotate(-65)");
+    
+    // Append axis label
+    // We have to do this differently from other axis labels
+    // due to the patient name rotation
+    d3.select("#ages_chart_x_axis").append("text")
+		.attr("class", "ages_chart_axis_label")
+		.attr("x", width)
+		.attr("y", -6)
+		.text("Patients")
 
 	// add the y Axis
 	svg.append("g")
-		.call(d3.axisLeft(y));
+		.call(d3.axisLeft(y))
+		// Append axis label
+		.append("text")
+		.attr("class", "ages_chart_axis_label")
+		.attr("x", 0)
+		.attr("y", 12)
+		.attr("transform", "rotate(-90)")
+		.text("Age of first encounter");
 }
 
 // Data is already sorted by patient age of first encounter
@@ -229,7 +252,13 @@ function showBoxPlot(svgContainerId, data) {
 	svg.append("g")
 		.attr("class", "boxplot_axis")
 		.attr("transform", "translate(0, " + (margin.top + height + pad) + ")")
-		.call(d3.axisBottom(x));
+		.call(d3.axisBottom(x))
+		// Append axis label
+		.append("text")
+		.attr("class", "boxplot_axis_label")
+		.attr("x", width)
+		.attr("y", -6)
+		.text("Age of first encounter");
 
     var topY = margin.top + height/2;
 
@@ -246,7 +275,6 @@ function showBoxPlot(svgContainerId, data) {
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.minVal))
 		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.attr("text-anchor", "middle")
 		.text(ageStats.minVal);
 
 	// Vertical line of max age
@@ -262,7 +290,6 @@ function showBoxPlot(svgContainerId, data) {
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.maxVal))
 		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.attr("text-anchor", "middle")
 		.text(ageStats.maxVal);
 
 	// Horizontal whisker lines
@@ -286,7 +313,6 @@ function showBoxPlot(svgContainerId, data) {
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.q1Val))
 		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.attr("text-anchor", "middle")
 		.text(ageStats.q1Val);
 
 	// Text of q3 age
@@ -294,7 +320,6 @@ function showBoxPlot(svgContainerId, data) {
 		.attr("class", "boxplot_text")
 		.attr("x", x(ageStats.q3Val))
 		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.attr("text-anchor", "middle")
 		.text(ageStats.q3Val);
 
     // Must after the box so the bar doesn't gets covered by the box

@@ -72,12 +72,25 @@ stroke-width:1;
 shape-rendering: crispEdges;
 }
 
+.boxplot_whisker {
+stroke-dasharray: 3,3; /* 3 pixels (or whatever they are) on and 3 pixels off */
+stroke: rgb(150, 150, 150);
+}
+
 .boxplot_box {
 fill: rgb(152, 223, 138);
 }
 
 .boxplot_text {
 font-size:10px;
+text-anchor: middle;
+}
+
+.stages_chart_axis_label,
+.ages_chart_axis_label,
+.boxplot_axis_label {
+fill: #222;
+text-anchor: end;
 }
 
 /* patients cohort filtering */
