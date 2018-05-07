@@ -51,15 +51,8 @@ border:1px solid #ddd;
 margin:10px;
 }
 
-/* Cohort Analysis - stages bar chart */
-.bar { 
-fill:rgb(253, 141, 60);
-cursor: pointer;
-}
+/* Cohort Analysis */
 
-.clicked_stage {
-fill:rgb(55, 163, 214);
-}
 
 /* Box plot */
 .boxplot_min,
@@ -79,6 +72,11 @@ stroke: rgb(150, 150, 150);
 
 .boxplot_box {
 fill: rgb(152, 223, 138);
+cursor: pointer;
+}
+
+.clicked_box {
+fill:rgb(253, 141, 60) !important;
 }
 
 .boxplot_text {

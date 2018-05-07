@@ -31,79 +31,237 @@ function getCancerStages() {
 }
 
 function showStagesChart(svgContainerId, data) {
+	var patientsCounts = {};
+
+	// Calculate and add the box plot data to each stageInfo object
+	data.forEach(function(stageInfo) {
+		// Initialise stats object
+	    var ageStats = {
+	        minVal: Infinity,
+	        lowerWhisker: Infinity,
+	        q1Val: Infinity,
+	        medianVal: 0,
+	        q3Val: -Infinity,
+	        iqr: 0, // Interquartile range or IQR
+	        upperWhisker: -Infinity,
+	        maxVal: -Infinity
+	    };
+
+	    // calculate statistics
+	    // stageInfo.ages is already sorted array
+	    ageStats.minVal = stageInfo.ages[0];
+	    ageStats.q1Val = d3.quantile(stageInfo.ages, .25);
+	    ageStats.medianVal = d3.quantile(stageInfo.ages, .5);
+	    ageStats.q3Val = d3.quantile(stageInfo.ages, .75);
+	    ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
+	    ageStats.maxVal = stageInfo.ages[stageInfo.ages.length - 1];
+        
+        // Add new property
+	    stageInfo.ageStats = ageStats;
+
+	    // Add to patientsCounts object for later use (modify the Y label)
+	    if (typeof patientsCounts[stageInfo.stage] === "undefined") {
+            patientsCounts[stageInfo.stage] = stageInfo.patientsCount;
+	    }
+	});
+
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 30, left: 140};
-	var width = 600 - margin.left - margin.right;
-	var height = 240 - margin.top - margin.bottom;
+	var margin = {top: 20, right: 20, bottom: 30, left: 170};
+	var width = 760 - margin.left - margin.right;
+	var height = 540 - margin.top - margin.bottom;
+
+    // Box plot
+    var boxHeight = 12;
+    var textBottomPadding = 2;
 
 	// set the ranges
 	var x = d3.scaleLinear()
-	    .range([0, width]);
+	    .range([0, width])
+	    .domain([10, 80]); // 10 years to 80 years old
 	    
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
-		.padding(0.2); // blank space between bands
-		
+		.padding(0.7); // blank space between bands
+	
+	y.domain(data.map(function(d) { 
+		return d.stage; 
+	}));
+
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	// Scale the range of the data in the domains
-	x.domain([0, d3.max(data, function(d) { 
-		return d.patientsCount; 
-	})]);
-
-	y.domain(data.map(function(d) { 
-		return d.stage; 
-	}));
-
 	// append the rectangles for the bar chart
-	svg.selectAll(".bar")
+	var boxplotGrp = svg.selectAll(".boxplot")
 		.data(data)
-		.enter().append("rect")
-		.attr("class", "bar")
-		.attr("x", 0)
-		.attr("y", function(d) { 
-			return y(d.stage); 
+		.enter().append("g")
+		.attr("class", "boxplot");
+		
+    // Verical line of min age
+	boxplotGrp.append("line")
+		.attr("class", "boxplot_min")
+		.attr("x1", function(d) {
+            return x(d.ageStats.minVal);
 		})
-		.on("mouseover", function(d) {
-            d3.select(this)           
-            .style("stroke", "rgb(82, 84, 163)")
-            .style("stroke-width", 1);
+		.attr("y1", function(d) {
+			return y(d.stage) ;
 		})
-		.on("mouseout", function(d) {
-            d3.select(this)           
-            .style("stroke", "")
-            .style("stroke-width", 0);
+		.attr("x2", function(d) {
+            return x(d.ageStats.minVal);
 		})
-		// Must add the clickable before transition
+		.attr("y2", function(d) {
+			return y(d.stage) + boxHeight;
+		});
+
+	// Text of min age
+	boxplotGrp.append("text")
+		.attr("class", "boxplot_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.minVal);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) - textBottomPadding;
+		})
+		.text(function(d) {
+            return d.ageStats.minVal;
+		});
+
+	// Vertical line of max age
+	boxplotGrp.append("line")  
+		.attr("class", "boxplot_max")
+		.attr("x1", function(d) {
+            return x(d.ageStats.maxVal);
+		})
+		.attr("y1", function(d) {
+			return y(d.stage);
+		})
+		.attr("x2", function(d) {
+            return x(d.ageStats.maxVal);
+		})
+		.attr("y2", function(d) {
+			return y(d.stage) + boxHeight;
+		});
+
+    // Text of max age
+	boxplotGrp.append("text")
+		.attr("class", "boxplot_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.maxVal);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) - textBottomPadding;
+		})
+		.text(function(d) {
+            return d.ageStats.maxVal;
+		});
+
+	// Horizontal whisker lines
+	boxplotGrp.append("line")
+		.attr("class", "boxplot_whisker")
+		.attr("x1",  function(d) {
+            return x(d.ageStats.minVal);
+		})
+		.attr("y1", function(d) {
+			return y(d.stage) + boxHeight/2;
+		})
+		.attr("x2",  function(d) {
+            return x(d.ageStats.maxVal);
+		})
+		.attr("y2", function(d) {
+			return y(d.stage) + boxHeight/2;
+		});
+
+	// Rect for iqr
+	boxplotGrp.append("rect")    
+		.attr("class", "boxplot_box")
+		.attr("x", function(d) {
+            return x(d.ageStats.q1Val);
+		})
+		.attr("y", function(d) {
+			return y(d.stage);
+		})
+		.attr("width", function(d) {
+            return x(d.ageStats.q3Val) - x(d.ageStats.q1Val);
+		})
+		.attr("height", boxHeight)
 		.on("click", function(d) {
-            var clickedStage = d3.select(this);
-            var css = "clicked_stage";
+            var clickedBox = d3.select(this);
+            var css = "clicked_box";
 
             // Toggle
-            if (!clickedStage.classed(css)) {
+            if (!clickedBox.classed(css)) {
             	// Remove previouly added css class
-	            d3.selectAll(".bar").classed(css, false);
-                // Highlight the clicked bar and show corresponding patients
-            	clickedStage.classed(css, true);
+	            d3.selectAll(".boxplot_box").classed(css, false);
+                // Highlight the clicked box and show corresponding patients
+            	clickedBox.classed(css, true);
             	showPatients(d.stage);
             } else {
             	// When clicked again, remove highlight and show all patients
-            	clickedStage.classed(css, false);
+            	clickedBox.classed(css, false);
             	showPatients();
             }
+		});
+    
+    // Text of q1 age
+	boxplotGrp.append("text")
+		.attr("class", "boxplot_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.q1Val);
 		})
-		.transition()
-        .duration(800) // time in ms
-		.attr("width", function(d) { 
-			return x(d.patientsCount)
+		.attr("y", function(d) {
+			return y(d.stage) - textBottomPadding;
 		})
-		.attr("height", y.bandwidth());
-		
-	// add the x Axis
+		.text(function(d) {
+            return d.ageStats.q1Val;
+		});
+
+	// Text of q3 age
+	boxplotGrp.append("text")
+		.attr("class", "boxplot_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.q3Val);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) - textBottomPadding;
+		})
+		.text(function(d) {
+            return d.ageStats.q3Val;
+		});
+
+    // Must after the box so the bar doesn't gets covered by the box
+	// Vertical line of median age
+	boxplotGrp.append("line")
+		.attr("class", "boxplot_median")
+		.attr("x1", function(d) {
+            return x(d.ageStats.medianVal);
+		})
+		.attr("y1", function(d) {
+			return y(d.stage);
+		})
+		.attr("x2", function(d) {
+            return x(d.ageStats.medianVal);
+		})
+		.attr("y2", function(d) {
+			return y(d.stage) + boxHeight;
+		});
+
+	// Text of median age
+	boxplotGrp.append("text")
+		.attr("class", "boxplot_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.medianVal);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) - textBottomPadding;
+		})
+		.attr("text-anchor", "middle")
+		.text(function(d) {
+			return d.ageStats.medianVal;
+		});
+
+    // add the x Axis
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x))
@@ -112,233 +270,16 @@ function showStagesChart(svgContainerId, data) {
 		.attr("class", "stages_chart_axis_label")
 		.attr("x", width)
 		.attr("y", -6)
-		.text("Number of patients");
-
-	// add the y Axis
-	svg.append("g")
-		.call(d3.axisLeft(y));
-}
-
-// Data is already sorted by patient age of first encounter
-function showAgesChart(svgContainerId, data) {
-	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 60, left: 140};
-	var width = 600 - margin.left - margin.right;
-	var height = 240 - margin.top - margin.bottom;
-
-    var xDomain = [];
-    
-    data.forEach(function(d) {
-    	xDomain.push(d.name);
-    });
-
-	// set the ranges
-	var x = d3.scalePoint()
-	    .range([20, width])
-	    .domain(xDomain);
-	    
-	var y = d3.scaleLinear()
-		.range([height, 0])
-		.domain([10, 80]); // 10 years to 80 years old
-		
-	// Empty the container each time
-    var container = d3.select("#" + svgContainerId);
-    container.html("");
-
-	var svg = container.append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-		.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	// append the rectangles for the bar chart
-	svg.selectAll(".patient")
-		.data(data)
-		.enter().append("circle")
-		.attr("class", "patient")
-		.attr("cx", function(d, i) {
-            return x(d.name);
-		})
-		.attr("cy", function(d) { 
-            return y(d.age);
-		})
-		.attr("r", 4)
-		.attr("fill", "#1e88e5");
-		
-	// add the x Axis
-	svg.append("g")
-	    .attr("id", "ages_chart_x_axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x))
-		.selectAll("text")	
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
-    
-    // Append axis label
-    // We have to do this differently from other axis labels
-    // due to the patient name rotation
-    d3.select("#ages_chart_x_axis").append("text")
-		.attr("class", "ages_chart_axis_label")
-		.attr("x", width)
-		.attr("y", -6)
-		.text("Patients")
+		.text("Age of first encounter");
 
 	// add the y Axis
 	svg.append("g")
 		.call(d3.axisLeft(y))
-		// Append axis label
-		.append("text")
-		.attr("class", "ages_chart_axis_label")
-		.attr("x", 0)
-		.attr("y", 12)
-		.attr("transform", "rotate(-90)")
-		.text("Age of first encounter");
-}
-
-// Data is already sorted by patient age of first encounter
-function showBoxPlot(svgContainerId, data) {
-	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 60, left: 140};
-	var width = 600 - margin.left - margin.right;
-	var height = 100 - margin.top - margin.bottom;
-    var boxHeight = 20;
-    var textBottomPadding = 2;
-    var pad = 15;
-
-    // Ages array
-    var ages = [];
-    data.forEach(function(patient) {
-    	ages.push(patient.age);
-    });
-
-    // Initialise stats object
-    var ageStats = {
-        minVal: Infinity,
-        lowerWhisker: Infinity,
-        q1Val: Infinity,
-        medianVal: 0,
-        q3Val: -Infinity,
-        iqr: 0, // Interquartile range or IQR
-        upperWhisker: -Infinity,
-        maxVal: -Infinity
-    };
-
-    //calculate statistics
-    ageStats.minVal = ages[0];
-    ageStats.q1Val = d3.quantile(ages, .25);
-    ageStats.medianVal = d3.quantile(ages, .5);
-    ageStats.q3Val = d3.quantile(ages, .75);
-    ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
-    ageStats.maxVal = ages[ages.length - 1];
-
-    //initialize the x scale
-	var x = d3.scaleLinear()
-		.range([0, width])
-		.domain([10, 80]); // 10 years to 80 years old
-
-    // Empty the container each time
-    var container = d3.select("#" + svgContainerId);
-    container.html("");
-
-	var svg = container.append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom + pad)
-		.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	// Append the axis
-	svg.append("g")
-		.attr("class", "boxplot_axis")
-		.attr("transform", "translate(0, " + (margin.top + height + pad) + ")")
-		.call(d3.axisBottom(x))
-		// Append axis label
-		.append("text")
-		.attr("class", "boxplot_axis_label")
-		.attr("x", width)
-		.attr("y", -6)
-		.text("Age of first encounter");
-
-    var topY = margin.top + height/2;
-
-	// Verical line of min age
-	svg.append("line")
-		.attr("class", "boxplot_min")
-		.attr("x1", x(ageStats.minVal))
-		.attr("y1", topY - boxHeight/2)
-		.attr("x2", x(ageStats.minVal))
-		.attr("y2", topY + boxHeight/2);
-
-	// Text of min age
-	svg.append("text")
-		.attr("class", "boxplot_text")
-		.attr("x", x(ageStats.minVal))
-		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.text(ageStats.minVal);
-
-	// Vertical line of max age
-	svg.append("line")  
-		.attr("class", "boxplot_max")
-		.attr("x1", x(ageStats.maxVal))
-		.attr("y1", topY - boxHeight/2)
-		.attr("x2", x(ageStats.maxVal))
-		.attr("y2", topY + boxHeight/2);
-
-    // Text of max age
-	svg.append("text")
-		.attr("class", "boxplot_text")
-		.attr("x", x(ageStats.maxVal))
-		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.text(ageStats.maxVal);
-
-	// Horizontal whisker lines
-	svg.append("line")
-		.attr("class", "boxplot_whisker")
-		.attr("x1",  x(ageStats.minVal))
-		.attr("y1", topY)
-		.attr("x2",  x(ageStats.maxVal))
-		.attr("y2", topY);
-
-	// Rect for iqr
-	svg.append("rect")    
-		.attr("class", "boxplot_box")
-		.attr("x", x(ageStats.q1Val))
-		.attr("y", topY - boxHeight/2)
-		.attr("width", x(ageStats.q3Val) - x(ageStats.q1Val))
-		.attr("height", boxHeight);
-    
-    // Text of q1 age
-	svg.append("text")
-		.attr("class", "boxplot_text")
-		.attr("x", x(ageStats.q1Val))
-		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.text(ageStats.q1Val);
-
-	// Text of q3 age
-	svg.append("text")
-		.attr("class", "boxplot_text")
-		.attr("x", x(ageStats.q3Val))
-		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.text(ageStats.q3Val);
-
-    // Must after the box so the bar doesn't gets covered by the box
-	// Vertical line of median age
-	svg.append("line")
-		.attr("class", "boxplot_median")
-		.attr("x1", x(ageStats.medianVal))
-		.attr("y1", topY - boxHeight/2)
-		.attr("x2", x(ageStats.medianVal))
-		.attr("y2", topY + boxHeight/2);
-
-	// Text of median age
-	svg.append("text")
-		.attr("class", "boxplot_text")
-		.attr("x", x(ageStats.medianVal))
-		.attr("y", topY - boxHeight/2 - textBottomPadding)
-		.attr("text-anchor", "middle")
-		.text(ageStats.medianVal);
-
+		// Now modify the label text to add patients count
+		.selectAll("text")
+		.text(function(d) {
+			return d + " (" + patientsCounts[d] + ")";
+		});
 }
 
 // Filter the patients by given cancer stage
@@ -359,17 +300,6 @@ function showPatients(stage) {
 
 	jqxhr.done(function(response) {
 	    //console.log(response);
-        // response.patients data array is already sorted by patient age of first encounter
-	    // Show bar chart of patient age distribution
-	    showAgesChart("ages", response.patients);
-
-        // Draw the box plot if more than one patients
-        if (response.patients.length > 1) {
-            showBoxPlot("boxplot", response.patients);
-        } else {
-        	$('#boxplot').html("");
-        }
-
 	    // Render response
 	    $('#patients').html(response.renderedPatientsList);
 	});
