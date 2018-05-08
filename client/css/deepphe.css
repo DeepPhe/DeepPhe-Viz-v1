@@ -89,9 +89,16 @@ text-anchor: middle;
 fill:red;
 }
 
-.stages_chart_axis_label,
-.ages_chart_axis_label,
-.boxplot_axis_label {
+.stages_chart_counts_axis_label {
+fill: #222;
+text-anchor: start;
+}
+
+.bar {
+fill:rgb(253, 141, 60);
+}
+
+.stages_chart_ages_axis_label {
 fill: #222;
 text-anchor: end;
 }

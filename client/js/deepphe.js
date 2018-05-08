@@ -67,8 +67,9 @@ function showStagesChart(svgContainerId, data) {
 
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 30, left: 170};
-	var width = 760 - margin.left - margin.right;
+	var width = 960 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
+	var gapBetweenTwoAxes = 20;
 
     // Box plot
     var boxHeight = 12;
@@ -76,9 +77,15 @@ function showStagesChart(svgContainerId, data) {
 
 	// set the ranges
 	var x = d3.scaleLinear()
-	    .range([0, width])
-	    .domain([10, 80]); // 10 years to 80 years old
+	    .range([0, width/2])
+	    .domain([10, 70]); // 10 years to 70 years old
 	    
+    var xCount = d3.scaleLinear()
+	    .range([0, width/2])
+	    .domain([d3.max(data, function(d) { 
+			return d.patientsCount; 
+		}), 0]);
+
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
 		.domain(data.map(function(d) { 
@@ -87,7 +94,7 @@ function showStagesChart(svgContainerId, data) {
 		.padding(0.7); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
-		.attr("width", width + margin.left + margin.right)
+		.attr("width", width + margin.left + margin.right + gapBetweenTwoAxes)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -103,7 +110,7 @@ function showStagesChart(svgContainerId, data) {
     singlePatientGrp.append("text")
 		.attr("class", "single_patient_text")
 		.attr("x", function(d) {
-            return x(d.ages[0]);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ages[0]);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + 10;
@@ -125,13 +132,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_min")
 		.attr("x1", function(d) {
-            return x(d.ageStats.minVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) ;
 		})
 		.attr("x2", function(d) {
-            return x(d.ageStats.minVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + boxHeight;
@@ -141,7 +148,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return x(d.ageStats.minVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) - textBottomPadding;
@@ -154,13 +161,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")  
 		.attr("class", "boxplot_max")
 		.attr("x1", function(d) {
-            return x(d.ageStats.maxVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage);
 		})
 		.attr("x2", function(d) {
-            return x(d.ageStats.maxVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + boxHeight;
@@ -170,7 +177,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return x(d.ageStats.maxVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) - textBottomPadding;
@@ -183,13 +190,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_whisker")
 		.attr("x1",  function(d) {
-            return x(d.ageStats.minVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) + boxHeight/2;
 		})
 		.attr("x2",  function(d) {
-            return x(d.ageStats.maxVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + boxHeight/2;
@@ -199,7 +206,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("rect")    
 		.attr("class", "boxplot_box")
 		.attr("x", function(d) {
-            return x(d.ageStats.q1Val);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage);
@@ -230,7 +237,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return x(d.ageStats.q1Val);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) - textBottomPadding;
@@ -243,7 +250,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return x(d.ageStats.q3Val);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q3Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) - textBottomPadding;
@@ -257,13 +264,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_median")
 		.attr("x1", function(d) {
-            return x(d.ageStats.medianVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage);
 		})
 		.attr("x2", function(d) {
-            return x(d.ageStats.medianVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + boxHeight;
@@ -273,7 +280,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return x(d.ageStats.medianVal);
+            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) - textBottomPadding;
@@ -283,25 +290,58 @@ function showStagesChart(svgContainerId, data) {
 			return d.ageStats.medianVal;
 		});
 
-    // add the x Axis
+    // Add the x ages Axis
 	svg.append("g")
-		.attr("transform", "translate(0," + height + ")")
+		.attr("transform", "translate(" + (width/2 + 20) + ", " + height + ")")
 		.call(d3.axisBottom(x))
 		// Append axis label
 		.append("text")
-		.attr("class", "stages_chart_axis_label")
-		.attr("x", width)
+		.attr("class", "stages_chart_ages_axis_label")
+		.attr("x", width/2)
 		.attr("y", -6)
 		.text("Age of first encounter");
 
-	// add the y Axis
+	
+
+    // Bar chart of patients counts
+	svg.selectAll(".bar")
+		.data(data)
+		.enter().append("rect")
+		.attr("class", "bar")
+		.attr("x", function(d) { 
+			return xCount(d.patientsCount);
+		})
+		.attr("y", function(d) { 
+			return y(d.stage); 
+		})
+		.attr("width", function(d) { 
+			return width/2 - xCount(d.patientsCount);
+		})
+		.attr("height", y.bandwidth());
+
+
+    // xCount axis
 	svg.append("g")
-		.call(d3.axisLeft(y))
+		.attr("transform", "translate(0, " + height + ")")
+		.call(d3.axisBottom(xCount))
+		// Append axis label
+		.append("text")
+		.attr("class", "stages_chart_counts_axis_label")
+		.attr("x", 0)
+		.attr("y", -6)
+		.text("Number of patients");
+
+    // add the y Axis
+	svg.append("g")
+	    .attr("transform", "translate(" + (width/2 + gapBetweenTwoAxes/2) + ", 0)")
+		.call(d3.axisLeft(y).tickSize(2))
 		// Now modify the label text to add patients count
 		.selectAll("text")
 		.text(function(d) {
 			return d + " (" + patientsCounts[d] + ")";
 		});
+		
+
 }
 
 // Filter the patients by given cancer stage
