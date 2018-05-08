@@ -46,13 +46,12 @@ font-weight: bold;
 color:#fff;
 }
 
-.cohort_chart {
-border:1px solid #ddd;
-margin:10px;
-}
-
 /* Cohort Analysis */
-
+.chort_analysis_chart {
+border:1px solid #ccc;
+margin:10px;
+padding:20px;
+}
 
 /* Box plot */
 .boxplot_min,

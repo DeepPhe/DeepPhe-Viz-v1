@@ -66,7 +66,7 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 30, left: 170};
+	var margin = {top: 20, right: 20, bottom: 30, left: 20};
 	var width = 960 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
 	var gapBetweenTwoAxes = 20;
@@ -94,6 +94,7 @@ function showStagesChart(svgContainerId, data) {
 		.padding(0.7); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
+	    .attr("class", "chort_analysis_chart")
 		.attr("width", width + margin.left + margin.right + gapBetweenTwoAxes)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
