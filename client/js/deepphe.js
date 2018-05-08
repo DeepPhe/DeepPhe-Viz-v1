@@ -135,13 +135,13 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
-			return y(d.stage) ;
+			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y2", function(d) {
-			return y(d.stage) + boxHeight;
+			return y(d.stage) + y.bandwidth()/2 + boxHeight;
 		});
 
 	// Text of min age
@@ -151,7 +151,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y", function(d) {
-			return y(d.stage) - textBottomPadding;
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
 		})
 		.text(function(d) {
             return d.ageStats.minVal;
@@ -164,13 +164,13 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y1", function(d) {
-			return y(d.stage);
+			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
-			return y(d.stage) + boxHeight;
+			return y(d.stage) + y.bandwidth()/2 + boxHeight;
 		});
 
     // Text of max age
@@ -180,7 +180,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y", function(d) {
-			return y(d.stage) - textBottomPadding;
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
 		})
 		.text(function(d) {
             return d.ageStats.maxVal;
@@ -193,13 +193,13 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
-			return y(d.stage) + boxHeight/2;
+			return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
 		})
 		.attr("x2",  function(d) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
-			return y(d.stage) + boxHeight/2;
+			return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
 		});
 
 	// Rect for iqr
@@ -209,7 +209,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
-			return y(d.stage);
+			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("width", function(d) {
             return x(d.ageStats.q3Val) - x(d.ageStats.q1Val);
@@ -240,7 +240,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
-			return y(d.stage) - textBottomPadding;
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
 		})
 		.text(function(d) {
             return d.ageStats.q1Val;
@@ -253,7 +253,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q3Val);
 		})
 		.attr("y", function(d) {
-			return y(d.stage) - textBottomPadding;
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
 		})
 		.text(function(d) {
             return d.ageStats.q3Val;
@@ -267,13 +267,13 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y1", function(d) {
-			return y(d.stage);
+			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y2", function(d) {
-			return y(d.stage) + boxHeight;
+			return y(d.stage) + y.bandwidth()/2 + boxHeight;
 		});
 
 	// Text of median age
@@ -283,7 +283,7 @@ function showStagesChart(svgContainerId, data) {
             return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
 		})
 		.attr("y", function(d) {
-			return y(d.stage) - textBottomPadding;
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
 		})
 		.attr("text-anchor", "middle")
 		.text(function(d) {
@@ -292,7 +292,7 @@ function showStagesChart(svgContainerId, data) {
 
     // Add the x ages Axis
 	svg.append("g")
-		.attr("transform", "translate(" + (width/2 + 20) + ", " + height + ")")
+		.attr("transform", "translate(" + (width/2 + gapBetweenTwoAxes) + ", " + height + ")")
 		.call(d3.axisBottom(x))
 		// Append axis label
 		.append("text")
@@ -308,16 +308,20 @@ function showStagesChart(svgContainerId, data) {
 		.data(data)
 		.enter().append("rect")
 		.attr("class", "bar")
+		
+		.attr("x", width/2)
+		.attr("y", function(d) { 
+			return y(d.stage) + y.bandwidth(); 
+		})
+		.attr("height", 3)
+		.transition()
+        .duration(800) // time in ms
 		.attr("x", function(d) { 
 			return xCount(d.patientsCount);
 		})
-		.attr("y", function(d) { 
-			return y(d.stage); 
-		})
 		.attr("width", function(d) { 
 			return width/2 - xCount(d.patientsCount);
-		})
-		.attr("height", y.bandwidth());
+		});
 
 
     // xCount axis
@@ -334,12 +338,13 @@ function showStagesChart(svgContainerId, data) {
     // add the y Axis
 	svg.append("g")
 	    .attr("transform", "translate(" + (width/2 + gapBetweenTwoAxes/2) + ", 0)")
-		.call(d3.axisLeft(y).tickSize(2))
+		.call(d3.axisLeft(y).tickSize(0)) // Remove tick marks
 		// Now modify the label text to add patients count
 		.selectAll("text")
 		.text(function(d) {
 			return d + " (" + patientsCounts[d] + ")";
-		});
+		})
+		//.attr("text-anchor", "middle");
 		
 
 }
