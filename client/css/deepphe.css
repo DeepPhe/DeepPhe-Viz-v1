@@ -79,9 +79,14 @@ cursor: pointer;
 fill:rgb(253, 141, 60) !important;
 }
 
-.boxplot_text {
+.boxplot_text,
+.single_patient_text {
 font-size:10px;
 text-anchor: middle;
+}
+
+.single_patient_text {
+fill:red;
 }
 
 .stages_chart_axis_label,

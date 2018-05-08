@@ -81,11 +81,10 @@ function showStagesChart(svgContainerId, data) {
 	    
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
+		.domain(data.map(function(d) { 
+			return d.stage; 
+		}))
 		.padding(0.7); // blank space between bands
-	
-	y.domain(data.map(function(d) { 
-		return d.stage; 
-	}));
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", width + margin.left + margin.right)
@@ -93,9 +92,32 @@ function showStagesChart(svgContainerId, data) {
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	// append the rectangles for the bar chart
+    // Only show the patient age when the stage has only one patient
+    var singlePatientGrp = svg.selectAll(".single_patient_group")
+		.data(data.filter(function(d) {
+			return d.patientsCount === 1;
+		}))
+		.enter().append("g")
+		.attr("class", "single_patient_group");
+
+    singlePatientGrp.append("text")
+		.attr("class", "single_patient_text")
+		.attr("x", function(d) {
+            return x(d.ages[0]);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) + 10;
+		})
+		.text(function(d) {
+            return d.ages[0];
+		});
+
+	
+	// Show the box plot for stage that has more than one patient
 	var boxplotGrp = svg.selectAll(".boxplot")
-		.data(data)
+		.data(data.filter(function(d) {
+			return d.patientsCount > 1;
+		}))
 		.enter().append("g")
 		.attr("class", "boxplot");
 		
