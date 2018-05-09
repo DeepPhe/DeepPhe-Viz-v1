@@ -92,15 +92,11 @@ stroke-width:1;
 shape-rendering: crispEdges;
 }
 
-.age_axis path {
-stroke: rgb(44, 160, 44);
-}
-
-.age_axis text {
-fill: rgb(44, 160, 44);
-}
-
 .count_axis path {
+stroke: rgb(230, 85, 13);
+}
+
+.count_axis line {
 stroke: rgb(230, 85, 13);
 }
 
@@ -108,8 +104,21 @@ stroke: rgb(230, 85, 13);
 fill: rgb(230, 85, 13);
 }
 
-.count_axis_label,
-.age_axis_label {
+
+.age_axis path {
+stroke: rgb(44, 160, 44);
+}
+
+.age_axis line {
+stroke: rgb(44, 160, 44);
+}
+
+.age_axis text {
+fill: rgb(44, 160, 44);
+}
+
+.age_axis_label ,
+.count_axis_label {
 text-anchor: end;
 }
 
