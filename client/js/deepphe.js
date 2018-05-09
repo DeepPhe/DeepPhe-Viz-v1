@@ -50,9 +50,9 @@ function showStagesChart(svgContainerId, data) {
 	    // calculate statistics
 	    // stageInfo.ages is already sorted array
 	    ageStats.minVal = stageInfo.ages[0];
-	    ageStats.q1Val = d3.quantile(stageInfo.ages, .25);
-	    ageStats.medianVal = d3.quantile(stageInfo.ages, .5);
-	    ageStats.q3Val = d3.quantile(stageInfo.ages, .75);
+	    ageStats.q1Val = Math.round(d3.quantile(stageInfo.ages, .25));
+	    ageStats.medianVal = Math.round(d3.quantile(stageInfo.ages, .5));
+	    ageStats.q3Val = Math.round(d3.quantile(stageInfo.ages, .75));
 	    ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
 	    ageStats.maxVal = stageInfo.ages[stageInfo.ages.length - 1];
         
@@ -66,39 +66,72 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 30, left: 20};
-	var width = 960 - margin.left - margin.right;
+	var margin = {top: 20, right: 20, bottom: 30, left: 150};
+	var width = 600 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
-	var gapBetweenTwoAxes = 20;
 
     // Box plot
-    var boxHeight = 12;
+    var boxHeight = 10;
     var textBottomPadding = 2;
 
 	// set the ranges
 	var x = d3.scaleLinear()
-	    .range([0, width/2])
+	    .range([0, width])
 	    .domain([10, 70]); // 10 years to 70 years old
 	    
     var xCount = d3.scaleLinear()
-	    .range([0, width/2])
-	    .domain([d3.max(data, function(d) { 
+	    .range([0, width])
+	    .domain([0, d3.max(data, function(d) { 
 			return d.patientsCount; 
-		}), 0]);
+		})]);
 
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
 		.domain(data.map(function(d) { 
 			return d.stage; 
 		}))
-		.padding(0.7); // blank space between bands
+		.padding(0.2); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "chort_analysis_chart")
-		.attr("width", width + margin.left + margin.right + gapBetweenTwoAxes)
+		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Bar chart of patients counts
+	svg.selectAll(".bar")
+		.data(data)
+		.enter().append("rect")
+		.attr("class", "bar")
+		.attr("x", 0)
+		.attr("y", function(d) { 
+			return y(d.stage); 
+		})
+		.attr("height", y.bandwidth())
+		.on("click", function(d) {
+            var clickedBar = d3.select(this);
+            var css = "clicked_bar";
+
+            // Toggle
+            if (!clickedBar.classed(css)) {
+            	// Remove previouly added css class
+	            d3.selectAll(".bar").classed(css, false);
+                // Highlight the clicked box and show corresponding patients
+            	clickedBar.classed(css, true);
+            	showPatients(d.stage);
+            } else {
+            	// When clicked again, remove highlight and show all patients
+            	clickedBar.classed(css, false);
+            	showPatients();
+            }
+		})
+		.transition()
+        .duration(800) // time in ms
+		.attr("width", function(d) { 
+			return xCount(d.patientsCount);
+		});
+
 
     // Only show the patient age when the stage has only one patient
     var singlePatientGrp = svg.selectAll(".single_patient_group")
@@ -108,19 +141,35 @@ function showStagesChart(svgContainerId, data) {
 		.enter().append("g")
 		.attr("class", "single_patient_group");
 
-    singlePatientGrp.append("text")
-		.attr("class", "single_patient_text")
-		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ages[0]);
+	// Verical line of single age
+	singlePatientGrp.append("line")
+		.attr("class", "single_patient_age_line")
+		.attr("x1", function(d) {
+            return x(d.ageStats.minVal);
 		})
-		.attr("y", function(d) {
-			return y(d.stage) + 10;
+		.attr("y1", function(d) {
+			return y(d.stage) + y.bandwidth()/2;
 		})
-		.text(function(d) {
-            return d.ages[0];
+		.attr("x2", function(d) {
+            return x(d.ageStats.minVal);
+		})
+		.attr("y2", function(d) {
+			return y(d.stage) + y.bandwidth()/2 + boxHeight;
 		});
 
-	
+	// Text of single age
+	singlePatientGrp.append("text")
+		.attr("class", "single_patient_text")
+		.attr("x", function(d) {
+            return x(d.ageStats.minVal);
+		})
+		.attr("y", function(d) {
+			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
+		})
+		.text(function(d) {
+            return d.ageStats.minVal;
+		});
+
 	// Show the box plot for stage that has more than one patient
 	var boxplotGrp = svg.selectAll(".boxplot")
 		.data(data.filter(function(d) {
@@ -133,13 +182,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_min")
 		.attr("x1", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
+            return x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
+            return x(d.ageStats.minVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + y.bandwidth()/2 + boxHeight;
@@ -149,7 +198,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
+            return x(d.ageStats.minVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
@@ -162,13 +211,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")  
 		.attr("class", "boxplot_max")
 		.attr("x1", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
+            return x(d.ageStats.maxVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
+            return x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + y.bandwidth()/2 + boxHeight;
@@ -178,7 +227,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
+            return x(d.ageStats.maxVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
@@ -191,13 +240,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_whisker")
 		.attr("x1",  function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.minVal);
+            return x(d.ageStats.minVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
 		})
 		.attr("x2",  function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.maxVal);
+            return x(d.ageStats.maxVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
@@ -207,7 +256,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("rect")    
 		.attr("class", "boxplot_box")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
+            return x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2;
@@ -215,30 +264,13 @@ function showStagesChart(svgContainerId, data) {
 		.attr("width", function(d) {
             return x(d.ageStats.q3Val) - x(d.ageStats.q1Val);
 		})
-		.attr("height", boxHeight)
-		.on("click", function(d) {
-            var clickedBox = d3.select(this);
-            var css = "clicked_box";
-
-            // Toggle
-            if (!clickedBox.classed(css)) {
-            	// Remove previouly added css class
-	            d3.selectAll(".boxplot_box").classed(css, false);
-                // Highlight the clicked box and show corresponding patients
-            	clickedBox.classed(css, true);
-            	showPatients(d.stage);
-            } else {
-            	// When clicked again, remove highlight and show all patients
-            	clickedBox.classed(css, false);
-            	showPatients();
-            }
-		});
+		.attr("height", boxHeight);
     
     // Text of q1 age
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q1Val);
+            return x(d.ageStats.q1Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
@@ -251,7 +283,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.q3Val);
+            return x(d.ageStats.q3Val);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
@@ -265,13 +297,13 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("line")
 		.attr("class", "boxplot_median")
 		.attr("x1", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
+            return x(d.ageStats.medianVal);
 		})
 		.attr("y1", function(d) {
 			return y(d.stage) + y.bandwidth()/2;
 		})
 		.attr("x2", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
+            return x(d.ageStats.medianVal);
 		})
 		.attr("y2", function(d) {
 			return y(d.stage) + y.bandwidth()/2 + boxHeight;
@@ -281,7 +313,7 @@ function showStagesChart(svgContainerId, data) {
 	boxplotGrp.append("text")
 		.attr("class", "boxplot_text")
 		.attr("x", function(d) {
-            return (width/2 + gapBetweenTwoAxes) + x(d.ageStats.medianVal);
+            return x(d.ageStats.medianVal);
 		})
 		.attr("y", function(d) {
 			return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
@@ -291,61 +323,40 @@ function showStagesChart(svgContainerId, data) {
 			return d.ageStats.medianVal;
 		});
 
+    // xCount axis
+	svg.append("g")
+		.attr("transform", "translate(0, 0)")
+		.attr("class", "count_axis")
+		.call(d3.axisTop(xCount))
+		// Append axis label
+		.append("text")
+		.attr("class", "count_axis_label")
+		.attr("x", width)
+		.attr("y", 12)
+		.text("Number of patients");
+
+   
     // Add the x ages Axis
 	svg.append("g")
-		.attr("transform", "translate(" + (width/2 + gapBetweenTwoAxes) + ", " + height + ")")
+		.attr("transform", "translate(0, " + height + ")")
+		.attr("class", "age_axis")
 		.call(d3.axisBottom(x))
 		// Append axis label
 		.append("text")
-		.attr("class", "stages_chart_ages_axis_label")
-		.attr("x", width/2)
+		.attr("class", "age_axis_label")
+		.attr("x", width)
 		.attr("y", -6)
 		.text("Age of first encounter");
 
-	
-
-    // Bar chart of patients counts
-	svg.selectAll(".bar")
-		.data(data)
-		.enter().append("rect")
-		.attr("class", "bar")
-		
-		.attr("x", width/2)
-		.attr("y", function(d) { 
-			return y(d.stage) + y.bandwidth(); 
-		})
-		.attr("height", 3)
-		.transition()
-        .duration(800) // time in ms
-		.attr("x", function(d) { 
-			return xCount(d.patientsCount);
-		})
-		.attr("width", function(d) { 
-			return width/2 - xCount(d.patientsCount);
-		});
-
-
-    // xCount axis
-	svg.append("g")
-		.attr("transform", "translate(0, " + height + ")")
-		.call(d3.axisBottom(xCount))
-		// Append axis label
-		.append("text")
-		.attr("class", "stages_chart_counts_axis_label")
-		.attr("x", 0)
-		.attr("y", -6)
-		.text("Number of patients");
-
     // add the y Axis
 	svg.append("g")
-	    .attr("transform", "translate(" + (width/2 + gapBetweenTwoAxes/2) + ", 0)")
-		.call(d3.axisLeft(y).tickSize(0)) // Remove tick marks
+	    .attr("transform", "translate(0, 0)")
+		.call(d3.axisLeft(y))
 		// Now modify the label text to add patients count
 		.selectAll("text")
 		.text(function(d) {
 			return d + " (" + patientsCounts[d] + ")";
-		})
-		//.attr("text-anchor", "middle");
+		});
 		
 
 }
