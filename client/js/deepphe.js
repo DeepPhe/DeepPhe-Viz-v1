@@ -378,13 +378,43 @@ function showPatients(stage) {
 	});
 
 	jqxhr.done(function(response) {
-	    //console.log(response);
-	    // Render response
+	    console.log(response.patients);
+
+        // Create an array of patient names
+        var patientNames = [];
+        response.patients.forEach(function(patient) {
+        	patientNames.push(patient.name);
+        });
+
+        getPatientsTumorInfo(patientNames);
+
+	    // Render patient list
 	    $('#patients').html(response.renderedPatientsList);
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get target patients");
+	});
+}
+
+function getPatientsTumorInfo(patientNames) {
+    // Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json' 
+	});
+
+	jqxhr.done(function(response) {
+	    console.log(response);
+
+	    // Render response
+	    //$('#tumorchart').html(response);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get patients tumor info");
 	});
 }
 
