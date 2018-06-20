@@ -378,7 +378,7 @@ function showPatients(stage) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response.patients);
+	    //console.log(response.patients);
 
         // Create an array of patient names
         var patientNames = [];
