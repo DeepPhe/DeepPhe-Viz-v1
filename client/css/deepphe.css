@@ -47,7 +47,7 @@ color:#fff;
 }
 
 /* Cohort Analysis */
-.chort_analysis_chart {
+.chort_analysis_chart, .biomarkers_chart {
 border:1px solid #ccc;
 margin:10px;
 padding:20px;

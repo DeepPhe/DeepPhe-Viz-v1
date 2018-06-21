@@ -399,77 +399,87 @@ function showPatients(stage) {
 function showBiomarkersChart(svgContainerId, data) {
     console.log(data);
 
+    // Remove previouly added chart
+    $("#" + svgContainerId).html("");
+
+    var biomarkerStatus = ['positive', 'negative', 'unknown'];
+
 	var margin = {top: 20, right: 20, bottom: 30, left: 60};
 	var width = 600 - margin.left - margin.right;
-	var height = 540 - margin.top - margin.bottom;
+	var height = 400 - margin.top - margin.bottom;
+
+    var legendRectSize = 10;
+    var legnedTextRectPad = 3;
+
+    // Band scale of biomarkers
+	var biomarkerScale = d3.scaleBand()
+	    .domain(data.biomarkersPool)
+	    .rangeRound([0, width])
+	    .padding(0.2);
+
+    // Band scale of status
+	var statusScale = d3.scaleBand()
+	    .domain(biomarkerStatus)
+	    .rangeRound([0, biomarkerScale.bandwidth()])
+	    .padding(0.1);
+
+    // Percentage
+	var y = d3.scaleLinear()
+	    .rangeRound([height, 0])
+	    .domain([0, 1]);
+
+    // Colors of status: positive, negative, unknown
+    var color = d3.scaleOrdinal()
+        .range(["red", "green", "orange"]);
+
 
     var svg = d3.select("#" + svgContainerId).append("svg")
-	    .attr("class", "biomarker_chart")
+	    .attr("class", "biomarkers_chart") // Used for CSS styling
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var keys = ['positive', 'negative', 'unknown'];
-
-    // Outer x axis
-	var x0 = d3.scaleBand()
-	    .domain(data.biomarkersPool)
-	    .rangeRound([0, width]);
-
-    // Inner x axis
-	var x1 = d3.scaleBand()
-	    .domain(keys)
-	    .rangeRound([0, x0.bandwidth()])
-	    .padding(0.05);
-
-	var y = d3.scaleLinear()
-	    .rangeRound([height, 0])
-	    .domain([0, 100]);
-
-    var z = d3.scaleOrdinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888"]);
-
-
+    // Status bar of each biomarker
 	svg.append("g")
 		.selectAll("g")
 		.data(data.data)
 		.enter().append("g")
 		.attr("transform", function(d) { 
-			return "translate(" + x0(d.biomarker) + ",0)"; 
+			return "translate(" + biomarkerScale(d.biomarker) + ",0)"; 
 		})
 		.selectAll("rect")
 		.data(function(d) { 
-			return keys.map(function(key) { 
-			    return {key: key, value: d[key]}; 
+			return biomarkerStatus.map(function(status) { 
+			    return {status: status, count: d[status]}; 
 			}); 
 		})
 		.enter().append("rect")
 		.attr("x", function(d) { 
 			console.log(d);
-			return x1(d.key); 
+			return statusScale(d.status); 
 		})
 		.attr("y", function(d) { 
-			return y(d.value); 
+			return y(d.count); 
 		})
-		.attr("width", x1.bandwidth())
+		.attr("width", statusScale.bandwidth())
 		.attr("height", function(d) { 
-			return height - y(d.value); 
+			return height - y(d.count); 
 		})
 		.attr("fill", function(d) { 
-			return z(d.key); 
+			return color(d.status); 
 		});
 
-    // X axis, outer
+    // X axis
 	svg.append("g")
-		.attr("class", "axis")
+		.attr("class", "biomarkers_chart_x_axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x0));
+		.call(d3.axisBottom(biomarkerScale));
 
     // Y axis
 	svg.append("g")
-		.attr("class", "axis")
-		.call(d3.axisLeft(y))
+		.attr("class", "biomarkers_chart_y_axis")
+		.call(d3.axisLeft(y).tickFormat(d3.format(".0%")))
 		.append("text")
 			.attr("x", 2)
 			.attr("y", y(y.ticks().pop()) + 0.5)
@@ -479,26 +489,27 @@ function showBiomarkersChart(svgContainerId, data) {
 			.attr("text-anchor", "start")
 			.text("Percentage");
 
-    var legend = svg.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
-      .attr("text-anchor", "end")
-    .selectAll("g")
-    .data(keys.slice().reverse())
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+	var legend = svg.append("g")
+		.attr("text-anchor", "end")
+		.selectAll("g")
+		.data(biomarkerStatus)
+		.enter().append("g")
+		.attr("transform", function(d, i) { 
+			return "translate(0," + i * 20 + ")"; 
+		});
 
-  legend.append("rect")
-      .attr("x", width - 19)
-      .attr("width", 19)
-      .attr("height", 19)
-      .attr("fill", z);
+	legend.append("rect")
+		.attr("x", width - legendRectSize)
+		.attr("width", legendRectSize)
+		.attr("height", legendRectSize)
+		.attr("fill", color);
 
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9.5)
-      .attr("dy", "0.32em")
-      .text(function(d) { return d; });
+	legend.append("text")
+		.attr("x", width - legendRectSize - legnedTextRectPad)
+		.attr("y", 9)
+		.text(function(d) { 
+			return d; 
+		});
 }
 
 function getPatientsTumorInfo(patientNames) {
@@ -512,7 +523,7 @@ function getPatientsTumorInfo(patientNames) {
 
 	jqxhr.done(function(response) {
 	    //console.log(response);
-
+        
 	    showBiomarkersChart("biomarkers", response.biomarkersInfo);
 	});
 
