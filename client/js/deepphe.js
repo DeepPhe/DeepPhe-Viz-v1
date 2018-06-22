@@ -404,9 +404,9 @@ function showBiomarkersChart(svgContainerId, data) {
 
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-	var margin = {top: 20, right: 20, bottom: 30, left: 60};
+	var margin = {top: 20, right: 20, bottom: 30, left: 30};
 	var width = 600 - margin.left - margin.right;
-	var height = 400 - margin.top - margin.bottom;
+	var height = 540 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
     var legnedTextRectPad = 3;
@@ -414,23 +414,23 @@ function showBiomarkersChart(svgContainerId, data) {
     // Band scale of biomarkers
 	var biomarkerScale = d3.scaleBand()
 	    .domain(data.biomarkersPool)
-	    .rangeRound([0, width])
-	    .padding(0.2);
+	    .rangeRound([0, height])
+	    .padding(0.4);
 
     // Band scale of status
 	var statusScale = d3.scaleBand()
 	    .domain(biomarkerStatus)
 	    .rangeRound([0, biomarkerScale.bandwidth()])
-	    .padding(0.1);
+	    .padding(0.02);
 
     // Percentage
-	var y = d3.scaleLinear()
-	    .rangeRound([height, 0])
+	var x = d3.scaleLinear()
+	    .rangeRound([0, width])
 	    .domain([0, 1]);
 
     // Colors of status: positive, negative, unknown
     var color = d3.scaleOrdinal()
-        .range(["red", "green", "orange"]);
+        .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(127, 127, 127)"]);
 
 
     var svg = d3.select("#" + svgContainerId).append("svg")
@@ -446,48 +446,79 @@ function showBiomarkersChart(svgContainerId, data) {
 		.data(data.data)
 		.enter().append("g")
 		.attr("transform", function(d) { 
-			return "translate(" + biomarkerScale(d.biomarker) + ",0)"; 
+			return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
 		})
-		.selectAll("rect")
+		.selectAll(".biomarker_status_bar")
 		.data(function(d) { 
 			return biomarkerStatus.map(function(status) { 
-			    return {status: status, count: d[status]}; 
+			    return {status: status, percentage: d[status]}; 
 			}); 
 		})
 		.enter().append("rect")
-		.attr("x", function(d) { 
-			console.log(d);
+		.attr("class", function(d) {
+			return "biomarker_status_bar " + d.status;
+		})
+		.attr("x", 0)
+		.attr("y", function(d) { 
 			return statusScale(d.status); 
 		})
-		.attr("y", function(d) { 
-			return y(d.count); 
-		})
-		.attr("width", statusScale.bandwidth())
-		.attr("height", function(d) { 
-			return height - y(d.count); 
-		})
+		.attr("height", statusScale.bandwidth())
 		.attr("fill", function(d) { 
 			return color(d.status); 
+		})
+		.transition()
+        .duration(800) // time in ms
+		.attr("width", function(d) { 
+			return x(d.percentage);
 		});
+
+    // Show percentage by the each status bar
+    svg.append("g")
+		.selectAll("g")
+		.data(data.data)
+		.enter().append("g")
+		.attr("transform", function(d) { 
+			return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
+		})
+		.selectAll(".biomarker_status_percentage")
+		.data(function(d) { 
+			return biomarkerStatus.map(function(status) { 
+			    return {status: status, percentage: d[status]}; 
+			}); 
+		})
+		.enter().append("text")
+		.attr("class", "biomarker_status_percentage")
+
+		.attr("y", function(d) { 
+			return statusScale(d.status) + 18; 
+		})
+		.attr("fill", "#000")
+		.text(function(d) {
+			return (d.percentage * 100).toFixed(0) + "%";
+		})
+		.transition()
+        .duration(800) // time in ms
+		.attr("x", function(d) { 
+			return x(d.percentage) + 2;
+		});
+
+    // Y axis
+	svg.append("g")
+		.attr("class", "biomarkers_chart_y_axis")
+		//.attr("transform", "translate(0," + 0 + ")")
+		.call(d3.axisLeft(biomarkerScale));
 
     // X axis
 	svg.append("g")
 		.attr("class", "biomarkers_chart_x_axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(biomarkerScale));
-
-    // Y axis
-	svg.append("g")
-		.attr("class", "biomarkers_chart_y_axis")
-		.call(d3.axisLeft(y).tickFormat(d3.format(".0%")))
+		.call(d3.axisBottom(x).tickFormat(d3.format(".0%")))
 		.append("text")
-			.attr("x", 2)
-			.attr("y", y(y.ticks().pop()) + 0.5)
-			.attr("dy", "0.32em")
+			.attr("y", -6)
+			.attr("x", x(x.ticks().pop()) + 0.5)
 			.attr("fill", "#000")
-			.attr("font-weight", "bold")
-			.attr("text-anchor", "start")
-			.text("Percentage");
+			.attr("text-anchor", "end")
+			.text("Percentage of biomarker status");
 
 	var legend = svg.append("g")
 		.attr("text-anchor", "end")
