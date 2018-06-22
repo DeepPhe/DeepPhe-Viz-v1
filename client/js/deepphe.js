@@ -100,10 +100,10 @@ function showStagesChart(svgContainerId, data) {
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Bar chart of patients counts
-	svg.selectAll(".bar")
+	svg.selectAll(".stage_bar")
 		.data(data)
 		.enter().append("rect")
-		.attr("class", "bar")
+		.attr("class", "stage_bar")
 		.attr("x", 0)
 		.attr("y", function(d) { 
 			return y(d.stage); 
@@ -421,7 +421,7 @@ function showBiomarkersChart(svgContainerId, data) {
 	var statusScale = d3.scaleBand()
 	    .domain(biomarkerStatus)
 	    .rangeRound([0, biomarkerScale.bandwidth()])
-	    .padding(0.02);
+	    .padding(0.1);
 
     // Percentage
 	var x = d3.scaleLinear()
@@ -430,7 +430,7 @@ function showBiomarkersChart(svgContainerId, data) {
 
     // Colors of status: positive, negative, unknown
     var color = d3.scaleOrdinal()
-        .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(127, 127, 127)"]);
+        .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
 
     var svg = d3.select("#" + svgContainerId).append("svg")
@@ -440,19 +440,25 @@ function showBiomarkersChart(svgContainerId, data) {
 		.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // Status bar of each biomarker
-	svg.append("g")
-		.selectAll("g")
+    var biomarkerGrp = svg.selectAll(".biomarker_group")
 		.data(data.data)
 		.enter().append("g")
+		.attr("class", "biomarker_group")
 		.attr("transform", function(d) { 
 			return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
-		})
-		.selectAll(".biomarker_status_bar")
+		});
+
+    // Status bars inside each biomarker group
+	biomarkerGrp.selectAll(".biomarker_status_bar")
+	    // here d is each object in the data.data array
 		.data(function(d) { 
-			return biomarkerStatus.map(function(status) { 
+			// Creates a new data array of objects
+			// each object is like {status: "positive", percentage: 0.73}
+			var statusPercentageArr = biomarkerStatus.map(function(status) { 
 			    return {status: status, percentage: d[status]}; 
 			}); 
+
+			return statusPercentageArr;
 		})
 		.enter().append("rect")
 		.attr("class", function(d) {
@@ -463,7 +469,11 @@ function showBiomarkersChart(svgContainerId, data) {
 			return statusScale(d.status); 
 		})
 		.attr("height", statusScale.bandwidth())
+		// fill-opacity is specified in CSS
 		.attr("fill", function(d) { 
+			return color(d.status); 
+		})
+		.attr("stroke", function(d) { 
 			return color(d.status); 
 		})
 		.transition()
@@ -473,18 +483,15 @@ function showBiomarkersChart(svgContainerId, data) {
 		});
 
     // Show percentage by the each status bar
-    svg.append("g")
-		.selectAll("g")
-		.data(data.data)
-		.enter().append("g")
-		.attr("transform", function(d) { 
-			return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
-		})
-		.selectAll(".biomarker_status_percentage")
+    biomarkerGrp.selectAll(".biomarker_status_percentage")
 		.data(function(d) { 
-			return biomarkerStatus.map(function(status) { 
+			// Creates a new data array of objects
+			// each object is like {status: "positive", percentage: 0.73}
+			var statusPercentageArr = biomarkerStatus.map(function(status) { 
 			    return {status: status, percentage: d[status]}; 
 			}); 
+
+			return statusPercentageArr;
 		})
 		.enter().append("text")
 		.attr("class", "biomarker_status_percentage")
@@ -505,7 +512,6 @@ function showBiomarkersChart(svgContainerId, data) {
     // Y axis
 	svg.append("g")
 		.attr("class", "biomarkers_chart_y_axis")
-		//.attr("transform", "translate(0," + 0 + ")")
 		.call(d3.axisLeft(biomarkerScale));
 
     // X axis
@@ -520,22 +526,26 @@ function showBiomarkersChart(svgContainerId, data) {
 			.attr("text-anchor", "end")
 			.text("Percentage of biomarker status");
 
+    // Status legend
 	var legend = svg.append("g")
 		.attr("text-anchor", "end")
 		.selectAll("g")
 		.data(biomarkerStatus)
 		.enter().append("g")
 		.attr("transform", function(d, i) { 
-			return "translate(0," + i * 20 + ")"; 
+			return "translate(0," + i * (legendRectSize + legnedTextRectPad) + ")"; 
 		});
 
 	legend.append("rect")
+	    .attr("class", "biomarker_status_legend")
 		.attr("x", width - legendRectSize)
 		.attr("width", legendRectSize)
 		.attr("height", legendRectSize)
-		.attr("fill", color);
+		.attr("fill", color)
+		.attr("stroke", color);
 
 	legend.append("text")
+	    .attr("class", "biomarker_status_legend_text")
 		.attr("x", width - legendRectSize - legnedTextRectPad)
 		.attr("y", 9)
 		.text(function(d) { 

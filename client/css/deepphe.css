@@ -72,7 +72,7 @@ stroke: rgb(150, 150, 150);
 }
 
 .boxplot_box {
-fill: rgb(161, 217, 155);
+fill: rgb(188, 189, 220);
 }
 
 .clicked_bar {
@@ -85,37 +85,37 @@ font-size:10px;
 text-anchor: middle;
 }
 
-.bar {
-fill: rgb(230, 85, 13);
-stroke: rgb(230, 85, 13);
-fill-opacity:0.1;
+.stage_bar {
+fill: rgb(253, 174, 107);
+stroke: rgb(253, 174, 107);
+fill-opacity:0.5;
 stroke-width:1;
 shape-rendering: crispEdges;
 }
 
 .count_axis path {
-stroke: rgb(230, 85, 13);
+stroke: rgb(253, 141, 60);
 }
 
 .count_axis line {
-stroke: rgb(230, 85, 13);
+stroke: rgb(253, 141, 60);
 }
 
 .count_axis text {
-fill: rgb(230, 85, 13);
+fill: rgb(253, 141, 60);
 }
 
 
 .age_axis path {
-stroke: rgb(44, 160, 44);
+stroke: rgb(117, 107, 177);
 }
 
 .age_axis line {
-stroke: rgb(44, 160, 44);
+stroke: rgb(117, 107, 177);
 }
 
 .age_axis text {
-fill: rgb(44, 160, 44);
+fill: rgb(117, 107, 177);
 }
 
 .age_axis_label ,
@@ -125,13 +125,18 @@ text-anchor: end;
 
 
 /* Biomarkers chart */
-.biomarker_status_bar {
-fill-opacity:0.8;
+.biomarker_status_bar,
+.biomarker_status_legend {
+fill-opacity:0.3;
+stroke-width:1;
+shape-rendering: crispEdges;
 }
 
-.biomarker_status_percentage {
+.biomarker_status_percentage,
+.biomarker_status_legend_text {
 font-size:10px;
 }
+
 
 /* patients cohort filtering */
 .cohort_filter {
