@@ -76,7 +76,7 @@ fill: rgb(188, 189, 220);
 }
 
 .clicked_bar {
-fill-opacity:0.4 !important;
+fill-opacity:0.8 !important;
 }
 
 .boxplot_text,
@@ -88,7 +88,7 @@ text-anchor: middle;
 .stage_bar {
 fill: rgb(253, 174, 107);
 stroke: rgb(253, 174, 107);
-fill-opacity:0.5;
+fill-opacity:0.3;
 stroke-width:1;
 shape-rendering: crispEdges;
 cursor:pointer;
