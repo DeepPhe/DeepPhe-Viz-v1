@@ -138,6 +138,14 @@ shape-rendering: crispEdges;
 font-size:10px;
 }
 
+.biomarkers_chart_x_axis_label {
+text-anchor: end;
+fill: #222;
+}
+
+.biomarkers_chart_legend {
+text-anchor: end;	
+}
 
 /* patients cohort filtering */
 .cohort_filter {

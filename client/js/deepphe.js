@@ -23,7 +23,7 @@ function getCancerStages() {
         showStagesChart("stages", response.stagesInfo);
 
 	    // Show all patients by default
-        showPatients();
+        getPatients();
 	});
 
 	jqxhr.fail(function () { 
@@ -117,14 +117,14 @@ function showStagesChart(svgContainerId, data) {
             // Toggle
             if (!clickedBar.classed(css)) {
             	// Remove previouly added css class
-	            d3.selectAll(".bar").classed(css, false);
+	            d3.selectAll(".stage_bar").classed(css, false);
                 // Highlight the clicked box and show corresponding patients
             	clickedBar.classed(css, true);
-            	showPatients(d.stage);
+            	getPatients(d.stage);
             } else {
             	// When clicked again, remove highlight and show all patients
             	clickedBar.classed(css, false);
-            	showPatients();
+            	getPatients();
             }
 		})
 		.transition()
@@ -364,7 +364,7 @@ function showStagesChart(svgContainerId, data) {
 // Filter the patients by given cancer stage
 // without stage, get all patients
 // Must use encodeURIComponent() otherwise may have URI parsing issue
-function showPatients(stage) {
+function getPatients(stage) {
 	// stage is optional
 	// undefined means a variable has been declared but has not yet been assigned a value
 	var url = (typeof(stage) === 'undefined') ? '/patients' : '/patients/' + encodeURIComponent(stage);
@@ -386,6 +386,7 @@ function showPatients(stage) {
         	patientNames.push(patient.name);
         });
 
+        // Make another ajax call to get all tumor info for the list of patients
         getPatientsTumorInfo(patientNames);
 
 	    // Render patient list
@@ -504,7 +505,6 @@ function showBiomarkersChart(svgContainerId, data) {
 		.attr("y", function(d) { 
 			return statusScale(d.status) + 18; 
 		})
-		.attr("fill", "#000")
 		.text(function(d) {
 			return formatPercent(d.percentage);
 		})
@@ -535,15 +535,14 @@ function showBiomarkersChart(svgContainerId, data) {
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x).tickFormat(formatPercent))
 		.append("text")
+		    .attr("class", "biomarkers_chart_x_axis_label")
 			.attr("y", -6)
 			.attr("x", x(x.ticks().pop()) + 0.5)
-			.attr("fill", "#000")
-			.attr("text-anchor", "end")
 			.text("Percentage of biomarker status");
 
     // Status legend
 	var legend = svg.append("g")
-		.attr("text-anchor", "end")
+		.attr("class", "biomarkers_chart_legend")
 		.selectAll("g")
 		.data(biomarkerStatus)
 		.enter().append("g")
@@ -556,8 +555,12 @@ function showBiomarkersChart(svgContainerId, data) {
 		.attr("x", width - legendRectSize)
 		.attr("width", legendRectSize)
 		.attr("height", legendRectSize)
-		.attr("fill", color)
-		.attr("stroke", color);
+		.attr("fill", function(d) { 
+			return color(d); 
+		})
+		.attr("stroke", function(d) { 
+			return color(d); 
+		});
 
 	legend.append("text")
 	    .attr("class", "biomarker_status_legend_text")
