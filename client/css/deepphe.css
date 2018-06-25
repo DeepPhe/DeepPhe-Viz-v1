@@ -91,6 +91,7 @@ stroke: rgb(253, 174, 107);
 fill-opacity:0.5;
 stroke-width:1;
 shape-rendering: crispEdges;
+cursor:pointer;
 }
 
 .count_axis path {

@@ -1,4 +1,5 @@
 // Global settings
+var transitionDuration = 1200; // time in ms
 var factBasedReports = [];
 
 function getPatientEncounterAge(encounterDateObj, birthday) {
@@ -127,7 +128,7 @@ function showStagesChart(svgContainerId, data) {
             }
 		})
 		.transition()
-        .duration(800) // time in ms
+        .duration(transitionDuration)
 		.attr("width", function(d) { 
 			return xCount(d.patientsCount);
 		});
@@ -432,6 +433,8 @@ function showBiomarkersChart(svgContainerId, data) {
     var color = d3.scaleOrdinal()
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
+    // https://github.com/d3/d3-format
+    var formatPercent = d3.format(".0%");
 
     var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "biomarkers_chart") // Used for CSS styling
@@ -477,36 +480,48 @@ function showBiomarkersChart(svgContainerId, data) {
 			return color(d.status); 
 		})
 		.transition()
-        .duration(800) // time in ms
+        .duration(transitionDuration)
 		.attr("width", function(d) { 
 			return x(d.percentage);
 		});
 
-    // Show percentage by the each status bar
+    // Show percentage text by the each status bar
     biomarkerGrp.selectAll(".biomarker_status_percentage")
 		.data(function(d) { 
 			// Creates a new data array of objects
-			// each object is like {status: "positive", percentage: 0.73}
+			// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
 			var statusPercentageArr = biomarkerStatus.map(function(status) { 
-			    return {status: status, percentage: d[status]}; 
+			    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
 			}); 
 
 			return statusPercentageArr;
 		})
 		.enter().append("text")
 		.attr("class", "biomarker_status_percentage")
-
+		.attr("id", function(d) {
+			return d.biomarker + "_" + d.status;
+		})
 		.attr("y", function(d) { 
 			return statusScale(d.status) + 18; 
 		})
 		.attr("fill", "#000")
 		.text(function(d) {
-			return (d.percentage * 100).toFixed(0) + "%";
+			return formatPercent(d.percentage);
 		})
+		// text x position transition
 		.transition()
-        .duration(800) // time in ms
+        .duration(transitionDuration) // time in ms
 		.attr("x", function(d) { 
 			return x(d.percentage) + 2;
+		})
+		// percentage text tween transition
+        .tween("text", function(d) {
+			var i = d3.interpolate(0, d.percentage);
+			return function(t) {
+                // Don't use d3.select(this) here
+                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+				d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(i(t)));
+			};
 		});
 
     // Y axis
@@ -518,7 +533,7 @@ function showBiomarkersChart(svgContainerId, data) {
 	svg.append("g")
 		.attr("class", "biomarkers_chart_x_axis")
 		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x).tickFormat(d3.format(".0%")))
+		.call(d3.axisBottom(x).tickFormat(formatPercent))
 		.append("text")
 			.attr("y", -6)
 			.attr("x", x(x.ticks().pop()) + 0.5)
@@ -941,7 +956,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
     // Transition used by focus/defocus episode
     var transt = d3.transition()
-		    .duration(500)
+		    .duration(transitionDuration)
 		    .ease(d3.easeLinear);
 
 	// Main area and overview area share the same width
@@ -1238,7 +1253,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         mainX.domain([newStartDate, newEndDate]);
 
         var transt = d3.transition()
-		    .duration(500)
+		    .duration(transitionDuration)
 		    .ease(d3.easeLinear);
 
         // Move the brush with transition

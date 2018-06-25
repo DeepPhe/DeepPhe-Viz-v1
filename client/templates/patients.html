@@ -5,7 +5,7 @@
   {{#each patients}}
     <li class="clearfix">
     {{! The ../ path segment references the parent template scope that should be what you want. }}
-    <a href="{{../baseUri}}/patient/{{name}}">{{name}} ({{age}})</a>:
+    <a href="{{../baseUri}}/patient/{{name}}">{{name}}</a>:
     <ul class="cancer_stage_list">
        {{#each cancerStage}}
            <li class="cancer_stage">{{this}}</li>
