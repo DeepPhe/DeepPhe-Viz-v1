@@ -67,8 +67,8 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 30, left: 150};
-	var width = 600 - margin.left - margin.right;
+	var margin = {top: 20, right: 20, bottom: 40, left: 150};
+	var width = 540 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
 
     // Box plot
@@ -94,11 +94,19 @@ function showStagesChart(svgContainerId, data) {
 		.padding(0.2); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
-	    .attr("class", "chort_analysis_chart")
+	    .attr("class", "stages_chart")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Chart title
+    svg.append("text")
+        .attr("class", "stages_chart_title")
+        .attr("transform", function(d) { 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+		})
+        .text("Cancer Stages");
 
     // Bar chart of patients counts
 	svg.selectAll(".stage_bar")
@@ -387,7 +395,7 @@ function getPatients(stage) {
         });
 
         // Make another ajax call to get all tumor info for the list of patients
-        getPatientsTumorInfo(patientNames);
+        getPatientsTumorInfo(patientNames, stage);
 
 	    // Render patient list
 	    $('#patients').html(response.renderedPatientsList);
@@ -398,16 +406,16 @@ function getPatients(stage) {
 	});
 }
 
-function showBiomarkersChart(svgContainerId, data) {
-    console.log(data);
-
+function showBiomarkersChart(svgContainerId, data, stage) {
     // Remove previouly added chart
     $("#" + svgContainerId).html("");
 
+    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
+ 
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-	var margin = {top: 20, right: 20, bottom: 30, left: 30};
-	var width = 600 - margin.left - margin.right;
+	var margin = {top: 20, right: 20, bottom: 40, left: 30};
+	var width = 400 - margin.left - margin.right;
 	var height = 540 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
@@ -443,6 +451,15 @@ function showBiomarkersChart(svgContainerId, data) {
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Chart title
+    svg.append("text")
+        .attr("class", "biomarkers_chart_title")
+        .attr("transform", function(d) { 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+		})
+        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
+
 
     var biomarkerGrp = svg.selectAll(".biomarker_group")
 		.data(data.data)
@@ -527,7 +544,12 @@ function showBiomarkersChart(svgContainerId, data) {
     // Y axis
 	svg.append("g")
 		.attr("class", "biomarkers_chart_y_axis")
-		.call(d3.axisLeft(biomarkerScale));
+		.call(d3.axisLeft(biomarkerScale))
+		.append("text")
+		    .attr("class", "biomarkers_chart_y_axis_label")
+		    .attr("y", 13)
+		    .attr("transform", "rotate(-90)")
+			.text("Biomarkers");
 
     // X axis
 	svg.append("g")
@@ -571,7 +593,7 @@ function showBiomarkersChart(svgContainerId, data) {
 		});
 }
 
-function getPatientsTumorInfo(patientNames) {
+function getPatientsTumorInfo(patientNames, stage) {
     // Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
 	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
@@ -583,7 +605,7 @@ function getPatientsTumorInfo(patientNames) {
 	jqxhr.done(function(response) {
 	    //console.log(response);
         
-	    showBiomarkersChart("biomarkers", response.biomarkersInfo);
+	    showBiomarkersChart("biomarkers", response.biomarkersInfo, stage);
 	});
 
 	jqxhr.fail(function () { 
