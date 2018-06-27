@@ -1,5 +1,5 @@
 // Global settings
-var transitionDuration = 1200; // time in ms
+var transitionDuration = 800; // time in ms
 var factBasedReports = [];
 
 function getPatientEncounterAge(encounterDateObj, birthday) {
@@ -69,10 +69,10 @@ function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 20, right: 20, bottom: 40, left: 150};
 	var width = 540 - margin.left - margin.right;
-	var height = 540 - margin.top - margin.bottom;
+	var height = 440 - margin.top - margin.bottom;
 
     // Box plot
-    var boxHeight = 10;
+    var boxHeight = 6;
     var textBottomPadding = 2;
 
 	// set the ranges
@@ -91,7 +91,7 @@ function showStagesChart(svgContainerId, data) {
 		.domain(data.map(function(d) { 
 			return d.stage; 
 		}))
-		.padding(0.2); // blank space between bands
+		.padding(0.15); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "stages_chart")
@@ -407,16 +407,13 @@ function getPatients(stage) {
 }
 
 function showBiomarkersChart(svgContainerId, data, stage) {
-    // Remove previouly added chart
-    $("#" + svgContainerId).html("");
-
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
  
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
 	var margin = {top: 20, right: 20, bottom: 40, left: 30};
 	var width = 400 - margin.left - margin.right;
-	var height = 540 - margin.top - margin.bottom;
+	var height = 440 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
     var legnedTextRectPad = 3;
@@ -425,13 +422,13 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	var biomarkerScale = d3.scaleBand()
 	    .domain(data.biomarkersPool)
 	    .rangeRound([0, height])
-	    .padding(0.4);
+	    .padding(0.5);
 
     // Band scale of status
 	var statusScale = d3.scaleBand()
 	    .domain(biomarkerStatus)
 	    .rangeRound([0, biomarkerScale.bandwidth()])
-	    .padding(0.1);
+	    .padding(0.15);
 
     // Percentage
 	var x = d3.scaleLinear()
@@ -445,152 +442,238 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     // https://github.com/d3/d3-format
     var formatPercent = d3.format(".0%");
 
-    var svg = d3.select("#" + svgContainerId).append("svg")
-	    .attr("class", "biomarkers_chart") // Used for CSS styling
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-		.append("g")
-		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // Only draw everything for the first time
+    if (d3.select(".biomarkers_chart_group").empty()) {
+	    var svg = d3.select("#" + svgContainerId).append("svg")
+		    .attr("class", "biomarkers_chart") // Used for CSS styling
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			    .attr("class", "biomarkers_chart_group")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // Chart title
-    svg.append("text")
-        .attr("class", "biomarkers_chart_title")
-        .attr("transform", function(d) { 
-			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
-		})
-        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
+	    // Chart title
+	    svg.append("text")
+	        .attr("class", "biomarkers_chart_title")
+	        .attr("transform", function(d) { 
+				return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+			})
+	        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
 
 
-    var biomarkerGrp = svg.selectAll(".biomarker_group")
-		.data(data.data)
-		.enter().append("g")
-		.attr("class", "biomarker_group")
-		.attr("transform", function(d) { 
-			return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
-		});
+	    var biomarkerGrp = svg.selectAll(".biomarker_group")
+			.data(data.data)
+			.enter().append("g")
+			.attr("class", "biomarker_group")
+			.attr("transform", function(d) { 
+				return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
+			});
 
-    // Status bars inside each biomarker group
-	biomarkerGrp.selectAll(".biomarker_status_bar")
-	    // here d is each object in the data.data array
-		.data(function(d) { 
-			// Creates a new data array of objects
-			// each object is like {status: "positive", percentage: 0.73}
-			var statusPercentageArr = biomarkerStatus.map(function(status) { 
-			    return {status: status, percentage: d[status]}; 
-			}); 
+	    // Status bars inside each biomarker group
+		biomarkerGrp.selectAll(".biomarker_status_bar")
+		    // here d is each object in the data.data array
+			.data(function(d) { 
+				// Creates a new data array of objects
+				// each object is like {status: "positive", percentage: 0.73}
+				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				    return {status: status, percentage: d[status]}; 
+				}); 
 
-			return statusPercentageArr;
-		})
-		.enter().append("rect")
-		.attr("class", function(d) {
-			return "biomarker_status_bar " + d.status;
-		})
-		.attr("x", 0)
-		.attr("y", function(d) { 
-			return statusScale(d.status); 
-		})
-		.attr("height", statusScale.bandwidth())
-		// fill-opacity is specified in CSS
-		.attr("fill", function(d) { 
-			return color(d.status); 
-		})
-		.attr("stroke", function(d) { 
-			return color(d.status); 
-		})
-		.transition()
-        .duration(transitionDuration)
-		.attr("width", function(d) { 
-			return x(d.percentage);
-		});
+				return statusPercentageArr;
+			})
+			.enter().append("rect")
+			.attr("class", function(d) {
+				return "biomarker_status_bar " + d.status;
+			})
+			.attr("x", 0)
+			.attr("y", function(d) { 
+				return statusScale(d.status); 
+			})
+			.attr("height", statusScale.bandwidth())
+			// fill-opacity is specified in CSS
+			.attr("fill", function(d) { 
+				return color(d.status); 
+			})
+			.attr("stroke", function(d) { 
+				return color(d.status); 
+			})
+			.transition()
+	        .duration(transitionDuration)
+			.attr("width", function(d) { 
+				return x(d.percentage);
+			});
 
-    // Show percentage text by the each status bar
-    biomarkerGrp.selectAll(".biomarker_status_percentage")
-		.data(function(d) { 
-			// Creates a new data array of objects
-			// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
-			var statusPercentageArr = biomarkerStatus.map(function(status) { 
-			    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
-			}); 
+	    // Show percentage text by the each status bar
+	    biomarkerGrp.selectAll(".biomarker_status_percentage")
+			.data(function(d) { 
+				// Creates a new data array of objects
+				// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
+				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
+				}); 
 
-			return statusPercentageArr;
-		})
-		.enter().append("text")
-		.attr("class", "biomarker_status_percentage")
-		.attr("id", function(d) {
-			return d.biomarker + "_" + d.status;
-		})
-		.attr("y", function(d) { 
-			return statusScale(d.status) + 18; 
-		})
-		.text(function(d) {
-			return formatPercent(d.percentage);
-		})
-		// text x position transition
-		.transition()
-        .duration(transitionDuration) // time in ms
-		.attr("x", function(d) { 
-			return x(d.percentage) + 2;
-		})
-		// percentage text tween transition
-        .tween("text", function(d) {
-			var i = d3.interpolate(0, d.percentage);
-			return function(t) {
-                // Don't use d3.select(this) here
-                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
-				d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(i(t)));
-			};
-		});
+				return statusPercentageArr;
+			})
+			.enter().append("text")
+			.attr("class", "biomarker_status_percentage")
+			.attr("id", function(d) {
+				return d.biomarker + "_" + d.status;
+			})
+			.attr("y", function(d) { 
+				return statusScale(d.status) + statusScale.bandwidth()/2; 
+			})
+			.text(function(d) {
+				return formatPercent(d.percentage);
+			})
+			// text x position transition
+			.transition()
+	        .duration(transitionDuration) // time in ms
+			.attr("x", function(d) { 
+				return x(d.percentage) + 2;
+			})
+			// percentage text tween transition
+	        .tween("text", function(d) {
+				var i = d3.interpolate(0, d.percentage);
+				return function(t) {
+	                // Don't use d3.select(this) here
+	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+					d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(i(t)));
+				};
+			});
 
-    // Y axis
-	svg.append("g")
-		.attr("class", "biomarkers_chart_y_axis")
-		.call(d3.axisLeft(biomarkerScale))
-		.append("text")
-		    .attr("class", "biomarkers_chart_y_axis_label")
-		    .attr("y", 13)
-		    .attr("transform", "rotate(-90)")
-			.text("Biomarkers");
+	    // Y axis
+		svg.append("g")
+			.attr("class", "biomarkers_chart_y_axis")
+			.call(d3.axisLeft(biomarkerScale))
+			.append("text")
+			    .attr("class", "biomarkers_chart_y_axis_label")
+			    .attr("y", 13)
+			    .attr("transform", "rotate(-90)")
+				.text("Biomarkers");
 
-    // X axis
-	svg.append("g")
-		.attr("class", "biomarkers_chart_x_axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x).tickFormat(formatPercent))
-		.append("text")
-		    .attr("class", "biomarkers_chart_x_axis_label")
-			.attr("y", -6)
-			.attr("x", x(x.ticks().pop()) + 0.5)
-			.text("Percentage of biomarker status");
+	    // X axis
+		svg.append("g")
+			.attr("class", "biomarkers_chart_x_axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x).tickFormat(formatPercent))
+			.append("text")
+			    .attr("class", "biomarkers_chart_x_axis_label")
+				.attr("y", -6)
+				.attr("x", x(x.ticks().pop()) + 0.5)
+				.text("Percentage of biomarker status");
 
-    // Status legend
-	var legend = svg.append("g")
-		.attr("class", "biomarkers_chart_legend")
-		.selectAll("g")
-		.data(biomarkerStatus)
-		.enter().append("g")
-		.attr("transform", function(d, i) { 
-			return "translate(0," + i * (legendRectSize + legnedTextRectPad) + ")"; 
-		});
+	    // Status legend
+		var legend = svg.append("g")
+			.attr("class", "biomarkers_chart_legend")
+			.selectAll("g")
+			.data(biomarkerStatus)
+			.enter().append("g")
+			.attr("transform", function(d, i) { 
+				return "translate(0," + i * (legendRectSize + legnedTextRectPad) + ")"; 
+			});
 
-	legend.append("rect")
-	    .attr("class", "biomarker_status_legend")
-		.attr("x", width - legendRectSize)
-		.attr("width", legendRectSize)
-		.attr("height", legendRectSize)
-		.attr("fill", function(d) { 
-			return color(d); 
-		})
-		.attr("stroke", function(d) { 
-			return color(d); 
-		});
+		legend.append("rect")
+		    .attr("class", "biomarker_status_legend")
+			.attr("x", width - legendRectSize)
+			.attr("width", legendRectSize)
+			.attr("height", legendRectSize)
+			.attr("fill", function(d) { 
+				return color(d); 
+			})
+			.attr("stroke", function(d) { 
+				return color(d); 
+			});
 
-	legend.append("text")
-	    .attr("class", "biomarker_status_legend_text")
-		.attr("x", width - legendRectSize - legnedTextRectPad)
-		.attr("y", 9)
-		.text(function(d) { 
-			return d; 
-		});
+		legend.append("text")
+		    .attr("class", "biomarker_status_legend_text")
+			.attr("x", width - legendRectSize - legnedTextRectPad)
+			.attr("y", 9)
+			.text(function(d) { 
+				return d; 
+			});
+    } else {
+    	// If the biomarkers chart exists, we only redraw the status bars and percentage texts with new data
+    	d3.select(".biomarkers_chart_group").selectAll(".biomarker_group").remove();
+	    
+	    var biomarkerGrp = d3.select(".biomarkers_chart_group").selectAll(".biomarker_group")
+			.data(data.data)
+			.enter().append("g")
+			.attr("class", "biomarker_group")
+			.attr("transform", function(d) { 
+				return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
+			});
+
+	    // Status bars inside each biomarker group
+		biomarkerGrp.selectAll(".biomarker_status_bar")
+		    // here d is each object in the data.data array
+			.data(function(d) { 
+				// Creates a new data array of objects
+				// each object is like {status: "positive", percentage: 0.73}
+				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				    return {status: status, percentage: d[status]}; 
+				}); 
+				return statusPercentageArr;
+			})
+			.enter().append("rect")
+			.attr("class", function(d) {
+				return "biomarker_status_bar " + d.status;
+			})
+			.attr("x", 0)
+			.attr("y", function(d) { 
+				return statusScale(d.status); 
+			})
+			.attr("height", statusScale.bandwidth())
+			// fill-opacity is specified in CSS
+			.attr("fill", function(d) { 
+				return color(d.status); 
+			})
+			.attr("stroke", function(d) { 
+				return color(d.status); 
+			})
+			.transition()
+	        .duration(transitionDuration)
+			.attr("width", function(d) { 
+				return x(d.percentage);
+			});
+
+	    // Show percentage text by the each status bar
+	    biomarkerGrp.selectAll(".biomarker_status_percentage")
+			.data(function(d) { 
+				// Creates a new data array of objects
+				// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
+				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
+				}); 
+
+				return statusPercentageArr;
+			})
+			.enter().append("text")
+			.attr("class", "biomarker_status_percentage")
+			.attr("id", function(d) {
+				return d.biomarker + "_" + d.status;
+			})
+			.attr("y", function(d) { 
+				return statusScale(d.status) + statusScale.bandwidth()/2; 
+			})
+			.text(function(d) {
+				return formatPercent(d.percentage);
+			})
+			// text x position transition
+			.transition()
+	        .duration(transitionDuration) // time in ms
+			.attr("x", function(d) { 
+				return x(d.percentage) + 2;
+			})
+			// percentage text tween transition
+	        .tween("text", function(d) {
+				var i = d3.interpolate(0, d.percentage);
+				return function(t) {
+	                // Don't use d3.select(this) here
+	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+					d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(i(t)));
+				};
+			});
+    }
 }
 
 function getPatientsTumorInfo(patientNames, stage) {
