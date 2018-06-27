@@ -601,31 +601,39 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
         // Update the width of each status bar with new data
         d3.selectAll(".biomarker_status_bar")
-            .each(function(d, i) {
-            	d3.select(this)
-            	    .transition()
-                    .duration(transitionDuration)
-            	    .attr("width", x(percents[i]))
-            });
+            .transition()
+            .duration(transitionDuration)
+    	    .attr("width", function(d, i) {
+    	    	// Here d still maintains the old data from the first load
+    	    	// E.g., {status: "positive", percentage: "0.73"}
+    	    	return x(percents[i]);
+    	    });
 
         // Update percentage texts and x position with new data
         d3.selectAll(".biomarker_status_percentage")
-            .each(function(d, i) {
-            	d3.select(this)
-            	    .transition()
-                    .duration(transitionDuration)
-            	    .attr("x", x(percents[i]) + 2)
-            	    .text(formatPercent(percents[i]))
-            	    // percentage text tween transition
-			        .tween("text", function(d) {
-						var interpolate = d3.interpolate(d.percentage, percents[i]);
-						return function(t) {
-			                // Don't use d3.select(this) here
-			                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
-							d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
-						};
-					});
-            });
+            .transition()
+            .duration(transitionDuration)
+    	    .attr("x", function(d, i) {
+    	    	// Here d still maintains the old data from the first load before any partial update
+	        	// But we need to use the new percentage data
+    	    	// E.g., {biomarker: "ER", status: "positive", percentage: "0.73"}
+    	    	return x(percents[i]) + 2;
+    	    })
+    	    .text(function(d, i) {
+    	    	return formatPercent(percents[i]);
+    	    })
+	        .tween("text", function(d, i) {
+    	    	// The d3.interpolate method receives the beginning and end values of the transition, 
+    	    	// and returns an interpolator function. An interpolator function receives a value between 0 and 1, 
+    	    	// and returns the interpolated value.
+    	    	var previousPercent = (parseFloat(d3.select("#" + d.biomarker + "_" + d.status).text()) / 100).toFixed(2);
+				var interpolate = d3.interpolate(previousPercent, percents[i]);
+				return function(t) {
+	                // Don't use d3.select(this) here
+	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+					d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
+				};
+			});
 
         // Also update the chart title with patients count
         d3.select(".biomarkers_chart_title")
