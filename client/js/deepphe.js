@@ -461,12 +461,16 @@ function showPatientsChart(svgContainerId, data) {
 		.attr("r", function(d) { 
 			return d.r; 
 		})
-		.style("fill", "rgb(198, 219, 239)");
+		.style("fill", "rgb(198, 219, 239)")
+		.on("click", function(d) {
+			console.log(d);
+			var patientName = d.data.name;
+			window.location = "http://localhost:8383/patient/" + patientName;
+		});
 
 	node.append("text")
 	    .attr("class", "patient_name")
 		.text(function(d) { 
-			console.log(d);
 			return "P" + d.data.name.slice(7); 
 		});
 }
