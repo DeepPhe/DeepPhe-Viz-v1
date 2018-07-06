@@ -466,8 +466,8 @@ function showPatientsChart(svgContainerId, data) {
 	node.append("text")
 	    .attr("class", "patient_name")
 		.text(function(d) { 
-			console.log(d)
-			return d.data.name; 
+			console.log(d);
+			return "P" + d.data.name.slice(7); 
 		});
 }
 
