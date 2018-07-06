@@ -385,7 +385,7 @@ function getPatients(stage) {
 	});
 
 	jqxhr.done(function(response) {
-	    //console.log(response.patients);
+	    console.log(response.patients);
 
         // Create an array of patient names
         var patientNames = [];
@@ -393,16 +393,82 @@ function getPatients(stage) {
         	patientNames.push(patient.name);
         });
 
+        // Show patients bubble chart
+        showPatientsChart("patients_list", response.patients);
+
         // Make another ajax call to get all tumor info for the list of patients
         getPatientsTumorInfo(patientNames, stage);
 
 	    // Render patient list
-	    $('#patients').html(response.renderedPatientsList);
+	    //$('#patients').html(response.renderedPatientsList);
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get target patients");
 	});
+}
+
+function showPatientsChart(svgContainerId, data) {
+    d3.select("#" + svgContainerId).selectAll("*").remove();
+
+    var patients = {
+    	"children": data
+    };
+
+    var margin = {top: 20, right: 20, bottom: 40, left: 20};
+	var width = 400 - margin.left - margin.right;
+	var height = 440 - margin.top - margin.bottom;
+
+	var svg = d3.select("#" + svgContainerId).append("svg")
+		    .attr("class", "patients_chart") // Used for CSS styling
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			    .attr("class", "patients_chart_group")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    // Chart title
+    svg.append("text")
+        .attr("class", "patients_chart_title")
+        .attr("transform", function(d) { 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+		})
+        .text("Patients");
+
+    // Creates a new pack layout with the default settings
+	var pack = d3.pack()
+		.size([width, height])
+		.padding(2);
+
+
+	var root = d3.hierarchy(patients)
+	    .sum(function(d) { 
+	    	return d.age; 
+	    });
+
+	var node = svg.selectAll(".node")
+		.data(pack(root).leaves())
+		.enter().append("g")
+		.attr("class", "node")
+		.attr("transform", function(d) { 
+			return "translate(" + d.x + "," + d.y + ")"; 
+		});
+
+	node.append("circle")
+		.attr("id", function(d) { 
+			return d.id; 
+		})
+		.attr("r", function(d) { 
+			return d.r; 
+		})
+		.style("fill", "rgb(198, 219, 239)");
+
+	node.append("text")
+	    .attr("class", "patient_name")
+		.text(function(d) { 
+			console.log(d)
+			return d.data.name; 
+		});
 }
 
 function showBiomarkersChart(svgContainerId, data, stage) {

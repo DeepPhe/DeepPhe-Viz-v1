@@ -47,7 +47,9 @@ color:#fff;
 }
 
 /* Cohort Analysis */
-.stages_chart, .biomarkers_chart {
+.stages_chart, 
+.patients_chart,
+.biomarkers_chart {
 border:1px solid #ccc;
 margin:10px;
 padding:20px;
@@ -124,9 +126,14 @@ fill: rgb(117, 107, 177);
 text-anchor: end;
 }
 
+/* Patients bubble chart */
+.patient_name {
+font-size:10px;
+}
 
 /* Biomarkers chart */
 .stages_chart_title,
+.patients_chart_title,
 .biomarkers_chart_title {
 text-anchor: middle;
 }
@@ -157,17 +164,7 @@ fill: #222;
 text-anchor: end;	
 }
 
-/* patients cohort filtering */
-.cohort_filter {
-margin:10px;
-}
-
-.form_select {
-padding: 0.5em;
-height: 2.3125em;
-border: 1px solid #ccc;
-}
-
+/* Old patients list */
 .patients_list{
 list-style-type: none;
 margin:0;
