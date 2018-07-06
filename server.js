@@ -2,6 +2,10 @@
 
 const Hapi = require('hapi');
 
+const Inert = require('inert');
+
+const Vision = require('vision');
+
 // Routes definitions array, local module
 const routes = require('./lib/routes.js');
 
@@ -9,11 +13,9 @@ const routes = require('./lib/routes.js');
 const serverConfig = require('./configs/server.json');
 
 // Create a Hapi server instance
-const server = new Hapi.Server();
-
 // If you plan to deploy your hapi application to a PaaS provider, 
 // you must listen on host 0.0.0.0 rather than localhost or 127.0.0.1
-server.connection({ 
+const server = new Hapi.Server({
     host: serverConfig.host, 
     port: serverConfig.port,
     router: {
@@ -22,23 +24,18 @@ server.connection({
     }
 });
 
-// Register invert plugin to serve CSS and JS static files
-server.register(require('inert'), (err) => {
-    if (err) {
-        console.log('Errors with registering Inert plugin...');
-        throw err;
-    }
-});
+// Serve all routes defined in the routes array
+// server.route() takes an array of route objects
+server.route(routes);
 
-// Register vision plugin to render view templates
-server.register(require('vision'), (err) => {
-    if (err) {
-        console.log('Errors with registering Vision plugin...');
-        throw err;
-    }
+// Register plugins and start the server
+const init = async () => {
+    // Register invert plugin to serve CSS and JS static files
+    await server.register(Inert);
 
-    // Template rendering configuration
-    // server.views is available only after registering vision plugin
+    // Register vision plugin to render view templates
+    await server.register(Vision);
+
     server.views({
         // Using handlebars as template engine responsible for
         // rendering templates with an extension of .html
@@ -53,17 +50,15 @@ server.register(require('vision'), (err) => {
         layoutPath: './client/templates/layout',
         helpersPath: './client/templates/helpers'
     });
+
+    // Start the server
+    await server.start();
+    console.log(`Hapi HTTP Server is running at: ${server.info.uri}`);
+};
+
+process.on('unhandledRejection', (err) => {
+    console.log(err);
+    process.exit(1);
 });
 
-// Serve all routes defined in the routes array
-// server.route() takes an array of route objects
-server.route(routes);
-
-
-// Start the server
-server.start((err) => {
-    if (err) {
-        throw err;
-    }
-    console.log('Hapi HTTP Server is running at:', server.info.uri);
-});
+init();
