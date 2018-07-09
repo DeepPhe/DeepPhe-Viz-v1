@@ -29,7 +29,7 @@ const server = new Hapi.Server({
 server.route(routes);
 
 // Register plugins and start the server
-const init = async () => {
+const init = async function() {
     // Register invert plugin to serve CSS and JS static files
     await server.register(Inert);
 

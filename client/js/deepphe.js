@@ -871,16 +871,21 @@ function getFact(patientId, factId) {
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'json'
+	    dataType : 'html'
 	});
 
 	jqxhr.done(function(response) {
 	    // Fade in the fact detail. Need to hide the div in order to fade in.
-	    $('#fact_detail').hide().html(response.renderedFact).fadeIn('slow');
+	    $('#fact_detail').hide().html(response).fadeIn('slow');
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
-	    var reportIds = response.reportIds;
-		var textProvenancesArr = response.textProvenancesArr;
+        var reportIds = [];
+
+        // Grab the report IDs from the rendered HTML
+        var elements = $('.fact_based_report_id').toArray();
+	    elements.forEach(function(el) {
+            reportIds.push(el.id);
+	    });
 
 		// Highlight report circles in timeline
 		if (reportIds.length > 0) {
@@ -928,8 +933,8 @@ function getReport(reportId) {
 	});
 
 	jqxhr.done(function(response) {
-        var reportText = response.reportText;
-        var renderedMentionedTerms = response.renderedMentionedTerms;
+        var reportText = response.text;
+        var mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
         var cssClass = 'current_displaying_report';
@@ -939,6 +944,12 @@ function getReport(reportId) {
         $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
+        var renderedMentionedTerms = '<ul class="mentioned_terms_list">';
+        mentionedTerms.forEach(function(obj) {
+        	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.startOffset + '" data-end="' + obj.endOffset + '">' + obj.text + '</li>';
+        });
+        renderedMentionedTerms += "</ul>";
+
         $('#report_mentioned_terms').html(renderedMentionedTerms);
 
 	    // Show report content, either highlighted or not

@@ -23,6 +23,7 @@
     "inert": "^5.1.0",
     "lodash": "^4.17.10",
     "request": "^2.87.0",
+    "request-promise": "^4.2.2",
     "vision": "^5.3.3"
   },
   "main": "server.js",
