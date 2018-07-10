@@ -394,7 +394,7 @@ function getPatients(stage) {
         });
 
         // Show patients bubble chart
-        showPatientsChart("patients_list", response.patients);
+        showPatientsChart("patients_list", response.patients, stage);
 
         // Make another ajax call to get all tumor info for the list of patients
         getPatientsTumorInfo(patientNames, stage);
@@ -408,7 +408,9 @@ function getPatients(stage) {
 	});
 }
 
-function showPatientsChart(svgContainerId, data) {
+function showPatientsChart(svgContainerId, data, stage) {
+    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
+
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
     var patients = {
@@ -433,7 +435,7 @@ function showPatientsChart(svgContainerId, data) {
         .attr("transform", function(d) { 
 			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
 		})
-        .text("Patients");
+        .text(data.length + " patients from " + targetStage);
 
     // Creates a new pack layout with the default settings
 	var pack = d3.pack()
