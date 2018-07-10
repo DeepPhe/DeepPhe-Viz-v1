@@ -440,7 +440,7 @@ function showPatientsChart(svgContainerId, data, stage) {
     // Creates a new pack layout with the default settings
 	var pack = d3.pack()
 		.size([width, height])
-		.padding(2);
+		.padding(3);
 
 
 	var root = d3.hierarchy(patients)
@@ -460,10 +460,10 @@ function showPatientsChart(svgContainerId, data, stage) {
 		.attr("id", function(d) { 
 			return d.id; 
 		})
+		.attr("class", "patient_circle")
 		.attr("r", function(d) { 
 			return d.r; 
 		})
-		.style("fill", "rgb(198, 219, 239)")
 		.on("click", function(d) {
 			console.log(d);
 			var patientName = d.data.name;

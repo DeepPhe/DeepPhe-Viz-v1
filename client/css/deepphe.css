@@ -127,6 +127,17 @@ text-anchor: end;
 }
 
 /* Patients bubble chart */
+.patient_circle {
+fill-opacity:0.3;
+fill:#007bff;
+stroke:#ccc;
+}
+
+.patient_circle:hover {
+fill-opacity:1;
+stroke-width: 3px;
+}
+
 .patient_name {
 font-size:9px;
 text-anchor: middle;
