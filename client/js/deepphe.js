@@ -467,7 +467,7 @@ function showPatientsChart(svgContainerId, data, stage) {
 		.on("click", function(d) {
 			console.log(d);
 			var patientName = d.data.name;
-			window.location = "http://localhost:8383/patient/" + patientName;
+			window.location = baseUri + "/patient/" + patientName;
 		});
 
 	node.append("text")
