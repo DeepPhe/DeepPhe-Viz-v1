@@ -67,7 +67,7 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 40, left: 150};
+	var margin = {top: 20, right: 20, bottom: 40, left: 130};
 	var width = 540 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
