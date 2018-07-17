@@ -1,13 +1,13 @@
 {
   "name": "deepphe",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "DeepPhe-Viz",
   "repository": {
     "type": "git",
     "url": "https://github.com/DeepPhe/DeepPhe-Viz.git"
   },
   "keywords": [
-    "deepphe",
+    "DeepPhe",
     "Health NLP",
     "visualization"
   ],
@@ -18,15 +18,16 @@
   },
   "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "handlebars": "^4.0.10",
-    "hapi": "^16.6.0",
-    "inert": "^4.2.1",
-    "lodash": "^4.17.4",
-    "request": "^2.81.0",
-    "vision": "^4.1.1"
+    "handlebars": "^4.0.11",
+    "hapi": "^17.5.2",
+    "inert": "^5.1.0",
+    "lodash": "^4.17.10",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "vision": "^5.3.3"
   },
   "main": "server.js",
   "devDependencies": {
-    "neo4j-driver": "^1.5.3"
+    "neo4j-driver": "^1.6.1"
   }
 }
