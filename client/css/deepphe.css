@@ -185,8 +185,9 @@ margin:0;
 padding:0;
 }
 
-.patients_list li {
-padding:5px 10px;
+.patients_list > li {
+padding:6px 10px 3px;
+border-bottom:1px solid #ddd;
 }
 
 .patients_list li .cancer_stage_list {
@@ -200,7 +201,7 @@ display:inline-block;
 display:inline-block;
 padding:0;
 margin:0;
-width:200px;
+width:160px;
 margin-right:10px;
 }
 

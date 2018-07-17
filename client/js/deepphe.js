@@ -393,19 +393,44 @@ function getPatients(stage) {
         	patientNames.push(patient.name);
         });
 
+        // Old patients list
+        showPatientsList("patients", response.patients, stage);
+
         // Show patients bubble chart
-        showPatientsChart("patients_list", response.patients, stage);
+        showPatientsChart("patients2", response.patients, stage);
 
         // Make another ajax call to get all tumor info for the list of patients
         getPatientsTumorInfo(patientNames, stage);
-
-	    // Render patient list
-	    //$('#patients').html(response.renderedPatientsList);
 	});
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get target patients");
 	});
+}
+
+function showPatientsList(containerId, data, stage) {
+    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
+
+    
+    var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
+        + '<ul class="patients_list">';
+        
+    data.forEach(function(patient) {
+    	html += '<li class="clearfix">'
+    	    + '<a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a>:'
+    	    + '<ul class="cancer_stage_list">';
+        
+        patient.cancerStages.forEach(function(stage) {
+        	html += '<li class="cancer_stage">' + stage + '</li>';
+        });
+
+        html += '</ul>'
+            + '</li>';
+    });
+
+    html += '</ul>';
+
+    $("#" + containerId).html(html);
 }
 
 function showPatientsChart(svgContainerId, data, stage) {
