@@ -131,6 +131,7 @@ text-anchor: end;
 fill-opacity:0.3;
 fill:#007bff;
 stroke:#ccc;
+cursor:pointer;
 }
 
 .patient_circle:hover {
