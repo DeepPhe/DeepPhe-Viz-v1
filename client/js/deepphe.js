@@ -67,8 +67,8 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 40, left: 130};
-	var width = 540 - margin.left - margin.right;
+	var margin = {top: 20, right: 20, bottom: 40, left: 65};
+	var width = 440 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
     // Box plot
@@ -385,8 +385,6 @@ function getPatients(stage) {
 	});
 
 	jqxhr.done(function(response) {
-	    console.log(response.patients);
-
         // Create an array of patient names
         var patientNames = [];
         response.patients.forEach(function(patient) {
@@ -401,6 +399,9 @@ function getPatients(stage) {
 
         // Make another ajax call to get all tumor info for the list of patients
         getPatientsTumorInfo(patientNames, stage);
+
+        // Make another ajax call to get diagnosis for the list of patients
+        getDiagnosis(patientNames, stage);
 	});
 
 	jqxhr.fail(function () { 
@@ -417,7 +418,7 @@ function showPatientsList(containerId, data, stage) {
         
     data.forEach(function(patient) {
     	html += '<li class="clearfix">'
-    	    + '<a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a>:'
+    	    + '<a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a>: '
     	    + '<ul class="cancer_stage_list">';
         
         patient.cancerStages.forEach(function(stage) {
@@ -443,7 +444,7 @@ function showPatientsChart(svgContainerId, data, stage) {
     };
 
     var margin = {top: 20, right: 20, bottom: 40, left: 20};
-	var width = 400 - margin.left - margin.right;
+	var width = 380 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -498,9 +499,101 @@ function showPatientsChart(svgContainerId, data, stage) {
 	node.append("text")
 	    .attr("class", "patient_name")
 		.text(function(d) { 
-			return "P" + d.data.name.slice(7); 
+			return getPatientShortName(d.data.name);
 		});
 }
+
+function getPatientShortName(name) {
+    return "P" + name.slice(7); 
+}
+
+function showDiagnosisChart(svgContainerId, data, stage) {
+	console.log(data);
+
+    d3.select("#" + svgContainerId).selectAll("*").remove();
+
+	var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
+
+	var margin = {top: 20, right: 20, bottom: 55, left: 250};
+	var width = 620 - margin.left - margin.right;
+	var height = 440 - margin.top - margin.bottom;
+
+	var svg = d3.select("#" + svgContainerId).append("svg")
+		    .attr("class", "diagnosis_chart") // Used for CSS styling
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+			    .attr("class", "diagnosis_chart_group")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+    var xDomain = [];
+    
+    var diagnosisDots = [];
+
+    data.data.forEach(function(d) {
+    	var patientShortName = getPatientShortName(d.patient);
+
+    	xDomain.push(patientShortName);
+
+    	d.diagnosis.forEach(function(diagnosis) {
+    		var dot = {};
+    		dot.patientShortName = patientShortName;
+    		dot.diagnosis = diagnosis;
+
+    		diagnosisDots.push(dot);
+    	});
+    });
+
+	// set the ranges
+	var x = d3.scalePoint()
+	    .range([10, width])
+	    .domain(xDomain);
+	    
+	var y = d3.scalePoint()
+		.range([0, height - 10])
+		.domain(data.diagnosis);
+	
+	// Chart title
+    svg.append("text")
+        .attr("class", "patients_chart_title")
+        .attr("transform", function(d) { 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+		})
+        .text("Diagnosis (" + xDomain.length + " patients from " + targetStage + ")");
+
+	// Patient diagnosis dots
+	svg.selectAll(".diagnosis_dot")
+		.data(diagnosisDots)
+		.enter().append("circle")
+		.attr("class", "diagnosis_dot")
+		.attr("cx", function(d, i) {
+            return x(d.patientShortName);
+		})
+		.attr("cy", function(d) { 
+            return y(d.diagnosis);
+		})
+		.attr("r", 4)
+		.attr("fill", function(d) {
+			return color(d.diagnosis);
+		});
+		
+	// add the x Axis
+	svg.append("g")
+		.attr("transform", "translate(0," + height + ")")
+		.call(d3.axisBottom(x))
+		.selectAll("text")	
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+
+	// add the y Axis
+	svg.append("g")
+		.call(d3.axisLeft(y));
+}
+
 
 function showBiomarkersChart(svgContainerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
@@ -508,7 +601,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
 	var margin = {top: 20, right: 20, bottom: 40, left: 30};
-	var width = 400 - margin.left - margin.right;
+	var width = 380 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
@@ -755,6 +848,24 @@ function getPatientsTumorInfo(patientNames, stage) {
 
 	jqxhr.fail(function () { 
 	    console.log("Ajax error - can't get patients tumor info");
+	});
+}
+
+function getDiagnosis(patientNames, stage) {
+    // Separate the ajax request with callbacks
+	var jqxhr = $.ajax({
+	    url: baseUri + '/diagnosis/' + patientNames.join('+'),
+	    method: 'GET', 
+	    async : true,
+	    dataType : 'json' 
+	});
+
+	jqxhr.done(function(response) {
+	    showDiagnosisChart("diagnosis", response, stage);
+	});
+
+	jqxhr.fail(function () { 
+	    console.log("Ajax error - can't get patients diagnosis info");
 	});
 }
 

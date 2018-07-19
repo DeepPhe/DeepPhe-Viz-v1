@@ -50,6 +50,7 @@ color:#fff;
 #patients,
 .stages_chart, 
 .patients_chart,
+.diagnosis_chart,
 .biomarkers_chart {
 background:#fff;
 border:1px solid #ccc;
