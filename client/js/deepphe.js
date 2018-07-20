@@ -444,7 +444,7 @@ function showPatientsChart(svgContainerId, data, stage) {
     };
 
     var margin = {top: 20, right: 20, bottom: 40, left: 20};
-	var width = 380 - margin.left - margin.right;
+	var width = 440 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -565,7 +565,9 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	svg.selectAll(".diagnosis_dot")
 		.data(diagnosisDots)
 		.enter().append("circle")
-		.attr("class", "diagnosis_dot")
+		.attr("class", function(d) {
+			return "diagnosis_dot " + d.patientShortName;
+		})
 		.attr("cx", function(d, i) {
             return x(d.patientShortName);
 		})
@@ -583,10 +585,29 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		.attr("transform", "translate(0," + height + ")")
 		.call(d3.axisBottom(x))
 		.selectAll("text")	
-        .style("text-anchor", "end")
+		.attr("class", "diagnosis_x_label")
         .attr("dx", "-.8em")
         .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
+        .attr("transform", "rotate(-65)")
+        .on("mouseover", function(d) {
+            // Highlight all dots of this patient
+            d3.selectAll("." + d).attr("r", 7);
+
+            // Add guideline
+            d3.select(".diagnosis_chart_group").append("line")
+				.attr("class", "diagnosis_guideline")
+				.attr("x1", x(d))
+				.attr("y1", 0)
+				.attr("x2", x(d))
+				.attr("y2", height);
+        })
+        .on("mouseout", function(d) {
+            // Reset dot size
+            d3.selectAll("." + d).attr("r", 4);
+
+            // Remove added guideline
+            d3.selectAll(".diagnosis_guideline").remove();
+        });
 
 	// add the y Axis
 	svg.append("g")
@@ -595,7 +616,6 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		.selectAll("text")
 		.attr("class", "diagnosis_y_label")
 		.attr("fill", function(d) {
-			console.log(d);
 			return color(d);
 		});
 }
