@@ -508,14 +508,12 @@ function getPatientShortName(name) {
 }
 
 function showDiagnosisChart(svgContainerId, data, stage) {
-	console.log(data);
-
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
 	var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
-	var margin = {top: 20, right: 20, bottom: 55, left: 250};
-	var width = 620 - margin.left - margin.right;
+	var margin = {top: 20, right: 20, bottom: 55, left: 260};
+	var width = 640 - margin.left - margin.right;
 	var height = 440 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -579,6 +577,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 			return color(d.diagnosis);
 		});
 		
+		
 	// add the x Axis
 	svg.append("g")
 		.attr("transform", "translate(0," + height + ")")
@@ -591,7 +590,14 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	// add the y Axis
 	svg.append("g")
-		.call(d3.axisLeft(y));
+		.call(d3.axisLeft(y))
+		// Now color the label text
+		.selectAll("text")
+		.attr("class", "diagnosis_y_label")
+		.attr("fill", function(d) {
+			console.log(d);
+			return color(d);
+		});
 }
 
 

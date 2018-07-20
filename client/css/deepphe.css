@@ -129,6 +129,11 @@ fill: rgb(117, 107, 177);
 text-anchor: end;
 }
 
+/* Diagnosis chart */
+.diagnosis_y_label {
+font-weight:bold;
+}
+
 /* Patients bubble chart */
 .patient_circle {
 fill-opacity:0.3;
