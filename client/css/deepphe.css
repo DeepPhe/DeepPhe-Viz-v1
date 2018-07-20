@@ -137,17 +137,17 @@ cursor:default;
 
 .diagnosis_x_label:hover {
 font-weight:bold;
-fill: blue;
-}
-
-.diagnosis_y_label {
-font-weight:bold;
+fill:rgb(230, 85, 13);
 }
 
 .diagnosis_guideline {
 stroke:rgb(253, 174, 107);
 stroke-width:1;
 shape-rendering: crispEdges;
+}
+
+.highlighted_diagnosis_label {
+fill: rgb(230, 85, 13);
 }
 
 /* Patients bubble chart */

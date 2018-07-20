@@ -503,8 +503,12 @@ function showPatientsChart(svgContainerId, data, stage) {
 		});
 }
 
-function getPatientShortName(name) {
-    return "P" + name.slice(7); 
+function getPatientShortName(longName) {
+    return "P" + longName.slice(7); 
+}
+
+function getPatientLongName(shortName) {
+    return "Patient" + shortName.slice(1); 
 }
 
 function showDiagnosisChart(svgContainerId, data, stage) {
@@ -524,7 +528,8 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 			    .attr("class", "diagnosis_chart_group")
 			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    var color = d3.scaleOrdinal(d3.schemeCategory20);
+    var dotColor = "rgb(107, 174, 214)";
+    var highlightedDotColor = "rgb(230, 85, 13)";
 
     var xDomain = [];
     
@@ -575,9 +580,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
             return y(d.diagnosis);
 		})
 		.attr("r", 4)
-		.attr("fill", function(d) {
-			return color(d.diagnosis);
-		});
+		.attr("fill", dotColor);
 		
 		
 	// add the x Axis
@@ -591,32 +594,49 @@ function showDiagnosisChart(svgContainerId, data, stage) {
         .attr("transform", "rotate(-65)")
         .on("mouseover", function(d) {
             // Highlight all dots of this patient
-            d3.selectAll("." + d).attr("r", 7);
+            d3.selectAll("." + d)
+                .attr("r", 7)
+                .attr("fill", highlightedDotColor);
 
-            // Add guideline
-            d3.select(".diagnosis_chart_group").append("line")
+            // Insert instead of append() guideline so it gets covered by dots
+            d3.select(".diagnosis_chart_group").insert("line", ":first-child")
 				.attr("class", "diagnosis_guideline")
 				.attr("x1", x(d))
 				.attr("y1", 0)
 				.attr("x2", x(d))
 				.attr("y2", height);
+
+			// Also highlight the corresponding Y labels
+			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
+				$("." + diagnosis).addClass("highlighted_diagnosis_label");
+			});
         })
         .on("mouseout", function(d) {
-            // Reset dot size
-            d3.selectAll("." + d).attr("r", 4);
+            // Reset dot size and color
+            d3.selectAll("." + d)
+                .attr("r", 4)
+                .attr("fill", dotColor);
 
             // Remove added guideline
             d3.selectAll(".diagnosis_guideline").remove();
+
+            // Also dehighlight the corresponding Y labels
+			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
+				$("." + diagnosis).removeClass("highlighted_diagnosis_label");
+			});
         });
 
 	// add the y Axis
 	svg.append("g")
 		.call(d3.axisLeft(y))
-		// Now color the label text
+		// Now add class to the label text
 		.selectAll("text")
-		.attr("class", "diagnosis_y_label")
-		.attr("fill", function(d) {
-			return color(d);
+		.attr("class", function(d) {
+			return d;
+		})
+		// Replace underscore with white space
+		.text(function(d) {
+			return d.replace(/_/g, " ");
 		});
 }
 
