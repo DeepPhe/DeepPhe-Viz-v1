@@ -132,7 +132,7 @@ text-anchor: end;
 /* Diagnosis chart */
 .diagnosis_x_label {
 text-anchor: end;
-cursor:pointer;
+cursor:default;
 }
 
 .diagnosis_x_label:hover {
