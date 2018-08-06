@@ -112,7 +112,9 @@ function showStagesChart(svgContainerId, data) {
 	svg.selectAll(".stage_bar")
 		.data(data)
 		.enter().append("rect")
-		.attr("class", "stage_bar")
+		.attr("class", function(d) {
+			return "stage_bar " + d.stage.replace(" ", "_");
+		})
 		.attr("x", 0)
 		.attr("y", function(d) { 
 			return y(d.stage); 
@@ -148,7 +150,9 @@ function showStagesChart(svgContainerId, data) {
 			return d.patientsCount === 1;
 		}))
 		.enter().append("g")
-		.attr("class", "single_patient_group");
+		.attr("class", function(d) {
+			return "single_patient_group " + d.stage.replace(" ", "_");
+		});
 
 	// Verical line of single age
 	singlePatientGrp.append("line")
@@ -185,7 +189,9 @@ function showStagesChart(svgContainerId, data) {
 			return d.patientsCount > 1;
 		}))
 		.enter().append("g")
-		.attr("class", "boxplot");
+		.attr("class", function(d) {
+			return "boxplot " + d.stage.replace(" ", "_");
+		});
 		
     // Verical line of min age
 	boxplotGrp.append("line")
@@ -357,17 +363,66 @@ function showStagesChart(svgContainerId, data) {
 		.attr("y", -6)
 		.text("Age of first encounter");
 
-    // add the y Axis
+    // Add the y Axis
 	svg.append("g")
 	    .attr("transform", "translate(0, 0)")
 		.call(d3.axisLeft(y))
+		// Add custom id to each tick group
+		.selectAll(".tick")
+		.attr("class", function(d) {
+			return "tick " + d.replace(" ", "_");
+		})
 		// Now modify the label text to add patients count
 		.selectAll("text")
 		.text(function(d) {
 			return d + " (" + patientsCounts[d] + ")";
+		})
+		.on("click", function(d) {
+            // Click top-level stage label to show/show sub level elements
+            var subLevelLastLetters = ['A', "B", "C"];
+            subLevelLastLetters.forEach(function(lastLetter) {
+                var elements = d3.selectAll("." + d.replace(" ", "_") + lastLetter);
+	            elements.each(function() {
+	            	var element = d3.select(this);
+	                element.classed("hide", !element.classed("hide"));
+	            });
+            });
 		});
+
+    // All sub-level stages
+    var subLevelStages = [
+        // Stage I
+        'Stage IA',
+        'Stage IB',
+        'Stage IC',
+        // Stage II
+        'Stage IIA',
+        'Stage IIB',
+        'Stage IIC',
+        // Stage III
+        'Stage IIIA',
+        'Stage IIIB',
+        'Stage IIIC',
+        // Stage IV
+        'Stage IVA',
+        'Stage IVB',
+        'Stage IVC'
+    ];
+
+    // Hide all sub-level stages by adding "hide" class
+    subLevelStages.forEach(function(stage) {
+    	var elements = d3.selectAll("." + stage.replace(" ", "_"));
+        elements.each(function() {
+        	var element = d3.select(this);
+            element.classed("hide", true);
+        });
+    });
+
+	
+
 }
 
+// Get all patients via rest call
 function getAllPatients() {
 	var stage = "All Stages";
 
@@ -385,7 +440,7 @@ function getAllPatients() {
         response.patients.forEach(function(patient) {
         	patientNames.push(patient.name);
         });
-console.log(response.patients);
+
         // Old patients list
         showPatientsList("patients", response.patients, stage);
 
@@ -404,6 +459,7 @@ console.log(response.patients);
 	});
 }
 
+// No rest call since each stage data contains the patients list info
 function updateDerivedCharts(patients, stage) {
 	console.log(patients);
 	// Create an array of patient names
