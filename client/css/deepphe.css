@@ -10,6 +10,31 @@ cursor: pointer;
 text-decoration: none;
 }
 
+/* Table */
+.table {
+width:100%;
+border:1px solid #ccc;
+margin:20px 0;
+}
+
+.table th {
+line-height:1.6;
+padding:15px 10px; 
+background:#ebeff9;
+border:1px solid #ccc;
+/* The text in th are bold and centered by default. */
+}
+
+.table td {
+line-height:1.6;
+padding:10px; 
+border:1px solid #ccc;
+}
+
+.table_hover>tbody>tr:hover>td{
+background-color:#fefbd6;
+}
+
 .content {
 
 }

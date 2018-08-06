@@ -23,7 +23,7 @@ function getCancerStages() {
         showStagesChart("stages", response.stagesInfo);
 
 	    // Show all patients by default
-        getPatients();
+        getAllPatients();
 	});
 
 	jqxhr.fail(function () { 
@@ -128,11 +128,11 @@ function showStagesChart(svgContainerId, data) {
 	            d3.selectAll(".stage_bar").classed(css, false);
                 // Highlight the clicked box and show corresponding patients
             	clickedBar.classed(css, true);
-            	getPatients(d.stage);
+            	updateDerivedCharts(d.patients, d.stage);
             } else {
             	// When clicked again, remove highlight and show all patients
             	clickedBar.classed(css, false);
-            	getPatients();
+            	getAllPatients();
             }
 		})
 		.transition()
@@ -368,20 +368,15 @@ function showStagesChart(svgContainerId, data) {
 		});
 }
 
-// Filter the patients by given cancer stage
-// without stage, get all patients
-// Must use encodeURIComponent() otherwise may have URI parsing issue
-function getPatients(stage) {
-	// stage is optional
-	// undefined means a variable has been declared but has not yet been assigned a value
-	var url = (typeof(stage) === 'undefined') ? '/patients' : '/patients/' + encodeURIComponent(stage);
+function getAllPatients() {
+	var stage = "All Stages";
 
 	// Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + url, 
+	    url: baseUri + '/patients', 
 	    method: 'GET', 
-	    async : true,
-	    dataType : 'json'
+	    async: true,
+	    dataType: 'json'
 	});
 
 	jqxhr.done(function(response) {
@@ -390,7 +385,7 @@ function getPatients(stage) {
         response.patients.forEach(function(patient) {
         	patientNames.push(patient.name);
         });
-
+console.log(response.patients);
         // Old patients list
         showPatientsList("patients", response.patients, stage);
 
@@ -409,27 +404,40 @@ function getPatients(stage) {
 	});
 }
 
+function updateDerivedCharts(patients, stage) {
+	console.log(patients);
+	// Create an array of patient names
+    var patientNames = [];
+    patients.forEach(function(patient) {
+    	patientNames.push(patient.name);
+    });
+
+    // Old patients list
+    showPatientsList("patients", patients, stage);
+
+    // Show patients bubble chart
+    showPatientsChart("patients2", patients, stage);
+
+    // Make another ajax call to get all tumor info for the list of patients
+    getPatientsTumorInfo(patientNames, stage);
+
+    // Make another ajax call to get diagnosis for the list of patients
+    getDiagnosis(patientNames, stage);
+}
+
 function showPatientsList(containerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
     
     var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
-        + '<ul class="patients_list">';
+        + '<table class="table patients_list">'
+        + '<tr><th>Name</th><th>Age of first encounter</th></tr>';
         
     data.forEach(function(patient) {
-    	html += '<li class="clearfix">'
-    	    + '<a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a>: '
-    	    + '<ul class="cancer_stage_list">';
-        
-        patient.cancerStages.forEach(function(stage) {
-        	html += '<li class="cancer_stage">' + stage + '</li>';
-        });
-
-        html += '</ul>'
-            + '</li>';
+    	html += '<tr><td><a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a></td><td>' + patient.firstEncounterAge + '</td></tr>';
     });
 
-    html += '</ul>';
+    html += '</table>';
 
     $("#" + containerId).html(html);
 }
@@ -471,7 +479,7 @@ function showPatientsChart(svgContainerId, data, stage) {
 
 	var root = d3.hierarchy(patients)
 	    .sum(function(d) { 
-	    	return d.age; 
+	    	return d.firstEncounterAge; 
 	    });
 
 	var node = svg.selectAll(".node")
