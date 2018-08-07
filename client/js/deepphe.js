@@ -88,9 +88,9 @@ function showStagesChart(svgContainerId, data) {
 
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
-		.domain(data.map(function(d) { 
-			return d.stage; 
-		}))
+		// .domain(data.map(function(d) { 
+		// 	return d.stage; 
+		// }))
 		.padding(0.15); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -108,12 +108,73 @@ function showStagesChart(svgContainerId, data) {
 		})
         .text("Cancer Stages");
 
+
+    // All top-level stages
+    var topLevelStages = [
+        'Stage 0', 
+        'Stage I', 
+        'Stage II', 
+        'Stage III', 
+        'Stage IV'
+    ];
+
+    // All sub-level stages
+    var subLevelStages = [
+        // Stage I
+        'Stage IA',
+        'Stage IB',
+        'Stage IC',
+        // Stage II
+        'Stage IIA',
+        'Stage IIB',
+        'Stage IIC',
+        // Stage III
+        'Stage IIIA',
+        'Stage IIIB',
+        'Stage IIIC',
+        // Stage IV
+        'Stage IVA',
+        'Stage IVB',
+        'Stage IVC'
+    ];
+
+	// Also update the y.domain()
+	var filteredData = data.filter(function(d) { 
+		if (subLevelStages.indexOf(d.stage) === -1) {
+            return d.stage;
+		}
+	});
+
+    y.domain(filteredData.map(function(d) { 
+		return d.stage; 
+	}));
+
+    // Update the y axis rendering
+    d3.select("#y_axis").call(d3.axisLeft(y));
+    
+    // Render the bars and boxplots before rendering the Y axis
+    // so the Y axis vertical line covers the bar border
+    renderBarsAndBoxplots(filteredData);
+    renderYAxis(subLevelStages);
+    
+
+
+
+
+
+
+
+
+
+
+
+function renderBarsAndBoxplots(data) {
     // Bar chart of patients counts
 	svg.selectAll(".stage_bar")
 		.data(data)
 		.enter().append("rect")
 		.attr("class", function(d) {
-			return "stage_bar " + d.stage.replace(" ", "_");
+			return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar" : "sub_stage_bar");
 		})
 		.attr("x", 0)
 		.attr("y", function(d) { 
@@ -338,6 +399,10 @@ function showStagesChart(svgContainerId, data) {
 			return d.ageStats.medianVal;
 		});
 
+}
+
+
+
     // xCount axis
 	svg.append("g")
 		.attr("transform", "translate(0, 0)")
@@ -363,62 +428,62 @@ function showStagesChart(svgContainerId, data) {
 		.attr("y", -6)
 		.text("Age of first encounter");
 
-    // Add the y Axis
+
+
+function renderYAxis(subLevelStages) {
 	svg.append("g")
 	    .attr("transform", "translate(0, 0)")
+	    .attr("id", "y_axis")
 		.call(d3.axisLeft(y))
 		// Add custom id to each tick group
 		.selectAll(".tick")
 		.attr("class", function(d) {
-			return "tick " + d.replace(" ", "_");
+			return "tick " + ((topLevelStages.indexOf(d) !== -1) ? "top_stage" : "sub_stage");
 		})
 		// Now modify the label text to add patients count
 		.selectAll("text")
 		.text(function(d) {
 			return d + " (" + patientsCounts[d] + ")";
-		})
-		.on("click", function(d) {
-            // Click top-level stage label to show/show sub level elements
-            var subLevelLastLetters = ['A', "B", "C"];
-            subLevelLastLetters.forEach(function(lastLetter) {
-                var elements = d3.selectAll("." + d.replace(" ", "_") + lastLetter);
-	            elements.each(function() {
-	            	var element = d3.select(this);
-	                element.classed("hide", !element.classed("hide"));
-	            });
-            });
 		});
 
-    // All sub-level stages
-    var subLevelStages = [
-        // Stage I
-        'Stage IA',
-        'Stage IB',
-        'Stage IC',
-        // Stage II
-        'Stage IIA',
-        'Stage IIB',
-        'Stage IIC',
-        // Stage III
-        'Stage IIIA',
-        'Stage IIIB',
-        'Stage IIIC',
-        // Stage IV
-        'Stage IVA',
-        'Stage IVB',
-        'Stage IVC'
-    ];
+        // Only add click event to top level stages
+		d3.selectAll(".top_stage").on("click", function(d) {
+            // Click top-level stage label to show sub level stages
+            var subLevels = [d + "A",  d + "B", d  + "C"];
 
-    // Hide all sub-level stages by adding "hide" class
-    subLevelStages.forEach(function(stage) {
-    	var elements = d3.selectAll("." + stage.replace(" ", "_"));
-        elements.each(function() {
-        	var element = d3.select(this);
-            element.classed("hide", true);
-        });
-    });
+            // Get a new array of sub level stages without all sub leves of this selected top level stage
+            var filteredSubLevelStages = subLevelStages.filter(function(stage) {
+            	if (subLevels.indexOf(stage) === -1 ) {
+                    return stage;
+            	}
+            });
 
-	
+            // Get a new data array for stages that are not listed in the filteredSubLevelStages
+			var filteredData = data.filter(function(d) { 
+				if (filteredSubLevelStages.indexOf(d.stage) === -1) {
+		            return d.stage;
+				}
+			});
+
+            // Also update the y.domain()
+		    y.domain(filteredData.map(function(d) { 
+				return d.stage; 
+			}));
+
+            // Now for ren-rendering
+            // Erase old rendering
+            d3.selectAll("#y_axis, .stage_bar, .boxplot, .single_patient_group").remove();
+
+		    // Re-render the bars and boxplots
+		    renderBarsAndBoxplots(filteredData);
+
+            // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
+		    renderYAxis(filteredSubLevelStages);
+		});
+		
+
+    }
+
 
 }
 

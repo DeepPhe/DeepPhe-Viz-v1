@@ -116,12 +116,20 @@ text-anchor: middle;
 }
 
 .stage_bar {
-fill: rgb(253, 174, 107);
-stroke: rgb(253, 174, 107);
 fill-opacity:0.3;
 stroke-width:1;
 shape-rendering: crispEdges;
-cursor:pointer;
+cursor:pointer;	
+}
+
+.top_stage_bar {
+fill: rgb(253, 174, 107);
+stroke: rgb(253, 174, 107);
+}
+
+.sub_stage_bar {
+fill: rgb(181, 207, 107);
+stroke: rgb(181, 207, 107);
 }
 
 .count_axis path {
@@ -152,6 +160,14 @@ fill: rgb(117, 107, 177);
 .age_axis_label ,
 .count_axis_label {
 text-anchor: end;
+}
+
+.top_stage > text {
+cursor: pointer;
+}
+
+.sub_stage > text {
+fill: rgb(51, 102, 204);
 }
 
 /* Diagnosis chart */
