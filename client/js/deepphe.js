@@ -497,7 +497,7 @@ function showStagesChart(svgContainerId, data) {
 		    renderBarsAndBoxplots(filteredData);
 
             // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
-		    renderYAxis(sortedDisplayStages);
+		    renderYAxis();
 		});
     }
 }
