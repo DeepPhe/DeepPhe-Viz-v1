@@ -75,6 +75,52 @@ function showStagesChart(svgContainerId, data) {
     var boxHeight = 6;
     var textBottomPadding = 2;
 
+    // Sort this uniqueStages array in a specific order
+    var orderedCancerStages = [
+        'Stage 0', 
+        // Stage I
+        'Stage I',
+        'Stage IA',
+        'Stage IB',
+        'Stage IC',
+        // Stage II
+        'Stage II',
+        'Stage IIA',
+        'Stage IIB',
+        'Stage IIC',
+        // Stage III
+        'Stage III',
+        'Stage IIIA',
+        'Stage IIIB',
+        'Stage IIIC',
+        // Stage IV
+        'Stage IV',
+        'Stage IVA',
+        'Stage IVB',
+        'Stage IVC'
+    ];
+
+    // All top-level stages
+    var topLevelStages = [
+        'Stage 0', 
+        'Stage I', 
+        'Stage II', 
+        'Stage III', 
+        'Stage IV'
+    ];
+
+    // All stages found in data
+    var allStages = data.map(function(d) { 
+		return d.stage; 
+	});
+
+	// By default only show the top level stages
+	var filteredData = data.filter(function(d) { 
+		if (topLevelStages.indexOf(d.stage) !== -1) {
+            return d.stage;
+		}
+	});
+
 	// set the ranges
 	var x = d3.scaleLinear()
 	    .range([0, width])
@@ -88,9 +134,10 @@ function showStagesChart(svgContainerId, data) {
 
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
-		// .domain(data.map(function(d) { 
-		// 	return d.stage; 
-		// }))
+		// Set the y domain based on the filteredData
+		.domain(filteredData.map(function(d) { 
+			return d.stage; 
+		}))
 		.padding(0.15); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -108,54 +155,11 @@ function showStagesChart(svgContainerId, data) {
 		})
         .text("Cancer Stages");
 
-
-    // All top-level stages
-    var topLevelStages = [
-        'Stage 0', 
-        'Stage I', 
-        'Stage II', 
-        'Stage III', 
-        'Stage IV'
-    ];
-
-    // All sub-level stages
-    var subLevelStages = [
-        // Stage I
-        'Stage IA',
-        'Stage IB',
-        'Stage IC',
-        // Stage II
-        'Stage IIA',
-        'Stage IIB',
-        'Stage IIC',
-        // Stage III
-        'Stage IIIA',
-        'Stage IIIB',
-        'Stage IIIC',
-        // Stage IV
-        'Stage IVA',
-        'Stage IVB',
-        'Stage IVC'
-    ];
-
-	// Also update the y.domain()
-	var filteredData = data.filter(function(d) { 
-		if (subLevelStages.indexOf(d.stage) === -1) {
-            return d.stage;
-		}
-	});
-
-    y.domain(filteredData.map(function(d) { 
-		return d.stage; 
-	}));
-
-    // Update the y axis rendering
-    d3.select("#y_axis").call(d3.axisLeft(y));
-    
-    // Render the bars and boxplots before rendering the Y axis
+    // Render the bars and boxplots with the filteredData before rendering the Y axis
     // so the Y axis vertical line covers the bar border
     renderBarsAndBoxplots(filteredData);
-    renderYAxis(subLevelStages);
+    // renderYAxis() is based ont the y.domain(), so no argument
+    renderYAxis();
 
 	function renderBarsAndBoxplots(data) {
 	    // Bar chart of patients counts
@@ -387,7 +391,6 @@ function showStagesChart(svgContainerId, data) {
 			.text(function(d) {
 				return d.ageStats.medianVal;
 			});
-
 	}
 
 
@@ -419,7 +422,7 @@ function showStagesChart(svgContainerId, data) {
 
 
 
-	function renderYAxis(subLevelStages) {
+	function renderYAxis() {
 		svg.append("g")
 		    .attr("transform", "translate(0, 0)")
 		    .attr("id", "y_axis")
@@ -437,27 +440,54 @@ function showStagesChart(svgContainerId, data) {
 
         // Only add click event to top level stages
 		d3.selectAll(".top_stage").on("click", function(d) {
+            var displayStages = y.domain();
+
             // Click top-level stage label to show sub level stages
             var subLevels = [d + "A",  d + "B", d  + "C"];
 
-            // Get a new array of sub level stages without all sub leves of this selected top level stage
-            var filteredSubLevelStages = subLevelStages.filter(function(stage) {
-            	if (subLevels.indexOf(stage) === -1 ) {
-                    return stage;
-            	}
-            });
+			subLevels.forEach(function(stage) {
+			    // sub stage must belong to the allStages
+			    if (allStages.indexOf(stage) !== -1) {
+                    // Add this sub stage to the stages to display when expanding the top stage
+                    // Remove the sub stage from the display stages when collapsing the top stage
+                    if (displayStages.indexOf(stage) === -1) {
+	                    displayStages.push(stage);
+				    } else {
+	                    var index = displayStages.indexOf(stage);
+	                    displayStages.splice(index, 1);
+				    }
+                }
+			});
 
-            // Get a new data array for stages that are not listed in the filteredSubLevelStages
+            // Same as the one in dataProcessor
+            function sortByProvidedOrder(array, orderArr) {
+		        var orderMap = {};
+
+		        orderArr.forEach(function(item) { 
+		            // Remember the index of each item in order array
+		            orderMap[item] = orderArr.indexOf(item); 
+		        });
+
+		        // Sort the original array by the item's index in the orderArr
+		        var sortedArray = array.sort(function(a, b){ 
+		            return orderMap[a] - orderMap[b];
+		        });
+
+		        return sortedArray;
+		    }
+
+            // Need to sort the displayStages so the sub-stages appear under each top-stage
+            var sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
+
+            // Filter data based on stages to display
 			var filteredData = data.filter(function(d) { 
-				if (filteredSubLevelStages.indexOf(d.stage) === -1) {
+				if (sortedDisplayStages.indexOf(d.stage) !== -1) {
 		            return d.stage;
 				}
 			});
 
             // Also update the y.domain()
-		    y.domain(filteredData.map(function(d) { 
-				return d.stage; 
-			}));
+		    y.domain(sortedDisplayStages);
 
             // Now for ren-rendering
             // Erase old rendering
@@ -467,7 +497,7 @@ function showStagesChart(svgContainerId, data) {
 		    renderBarsAndBoxplots(filteredData);
 
             // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
-		    renderYAxis(filteredSubLevelStages);
+		    renderYAxis(sortedDisplayStages);
 		});
     }
 }
