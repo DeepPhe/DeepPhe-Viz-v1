@@ -2,6 +2,10 @@
 var transitionDuration = 800; // time in ms
 var factBasedReports = [];
 
+// Min and max age across all the patients
+var minAge;
+var maxAge;
+
 function getPatientEncounterAge(encounterDateObj, birthday) {
 	// encounterDateObj is Date object while birthday is a string
     var ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
@@ -34,6 +38,10 @@ function getCancerStages() {
 function showStagesChart(svgContainerId, data) {
 	var patientsCounts = {};
 
+	// In order to get the minAge and maxAge
+	var minAges = [];
+	var maxAges = [];
+
 	// Calculate and add the box plot data to each stageInfo object
 	data.forEach(function(stageInfo) {
 		// Initialise stats object
@@ -64,7 +72,16 @@ function showStagesChart(svgContainerId, data) {
 	    if (typeof patientsCounts[stageInfo.stage] === "undefined") {
             patientsCounts[stageInfo.stage] = stageInfo.patientsCount;
 	    }
+
+	    // Also kepp record of the min age and max age for rendering the x axis as well as 
+	    // age range in the patients table
+	    minAges.push(ageStats.minVal);
+	    maxAges.push(ageStats.maxVal);
 	});
+
+    // Make the min and max age range global
+    minAge = Math.min.apply(null, minAges);
+    maxAge = Math.max.apply(null, maxAges);
 
 	// set the dimensions and margins of the graph
 	var margin = {top: 15, right: 20, bottom: 35, left: 60};
@@ -124,7 +141,8 @@ function showStagesChart(svgContainerId, data) {
 	// set the ranges
 	var x = d3.scaleLinear()
 	    .range([0, width])
-	    .domain([10, 70]); // 10 years to 70 years old
+	    // Integer age range based on rounding the minAge and maxAge
+	    .domain([Math.floor(minAge/10) * 10, Math.ceil(maxAge/10) * 10]);
 	    
     var xCount = d3.scaleLinear()
 	    .range([0, width])
@@ -561,14 +579,31 @@ function updateDerivedCharts(patients, stage) {
     getDiagnosis(patientNames, stage);
 }
 
+// All patients is a separate call
+// patients of each stage is alrady loaded data
 function showPatientsList(containerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
     // Group patients by age of first encounter
-    var range = [[10, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70]];
+    var rangeStartAge = Math.floor(minAge/10) * 10;
+    var rangeEndAge = Math.ceil(maxAge/10) * 10;
+    
+    // Calculate the age range
+    var range = [];
+    for (var i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
+        if (i === 0) {
+            var ageRange = [rangeStartAge + i * 10, rangeStartAge + i * 10 + 10];
+        } else {
+        	var ageRange = [rangeStartAge + i * 10 + 1, rangeStartAge + i * 10 + 10];
+        }
+
+        range.push(ageRange);
+    }
+
     var rangePatients = [];
     range.forEach(function(range) {
     	var patients = [];
+    	// The data is already sorted by patient age of first encounter
         data.forEach(function(patient) {
             if (patient.firstEncounterAge >= range[0] && patient.firstEncounterAge <= range[1]) {
                 patients.push(patient);
@@ -577,11 +612,9 @@ function showPatientsList(containerId, data, stage) {
         rangePatients.push(patients);
     });
 
-    console.log(rangePatients);
-
     var html =  '<table class="patients_table">'
         + '<caption>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></caption>'
-        + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th></tr>';
+        + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th><th>Count</th></tr>';
 
     for (var i = 0; i < rangePatients.length; i++) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
@@ -589,7 +622,7 @@ function showPatientsList(containerId, data, stage) {
         rangePatients[i].forEach(function(patient) {
 	    	html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + patient.firstEncounterAge + ')</li>';
 	    });
-	    html += '</ul></td></tr>';
+	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
     }
     
     html += '</table>';

@@ -223,7 +223,7 @@ margin:0;
 
 .patient_age_range_list li {
 float: left;
-margin:5px 8px;
+margin:5px 10px;
 }
 
 .patient_age_range_list li:last-child {
