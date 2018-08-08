@@ -521,7 +521,7 @@ function getAllPatients() {
         	patientNames.push(patient.name);
         });
 
-        // Old patients list
+        // Patients table list
         showPatientsList("patients", response.patients, stage);
 
         // Show patients bubble chart
@@ -564,7 +564,7 @@ function updateDerivedCharts(patients, stage) {
 function showPatientsList(containerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
-    
+    console.log(data);
     var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
         + '<table class="table patients_list">'
         + '<tr><th>Name</th><th>Age of first encounter</th></tr>';
