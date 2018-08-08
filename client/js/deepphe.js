@@ -67,12 +67,12 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// set the dimensions and margins of the graph
-	var margin = {top: 20, right: 20, bottom: 40, left: 65};
-	var width = 440 - margin.left - margin.right;
-	var height = 440 - margin.top - margin.bottom;
+	var margin = {top: 15, right: 20, bottom: 35, left: 60};
+	var width = 420 - margin.left - margin.right;
+	var height = 360 - margin.top - margin.bottom;
 
     // Box plot
-    var boxHeight = 6;
+    var boxHeight = 5;
     var textBottomPadding = 2;
 
     // Sort this uniqueStages array in a specific order
@@ -151,7 +151,7 @@ function showStagesChart(svgContainerId, data) {
     svg.append("text")
         .attr("class", "stages_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 10) + ")"; 
 		})
         .text("Cancer Stages");
 
@@ -587,9 +587,9 @@ function showPatientsChart(svgContainerId, data, stage) {
     	"children": data
     };
 
-    var margin = {top: 20, right: 20, bottom: 40, left: 20};
-	var width = 440 - margin.left - margin.right;
-	var height = 440 - margin.top - margin.bottom;
+    var margin = {top: 15, right: 20, bottom: 35, left: 20};
+	var width = 420 - margin.left - margin.right;
+	var height = 360 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "patients_chart") // Used for CSS styling
@@ -603,7 +603,7 @@ function showPatientsChart(svgContainerId, data, stage) {
     svg.append("text")
         .attr("class", "patients_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 10) + ")"; 
 		})
         .text(data.length + " patients from " + targetStage);
 
@@ -660,9 +660,9 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
-	var margin = {top: 20, right: 20, bottom: 55, left: 260};
-	var width = 640 - margin.left - margin.right;
-	var height = 440 - margin.top - margin.bottom;
+	var margin = {top: 15, right: 20, bottom: 50, left: 235};
+	var width = 620 - margin.left - margin.right;
+	var height = 360 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "diagnosis_chart") // Used for CSS styling
@@ -706,7 +706,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     svg.append("text")
         .attr("class", "patients_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+			return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 10) + ")"; 
 		})
         .text("Diagnosis (" + xDomain.length + " patients from " + targetStage + ")");
 
@@ -790,9 +790,9 @@ function showBiomarkersChart(svgContainerId, data, stage) {
  
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-	var margin = {top: 20, right: 20, bottom: 40, left: 30};
-	var width = 380 - margin.left - margin.right;
-	var height = 440 - margin.top - margin.bottom;
+	var margin = {top: 15, right: 20, bottom: 35, left: 30};
+	var width = 360 - margin.left - margin.right;
+	var height = 360 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
     var legnedTextRectPad = 3;
@@ -835,7 +835,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	    svg.append("text")
 	        .attr("class", "biomarkers_chart_title")
 	        .attr("transform", function(d) { 
-				return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 20) + ")"; 
+				return "translate(" + width/2 + "," + (height + margin.top + margin.bottom - 10) + ")"; 
 			})
 	        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
 
@@ -923,12 +923,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	    // Y axis
 		svg.append("g")
 			.attr("class", "biomarkers_chart_y_axis")
-			.call(d3.axisLeft(biomarkerScale))
-			.append("text")
-			    .attr("class", "biomarkers_chart_y_axis_label")
-			    .attr("y", 13)
-			    .attr("transform", "rotate(-90)")
-				.text("Biomarkers");
+			.call(d3.axisLeft(biomarkerScale));
 
 	    // X axis
 		svg.append("g")
