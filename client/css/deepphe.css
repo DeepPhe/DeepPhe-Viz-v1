@@ -10,31 +10,6 @@ cursor: pointer;
 text-decoration: none;
 }
 
-/* Table */
-.table {
-width:100%;
-border:1px solid #ccc;
-margin:20px 0;
-}
-
-.table th {
-line-height:1.6;
-padding:15px 10px; 
-background:#ebeff9;
-border:1px solid #ccc;
-/* The text in th are bold and centered by default. */
-}
-
-.table td {
-line-height:1.6;
-padding:10px; 
-border:1px solid #ccc;
-}
-
-.table_hover>tbody>tr:hover>td{
-background-color:#fefbd6;
-}
-
 .content {
 
 }
@@ -210,6 +185,42 @@ text-anchor: middle;
 dominant-baseline: middle;
 }
 
+/* Patients age range table */
+#patients {
+width: 620px;
+height:360px;
+padding:20px;
+}
+
+.patients_table {
+width:100%;
+border:1px solid #ccc;
+margin:20px 0;
+}
+
+.patients_table th {
+padding:8px; 
+background:#ebeff9;
+border:1px solid #ccc;
+/* The text in th are bold and centered by default. */
+}
+
+.patients_table td {
+padding:5px; 
+border:1px solid #ccc;
+}
+
+.patient_age_range_list {
+list-style-type: none;
+padding:0;
+margin:0;
+}
+
+.patient_age_range_list li {
+float: left;
+margin:5px 10px;
+}
+
 /* Biomarkers chart */
 .stages_chart_title,
 .patients_chart_title,
@@ -373,10 +384,6 @@ text-align:left;
 .table td {
 padding:3px; 
 border:1px solid #dbdbdb;
-}
-
-.table>tbody>tr:hover>td{
-background-color:#fefbd6;
 }
 
 .table td.empty_cell {

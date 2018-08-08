@@ -564,16 +564,73 @@ function updateDerivedCharts(patients, stage) {
 function showPatientsList(containerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
-    console.log(data);
-    var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
-        + '<table class="table patients_list">'
-        + '<tr><th>Name</th><th>Age of first encounter</th></tr>';
-        
-    data.forEach(function(patient) {
-    	html += '<tr><td><a href="' + baseUri + '/patient/' + patient.name + '">' + patient.name + '</a></td><td>' + patient.firstEncounterAge + '</td></tr>';
+    // Group patients by age of first encounter
+    var range = [[10, 20], [21, 30], [31, 40], [41, 50], [51, 60], [61, 70]];
+    var rangePatients = [];
+    range.forEach(function(range) {
+    	var patients = [];
+        data.forEach(function(patient) {
+            if (patient.firstEncounterAge >= range[0] && patient.firstEncounterAge <= range[1]) {
+                patients.push(patient);
+            }
+        });
+        rangePatients.push(patients);
     });
 
+    console.log(rangePatients);
+
+    var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
+        + '<table class="patients_table">'
+        + '<tr><th>First Encounter Age Range</th><th>Patient</th></tr>';
+
+
+    for (var i = 0; i < rangePatients.length; i++) {
+        html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
+        html += '<td><ul class="patient_age_range_list">';
+        rangePatients[i].forEach(function(patient) {
+	    	html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + patient.firstEncounterAge + ')</li>';
+	    });
+	    html += '</ul></td></tr>';
+    }
+    
     html += '</table>';
+
+
+
+
+
+// Another table view with vertical patient list
+    // var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
+    //     + '<table class="patients_table">'
+    //     + '<tr>';
+
+    // range.forEach(function(range) {
+    // 	html += '<th>' + range[0] + ' - ' + range[1] + '</th>';
+    // });
+
+    // html += '</tr>';
+
+
+    // html += '<tr>';    
+    // rangePatients.forEach(function(patientsArr) {
+    // 	html += '<td><ul class="patient_age_range_list">';
+        
+    //     patientsArr.forEach(function(patient) {
+    //         html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + patient.firstEncounterAge + ')</li>';
+    //     })
+
+    //     html += '</ul></td>';
+    // });
+    // html += '</tr>';
+
+    // html += '</table>';
+
+
+
+
+
+
+
 
     $("#" + containerId).html(html);
 }
