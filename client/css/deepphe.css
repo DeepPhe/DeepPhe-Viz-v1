@@ -198,6 +198,11 @@ border:1px solid #ccc;
 margin:20px 0;
 }
 
+.patients_table caption {
+margin-bottom:10px;
+}
+
+
 .patients_table th {
 padding:8px; 
 background:#ebeff9;
@@ -218,7 +223,11 @@ margin:0;
 
 .patient_age_range_list li {
 float: left;
-margin:5px 10px;
+margin:5px 8px;
+}
+
+.patient_age_range_list li:last-child {
+margin-right:0;
 }
 
 /* Biomarkers chart */
@@ -281,7 +290,7 @@ width:133px;
 margin-right:10px;
 }
 
-.patients_list li .cancer_stage_list li:last-child {
+.patients_list li .cancer_stage_list li {
 margin-right:0;
 }
 

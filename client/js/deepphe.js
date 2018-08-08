@@ -579,10 +579,9 @@ function showPatientsList(containerId, data, stage) {
 
     console.log(rangePatients);
 
-    var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
-        + '<table class="patients_table">'
-        + '<tr><th>First Encounter Age Range</th><th>Patient</th></tr>';
-
+    var html =  '<table class="patients_table">'
+        + '<caption>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></caption>'
+        + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th></tr>';
 
     for (var i = 0; i < rangePatients.length; i++) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
