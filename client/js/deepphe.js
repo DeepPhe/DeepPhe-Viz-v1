@@ -132,7 +132,7 @@ function showStagesChart(svgContainerId, data) {
 	});
 
 	// By default only show the top level stages
-	var filteredData = data.filter(function(d) { 
+	var topStagesData = data.filter(function(d) { 
 		if (topLevelStages.indexOf(d.stage) !== -1) {
             return d.stage;
 		}
@@ -153,7 +153,7 @@ function showStagesChart(svgContainerId, data) {
 	var y = d3.scaleBand()
 		.range([0, height]) // top to bottom: stages by patients count in ascending order 
 		// Set the y domain based on the filteredData
-		.domain(filteredData.map(function(d) { 
+		.domain(topStagesData.map(function(d) { 
 			return d.stage; 
 		}))
 		.padding(0.15); // blank space between bands
@@ -175,21 +175,47 @@ function showStagesChart(svgContainerId, data) {
 
     // Render the bars and boxplots with the filteredData before rendering the Y axis
     // so the Y axis vertical line covers the bar border
-    renderBarsAndBoxplots(filteredData);
+    renderBarsAndBoxplots(topStagesData);
     // renderYAxis() is based ont the y.domain(), so no argument
     renderYAxis();
 
+    // Add patients count top X axis
+	svg.append("g")
+		.attr("transform", "translate(0, 0)")
+		.attr("class", "count_axis")
+		.call(d3.axisTop(xCount))
+		// Append axis label
+		.append("text")
+		.attr("class", "count_axis_label")
+		.attr("x", width)
+		.attr("y", 12)
+		.text("Number of patients");
+   
+    // Add the ages bottom X Axis
+	svg.append("g")
+		.attr("transform", "translate(0, " + height + ")")
+		.attr("class", "age_axis")
+		.call(d3.axisBottom(x))
+		// Append axis label
+		.append("text")
+		.attr("class", "age_axis_label")
+		.attr("x", width)
+		.attr("y", -6)
+		.text("Age of first encounter");
+
+
+    // Render all stage bars and boxplots
 	function renderBarsAndBoxplots(data) {
 	    // Bar chart of patients counts
-		svg.selectAll(".stage_bar")
+		svg.append("g").selectAll(".stage_bar")
 			.data(data)
 			.enter().append("rect")
 			.attr("class", function(d) {
-				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar" : "sub_stage_bar");
+				// Distiguish the top stages and sub stages using different bg and border colors
+				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
 			})
-			.attr("x", 0)
-			.attr("y", function(d) { 
-				return y(d.stage); 
+			.attr("transform", function(d) { 
+				return "translate(0, " + y(d.stage) + ")"; 
 			})
 			.attr("height", y.bandwidth())
 			.on("click", function(d) {
@@ -217,13 +243,16 @@ function showStagesChart(svgContainerId, data) {
 
 
 	    // Only show the patient age when the stage has only one patient
-	    var singlePatientGrp = svg.selectAll(".single_patient_group")
+	    var singlePatientGrp = svg.append("g").selectAll(".single_patient_group")
 			.data(data.filter(function(d) {
 				return d.patientsCount === 1;
 			}))
 			.enter().append("g")
 			.attr("class", function(d) {
 				return "single_patient_group " + d.stage.replace(" ", "_");
+			})
+			.attr("transform", function(d) {
+				return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
 			});
 
 		// Verical line of single age
@@ -232,15 +261,11 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x1", function(d) {
 	            return x(d.ageStats.minVal);
 			})
-			.attr("y1", function(d) {
-				return y(d.stage) + y.bandwidth()/2;
-			})
+			.attr("y1", 0)
 			.attr("x2", function(d) {
 	            return x(d.ageStats.minVal);
 			})
-			.attr("y2", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight;
-			});
+			.attr("y2", boxHeight);
 
 		// Text of single age
 		singlePatientGrp.append("text")
@@ -248,21 +273,22 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.minVal);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
-			})
+			.attr("y", -textBottomPadding)
 			.text(function(d) {
 	            return d.ageStats.minVal;
 			});
 
 		// Show the box plot for stage that has more than one patient
-		var boxplotGrp = svg.selectAll(".boxplot")
+		var boxplotGrp = svg.append("g").selectAll(".boxplot")
 			.data(data.filter(function(d) {
 				return d.patientsCount > 1;
 			}))
 			.enter().append("g")
 			.attr("class", function(d) {
 				return "boxplot " + d.stage.replace(" ", "_");
+			})
+			.attr("transform", function(d) {
+				return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
 			});
 			
 	    // Verical line of min age
@@ -271,14 +297,12 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x1", function(d) {
 	            return x(d.ageStats.minVal);
 			})
-			.attr("y1", function(d) {
-				return y(d.stage) + y.bandwidth()/2;
-			})
+			.attr("y1", 0)
 			.attr("x2", function(d) {
 	            return x(d.ageStats.minVal);
 			})
 			.attr("y2", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight;
+				return boxHeight;
 			});
 
 		// Text of min age
@@ -288,7 +312,7 @@ function showStagesChart(svgContainerId, data) {
 	            return x(d.ageStats.minVal);
 			})
 			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
+				return -textBottomPadding;
 			})
 			.text(function(d) {
 	            return d.ageStats.minVal;
@@ -300,15 +324,11 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x1", function(d) {
 	            return x(d.ageStats.maxVal);
 			})
-			.attr("y1", function(d) {
-				return y(d.stage) + y.bandwidth()/2;
-			})
+			.attr("y1", 0)
 			.attr("x2", function(d) {
 	            return x(d.ageStats.maxVal);
 			})
-			.attr("y2", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight;
-			});
+			.attr("y2", boxHeight);
 
 	    // Text of max age
 		boxplotGrp.append("text")
@@ -316,9 +336,7 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.maxVal);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
-			})
+			.attr("y", -textBottomPadding)
 			.text(function(d) {
 	            return d.ageStats.maxVal;
 			});
@@ -329,15 +347,11 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x1",  function(d) {
 	            return x(d.ageStats.minVal);
 			})
-			.attr("y1", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
-			})
+			.attr("y1", boxHeight/2)
 			.attr("x2",  function(d) {
 	            return x(d.ageStats.maxVal);
 			})
-			.attr("y2", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight/2;
-			});
+			.attr("y2", boxHeight/2);
 
 		// Rect for iqr
 		boxplotGrp.append("rect")    
@@ -345,9 +359,7 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.q1Val);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2;
-			})
+			.attr("y", 0)
 			.attr("width", function(d) {
 	            return x(d.ageStats.q3Val) - x(d.ageStats.q1Val);
 			})
@@ -359,9 +371,7 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.q1Val);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
-			})
+			.attr("y", -textBottomPadding)
 			.text(function(d) {
 	            return d.ageStats.q1Val;
 			});
@@ -372,9 +382,7 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.q3Val);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
-			})
+			.attr("y", -textBottomPadding)
 			.text(function(d) {
 	            return d.ageStats.q3Val;
 			});
@@ -386,15 +394,11 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x1", function(d) {
 	            return x(d.ageStats.medianVal);
 			})
-			.attr("y1", function(d) {
-				return y(d.stage) + y.bandwidth()/2;
-			})
+			.attr("y1", 0)
 			.attr("x2", function(d) {
 	            return x(d.ageStats.medianVal);
 			})
-			.attr("y2", function(d) {
-				return y(d.stage) + y.bandwidth()/2 + boxHeight;
-			});
+			.attr("y2", boxHeight);
 
 		// Text of median age
 		boxplotGrp.append("text")
@@ -402,44 +406,14 @@ function showStagesChart(svgContainerId, data) {
 			.attr("x", function(d) {
 	            return x(d.ageStats.medianVal);
 			})
-			.attr("y", function(d) {
-				return y(d.stage) + y.bandwidth()/2 - textBottomPadding;
-			})
+			.attr("y", -textBottomPadding)
 			.attr("text-anchor", "middle")
 			.text(function(d) {
 				return d.ageStats.medianVal;
 			});
 	}
 
-
-
-    // xCount axis
-	svg.append("g")
-		.attr("transform", "translate(0, 0)")
-		.attr("class", "count_axis")
-		.call(d3.axisTop(xCount))
-		// Append axis label
-		.append("text")
-		.attr("class", "count_axis_label")
-		.attr("x", width)
-		.attr("y", 12)
-		.text("Number of patients");
-
-   
-    // Add the x ages Axis
-	svg.append("g")
-		.attr("transform", "translate(0, " + height + ")")
-		.attr("class", "age_axis")
-		.call(d3.axisBottom(x))
-		// Append axis label
-		.append("text")
-		.attr("class", "age_axis_label")
-		.attr("x", width)
-		.attr("y", -6)
-		.text("Age of first encounter");
-
-
-
+    // Render Y axis
 	function renderYAxis() {
 		svg.append("g")
 		    .attr("transform", "translate(0, 0)")
@@ -448,6 +422,7 @@ function showStagesChart(svgContainerId, data) {
 			// Add custom id to each tick group
 			.selectAll(".tick")
 			.attr("class", function(d) {
+				// Distiguish the top stage and sub stage labels using different colors
 				return "tick " + ((topLevelStages.indexOf(d) !== -1) ? "top_stage" : "sub_stage");
 			})
 			// Now modify the label text to add patients count
@@ -462,6 +437,8 @@ function showStagesChart(svgContainerId, data) {
 
             // Click top-level stage label to show sub level stages
             var subLevels = [d + "A",  d + "B", d  + "C"];
+            var addedSubStages = [];
+            var removedSubStages = [];
 
 			subLevels.forEach(function(stage) {
 			    // sub stage must belong to the allStages
@@ -470,9 +447,16 @@ function showStagesChart(svgContainerId, data) {
                     // Remove the sub stage from the display stages when collapsing the top stage
                     if (displayStages.indexOf(stage) === -1) {
 	                    displayStages.push(stage);
+
+	                    // Also add to updatedSubStages so we know the changes
+	                    // No need to sort this array since it's based on the A, B, C
+	                    addedSubStages.push(stage);
 				    } else {
 	                    var index = displayStages.indexOf(stage);
 	                    displayStages.splice(index, 1);
+
+                        // Also add to removedSubStages
+	                    removedSubStages.push(stage);
 				    }
                 }
 			});
@@ -497,22 +481,48 @@ function showStagesChart(svgContainerId, data) {
             // Need to sort the displayStages so the sub-stages appear under each top-stage
             var sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
 
-            // Filter data based on stages to display
-			var filteredData = data.filter(function(d) { 
-				if (sortedDisplayStages.indexOf(d.stage) !== -1) {
-		            return d.stage;
-				}
-			});
-
             // Also update the y.domain()
 		    y.domain(sortedDisplayStages);
 
-            // Now for ren-rendering
-            // Erase old rendering
-            d3.selectAll("#y_axis, .stage_bar, .boxplot, .single_patient_group").remove();
+            // Now for UI updates
+            d3.selectAll("#y_axis").remove();
 
-		    // Re-render the bars and boxplots
-		    renderBarsAndBoxplots(filteredData);
+            // Repoition the stage bars and resize height
+            d3.selectAll(".stage_bar")
+                .attr("transform", function(d) {
+                	return "translate(0, " + y(d.stage) + ")";
+                })
+				.attr("height", y.bandwidth());
+
+            // Reposition the single pateint groups
+            d3.selectAll(".single_patient_group")
+                .attr("transform", function(d) {
+                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
+                });
+
+            // Reposition the boxplots
+            d3.selectAll(".boxplot")
+                .attr("transform", function(d) {
+                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
+                });
+
+            // Add/remove sub stage bars and boxplots
+            if (addedSubStages.length > 0) {
+                var updatedData = data.filter(function(d) { 
+					if (addedSubStages.indexOf(d.stage) !== -1) {
+			            return d.stage;
+					}
+				});
+
+				renderBarsAndBoxplots(updatedData);
+            }
+
+
+			if (removedSubStages.length > 0) {
+				removedSubStages.forEach(function(stage) {
+                    d3.selectAll("." + stage.replace(" ", "_")).remove();
+				});
+			}	
 
             // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
 		    renderYAxis();
