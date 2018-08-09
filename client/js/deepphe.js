@@ -487,6 +487,24 @@ function showStagesChart(svgContainerId, data) {
             // Now for UI updates
             d3.selectAll("#y_axis").remove();
 
+            // Add sub stage bars and boxplots
+            if (addedSubStages.length > 0) {
+                var updatedData = data.filter(function(d) { 
+					if (addedSubStages.indexOf(d.stage) !== -1) {
+			            return d.stage;
+					}
+				});
+
+				renderBarsAndBoxplots(updatedData);
+            }
+
+            // Or remove sub stage bars and boxplots
+			if (removedSubStages.length > 0) {
+				removedSubStages.forEach(function(stage) {
+                    d3.selectAll("." + stage.replace(" ", "_")).remove();
+				});
+			}	
+
             // Repoition the stage bars and resize height
             d3.selectAll(".stage_bar")
                 .attr("transform", function(d) {
@@ -506,23 +524,6 @@ function showStagesChart(svgContainerId, data) {
                 	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
                 });
 
-            // Add/remove sub stage bars and boxplots
-            if (addedSubStages.length > 0) {
-                var updatedData = data.filter(function(d) { 
-					if (addedSubStages.indexOf(d.stage) !== -1) {
-			            return d.stage;
-					}
-				});
-
-				renderBarsAndBoxplots(updatedData);
-            }
-
-
-			if (removedSubStages.length > 0) {
-				removedSubStages.forEach(function(stage) {
-                    d3.selectAll("." + stage.replace(" ", "_")).remove();
-				});
-			}	
 
             // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
 		    renderYAxis();
