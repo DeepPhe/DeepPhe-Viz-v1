@@ -360,10 +360,13 @@ function showStagesChart(svgContainerId, data) {
 	            return x(d.ageStats.q1Val);
 			})
 			.attr("y", 0)
-			.attr("width", function(d) {
+			.attr("height", boxHeight)
+			// Add transition on box rect rendering
+			.transition()
+	        .duration(transitionDuration)
+	        .attr("width", function(d) {
 	            return x(d.ageStats.q3Val) - x(d.ageStats.q1Val);
-			})
-			.attr("height", boxHeight);
+			});
 	    
 	    // Text of q1 age
 		boxplotGrp.append("text")
@@ -487,6 +490,33 @@ function showStagesChart(svgContainerId, data) {
             // Now for UI updates
             d3.selectAll("#y_axis").remove();
 
+            function reposition() {
+	            // Repoition the existing stage bars and resize height
+	            d3.selectAll(".stage_bar")
+	                .transition()
+					.duration(transitionDuration)
+	                .attr("transform", function(d) {
+	                	return "translate(0, " + y(d.stage) + ")";
+	                })
+					.attr("height", y.bandwidth());
+
+	            // Reposition the single pateint groups
+	            d3.selectAll(".single_patient_group")
+	                .transition()
+					.duration(transitionDuration)
+	                .attr("transform", function(d) {
+	                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
+	                });
+
+	            // Reposition the boxplots
+	            d3.selectAll(".boxplot")
+	                .transition()
+					.duration(transitionDuration)
+	                .attr("transform", function(d) {
+	                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
+	                });
+            }
+
             // Add sub stage bars and boxplots
             if (addedSubStages.length > 0) {
                 var updatedData = data.filter(function(d) { 
@@ -495,35 +525,25 @@ function showStagesChart(svgContainerId, data) {
 					}
 				});
 
+                // Reposition the exisiting stages BEFORE adding new sub stages
+	            reposition();
+
+                // The last thing is to add new sub stages
 				renderBarsAndBoxplots(updatedData);
             }
 
             // Or remove sub stage bars and boxplots
 			if (removedSubStages.length > 0) {
 				removedSubStages.forEach(function(stage) {
-                    d3.selectAll("." + stage.replace(" ", "_")).remove();
+                    // Can't get the transition work here with reposition
+                    d3.selectAll("." + stage.replace(" ", "_"))
+						.remove();
+						
 				});
+
+				// Reposition the rest of stages AFTER removing target sub stages
+				reposition();
 			}	
-
-            // Repoition the stage bars and resize height
-            d3.selectAll(".stage_bar")
-                .attr("transform", function(d) {
-                	return "translate(0, " + y(d.stage) + ")";
-                })
-				.attr("height", y.bandwidth());
-
-            // Reposition the single pateint groups
-            d3.selectAll(".single_patient_group")
-                .attr("transform", function(d) {
-                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
-                });
-
-            // Reposition the boxplots
-            d3.selectAll(".boxplot")
-                .attr("transform", function(d) {
-                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
-                });
-
 
             // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
 		    renderYAxis();
