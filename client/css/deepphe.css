@@ -187,15 +187,15 @@ dominant-baseline: middle;
 
 /* Patients age range table */
 #patients {
-width: 620px;
-height:360px;
-padding:20px;
+width: 640px;
+height:280px;
+padding:10px;
 }
 
 .patients_table {
 width:100%;
 border:1px solid #ccc;
-margin:20px 0;
+margin:5px 0;
 }
 
 .patients_table caption {
@@ -204,7 +204,7 @@ margin-bottom:10px;
 
 
 .patients_table th {
-padding:8px; 
+padding:5px; 
 background:#ebeff9;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
@@ -223,7 +223,7 @@ margin:0;
 
 .patient_age_range_list li {
 float: left;
-margin:5px 10px;
+margin:2px 5px;
 }
 
 .patient_age_range_list li:last-child {

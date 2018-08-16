@@ -86,11 +86,11 @@ function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var margin = {top: 15, right: 20, bottom: 35, left: 60};
 	var width = 420 - margin.left - margin.right;
-	var height = 360 - margin.top - margin.bottom;
+	var height = 260 - margin.top - margin.bottom;
 
     // Box plot
-    var boxHeight = 5;
-    var textBottomPadding = 2;
+    var boxHeight = 4;
+    var textBottomPadding = 1;
 
     // Sort this uniqueStages array in a specific order
     var orderedCancerStages = [
@@ -156,7 +156,7 @@ function showStagesChart(svgContainerId, data) {
 		.domain(topStagesData.map(function(d) { 
 			return d.stage; 
 		}))
-		.padding(0.15); // blank space between bands
+		.padding(0.1); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "stages_chart")
@@ -709,7 +709,7 @@ function showPatientsChart(svgContainerId, data, stage) {
 
     var margin = {top: 15, right: 20, bottom: 35, left: 20};
 	var width = 420 - margin.left - margin.right;
-	var height = 360 - margin.top - margin.bottom;
+	var height = 260 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "patients_chart") // Used for CSS styling
@@ -782,7 +782,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	var margin = {top: 15, right: 20, bottom: 50, left: 235};
 	var width = 620 - margin.left - margin.right;
-	var height = 360 - margin.top - margin.bottom;
+	var height = 260 - margin.top - margin.bottom;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "diagnosis_chart") // Used for CSS styling
@@ -912,7 +912,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
 	var margin = {top: 15, right: 20, bottom: 35, left: 30};
 	var width = 360 - margin.left - margin.right;
-	var height = 360 - margin.top - margin.bottom;
+	var height = 260 - margin.top - margin.bottom;
 
     var legendRectSize = 10;
     var legnedTextRectPad = 3;
@@ -921,7 +921,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	var biomarkerScale = d3.scaleBand()
 	    .domain(data.biomarkersPool)
 	    .rangeRound([0, height])
-	    .padding(0.5);
+	    .padding(0.15);
 
     // Band scale of status
 	var statusScale = d3.scaleBand()
@@ -931,7 +931,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
     // Percentage
 	var x = d3.scaleLinear()
-	    .rangeRound([0, width])
+	    .rangeRound([0, width - 60])
 	    .domain([0, 1]);
 
     // Colors of status: positive, negative, unknown
