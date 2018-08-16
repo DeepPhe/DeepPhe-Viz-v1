@@ -900,7 +900,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		})
 		// Replace underscore with white space
 		.text(function(d) {
-			return d.replace(/_/g, " ");
+			return d;
 		});
 }
 
