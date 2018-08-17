@@ -825,6 +825,11 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		.range([0, height - 10])
 		.domain(data.diagnosis);
 	
+	// Replace all spaces and () with underscores
+    var diagnosis2Class = function(diagnosis) {
+        return diagnosis.replace(/ |\(|\)/g, "_");
+    };
+
 	// Chart title
     svg.append("text")
         .attr("class", "diagnosis_chart_title")
@@ -875,7 +880,8 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 			// Also highlight the corresponding Y labels
 			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
-				$("." + diagnosis).addClass("highlighted_diagnosis_label");
+				console.log(diagnosis);
+				$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
 			});
         })
         .on("mouseout", function(d) {
@@ -889,7 +895,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
             // Also dehighlight the corresponding Y labels
 			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
-				$("." + diagnosis).removeClass("highlighted_diagnosis_label");
+				$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
 			});
         });
 
@@ -899,7 +905,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		// Now add class to the label text
 		.selectAll("text")
 		.attr("class", function(d) {
-			return d;
+			return diagnosis2Class(d);
 		})
 		// Replace underscore with white space
 		.text(function(d) {
