@@ -47,16 +47,27 @@ color:#fff;
 }
 
 /* Cohort Analysis */
+
+/* HTML div */
+#stages,
+#diagnosis,
+#biomarkers,
 #patients,
+#patients2 {
+background:#fff;
+border:1px solid #ccc;
+margin:10px;
+padding:0px;
+float:left;
+}
+
+
+/* svg */
 .stages_chart, 
 .diagnosis_chart,
 .biomarkers_chart,
 .patients_chart {
-background:#fff;
-border:1px solid #ccc;
-margin:10px;
-padding:20px;
-float:left;
+
 }
 
 /* Box plot */
@@ -187,24 +198,24 @@ dominant-baseline: middle;
 
 /* Patients age range table */
 #patients {
-width: 640px;
-height:280px;
+width: 600px;
+height:265px;
 padding:10px;
 }
 
 .patients_table {
 width:100%;
 border:1px solid #ccc;
-margin:5px 0;
+margin-top:0;
 }
 
+/* Table caption is inside <table> tag */
 .patients_table caption {
 margin-bottom:10px;
 }
 
-
 .patients_table th {
-padding:5px; 
+padding:4px; 
 background:#ebeff9;
 border:1px solid #ccc;
 /* The text in th are bold and centered by default. */
@@ -223,7 +234,7 @@ margin:0;
 
 .patient_age_range_list li {
 float: left;
-margin:2px 5px;
+margin:2px 4px;
 }
 
 .patient_age_range_list li:last-child {
@@ -239,6 +250,8 @@ margin-right:0;
 text-anchor: middle;
 font-size:12px;
 font-weight: bold;
+/* https://stackoverflow.com/questions/12250403/vertical-alignment-of-text-element-in-svg */
+dominant-baseline:text-before-edge;
 }
 
 .biomarker_status_bar,
