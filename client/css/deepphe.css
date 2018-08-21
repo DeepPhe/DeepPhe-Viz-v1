@@ -48,7 +48,7 @@ color:#fff;
 
 /* Cohort Analysis */
 
-/* HTML div */
+/* HTML div, not the svg */
 #stages,
 #diagnosis,
 #biomarkers,
@@ -61,13 +61,10 @@ padding:0px;
 float:left;
 }
 
-
-/* svg */
-.stages_chart, 
-.diagnosis_chart,
-.biomarkers_chart,
-.patients_chart {
-
+/* Minimize the text rendering inconsistency across browsers */
+svg .tick text {
+font-family: Helvetica;
+font-size:10px;
 }
 
 /* Box plot */
@@ -251,6 +248,7 @@ text-anchor: middle;
 font-size:12px;
 font-weight: bold;
 /* https://stackoverflow.com/questions/12250403/vertical-alignment-of-text-element-in-svg */
+/* upper left corner of the text is the position of text */
 dominant-baseline:text-before-edge;
 }
 

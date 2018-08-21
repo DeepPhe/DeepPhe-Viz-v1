@@ -86,9 +86,12 @@ function showStagesChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	var svgWidth = 420;
 	var svgHeight = 280;
-	var margin = {top: 10, right: 15, bottom: 15, left: 75};
-	var width = svgWidth - margin.left - margin.right;
-	var height = svgHeight - margin.top - margin.bottom;
+	// svgPadding.top is used to position the chart title
+	// svgPadding.left is the space for Y axis labels
+	var svgPadding = {top: 10, right: 15, bottom: 15, left: 75};
+	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	// Gap between svg top and chart top, nothing to do with svgPadding.top
 	var chartTopMargin = 48;
 
     // Box plot
@@ -143,18 +146,18 @@ function showStagesChart(svgContainerId, data) {
 
 	// set the ranges
 	var x = d3.scaleLinear()
-	    .range([0, width])
+	    .range([0, chartWidth])
 	    // Integer age range based on rounding the minAge and maxAge
 	    .domain([Math.floor(minAge/10) * 10, Math.ceil(maxAge/10) * 10]);
 	    
     var xCount = d3.scaleLinear()
-	    .range([0, width])
+	    .range([0, chartWidth])
 	    .domain([0, d3.max(data, function(d) { 
 			return d.patientsCount; 
 		})]);
 
 	var y = d3.scaleBand()
-		.range([0, height - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
+		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		// Set the y domain based on the filteredData
 		.domain(topStagesData.map(function(d) { 
 			return d.stage; 
@@ -162,18 +165,19 @@ function showStagesChart(svgContainerId, data) {
 		.padding(0.1); // blank space between bands
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
-	    .attr("class", "stages_chart")
 		.attr("width", svgWidth)
 		.attr("height", svgHeight);
 
 	var stagesChartGrp = svg.append("g")
-		.attr("transform", "translate(" + margin.left + "," + chartTopMargin + ")");
+		.attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
 
     // Chart title
     svg.append("text")
         .attr("class", "stages_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + svgWidth/2 + ", " + margin.top + ")"; 
+        	// Works together with "dominant-baseline:text-before-edge;"" in CSS
+        	// to position the text based on upper left corner
+			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
         .text("Cancer Stages");
 
@@ -191,19 +195,19 @@ function showStagesChart(svgContainerId, data) {
 		// Append axis label
 		.append("text")
 		.attr("class", "count_axis_label")
-		.attr("x", width)
+		.attr("x", chartWidth)
 		.attr("y", 12)
 		.text("Number of patients");
    
     // Add the ages bottom X Axis
 	stagesChartGrp.append("g")
-		.attr("transform", "translate(0, " + (height - chartTopMargin) + ")")
+		.attr("transform", "translate(0, " + (chartHeight - chartTopMargin) + ")")
 		.attr("class", "age_axis")
 		.call(d3.axisBottom(x))
 		// Append axis label
 		.append("text")
 		.attr("class", "age_axis_label")
-		.attr("x", width)
+		.attr("x", chartWidth)
 		.attr("y", -6)
 		.text("Age of first encounter");
 
@@ -713,31 +717,31 @@ function showPatientsChart(svgContainerId, data, stage) {
 
     var svgWidth = 420;
     var svgHeight = 280;
-    var margin = {top: 10, right: 10, bottom: 10, left: 10};
-	var width = svgWidth - margin.left - margin.right;
-	var height = svgHeight - margin.top - margin.bottom;
+    var svgPadding = {top: 10, right: 10, bottom: 10, left: 10};
+	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	var chartTopMargin = 30;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "patients_chart") // Used for CSS styling
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom);
+			.attr("width", svgWidth)
+			.attr("height", svgHeight);
 
 	var patientsChartGrp = svg.append("g")
 			    .attr("class", "patients_chart_group")
-			    .attr("transform", "translate(" + margin.left + "," + chartTopMargin + ")");
+			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
     
     // Chart title
     svg.append("text")
         .attr("class", "patients_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + svgWidth/2 + ", " + margin.top + ")"; 
+			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
         .text("Patients (" + data.length + " patients from " + targetStage + ")");
 
     // Creates a new pack layout with the default settings
 	var pack = d3.pack()
-		.size([width, height - chartTopMargin])
+		.size([chartWidth, chartHeight - chartTopMargin])
 		.padding(3);
 
 
@@ -790,9 +794,9 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
     var svgWidth = 620;
     var svgHeight = 280;
-	var margin = {top: 10, right: 15, bottom: 12, left: 245};
-	var width = svgWidth - margin.left - margin.right;
-	var height = svgHeight - margin.top - margin.bottom;
+	var svgPadding = {top: 10, right: 15, bottom: 12, left: 248};
+	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	var chartTopMargin = 40;
 
 	var svg = d3.select("#" + svgContainerId).append("svg")
@@ -802,7 +806,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	var diagnosisChartGrp = svg.append("g")
 			    .attr("class", "diagnosis_chart_group")
-			    .attr("transform", "translate(" + margin.left + "," + chartTopMargin + ")");
+			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
     
     var dotColor = "rgb(107, 174, 214)";
     var highlightedDotColor = "rgb(230, 85, 13)";
@@ -827,11 +831,11 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	// set the ranges
 	var x = d3.scalePoint()
-	    .range([10, width])
+	    .range([10, chartWidth])
 	    .domain(xDomain);
 	    
 	var y = d3.scalePoint()
-		.range([0, height - chartTopMargin - margin.bottom - 10]) // extra 10 gap
+		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - 10]) // extra 10 gap
 		.domain(data.diagnosis);
 	
 	// Replace all spaces and () with underscores
@@ -843,7 +847,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     svg.append("text")
         .attr("class", "diagnosis_chart_title")
         .attr("transform", function(d) { 
-			return "translate(" + svgWidth/2 + ", " + margin.top + ")"; 
+			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
         .text("Diagnosis (" + xDomain.length + " patients from " + targetStage + ")");
 
@@ -866,7 +870,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		
 	// add the x Axis
 	diagnosisChartGrp.append("g")
-		.attr("transform", "translate(0," + (height - chartTopMargin - margin.bottom) + ")")
+		.attr("transform", "translate(0," + (chartHeight - chartTopMargin - svgPadding.bottom) + ")")
 		.call(d3.axisBottom(x))
 		.selectAll("text")	
 		.attr("class", "diagnosis_x_label")
@@ -885,7 +889,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 				.attr("x1", x(d))
 				.attr("y1", 0)
 				.attr("x2", x(d))
-				.attr("y2", height);
+				.attr("y2", chartHeight - chartTopMargin);
 
 			// Also highlight the corresponding Y labels
 			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
@@ -928,20 +932,21 @@ function showBiomarkersChart(svgContainerId, data, stage) {
  
     var biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-    var svgWidth = 360;
+    var svgWidth = 420;
     var svgHeight = 280;
-	var margin = {top: 10, right: 10, bottom: 15, left: 45};
-	var width = svgWidth - margin.left - margin.right;
-	var height = svgHeight - margin.top - margin.bottom;
+	var svgPadding = {top: 10, right: 10, bottom: 15, left: 45};
+	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	var chartTopMargin = 35;
 
+    var legendGroupWidth = 60;
     var legendRectSize = 10;
     var legnedTextRectPad = 3;
 
     // Band scale of biomarkers
 	var biomarkerScale = d3.scaleBand()
 	    .domain(data.biomarkersPool)
-	    .rangeRound([0, height - chartTopMargin])
+	    .rangeRound([0, chartHeight - chartTopMargin])
 	    .padding(0.15);
 
     // Band scale of status
@@ -952,7 +957,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
     // Percentage
 	var x = d3.scaleLinear()
-	    .rangeRound([0, width - 60])
+	    .rangeRound([0, chartWidth - legendGroupWidth])
 	    .domain([0, 1]);
 
     // Colors of status: positive, negative, unknown
@@ -971,13 +976,13 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 		
 		var biomarkersChartGrp = svg.append("g")
 			    .attr("class", "biomarkers_chart_group")
-			    .attr("transform", "translate(" + margin.left + "," + chartTopMargin + ")");
+			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
 
 	    // Chart title
 	    svg.append("text")
 	        .attr("class", "biomarkers_chart_title")
 	        .attr("transform", function(d) { 
-				return "translate(" + svgWidth/2 + ", " + margin.top + ")"; 
+				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 			})
 	        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
 
@@ -1070,7 +1075,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	    // X axis
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_x_axis")
-			.attr("transform", "translate(0," + (height - chartTopMargin) + ")")
+			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
 			.call(d3.axisBottom(x).tickFormat(formatPercent))
 			.append("text")
 			    .attr("class", "biomarkers_chart_x_axis_label")
@@ -1090,7 +1095,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
 		legend.append("rect")
 		    .attr("class", "biomarker_status_legend")
-			.attr("x", width - legendRectSize)
+			.attr("x", chartWidth - legendRectSize)
 			.attr("width", legendRectSize)
 			.attr("height", legendRectSize)
 			.attr("fill", function(d) { 
@@ -1102,7 +1107,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
 		legend.append("text")
 		    .attr("class", "biomarker_status_legend_text")
-			.attr("x", width - legendRectSize - legnedTextRectPad)
+			.attr("x", chartWidth - legendRectSize - legnedTextRectPad)
 			.attr("y", 9)
 			.text(function(d) { 
 				return d; 
