@@ -6,11 +6,19 @@ var factBasedReports = [];
 var minAge;
 var maxAge;
 
-function getPatientEncounterAge(encounterDateObj, birthday) {
+function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
 	// encounterDateObj is Date object while birthday is a string
     var ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
     var ageDate = new Date(ageDiffMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+// encounterDateStr is a string, not Date object
+function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
+        // birthday is a string
+        var ageDiffMs =  new Date(encounterDateStr).getTime() - new Date(birthday).getTime();
+        var ageDate = new Date(ageDiffMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 function getCancerStages() {
@@ -598,7 +606,6 @@ function getAllPatients() {
 
 // No rest call since each stage data contains the patients list info
 function updateDerivedCharts(patients, stage) {
-	console.log(patients);
 	// Create an array of patient names
     var patientNames = [];
     patients.forEach(function(patient) {
@@ -626,7 +633,7 @@ function showPatientsList(containerId, data, stage) {
     // Group patients by age of first encounter
     var rangeStartAge = Math.floor(minAge/10) * 10;
     var rangeEndAge = Math.ceil(maxAge/10) * 10;
-    
+
     // Calculate the age range
     var range = [];
     for (var i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
@@ -644,7 +651,9 @@ function showPatientsList(containerId, data, stage) {
     	var patients = [];
     	// The data is already sorted by patient age of first encounter
         data.forEach(function(patient) {
-            if (patient.firstEncounterAge >= range[0] && patient.firstEncounterAge <= range[1]) {
+            var firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
+
+            if (firstEncounterAge >= range[0] && firstEncounterAge <= range[1]) {
                 patients.push(patient);
             }
         });
@@ -659,49 +668,12 @@ function showPatientsList(containerId, data, stage) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
         html += '<td><ul class="patient_age_range_list">';
         rangePatients[i].forEach(function(patient) {
-	    	html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + patient.firstEncounterAge + ')</li>';
+	    	html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
 	    });
 	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
     }
     
     html += '</table>';
-
-
-
-
-
-// Another table view with vertical patient list
-    // var html = '<p>Displaying <b>' + data.length + '</b> patients of <b>' + targetStage + '</b></p>'
-    //     + '<table class="patients_table">'
-    //     + '<tr>';
-
-    // range.forEach(function(range) {
-    // 	html += '<th>' + range[0] + ' - ' + range[1] + '</th>';
-    // });
-
-    // html += '</tr>';
-
-
-    // html += '<tr>';    
-    // rangePatients.forEach(function(patientsArr) {
-    // 	html += '<td><ul class="patient_age_range_list">';
-        
-    //     patientsArr.forEach(function(patient) {
-    //         html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + patient.firstEncounterAge + ')</li>';
-    //     })
-
-    //     html += '</ul></td>';
-    // });
-    // html += '</tr>';
-
-    // html += '</table>';
-
-
-
-
-
-
-
 
     $("#" + containerId).html(html);
 }
@@ -747,7 +719,8 @@ function showPatientsChart(svgContainerId, data, stage) {
 
 	var root = d3.hierarchy(patients)
 	    .sum(function(d) { 
-	    	return d.firstEncounterAge; 
+	    	console.log(d);
+	    	return getPatientEncounterAgeByDateString(d.firstEncounterDate, d.birthday); 
 	    });
 
 	var node = patientsChartGrp.selectAll(".node")
@@ -2049,10 +2022,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("dy", ".5ex")
 	    .attr("class", "encounter_age")
 	    .text(function(d) {
-	    	return getPatientEncounterAge(d, patientInfo.birthday);
+	    	return getPatientEncounterAgeByDateObject(d, patientInfo.birthday);
 	    });
 
-    // Vertical guidelines
+    // Vertical guidelines based on min and max dates (date objects)
     age.selectAll(".encounter_age_guideline")
         .data(encounterDates)
         .enter()

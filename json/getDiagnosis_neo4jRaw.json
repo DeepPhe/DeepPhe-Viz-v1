@@ -1,0 +1,743 @@
+{
+  "results": [
+    {
+      "columns": [
+        "p.name",
+        "fact.prettyName"
+      ],
+      "data": [
+        {
+          "row": [
+            "Patient10",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient10",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient10",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient17",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient17",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient17",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient26",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient19",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient19",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient19",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient43",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient43",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient43",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient44",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient44",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient16",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient16",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient29",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient45",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient45",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient45",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient45",
+            "Metastatic_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient42",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient42",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient93",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient33",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient33",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient34",
+            "Metastatic_Adenocarcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient34",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient02",
+            "Metastatic_Adenocarcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient02",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient02",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient02",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient05",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient05",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient92",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient92",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient92",
+            "Metastatic_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient04",
+            "Metastatic_Adenocarcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient04",
+            "Invasive_Lobular_Breast_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient04",
+            "Lobular_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient35",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient35",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient47",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient40",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient40",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient40",
+            "Metastatic_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient40",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient13",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient22",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient22",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient41",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient12",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient12",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient15",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient37",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient37",
+            "Lobular_Breast_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient37",
+            "Invasive_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient39",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient39",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient01",
+            "Metastatic_Neoplasm"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient01",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient38",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient38",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient07",
+            "Breast_Carcinoma"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient07",
+            "Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient07",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient07",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient31",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient31",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient31",
+            "Lobular_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient36",
+            "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        },
+        {
+          "row": [
+            "Patient36",
+            "Ductal_Breast_Carcinoma_In_Situ"
+          ],
+          "meta": [
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
