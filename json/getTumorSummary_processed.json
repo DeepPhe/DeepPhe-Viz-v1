@@ -1,0 +1,1382 @@
+{
+    "tumors": [
+        {
+            "id": "TumorSummary-MergedTumor-1528351036",
+            "type": "Primary Tumor",
+            "data": [
+                {
+                    "category": "Body Site",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Body Site",
+                        "categoryClass": "hasBodySite",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Breast_912",
+                                "name": "Breast",
+                                "prettyName": "Breast",
+                                "type": "BodySite",
+                                "laterality": "Right"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Diagnosis",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Diagnosis",
+                        "categoryClass": "hasDiagnosis",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_78",
+                                "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                                "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                                "type": "Fact"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Cancer Cell Line",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Cancer Cell Line",
+                        "categoryClass": "hasCancerCellLine",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Adenocarcinoma_Type_771",
+                                "name": "Adenocarcinoma_Type",
+                                "prettyName": "Adenocarcinoma",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Histologic Type",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Histologic Type",
+                        "categoryClass": "hasHistologicType",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Ductal_650",
+                                "name": "Ductal",
+                                "prettyName": "Ductal",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tumor Extent",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Tumor Extent",
+                        "categoryClass": "hasTumorExtent",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Invasive_Lesion_631",
+                                "name": "Invasive_Lesion",
+                                "prettyName": "Invasive_Lesion",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Surgical Treatment",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Surgical Treatment",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Lumpectomy_663",
+                                "name": "Lumpectomy",
+                                "prettyName": "Lumpectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Segmental_Mastectomy_265",
+                                "name": "Segmental_Mastectomy",
+                                "prettyName": "Segmental Mastectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Total_Mastectomy_154",
+                                "name": "Total_Mastectomy",
+                                "prettyName": "Simple mastectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Mastectomy_756",
+                                "name": "Mastectomy",
+                                "prettyName": "Simple mastectomy",
+                                "type": "Procedure"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Margin Status",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Margin Status",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Surgical_Margin_321",
+                                "name": "Surgical_Margin",
+                                "prettyName": "Surgical margins",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Nuclear Grade Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Nuclear Grade Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Nuclear_Grade_Score_591",
+                                "name": "Nuclear_Grade_Score",
+                                "prettyName": "Nuclear Grade Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Lymphovascular Invasion Status",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Lymphovascular Invasion Status",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Lymphatic_Invasion_352",
+                                "name": "Lymphatic_Invasion",
+                                "prettyName": "Lymphatic Invasion",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "ER",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "ER",
+                        "categoryClass": "hasERStatus",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Estrogen_Receptor_Status_742",
+                                "name": "Estrogen_Receptor_Status",
+                                "prettyName": "Estrogen Receptor Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Positive"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tubule Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Tubule Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Tubule_Formation_Score_660",
+                                "name": "Tubule_Formation_Score",
+                                "prettyName": "Tubule Formation Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Total Nottingham Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Total Nottingham Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Total_Nottingham_Score_491",
+                                "name": "Total_Nottingham_Score",
+                                "prettyName": "Total Nottingham Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "BIRADS",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "BIRADS",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_391",
+                                "name": "Breast_Imaging_Reporting_and_Data_System",
+                                "prettyName": "Breast Imaging Reporting and Data System",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "PR",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "PR",
+                        "categoryClass": "hasPRStatus",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Progesterone_Receptor_Status_268",
+                                "name": "Progesterone_Receptor_Status",
+                                "prettyName": "Progesterone Receptor Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Positive"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "HER2",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "HER2",
+                        "categoryClass": "hasHer2Status",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_HER2_Neu_Status_490",
+                                "name": "HER2_Neu_Status",
+                                "prettyName": "HER2/Neu Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Negative"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Ki-67",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Ki-67",
+                        "categoryClass": "hasKi67Status",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_KI-67_status_768",
+                                "name": "KI-67_status",
+                                "prettyName": "Ki-67 status",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tumor Size",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Tumor Size",
+                        "categoryClass": "hasTumorSize",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Pathologic_Tumor_Size_704",
+                                "name": "Pathologic_Tumor_Size",
+                                "prettyName": "Pathologic Tumor Size",
+                                "type": "Observation"
+                            },
+                            {
+                                "id": "MedicalRecord_Tumor_Size_19",
+                                "name": "Tumor_Size",
+                                "prettyName": "Tumor Size",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Pathologic Tumor Size",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Pathologic Tumor Size",
+                        "categoryClass": "hasPathologicTumorSize",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Pathologic_Tumor_Size_973",
+                                "name": "Pathologic_Tumor_Size",
+                                "prettyName": "Pathologic Tumor Size",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Nuclear Grade",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1528351036",
+                        "category": "Nuclear Grade",
+                        "categoryClass": "hasNuclearGrade",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Nuclear_Grade_99",
+                                "name": "Nuclear_Grade",
+                                "prettyName": "Nuclear Grade",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "TumorSummary-MergedTumor-1291178417",
+            "type": "Primary Tumor",
+            "data": [
+                {
+                    "category": "Body Site",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Body Site",
+                        "categoryClass": "hasBodySite",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Breast_977",
+                                "name": "Breast",
+                                "prettyName": "Breast",
+                                "type": "BodySite",
+                                "laterality": "Left"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Diagnosis",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Diagnosis",
+                        "categoryClass": "hasDiagnosis",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                                "name": "Ductal_Breast_Carcinoma_In_Situ",
+                                "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                                "type": "Fact"
+                            },
+                            {
+                                "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_265",
+                                "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                                "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                                "type": "Fact"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Cancer Cell Line",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Cancer Cell Line",
+                        "categoryClass": "hasCancerCellLine",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Adenocarcinoma_Type_748",
+                                "name": "Adenocarcinoma_Type",
+                                "prettyName": "Adenocarcinoma",
+                                "type": "Condition"
+                            },
+                            {
+                                "id": "MedicalRecord_Carcinoma_Type_60",
+                                "name": "Carcinoma_Type",
+                                "prettyName": "Carcinoma",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Histologic Type",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Histologic Type",
+                        "categoryClass": "hasHistologicType",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Ductal_856",
+                                "name": "Ductal",
+                                "prettyName": "Ductal",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tumor Extent",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Tumor Extent",
+                        "categoryClass": "hasTumorExtent",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_In_Situ_Lesion_590",
+                                "name": "In_Situ_Lesion",
+                                "prettyName": "In_Situ_Lesion",
+                                "type": "Condition"
+                            },
+                            {
+                                "id": "MedicalRecord_Invasive_Lesion_939",
+                                "name": "Invasive_Lesion",
+                                "prettyName": "Invasive_Lesion",
+                                "type": "Condition"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Surgical Treatment",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Surgical Treatment",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Lumpectomy_375",
+                                "name": "Lumpectomy",
+                                "prettyName": "Lumpectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Segmental_Mastectomy_920",
+                                "name": "Segmental_Mastectomy",
+                                "prettyName": "Segmental Mastectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Total_Mastectomy_766",
+                                "name": "Total_Mastectomy",
+                                "prettyName": "Simple mastectomy",
+                                "type": "Procedure"
+                            },
+                            {
+                                "id": "MedicalRecord_Mastectomy_168",
+                                "name": "Mastectomy",
+                                "prettyName": "Simple mastectomy",
+                                "type": "Procedure"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Margin Status",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Margin Status",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Surgical_Margin_280",
+                                "name": "Surgical_Margin",
+                                "prettyName": "Surgical margins",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Nuclear Grade Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Nuclear Grade Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Nuclear_Grade_Score_86",
+                                "name": "Nuclear_Grade_Score",
+                                "prettyName": "Nuclear Grade Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Lymphovascular Invasion Status",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Lymphovascular Invasion Status",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Lymphatic_Invasion_725",
+                                "name": "Lymphatic_Invasion",
+                                "prettyName": "Lymphatic Invasion",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "ER",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "ER",
+                        "categoryClass": "hasERStatus",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Estrogen_Receptor_Status_692",
+                                "name": "Estrogen_Receptor_Status",
+                                "prettyName": "Estrogen Receptor Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Positive"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tubule Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Tubule Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Tubule_Formation_Score_800",
+                                "name": "Tubule_Formation_Score",
+                                "prettyName": "Tubule Formation Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Total Nottingham Score",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Total Nottingham Score",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Total_Nottingham_Score_430",
+                                "name": "Total_Nottingham_Score",
+                                "prettyName": "Total Nottingham Score",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "BIRADS",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "BIRADS",
+                        "categoryClass": "unspecified",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_714",
+                                "name": "Breast_Imaging_Reporting_and_Data_System",
+                                "prettyName": "Breast Imaging Reporting and Data System",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "PR",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "PR",
+                        "categoryClass": "hasPRStatus",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Progesterone_Receptor_Status_175",
+                                "name": "Progesterone_Receptor_Status",
+                                "prettyName": "Progesterone Receptor Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Positive"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "HER2",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "HER2",
+                        "categoryClass": "hasHer2Status",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_HER2_Neu_Status_999",
+                                "name": "HER2_Neu_Status",
+                                "prettyName": "HER2/Neu Status",
+                                "type": "Observation",
+                                "ordinalinterpretation": "Negative"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Ki-67",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Ki-67",
+                        "categoryClass": "hasKi67Status",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_KI-67_status_462",
+                                "name": "KI-67_status",
+                                "prettyName": "Ki-67 status",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Tumor Size",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Tumor Size",
+                        "categoryClass": "hasTumorSize",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Pathologic_Tumor_Size_985",
+                                "name": "Pathologic_Tumor_Size",
+                                "prettyName": "Pathologic Tumor Size",
+                                "type": "Observation"
+                            },
+                            {
+                                "id": "MedicalRecord_Tumor_Size_282",
+                                "name": "Tumor_Size",
+                                "prettyName": "Tumor Size",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Pathologic Tumor Size",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Pathologic Tumor Size",
+                        "categoryClass": "hasPathologicTumorSize",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Pathologic_Tumor_Size_509",
+                                "name": "Pathologic_Tumor_Size",
+                                "prettyName": "Pathologic Tumor Size",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "category": "Nuclear Grade",
+                    "factsObj": {
+                        "tumorId": "TumorSummary-MergedTumor-1291178417",
+                        "category": "Nuclear Grade",
+                        "categoryClass": "hasNuclearGrade",
+                        "facts": [
+                            {
+                                "id": "MedicalRecord_Nuclear_Grade_704",
+                                "name": "Nuclear_Grade",
+                                "prettyName": "Nuclear Grade",
+                                "type": "Observation"
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "collatedFactsByCategory": [
+        {
+            "category": "Body Site",
+            "categoryClass": "hasBodySite",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Body Site",
+                    "categoryClass": "hasBodySite",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Breast_912",
+                            "name": "Breast",
+                            "prettyName": "Breast",
+                            "type": "BodySite",
+                            "laterality": "Right"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Body Site",
+                    "categoryClass": "hasBodySite",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Breast_977",
+                            "name": "Breast",
+                            "prettyName": "Breast",
+                            "type": "BodySite",
+                            "laterality": "Left"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Diagnosis",
+            "categoryClass": "hasDiagnosis",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Diagnosis",
+                    "categoryClass": "hasDiagnosis",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_78",
+                            "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "type": "Fact"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Diagnosis",
+                    "categoryClass": "hasDiagnosis",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "type": "Fact"
+                        },
+                        {
+                            "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_265",
+                            "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "type": "Fact"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Cancer Cell Line",
+            "categoryClass": "hasCancerCellLine",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Cancer Cell Line",
+                    "categoryClass": "hasCancerCellLine",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Adenocarcinoma_Type_771",
+                            "name": "Adenocarcinoma_Type",
+                            "prettyName": "Adenocarcinoma",
+                            "type": "Condition"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Cancer Cell Line",
+                    "categoryClass": "hasCancerCellLine",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Adenocarcinoma_Type_748",
+                            "name": "Adenocarcinoma_Type",
+                            "prettyName": "Adenocarcinoma",
+                            "type": "Condition"
+                        },
+                        {
+                            "id": "MedicalRecord_Carcinoma_Type_60",
+                            "name": "Carcinoma_Type",
+                            "prettyName": "Carcinoma",
+                            "type": "Condition"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Histologic Type",
+            "categoryClass": "hasHistologicType",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Histologic Type",
+                    "categoryClass": "hasHistologicType",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Ductal_650",
+                            "name": "Ductal",
+                            "prettyName": "Ductal",
+                            "type": "Condition"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Histologic Type",
+                    "categoryClass": "hasHistologicType",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Ductal_856",
+                            "name": "Ductal",
+                            "prettyName": "Ductal",
+                            "type": "Condition"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Tumor Extent",
+            "categoryClass": "hasTumorExtent",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Tumor Extent",
+                    "categoryClass": "hasTumorExtent",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Invasive_Lesion_631",
+                            "name": "Invasive_Lesion",
+                            "prettyName": "Invasive_Lesion",
+                            "type": "Condition"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Tumor Extent",
+                    "categoryClass": "hasTumorExtent",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_In_Situ_Lesion_590",
+                            "name": "In_Situ_Lesion",
+                            "prettyName": "In_Situ_Lesion",
+                            "type": "Condition"
+                        },
+                        {
+                            "id": "MedicalRecord_Invasive_Lesion_939",
+                            "name": "Invasive_Lesion",
+                            "prettyName": "Invasive_Lesion",
+                            "type": "Condition"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Surgical Treatment",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Surgical Treatment",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Lumpectomy_663",
+                            "name": "Lumpectomy",
+                            "prettyName": "Lumpectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Segmental_Mastectomy_265",
+                            "name": "Segmental_Mastectomy",
+                            "prettyName": "Segmental Mastectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Total_Mastectomy_154",
+                            "name": "Total_Mastectomy",
+                            "prettyName": "Simple mastectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Mastectomy_756",
+                            "name": "Mastectomy",
+                            "prettyName": "Simple mastectomy",
+                            "type": "Procedure"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Surgical Treatment",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Lumpectomy_375",
+                            "name": "Lumpectomy",
+                            "prettyName": "Lumpectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Segmental_Mastectomy_920",
+                            "name": "Segmental_Mastectomy",
+                            "prettyName": "Segmental Mastectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Total_Mastectomy_766",
+                            "name": "Total_Mastectomy",
+                            "prettyName": "Simple mastectomy",
+                            "type": "Procedure"
+                        },
+                        {
+                            "id": "MedicalRecord_Mastectomy_168",
+                            "name": "Mastectomy",
+                            "prettyName": "Simple mastectomy",
+                            "type": "Procedure"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Margin Status",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Margin Status",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Surgical_Margin_321",
+                            "name": "Surgical_Margin",
+                            "prettyName": "Surgical margins",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Margin Status",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Surgical_Margin_280",
+                            "name": "Surgical_Margin",
+                            "prettyName": "Surgical margins",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Nuclear Grade Score",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Nuclear Grade Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Nuclear_Grade_Score_591",
+                            "name": "Nuclear_Grade_Score",
+                            "prettyName": "Nuclear Grade Score",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Nuclear Grade Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Nuclear_Grade_Score_86",
+                            "name": "Nuclear_Grade_Score",
+                            "prettyName": "Nuclear Grade Score",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Lymphovascular Invasion Status",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Lymphovascular Invasion Status",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Lymphatic_Invasion_352",
+                            "name": "Lymphatic_Invasion",
+                            "prettyName": "Lymphatic Invasion",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Lymphovascular Invasion Status",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Lymphatic_Invasion_725",
+                            "name": "Lymphatic_Invasion",
+                            "prettyName": "Lymphatic Invasion",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "ER",
+            "categoryClass": "hasERStatus",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "ER",
+                    "categoryClass": "hasERStatus",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_742",
+                            "name": "Estrogen_Receptor_Status",
+                            "prettyName": "Estrogen Receptor Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Positive"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "ER",
+                    "categoryClass": "hasERStatus",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_692",
+                            "name": "Estrogen_Receptor_Status",
+                            "prettyName": "Estrogen Receptor Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Positive"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Tubule Score",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Tubule Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Tubule_Formation_Score_660",
+                            "name": "Tubule_Formation_Score",
+                            "prettyName": "Tubule Formation Score",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Tubule Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Tubule_Formation_Score_800",
+                            "name": "Tubule_Formation_Score",
+                            "prettyName": "Tubule Formation Score",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Total Nottingham Score",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Total Nottingham Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Total_Nottingham_Score_491",
+                            "name": "Total_Nottingham_Score",
+                            "prettyName": "Total Nottingham Score",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Total Nottingham Score",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Total_Nottingham_Score_430",
+                            "name": "Total_Nottingham_Score",
+                            "prettyName": "Total Nottingham Score",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "BIRADS",
+            "categoryClass": "unspecified",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "BIRADS",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_391",
+                            "name": "Breast_Imaging_Reporting_and_Data_System",
+                            "prettyName": "Breast Imaging Reporting and Data System",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "BIRADS",
+                    "categoryClass": "unspecified",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_714",
+                            "name": "Breast_Imaging_Reporting_and_Data_System",
+                            "prettyName": "Breast Imaging Reporting and Data System",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "PR",
+            "categoryClass": "hasPRStatus",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "PR",
+                    "categoryClass": "hasPRStatus",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_268",
+                            "name": "Progesterone_Receptor_Status",
+                            "prettyName": "Progesterone Receptor Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Positive"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "PR",
+                    "categoryClass": "hasPRStatus",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_175",
+                            "name": "Progesterone_Receptor_Status",
+                            "prettyName": "Progesterone Receptor Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Positive"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "HER2",
+            "categoryClass": "hasHer2Status",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "HER2",
+                    "categoryClass": "hasHer2Status",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_HER2_Neu_Status_490",
+                            "name": "HER2_Neu_Status",
+                            "prettyName": "HER2/Neu Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Negative"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "HER2",
+                    "categoryClass": "hasHer2Status",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_HER2_Neu_Status_999",
+                            "name": "HER2_Neu_Status",
+                            "prettyName": "HER2/Neu Status",
+                            "type": "Observation",
+                            "ordinalinterpretation": "Negative"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Ki-67",
+            "categoryClass": "hasKi67Status",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Ki-67",
+                    "categoryClass": "hasKi67Status",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_KI-67_status_768",
+                            "name": "KI-67_status",
+                            "prettyName": "Ki-67 status",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Ki-67",
+                    "categoryClass": "hasKi67Status",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_KI-67_status_462",
+                            "name": "KI-67_status",
+                            "prettyName": "Ki-67 status",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Tumor Size",
+            "categoryClass": "hasTumorSize",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Tumor Size",
+                    "categoryClass": "hasTumorSize",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_704",
+                            "name": "Pathologic_Tumor_Size",
+                            "prettyName": "Pathologic Tumor Size",
+                            "type": "Observation"
+                        },
+                        {
+                            "id": "MedicalRecord_Tumor_Size_19",
+                            "name": "Tumor_Size",
+                            "prettyName": "Tumor Size",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Tumor Size",
+                    "categoryClass": "hasTumorSize",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_985",
+                            "name": "Pathologic_Tumor_Size",
+                            "prettyName": "Pathologic Tumor Size",
+                            "type": "Observation"
+                        },
+                        {
+                            "id": "MedicalRecord_Tumor_Size_282",
+                            "name": "Tumor_Size",
+                            "prettyName": "Tumor Size",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Pathologic Tumor Size",
+            "categoryClass": "hasPathologicTumorSize",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Pathologic Tumor Size",
+                    "categoryClass": "hasPathologicTumorSize",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_973",
+                            "name": "Pathologic_Tumor_Size",
+                            "prettyName": "Pathologic Tumor Size",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Pathologic Tumor Size",
+                    "categoryClass": "hasPathologicTumorSize",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_509",
+                            "name": "Pathologic_Tumor_Size",
+                            "prettyName": "Pathologic Tumor Size",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "Nuclear Grade",
+            "categoryClass": "hasNuclearGrade",
+            "data": [
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1528351036",
+                    "category": "Nuclear Grade",
+                    "categoryClass": "hasNuclearGrade",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Nuclear_Grade_99",
+                            "name": "Nuclear_Grade",
+                            "prettyName": "Nuclear Grade",
+                            "type": "Observation"
+                        }
+                    ]
+                },
+                {
+                    "tumorId": "TumorSummary-MergedTumor-1291178417",
+                    "category": "Nuclear Grade",
+                    "categoryClass": "hasNuclearGrade",
+                    "facts": [
+                        {
+                            "id": "MedicalRecord_Nuclear_Grade_704",
+                            "name": "Nuclear_Grade",
+                            "prettyName": "Nuclear Grade",
+                            "type": "Observation"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
