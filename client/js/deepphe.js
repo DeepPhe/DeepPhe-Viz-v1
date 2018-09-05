@@ -1,3 +1,8 @@
+// Keep the pateints data in memory
+var allPatients = [];
+
+var allStages = "All stages";
+
 // Global settings
 var transitionDuration = 800; // time in ms
 var factBasedReports = [];
@@ -21,21 +26,27 @@ function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
         return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
-function getCancerStages() {
+// Entry point
+function showCohort() {
     // Separate the ajax request with callbacks
 	var jqxhr = $.ajax({
-	    url: baseUri + '/cancerStages',
+	    url: baseUri + '/cohortData',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
 	});
 
 	jqxhr.done(function(response) {
-        // Draw the bar chart
+        // Draw the stages chart
+        // We can click the stage bar to show charts of this stage 
+        // and unclick to show all again
         showStagesChart("stages", response.stagesInfo);
 
-	    // Show all patients by default
-        getAllPatients();
+        // Keep the data in memory for later use
+        allPatients = response.patientsInfo.patients;
+
+        // By default show charts of all pateints and all stages
+        showDerivedCharts(allPatients, allStages);
 	});
 
 	jqxhr.fail(function () { 
@@ -244,11 +255,13 @@ function showStagesChart(svgContainerId, data) {
 		            d3.selectAll(".stage_bar").classed(css, false);
 	                // Highlight the clicked box and show corresponding patients
 	            	clickedBar.classed(css, true);
-	            	updateDerivedCharts(d.patients, d.stage);
+	            	showDerivedCharts(d.patients, d.stage);
 	            } else {
 	            	// When clicked again, remove highlight and show all patients
 	            	clickedBar.classed(css, false);
-	            	getAllPatients();
+	            	// allPatients is the patient data saved in memory
+	            	// allStages is the global string label
+	            	showDerivedCharts(allPatients, allStages);
 	            }
 			})
 			.transition()
@@ -567,56 +580,19 @@ function showStagesChart(svgContainerId, data) {
     }
 }
 
-// Get all patients via rest call
-function getAllPatients() {
-	var stage = "All Stages";
-
-	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
-	    url: baseUri + '/patients', 
-	    method: 'GET', 
-	    async: true,
-	    dataType: 'json'
-	});
-
-	jqxhr.done(function(response) {
-        // Create an array of patient names
-        var patientNames = [];
-        response.patients.forEach(function(patient) {
-        	patientNames.push(patient.name);
-        });
-
-        // Patients table list
-        showPatientsList("patients", response.patients, stage);
-
-        // Show patients bubble chart
-        showPatientsChart("patients2", response.patients, stage);
-
-        // Make another ajax call to get all tumor info for the list of patients
-        getPatientsTumorInfo(patientNames, stage);
-
-        // Make another ajax call to get diagnosis for the list of patients
-        getDiagnosis(patientNames, stage);
-	});
-
-	jqxhr.fail(function () { 
-	    console.log("Ajax error - can't get target patients");
-	});
-}
-
 // No rest call since each stage data contains the patients list info
-function updateDerivedCharts(patients, stage) {
+function showDerivedCharts(patientsArr, stage) {
 	// Create an array of patient names
     var patientNames = [];
-    patients.forEach(function(patient) {
+    patientsArr.forEach(function(patient) {
     	patientNames.push(patient.name);
     });
 
-    // Old patients list
-    showPatientsList("patients", patients, stage);
+    // Patients table
+    showPatientsTable("patients", patientsArr, stage);
 
     // Show patients bubble chart
-    showPatientsChart("patients2", patients, stage);
+    showPatientsChart("patients2", patientsArr, stage);
 
     // Make another ajax call to get all tumor info for the list of patients
     getPatientsTumorInfo(patientNames, stage);
@@ -627,7 +603,7 @@ function updateDerivedCharts(patients, stage) {
 
 // All patients is a separate call
 // patients of each stage is alrady loaded data
-function showPatientsList(containerId, data, stage) {
+function showPatientsTable(containerId, data, stage) {
     var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
 
     // Group patients by age of first encounter
@@ -719,7 +695,6 @@ function showPatientsChart(svgContainerId, data, stage) {
 
 	var root = d3.hierarchy(patients)
 	    .sum(function(d) { 
-	    	console.log(d);
 	    	return getPatientEncounterAgeByDateString(d.firstEncounterDate, d.birthday); 
 	    });
 
