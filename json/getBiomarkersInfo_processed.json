@@ -1,0 +1,61 @@
+{
+    "patients": [
+        "Patient10",
+        "Patient17",
+        "Patient26",
+        "Patient19",
+        "Patient43",
+        "Patient44",
+        "Patient16",
+        "Patient29",
+        "Patient45",
+        "Patient42",
+        "Patient93",
+        "Patient33",
+        "Patient34",
+        "Patient02",
+        "Patient05",
+        "Patient92",
+        "Patient04",
+        "Patient35",
+        "Patient47",
+        "Patient40",
+        "Patient13",
+        "Patient22",
+        "Patient41",
+        "Patient12",
+        "Patient15",
+        "Patient37",
+        "Patient39",
+        "Patient01",
+        "Patient38",
+        "Patient07",
+        "Patient31",
+        "Patient36"
+    ],
+    "biomarkersPool": [
+        "ER",
+        "PR",
+        "HER2"
+    ],
+    "data": [
+        {
+            "biomarker": "ER",
+            "positive": "0.73",
+            "negative": "0.20",
+            "unknown": "0.07"
+        },
+        {
+            "biomarker": "PR",
+            "positive": "0.63",
+            "negative": "0.33",
+            "unknown": "0.05"
+        },
+        {
+            "biomarker": "HER2",
+            "positive": "0.07",
+            "negative": "0.65",
+            "unknown": "0.28"
+        }
+    ]
+}

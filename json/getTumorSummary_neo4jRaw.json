@@ -1,0 +1,3295 @@
+{
+    "results": [
+        {
+            "columns": [
+                "tumor.id",
+                "tumorFactReln.name",
+                "fact",
+                "rel",
+                "f"
+            ],
+            "data": [
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasBodySite",
+                        {
+                            "rulesApplied": [
+                                "primaryTumor",
+                                "set-tumor-PRStatus",
+                                "set-tumor-ERStatus",
+                                "set-tumor-Her2Status"
+                            ],
+                            "prettyName": "Breast",
+                            "name": "Breast",
+                            "id": "MedicalRecord_Breast_912",
+                            "type": "BodySite",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast"
+                        },
+                        {
+                            "name": "Laterality"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Right",
+                            "name": "Right",
+                            "id": "MedicalRecord_Right_603",
+                            "type": "Laterality",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Right"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 288,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 290,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 291,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasDiagnosis",
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_78",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 292,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lumpectomy",
+                            "name": "Lumpectomy",
+                            "id": "MedicalRecord_Lumpectomy_349",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lumpectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 306,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Segmental Mastectomy",
+                            "name": "Segmental_Mastectomy",
+                            "id": "MedicalRecord_Segmental_Mastectomy_979",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Segmental_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 308,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Neoadjuvant Therapy",
+                            "name": "Neoadjuvant_Therapy",
+                            "id": "MedicalRecord_Neoadjuvant_Therapy_905",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Neoadjuvant_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 310,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cisplatin",
+                            "name": "Cisplatin",
+                            "id": "MedicalRecord_Cisplatin_572",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cisplatin"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 313,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapy Regimen",
+                            "name": "Chemotherapy_Regimen",
+                            "id": "MedicalRecord_Chemotherapy_Regimen_44",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy_Regimen"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 315,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adjuvant Therapy",
+                            "name": "Adjuvant_Therapy",
+                            "id": "MedicalRecord_Adjuvant_Therapy_921",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Adjuvant_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 317,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Docetaxel",
+                            "name": "Docetaxel",
+                            "id": "MedicalRecord_Docetaxel_468",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Docetaxel"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 319,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherMedication",
+                            "name": "OtherMedication",
+                            "id": "MedicalRecord_OtherMedication_472",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherMedication"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 296,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherTherapeuticProcedure",
+                            "name": "OtherTherapeuticProcedure",
+                            "id": "MedicalRecord_OtherTherapeuticProcedure_946",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherTherapeuticProcedure"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 298,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Total_Mastectomy",
+                            "id": "MedicalRecord_Total_Mastectomy_729",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 300,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Mastectomy",
+                            "id": "MedicalRecord_Mastectomy_152",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 302,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Seed Implantation",
+                            "name": "Seed_Implantation",
+                            "id": "MedicalRecord_Seed_Implantation_588",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Seed_Implantation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 304,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Prophylactic Cranial Irradiation",
+                            "name": "Prophylactic_Cranial_Irradiation",
+                            "id": "MedicalRecord_Prophylactic_Cranial_Irradiation_996",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Prophylactic_Cranial_Irradiation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 343,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapeutic Perfusion",
+                            "name": "Chemotherapeutic_Perfusion",
+                            "id": "MedicalRecord_Chemotherapeutic_Perfusion_229",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapeutic_Perfusion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 341,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cyclophosphamide",
+                            "name": "Cyclophosphamide",
+                            "id": "MedicalRecord_Cyclophosphamide_23",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cyclophosphamide"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 339,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Exemestane",
+                            "name": "Exemestane",
+                            "id": "MedicalRecord_Exemestane_251",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Exemestane"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 337,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Antiestrogen Therapy",
+                            "name": "Antiestrogen_Therapy",
+                            "id": "MedicalRecord_Antiestrogen_Therapy_926",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Antiestrogen_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 351,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Endocrine Therapy",
+                            "name": "Endocrine_Therapy",
+                            "id": "MedicalRecord_Endocrine_Therapy_785",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Endocrine_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 349,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Anastrozole",
+                            "name": "Anastrozole",
+                            "id": "MedicalRecord_Anastrozole_429",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Anastrozole"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 347,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Systemic Chemotherapy",
+                            "name": "Systemic_Chemotherapy",
+                            "id": "MedicalRecord_Systemic_Chemotherapy_355",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Systemic_Chemotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 345,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Ionizing Radiotherapy",
+                            "name": "Radiation_Ionizing_Radiotherapy",
+                            "id": "MedicalRecord_Radiation_Ionizing_Radiotherapy_663",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Ionizing_Radiotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 327,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "pharmacotherapeutic",
+                            "name": "Chemotherapy",
+                            "id": "MedicalRecord_Chemotherapy_107",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 323,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Therapy",
+                            "name": "Radiation_Therapy",
+                            "id": "MedicalRecord_Radiation_Therapy_571",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 321,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Intensity-Modulated Radiation Therapy",
+                            "name": "Intensity-Modulated_Radiation_Therapy",
+                            "id": "MedicalRecord_Intensity-Modulated_Radiation_Therapy_732",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Intensity-Modulated_Radiation_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 335,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Breast Irradiation",
+                            "name": "Breast_Irradiation",
+                            "id": "MedicalRecord_Breast_Irradiation_364",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast_Irradiation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 333,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ovarian Ablation",
+                            "name": "Ovarian_Ablation",
+                            "id": "MedicalRecord_Ovarian_Ablation_196",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ovarian_Ablation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 331,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Hormone Replacement Therapy",
+                            "name": "Hormone_Replacement_Therapy",
+                            "id": "MedicalRecord_Hormone_Replacement_Therapy_842",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Hormone_Replacement_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 329,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasCancerCellLine",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adenocarcinoma",
+                            "name": "Adenocarcinoma_Type",
+                            "id": "MedicalRecord_Adenocarcinoma_Type_771",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Adenocarcinoma_Type"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 400,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasHistologicType",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ductal",
+                            "name": "Ductal",
+                            "id": "MedicalRecord_Ductal_650",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ductal"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 404,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTumorExtent",
+                        {
+                            "rulesApplied": [
+                                "setTumorExtent"
+                            ],
+                            "prettyName": "Invasive_Lesion",
+                            "name": "Invasive_Lesion",
+                            "id": "MedicalRecord_Invasive_Lesion_631",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Lesion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 408,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTumorType",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "PrimaryTumor",
+                            "name": "PrimaryTumor",
+                            "id": "MedicalRecord_PrimaryTumor_993",
+                            "type": "TumorType",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#PrimaryTumor"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 287,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lumpectomy",
+                            "name": "Lumpectomy",
+                            "id": "MedicalRecord_Lumpectomy_663",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lumpectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 357,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Segmental Mastectomy",
+                            "name": "Segmental_Mastectomy",
+                            "id": "MedicalRecord_Segmental_Mastectomy_265",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Segmental_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 359,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Total_Mastectomy",
+                            "id": "MedicalRecord_Total_Mastectomy_154",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 353,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Mastectomy",
+                            "id": "MedicalRecord_Mastectomy_756",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 355,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasMarginStatus",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Surgical margins",
+                            "name": "Surgical_Margin",
+                            "id": "MedicalRecord_Surgical_Margin_321",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Surgical_Margin"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 361,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Pathologic Tumor Size",
+                            "name": "Pathologic_Tumor_Size",
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_704",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Pathologic_Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 366,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Tumor Size",
+                            "name": "Tumor_Size",
+                            "id": "MedicalRecord_Tumor_Size_19",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 364,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-ERStatus"
+                            ],
+                            "prettyName": "Estrogen Receptor Status",
+                            "name": "Estrogen_Receptor_Status",
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_742",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Estrogen_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_691",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 374,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 378,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 379,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-Her2Status"
+                            ],
+                            "prettyName": "HER2/Neu Status",
+                            "name": "HER2_Neu_Status",
+                            "id": "MedicalRecord_HER2_Neu_Status_490",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#HER2_Neu_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Negative",
+                            "name": "Negative",
+                            "id": "MedicalRecord_Negative_140",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Negative"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 380,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 382,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 383,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-PRStatus"
+                            ],
+                            "prettyName": "Progesterone Receptor Status",
+                            "name": "Progesterone_Receptor_Status",
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_268",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Progesterone_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_966",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 368,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 372,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 373,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasPRStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-PRStatus"
+                            ],
+                            "prettyName": "Progesterone Receptor Status",
+                            "name": "Progesterone_Receptor_Status",
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_268",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Progesterone_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_966",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 384,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 388,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 389,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasERStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-ERStatus"
+                            ],
+                            "prettyName": "Estrogen Receptor Status",
+                            "name": "Estrogen_Receptor_Status",
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_742",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Estrogen_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_691",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 390,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 394,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 395,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasHer2Status",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-Her2Status"
+                            ],
+                            "prettyName": "HER2/Neu Status",
+                            "name": "HER2_Neu_Status",
+                            "id": "MedicalRecord_HER2_Neu_Status_490",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#HER2_Neu_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Negative",
+                            "name": "Negative",
+                            "id": "MedicalRecord_Negative_140",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Negative"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 396,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 398,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 399,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasNuclearGrade",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Nuclear Grade",
+                            "name": "Nuclear_Grade",
+                            "id": "MedicalRecord_Nuclear_Grade_99",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Nuclear_Grade"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 412,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasBIRADSCategory",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Breast Imaging Reporting and Data System",
+                            "name": "Breast_Imaging_Reporting_and_Data_System",
+                            "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_391",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Imaging_Reporting_and_Data_System"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 415,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasKi67Status",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ki-67 status",
+                            "name": "KI-67_status",
+                            "id": "MedicalRecord_KI-67_status_768",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#KI-67_status"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 417,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTotalNottinghamScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Total Nottingham Score",
+                            "name": "Total_Nottingham_Score",
+                            "id": "MedicalRecord_Total_Nottingham_Score_491",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Nottingham_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 420,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasTubuleScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Tubule Formation Score",
+                            "name": "Tubule_Formation_Score",
+                            "id": "MedicalRecord_Tubule_Formation_Score_660",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Tubule_Formation_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 422,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasLymphovascularInvasionStatus",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lymphatic Invasion",
+                            "name": "Lymphatic_Invasion",
+                            "id": "MedicalRecord_Lymphatic_Invasion_352",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lymphatic_Invasion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 424,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasNuclearGradeScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Nuclear Grade Score",
+                            "name": "Nuclear_Grade_Score",
+                            "id": "MedicalRecord_Nuclear_Grade_Score_591",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Nuclear_Grade_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 426,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1528351036",
+                        "hasPathologicTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Pathologic Tumor Size",
+                            "name": "Pathologic_Tumor_Size",
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_973",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Pathologic_Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 428,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasBodySite",
+                        {
+                            "rulesApplied": [
+                                "primaryTumor",
+                                "set-tumor-PRStatus"
+                            ],
+                            "prettyName": "Breast",
+                            "name": "Breast",
+                            "id": "MedicalRecord_Breast_977",
+                            "type": "BodySite",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast"
+                        },
+                        {
+                            "name": "Laterality"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Left",
+                            "name": "Left",
+                            "id": "MedicalRecord_Left_258",
+                            "type": "Laterality",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Left"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 130,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 133,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 134,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasDiagnosis",
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 140,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasDiagnosis",
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_265",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 136,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Seed Implantation",
+                            "name": "Seed_Implantation",
+                            "id": "MedicalRecord_Seed_Implantation_641",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Seed_Implantation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 153,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lumpectomy",
+                            "name": "Lumpectomy",
+                            "id": "MedicalRecord_Lumpectomy_984",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lumpectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 155,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Segmental Mastectomy",
+                            "name": "Segmental_Mastectomy",
+                            "id": "MedicalRecord_Segmental_Mastectomy_3",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Segmental_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 157,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Neoadjuvant Therapy",
+                            "name": "Neoadjuvant_Therapy",
+                            "id": "MedicalRecord_Neoadjuvant_Therapy_436",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Neoadjuvant_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 159,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherMedication",
+                            "name": "OtherMedication",
+                            "id": "MedicalRecord_OtherMedication_243",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherMedication"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 145,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherTherapeuticProcedure",
+                            "name": "OtherTherapeuticProcedure",
+                            "id": "MedicalRecord_OtherTherapeuticProcedure_578",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherTherapeuticProcedure"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 147,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Total_Mastectomy",
+                            "id": "MedicalRecord_Total_Mastectomy_18",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 149,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Mastectomy",
+                            "id": "MedicalRecord_Mastectomy_996",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 151,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "pharmacotherapeutic",
+                            "name": "Chemotherapy",
+                            "id": "MedicalRecord_Chemotherapy_316",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 172,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Therapy",
+                            "name": "Radiation_Therapy",
+                            "id": "MedicalRecord_Radiation_Therapy_390",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 170,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Ionizing Radiotherapy",
+                            "name": "Radiation_Ionizing_Radiotherapy",
+                            "id": "MedicalRecord_Radiation_Ionizing_Radiotherapy_409",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Ionizing_Radiotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 176,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapy Regimen",
+                            "name": "Chemotherapy_Regimen",
+                            "id": "MedicalRecord_Chemotherapy_Regimen_805",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy_Regimen"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 164,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cisplatin",
+                            "name": "Cisplatin",
+                            "id": "MedicalRecord_Cisplatin_24",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cisplatin"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 162,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Docetaxel",
+                            "name": "Docetaxel",
+                            "id": "MedicalRecord_Docetaxel_579",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Docetaxel"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 168,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adjuvant Therapy",
+                            "name": "Adjuvant_Therapy",
+                            "id": "MedicalRecord_Adjuvant_Therapy_379",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Adjuvant_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 166,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cyclophosphamide",
+                            "name": "Cyclophosphamide",
+                            "id": "MedicalRecord_Cyclophosphamide_466",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cyclophosphamide"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 188,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Exemestane",
+                            "name": "Exemestane",
+                            "id": "MedicalRecord_Exemestane_671",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Exemestane"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 186,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Prophylactic Cranial Irradiation",
+                            "name": "Prophylactic_Cranial_Irradiation",
+                            "id": "MedicalRecord_Prophylactic_Cranial_Irradiation_832",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Prophylactic_Cranial_Irradiation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 192,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapeutic Perfusion",
+                            "name": "Chemotherapeutic_Perfusion",
+                            "id": "MedicalRecord_Chemotherapeutic_Perfusion_878",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapeutic_Perfusion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 190,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ovarian Ablation",
+                            "name": "Ovarian_Ablation",
+                            "id": "MedicalRecord_Ovarian_Ablation_892",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ovarian_Ablation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 180,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Hormone Replacement Therapy",
+                            "name": "Hormone_Replacement_Therapy",
+                            "id": "MedicalRecord_Hormone_Replacement_Therapy_768",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Hormone_Replacement_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 178,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Intensity-Modulated Radiation Therapy",
+                            "name": "Intensity-Modulated_Radiation_Therapy",
+                            "id": "MedicalRecord_Intensity-Modulated_Radiation_Therapy_949",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Intensity-Modulated_Radiation_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 184,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Breast Irradiation",
+                            "name": "Breast_Irradiation",
+                            "id": "MedicalRecord_Breast_Irradiation_455",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast_Irradiation"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 182,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Endocrine Therapy",
+                            "name": "Endocrine_Therapy",
+                            "id": "MedicalRecord_Endocrine_Therapy_932",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Endocrine_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 198,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Antiestrogen Therapy",
+                            "name": "Antiestrogen_Therapy",
+                            "id": "MedicalRecord_Antiestrogen_Therapy_463",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Antiestrogen_Therapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 200,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Systemic Chemotherapy",
+                            "name": "Systemic_Chemotherapy",
+                            "id": "MedicalRecord_Systemic_Chemotherapy_289",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Systemic_Chemotherapy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 194,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Anastrozole",
+                            "name": "Anastrozole",
+                            "id": "MedicalRecord_Anastrozole_924",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Anastrozole"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 196,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasCancerCellLine",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adenocarcinoma",
+                            "name": "Adenocarcinoma_Type",
+                            "id": "MedicalRecord_Adenocarcinoma_Type_748",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Adenocarcinoma_Type"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 251,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasCancerCellLine",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Carcinoma",
+                            "name": "Carcinoma_Type",
+                            "id": "MedicalRecord_Carcinoma_Type_60",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Carcinoma_Type"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 249,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasHistologicType",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ductal",
+                            "name": "Ductal",
+                            "id": "MedicalRecord_Ductal_856",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ductal"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 255,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTumorExtent",
+                        {
+                            "rulesApplied": [
+                                "setTumorExtent"
+                            ],
+                            "prettyName": "In_Situ_Lesion",
+                            "name": "In_Situ_Lesion",
+                            "id": "MedicalRecord_In_Situ_Lesion_590",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#In_Situ_Lesion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 263,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTumorExtent",
+                        {
+                            "rulesApplied": [
+                                "setTumorExtent"
+                            ],
+                            "prettyName": "Invasive_Lesion",
+                            "name": "Invasive_Lesion",
+                            "id": "MedicalRecord_Invasive_Lesion_939",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Lesion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 259,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTumorType",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "PrimaryTumor",
+                            "name": "PrimaryTumor",
+                            "id": "MedicalRecord_PrimaryTumor_339",
+                            "type": "TumorType",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#PrimaryTumor"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 129,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lumpectomy",
+                            "name": "Lumpectomy",
+                            "id": "MedicalRecord_Lumpectomy_375",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lumpectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 206,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Segmental Mastectomy",
+                            "name": "Segmental_Mastectomy",
+                            "id": "MedicalRecord_Segmental_Mastectomy_920",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Segmental_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 208,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Total_Mastectomy",
+                            "id": "MedicalRecord_Total_Mastectomy_766",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 202,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasSurgicalTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Mastectomy",
+                            "id": "MedicalRecord_Mastectomy_168",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Mastectomy"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 204,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasMarginStatus",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Surgical margins",
+                            "name": "Surgical_Margin",
+                            "id": "MedicalRecord_Surgical_Margin_280",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Surgical_Margin"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 210,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Tumor Size",
+                            "name": "Tumor_Size",
+                            "id": "MedicalRecord_Tumor_Size_282",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 213,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Pathologic Tumor Size",
+                            "name": "Pathologic_Tumor_Size",
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_985",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Pathologic_Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 215,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-ERStatus"
+                            ],
+                            "prettyName": "Estrogen Receptor Status",
+                            "name": "Estrogen_Receptor_Status",
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_692",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Estrogen_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_455",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 223,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 227,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 228,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-PRStatus"
+                            ],
+                            "prettyName": "Progesterone Receptor Status",
+                            "name": "Progesterone_Receptor_Status",
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_175",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Progesterone_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_581",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 217,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 221,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 222,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasReceptorStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-Her2Status"
+                            ],
+                            "prettyName": "HER2/Neu Status",
+                            "name": "HER2_Neu_Status",
+                            "id": "MedicalRecord_HER2_Neu_Status_999",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#HER2_Neu_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Negative",
+                            "name": "Negative",
+                            "id": "MedicalRecord_Negative_480",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Negative"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 229,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 231,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 232,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasPRStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-PRStatus"
+                            ],
+                            "prettyName": "Progesterone Receptor Status",
+                            "name": "Progesterone_Receptor_Status",
+                            "id": "MedicalRecord_Progesterone_Receptor_Status_175",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Progesterone_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_581",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 233,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 237,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 238,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasERStatus",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-ERStatus"
+                            ],
+                            "prettyName": "Estrogen Receptor Status",
+                            "name": "Estrogen_Receptor_Status",
+                            "id": "MedicalRecord_Estrogen_Receptor_Status_692",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Estrogen_Receptor_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Positive",
+                            "name": "Positive",
+                            "id": "MedicalRecord_Positive_455",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Positive"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 239,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 243,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 244,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasHer2Status",
+                        {
+                            "rulesApplied": [
+                                "collect-all-tumor-Her2Status"
+                            ],
+                            "prettyName": "HER2/Neu Status",
+                            "name": "HER2_Neu_Status",
+                            "id": "MedicalRecord_HER2_Neu_Status_999",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#HER2_Neu_Status"
+                        },
+                        {
+                            "name": "OrdinalInterpretation"
+                        },
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Negative",
+                            "name": "Negative",
+                            "id": "MedicalRecord_Negative_480",
+                            "type": "OrdinalInterpretation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Negative"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 245,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 247,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 248,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasNuclearGrade",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Nuclear Grade",
+                            "name": "Nuclear_Grade",
+                            "id": "MedicalRecord_Nuclear_Grade_704",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Nuclear_Grade"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 268,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasBIRADSCategory",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Breast Imaging Reporting and Data System",
+                            "name": "Breast_Imaging_Reporting_and_Data_System",
+                            "id": "MedicalRecord_Breast_Imaging_Reporting_and_Data_System_714",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Imaging_Reporting_and_Data_System"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 271,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasKi67Status",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ki-67 status",
+                            "name": "KI-67_status",
+                            "id": "MedicalRecord_KI-67_status_462",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#KI-67_status"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 273,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTotalNottinghamScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Total Nottingham Score",
+                            "name": "Total_Nottingham_Score",
+                            "id": "MedicalRecord_Total_Nottingham_Score_430",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Nottingham_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 276,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasTubuleScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Tubule Formation Score",
+                            "name": "Tubule_Formation_Score",
+                            "id": "MedicalRecord_Tubule_Formation_Score_800",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Tubule_Formation_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 278,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasLymphovascularInvasionStatus",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lymphatic Invasion",
+                            "name": "Lymphatic_Invasion",
+                            "id": "MedicalRecord_Lymphatic_Invasion_725",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lymphatic_Invasion"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 280,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasNuclearGradeScore",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Nuclear Grade Score",
+                            "name": "Nuclear_Grade_Score",
+                            "id": "MedicalRecord_Nuclear_Grade_Score_86",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Nuclear_Grade_Score"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 282,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                },
+                {
+                    "row": [
+                        "TumorSummary-MergedTumor-1291178417",
+                        "hasPathologicTumorSize",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Pathologic Tumor Size",
+                            "name": "Pathologic_Tumor_Size",
+                            "id": "MedicalRecord_Pathologic_Tumor_Size_509",
+                            "type": "Observation",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Pathologic_Tumor_Size"
+                        },
+                        null,
+                        null
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 284,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        null,
+                        null
+                    ]
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

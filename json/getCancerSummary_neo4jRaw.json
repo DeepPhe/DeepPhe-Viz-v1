@@ -1,0 +1,1289 @@
+{
+    "results": [
+        {
+            "columns": [
+                "cancer.id",
+                "cancerFactReln.name",
+                "fact"
+            ],
+            "data": [
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasBodySite",
+                        {
+                            "rulesApplied": [
+                                "primaryTumor",
+                                "set-tumor-PRStatus"
+                            ],
+                            "prettyName": "Breast",
+                            "name": "Breast",
+                            "id": "MedicalRecord_Breast_977",
+                            "type": "BodySite",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 2,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasBodySite",
+                        {
+                            "rulesApplied": [
+                                "primaryTumor",
+                                "set-tumor-PRStatus",
+                                "set-tumor-ERStatus",
+                                "set-tumor-Her2Status"
+                            ],
+                            "prettyName": "Breast",
+                            "name": "Breast",
+                            "id": "MedicalRecord_Breast_912",
+                            "type": "BodySite",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 8,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasDiagnosis",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "name": "Invasive_Ductal_Carcinoma_Not_Otherwise_Specified",
+                            "id": "MedicalRecord_Invasive_Ductal_Carcinoma_Not_Otherwise_Specified_938",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Ductal_Carcinoma_Not_Otherwise_Specified"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 12,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasDiagnosis",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_811",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 13,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherMedication",
+                            "name": "OtherMedication",
+                            "id": "MedicalRecord_OtherMedication_425",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherMedication"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 14,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "OtherTherapeuticProcedure",
+                            "name": "OtherTherapeuticProcedure",
+                            "id": "MedicalRecord_OtherTherapeuticProcedure_321",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#OtherTherapeuticProcedure"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 16,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Total_Mastectomy",
+                            "id": "MedicalRecord_Total_Mastectomy_808",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Total_Mastectomy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 18,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Simple mastectomy",
+                            "name": "Mastectomy",
+                            "id": "MedicalRecord_Mastectomy_570",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Mastectomy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 20,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Seed Implantation",
+                            "name": "Seed_Implantation",
+                            "id": "MedicalRecord_Seed_Implantation_109",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Seed_Implantation"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 22,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Lumpectomy",
+                            "name": "Lumpectomy",
+                            "id": "MedicalRecord_Lumpectomy_843",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Lumpectomy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 24,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Segmental Mastectomy",
+                            "name": "Segmental_Mastectomy",
+                            "id": "MedicalRecord_Segmental_Mastectomy_857",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Segmental_Mastectomy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 26,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Neoadjuvant Therapy",
+                            "name": "Neoadjuvant_Therapy",
+                            "id": "MedicalRecord_Neoadjuvant_Therapy_134",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Neoadjuvant_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 28,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cisplatin",
+                            "name": "Cisplatin",
+                            "id": "MedicalRecord_Cisplatin_806",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cisplatin"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 31,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adjuvant Therapy",
+                            "name": "Adjuvant_Therapy",
+                            "id": "MedicalRecord_Adjuvant_Therapy_403",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Adjuvant_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 35,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapy Regimen",
+                            "name": "Chemotherapy_Regimen",
+                            "id": "MedicalRecord_Chemotherapy_Regimen_163",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy_Regimen"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 33,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Therapy",
+                            "name": "Radiation_Therapy",
+                            "id": "MedicalRecord_Radiation_Therapy_329",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 39,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Docetaxel",
+                            "name": "Docetaxel",
+                            "id": "MedicalRecord_Docetaxel_413",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Docetaxel"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 37,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "pharmacotherapeutic",
+                            "name": "Chemotherapy",
+                            "id": "MedicalRecord_Chemotherapy_93",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 41,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Hormone Replacement Therapy",
+                            "name": "Hormone_Replacement_Therapy",
+                            "id": "MedicalRecord_Hormone_Replacement_Therapy_995",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Hormone_Replacement_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 47,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Radiation Ionizing Radiotherapy",
+                            "name": "Radiation_Ionizing_Radiotherapy",
+                            "id": "MedicalRecord_Radiation_Ionizing_Radiotherapy_457",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Radiation_Ionizing_Radiotherapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 45,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Breast Irradiation",
+                            "name": "Breast_Irradiation",
+                            "id": "MedicalRecord_Breast_Irradiation_197",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Breast_Irradiation"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 51,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ovarian Ablation",
+                            "name": "Ovarian_Ablation",
+                            "id": "MedicalRecord_Ovarian_Ablation_825",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ovarian_Ablation"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 49,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Exemestane",
+                            "name": "Exemestane",
+                            "id": "MedicalRecord_Exemestane_214",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Exemestane"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 55,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Intensity-Modulated Radiation Therapy",
+                            "name": "Intensity-Modulated_Radiation_Therapy",
+                            "id": "MedicalRecord_Intensity-Modulated_Radiation_Therapy_449",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Intensity-Modulated_Radiation_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 53,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Chemotherapeutic Perfusion",
+                            "name": "Chemotherapeutic_Perfusion",
+                            "id": "MedicalRecord_Chemotherapeutic_Perfusion_884",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Chemotherapeutic_Perfusion"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 59,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Cyclophosphamide",
+                            "name": "Cyclophosphamide",
+                            "id": "MedicalRecord_Cyclophosphamide_490",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Cyclophosphamide"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 57,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Systemic Chemotherapy",
+                            "name": "Systemic_Chemotherapy",
+                            "id": "MedicalRecord_Systemic_Chemotherapy_299",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Systemic_Chemotherapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 63,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Prophylactic Cranial Irradiation",
+                            "name": "Prophylactic_Cranial_Irradiation",
+                            "id": "MedicalRecord_Prophylactic_Cranial_Irradiation_474",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Prophylactic_Cranial_Irradiation"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 61,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Antiestrogen Therapy",
+                            "name": "Antiestrogen_Therapy",
+                            "id": "MedicalRecord_Antiestrogen_Therapy_646",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Antiestrogen_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 69,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Anastrozole",
+                            "name": "Anastrozole",
+                            "id": "MedicalRecord_Anastrozole_462",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Anastrozole"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 65,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTreatment",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Endocrine Therapy",
+                            "name": "Endocrine_Therapy",
+                            "id": "MedicalRecord_Endocrine_Therapy_118",
+                            "type": "Procedure",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Endocrine_Therapy"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 67,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericTClassification",
+                        {
+                            "rulesApplied": [
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "T1_Stage_Finding",
+                            "name": "T1_Stage_Finding",
+                            "id": "MedicalRecord_T1_Stage_Finding_422",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#T1_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 71,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericTClassification",
+                        {
+                            "rulesApplied": [
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "TX_Stage_Finding",
+                            "name": "TX_Stage_Finding",
+                            "id": "MedicalRecord_TX_Stage_Finding_370",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#TX_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 77,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericTClassification",
+                        {
+                            "rulesApplied": [
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "T1c_Stage_Finding",
+                            "name": "T1c_Stage_Finding",
+                            "id": "MedicalRecord_T1c_Stage_Finding_217",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#T1c_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 73,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericTClassification",
+                        {
+                            "rulesApplied": [
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "T2_Stage_Finding",
+                            "name": "T2_Stage_Finding",
+                            "id": "MedicalRecord_T2_Stage_Finding_837",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#T2_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 75,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericNClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "N0_Stage_Finding",
+                            "name": "N0_Stage_Finding",
+                            "id": "MedicalRecord_N0_Stage_Finding_368",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#N0_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 79,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericMClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "M0_Stage_Finding",
+                            "name": "M0_Stage_Finding",
+                            "id": "MedicalRecord_M0_Stage_Finding_163",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#M0_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 81,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasGenericMClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "MX_Stage_Finding",
+                            "name": "MX_Stage_Finding",
+                            "id": "MedicalRecord_MX_Stage_Finding_336",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#MX_Stage_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 83,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalTClassification",
+                        {
+                            "rulesApplied": [
+                                "Stage1A-1",
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "cT1",
+                            "name": "Breast_Cancer_cT1_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cT1_TNM_Finding_66",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cT1_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 85,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalTClassification",
+                        {
+                            "rulesApplied": [
+                                "Stage1A-1",
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "cT1c",
+                            "name": "Breast_Cancer_cT1c_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cT1c_TNM_Finding_106",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cT1c_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 87,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalTClassification",
+                        {
+                            "rulesApplied": [
+                                "Stage2A-3.1",
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "cT2",
+                            "name": "Breast_Cancer_cT2_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cT2_TNM_Finding_352",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cT2_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 89,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalTClassification",
+                        {
+                            "rulesApplied": [
+                                "setGenercTClassification"
+                            ],
+                            "prettyName": "cTX",
+                            "name": "Breast_Cancer_cTX_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cTX_TNM_Finding_95",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cTX_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 91,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalNClassification",
+                        {
+                            "rulesApplied": [
+                                "Stage1A-1"
+                            ],
+                            "prettyName": "cN0",
+                            "name": "Breast_Cancer_cN0_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cN0_TNM_Finding_906",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cN0_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 93,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasClinicalMClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "cM0",
+                            "name": "Breast_Cancer_cM0_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_cM0_TNM_Finding_756",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_cM0_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 95,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasCancerCellLine",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Adenocarcinoma",
+                            "name": "Adenocarcinoma_Type",
+                            "id": "MedicalRecord_Adenocarcinoma_Type_972",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Adenocarcinoma_Type"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 99,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasCancerCellLine",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Carcinoma",
+                            "name": "Carcinoma_Type",
+                            "id": "MedicalRecord_Carcinoma_Type_432",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Carcinoma_Type"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 97,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasHistologicType",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Ductal",
+                            "name": "Ductal",
+                            "id": "MedicalRecord_Ductal_680",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Ductal"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 103,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTumorExtent",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "In_Situ_Lesion",
+                            "name": "In_Situ_Lesion",
+                            "id": "MedicalRecord_In_Situ_Lesion_981",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#In_Situ_Lesion"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 111,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasTumorExtent",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Invasive_Lesion",
+                            "name": "Invasive_Lesion",
+                            "id": "MedicalRecord_Invasive_Lesion_334",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Invasive_Lesion"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 107,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasCancerStage",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Stage IA Breast Cancer",
+                            "name": "Stage_IA_Breast_Cancer",
+                            "id": "MedicalRecord_Stage_IA_Breast_Cancer_248",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Stage_IA_Breast_Cancer"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 116,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasCancerStage",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "Stage I Breast Cancer",
+                            "name": "Stage_I_Breast_Cancer",
+                            "id": "MedicalRecord_Stage_I_Breast_Cancer_745",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Stage_I_Breast_Cancer"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 118,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasCancerStage",
+                        {
+                            "rulesApplied": [
+                                "Stage2A-3.1",
+                                "setGenercTClassification",
+                                "Stage1A-1"
+                            ],
+                            "prettyName": "Stage IIA Breast Carcinoma",
+                            "name": "Stage_IIA_Breast_Cancer",
+                            "id": "MedicalRecord_Stage_IIA_Breast_Cancer_153",
+                            "type": "Condition",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Stage_IIA_Breast_Cancer"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 120,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasPathologicTClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "pT1c",
+                            "name": "Breast_Cancer_pT1c_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_pT1c_TNM_Finding_384",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_pT1c_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 124,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "CancerSummary-Breast",
+                        "hasPathologicNClassification",
+                        {
+                            "rulesApplied": [],
+                            "prettyName": "pN0",
+                            "name": "Breast_Cancer_pN0_TNM_Finding",
+                            "id": "MedicalRecord_Breast_Cancer_pN0_TNM_Finding_750",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpBreastCancer.owl#Breast_Cancer_pN0_TNM_Finding"
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        {
+                            "id": 126,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

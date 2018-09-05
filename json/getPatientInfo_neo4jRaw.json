@@ -1,0 +1,30 @@
+{
+    "results": [
+        {
+            "columns": [
+                "p"
+            ],
+            "data": [
+                {
+                    "row": [
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

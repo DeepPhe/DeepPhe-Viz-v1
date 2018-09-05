@@ -1,0 +1,1173 @@
+{
+  "results": [
+    {
+      "columns": [
+        "p",
+        "f.prettyName"
+      ],
+      "data": [
+        {
+          "row": [
+            {
+              "birthday": "1987/2/9",
+              "lastEncounterDate": "2014/1/8",
+              "name": "Patient10",
+              "firstEncounterDate": "2012/11/28",
+              "postmenopausal": false
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 0,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1987/2/9",
+              "lastEncounterDate": "2014/1/8",
+              "name": "Patient10",
+              "firstEncounterDate": "2012/11/28",
+              "postmenopausal": false
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 0,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1987/2/9",
+              "lastEncounterDate": "2014/1/8",
+              "name": "Patient10",
+              "firstEncounterDate": "2012/11/28",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 0,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1990/11/28",
+              "lastEncounterDate": "2013/9/20",
+              "name": "Patient17",
+              "firstEncounterDate": "2013/2/13",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 497,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1959/6/15",
+              "lastEncounterDate": "2006/9/5",
+              "name": "Patient26",
+              "firstEncounterDate": "2005/11/11",
+              "postmenopausal": true
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 1239,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1966/5/2",
+              "lastEncounterDate": "2010/1/14",
+              "name": "Patient19",
+              "firstEncounterDate": "2007/6/13",
+              "postmenopausal": false
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 1404,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1972/7/31",
+              "lastEncounterDate": "2012/10/22",
+              "name": "Patient43",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 1606,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1959/9/25",
+              "lastEncounterDate": "2010/8/7",
+              "name": "Patient44",
+              "firstEncounterDate": "2009/4/7",
+              "postmenopausal": false
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 1840,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1968/10/21",
+              "lastEncounterDate": "2014/7/30",
+              "name": "Patient16",
+              "firstEncounterDate": "2013/9/6",
+              "postmenopausal": false
+            },
+            "Stage II Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 2530,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1968/10/21",
+              "lastEncounterDate": "2014/7/30",
+              "name": "Patient16",
+              "firstEncounterDate": "2013/9/6",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 2530,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1968/10/21",
+              "lastEncounterDate": "2014/7/30",
+              "name": "Patient16",
+              "firstEncounterDate": "2013/9/6",
+              "postmenopausal": false
+            },
+            "Stage IIIA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 2530,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1968/10/21",
+              "lastEncounterDate": "2014/7/30",
+              "name": "Patient16",
+              "firstEncounterDate": "2013/9/6",
+              "postmenopausal": false
+            },
+            "Stage IIB Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 2530,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1969/9/15",
+              "lastEncounterDate": "2012/5/3",
+              "name": "Patient29",
+              "firstEncounterDate": "2011/8/5",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 2806,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1969/9/15",
+              "lastEncounterDate": "2012/5/3",
+              "name": "Patient29",
+              "firstEncounterDate": "2011/8/5",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 2806,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1992/3/13",
+              "lastEncounterDate": "2012/11/19",
+              "name": "Patient45",
+              "firstEncounterDate": "2012/5/4",
+              "postmenopausal": true
+            },
+            "Stage IB Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 3254,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1992/3/13",
+              "lastEncounterDate": "2012/11/19",
+              "name": "Patient45",
+              "firstEncounterDate": "2012/5/4",
+              "postmenopausal": true
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 3254,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1967/10/23",
+              "lastEncounterDate": "2013/3/7",
+              "name": "Patient42",
+              "firstEncounterDate": "2012/7/9",
+              "postmenopausal": true
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 3714,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1981/11/5",
+              "lastEncounterDate": "2011/1/18",
+              "name": "Patient93",
+              "firstEncounterDate": "2010/7/21",
+              "postmenopausal": false
+            },
+            "Stage IIB Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 4020,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1981/11/5",
+              "lastEncounterDate": "2011/1/18",
+              "name": "Patient93",
+              "firstEncounterDate": "2010/7/21",
+              "postmenopausal": false
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 4020,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1972/4/5",
+              "lastEncounterDate": "2013/10/16",
+              "name": "Patient33",
+              "firstEncounterDate": "2013/5/2",
+              "postmenopausal": false
+            },
+            "Stage IB Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 4171,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1972/4/5",
+              "lastEncounterDate": "2013/10/16",
+              "name": "Patient33",
+              "firstEncounterDate": "2013/5/2",
+              "postmenopausal": false
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 4171,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1989/5/3",
+              "lastEncounterDate": "2010/8/20",
+              "name": "Patient34",
+              "firstEncounterDate": "2009/8/18",
+              "postmenopausal": true
+            },
+            "Stage level 1"
+          ],
+          "meta": [
+            {
+              "id": 4424,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1988/4/27",
+              "lastEncounterDate": "2013/2/28",
+              "name": "Patient02",
+              "firstEncounterDate": "2011/9/21",
+              "postmenopausal": true
+            },
+            "Stage IIIC Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 4612,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1988/4/27",
+              "lastEncounterDate": "2013/2/28",
+              "name": "Patient02",
+              "firstEncounterDate": "2011/9/21",
+              "postmenopausal": true
+            },
+            "Stage IIIA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 4612,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1971/5/16",
+              "lastEncounterDate": "2013/7/27",
+              "name": "Patient05",
+              "firstEncounterDate": "2013/1/29",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 5015,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1962/9/7",
+              "lastEncounterDate": "2013/9/11",
+              "name": "Patient92",
+              "firstEncounterDate": "2011/9/21",
+              "postmenopausal": false
+            },
+            "Stage IIIA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 5264,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1977/2/17",
+              "lastEncounterDate": "2013/3/28",
+              "name": "Patient04",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 5573,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1977/2/17",
+              "lastEncounterDate": "2013/3/28",
+              "name": "Patient04",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 5573,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1977/2/17",
+              "lastEncounterDate": "2013/3/28",
+              "name": "Patient04",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage IIB Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 5573,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1977/2/17",
+              "lastEncounterDate": "2013/3/28",
+              "name": "Patient04",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage II Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 5573,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1977/2/17",
+              "lastEncounterDate": "2013/3/28",
+              "name": "Patient04",
+              "firstEncounterDate": "2012/1/11",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 5573,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1964/4/18",
+              "lastEncounterDate": "2012/5/17",
+              "name": "Patient35",
+              "firstEncounterDate": "2011/9/28",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 6101,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1975/2/6",
+              "lastEncounterDate": "2014/4/1",
+              "name": "Patient47",
+              "firstEncounterDate": "2013/1/15",
+              "postmenopausal": true
+            },
+            "Stage II Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 6533,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1975/2/6",
+              "lastEncounterDate": "2014/4/1",
+              "name": "Patient47",
+              "firstEncounterDate": "2013/1/15",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 6533,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1975/2/6",
+              "lastEncounterDate": "2014/4/1",
+              "name": "Patient47",
+              "firstEncounterDate": "2013/1/15",
+              "postmenopausal": true
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 6533,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1966/1/15",
+              "lastEncounterDate": "2014/3/5",
+              "name": "Patient40",
+              "firstEncounterDate": "2013/3/11",
+              "postmenopausal": true
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 6808,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1967/1/1",
+              "lastEncounterDate": "2009/4/2",
+              "name": "Patient13",
+              "firstEncounterDate": "2008/4/2",
+              "postmenopausal": false
+            },
+            "Stage III Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 7443,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1967/1/1",
+              "lastEncounterDate": "2009/4/2",
+              "name": "Patient13",
+              "firstEncounterDate": "2008/4/2",
+              "postmenopausal": false
+            },
+            "Stage_Is_Breast_Cancer"
+          ],
+          "meta": [
+            {
+              "id": 7443,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1966/1/19",
+              "lastEncounterDate": "2010/5/12",
+              "name": "Patient22",
+              "firstEncounterDate": "2009/11/6",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 7969,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1955/3/13",
+              "lastEncounterDate": "2014/5/1",
+              "name": "Patient41",
+              "firstEncounterDate": "2013/5/20",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 8165,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1955/3/13",
+              "lastEncounterDate": "2014/5/1",
+              "name": "Patient41",
+              "firstEncounterDate": "2013/5/20",
+              "postmenopausal": false
+            },
+            "Stage II Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 8165,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1959/8/21",
+              "lastEncounterDate": "2014/9/17",
+              "name": "Patient12",
+              "firstEncounterDate": "2013/11/11",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 9014,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1959/8/21",
+              "lastEncounterDate": "2014/9/17",
+              "name": "Patient12",
+              "firstEncounterDate": "2013/11/11",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 9014,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1990/5/17",
+              "lastEncounterDate": "2014/6/10",
+              "name": "Patient15",
+              "firstEncounterDate": "2013/6/21",
+              "postmenopausal": false
+            },
+            "Stage 0 Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 9250,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1970/4/30",
+              "lastEncounterDate": "2011/7/8",
+              "name": "Patient37",
+              "firstEncounterDate": "2011/4/5",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 9596,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1964/3/10",
+              "lastEncounterDate": "2013/5/7",
+              "name": "Patient39",
+              "firstEncounterDate": "2012/7/9",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 9930,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1964/3/10",
+              "lastEncounterDate": "2013/5/7",
+              "name": "Patient39",
+              "firstEncounterDate": "2012/7/9",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 9930,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1969/11/19",
+              "lastEncounterDate": "2013/3/5",
+              "name": "Patient01",
+              "firstEncounterDate": "2011/11/3",
+              "postmenopausal": false
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 10348,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1969/11/19",
+              "lastEncounterDate": "2013/3/5",
+              "name": "Patient01",
+              "firstEncounterDate": "2011/11/3",
+              "postmenopausal": false
+            },
+            "Stage II Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 10348,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1973/5/6",
+              "lastEncounterDate": "2011/7/11",
+              "name": "Patient38",
+              "firstEncounterDate": "2010/4/1",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 10654,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1973/5/6",
+              "lastEncounterDate": "2011/7/11",
+              "name": "Patient38",
+              "firstEncounterDate": "2010/4/1",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 10654,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1978/7/8",
+              "lastEncounterDate": "2009/10/2",
+              "name": "Patient07",
+              "firstEncounterDate": "2008/9/3",
+              "postmenopausal": false
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 10931,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1978/7/8",
+              "lastEncounterDate": "2009/10/2",
+              "name": "Patient07",
+              "firstEncounterDate": "2008/9/3",
+              "postmenopausal": false
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 10931,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1976/3/19",
+              "lastEncounterDate": "2013/5/24",
+              "name": "Patient31",
+              "firstEncounterDate": "2012/7/5",
+              "postmenopausal": false
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 11314,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1976/3/19",
+              "lastEncounterDate": "2013/5/24",
+              "name": "Patient31",
+              "firstEncounterDate": "2012/7/5",
+              "postmenopausal": false
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 11314,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1993/8/22",
+              "lastEncounterDate": "2012/3/5",
+              "name": "Patient36",
+              "firstEncounterDate": "2011/2/28",
+              "postmenopausal": true
+            },
+            "Stage IA Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 11623,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1993/8/22",
+              "lastEncounterDate": "2012/3/5",
+              "name": "Patient36",
+              "firstEncounterDate": "2011/2/28",
+              "postmenopausal": true
+            },
+            "Stage IIA Breast Carcinoma"
+          ],
+          "meta": [
+            {
+              "id": 11623,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        },
+        {
+          "row": [
+            {
+              "birthday": "1993/8/22",
+              "lastEncounterDate": "2012/3/5",
+              "name": "Patient36",
+              "firstEncounterDate": "2011/2/28",
+              "postmenopausal": true
+            },
+            "Stage I Breast Cancer"
+          ],
+          "meta": [
+            {
+              "id": 11623,
+              "type": "node",
+              "deleted": false
+            },
+            null
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": []
+}
