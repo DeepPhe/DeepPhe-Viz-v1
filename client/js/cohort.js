@@ -20,15 +20,13 @@ function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
 
 // Entry point
 function showCohort() {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/cohortData',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -39,9 +37,8 @@ function showCohort() {
 
         // By default show charts of all pateints and all stages
         showDerivedCharts(allPatients, allStagesLabel);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
 	});
 }
@@ -1094,39 +1091,33 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 }
 
 function getPatientsTumorInfo(patientNames, stage) {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    //console.log(response);
         
 	    showBiomarkersChart("biomarkers", response.biomarkersInfo, stage);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get patients tumor info");
 	});
 }
 
 function getDiagnosis(patientNames, stage) {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/diagnosis/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    showDiagnosisChart("diagnosis", response, stage);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get patients diagnosis info");
 	});
 }
