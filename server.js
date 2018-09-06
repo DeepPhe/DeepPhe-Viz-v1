@@ -43,7 +43,6 @@ const init = async function() {
             html: require('handlebars')
         },
         isCached: false, // Tell Hapi not to cache the view files, no need to restart app
-        layout: 'default', // Use 'default.html' as the default layout
         // Tell the server that our templates are located in the templates directory within the current path
         relativeTo: __dirname,
         path: './client/templates',
@@ -53,7 +52,7 @@ const init = async function() {
 
     // Start the server
     await server.start();
-    console.log(`Hapi HTTP Server is running at: ${server.info.uri}`);
+    console.log(`DeepPhe-Viz HTTP Server is running at: ${server.info.uri}`);
 };
 
 process.on('unhandledRejection', (err) => {
