@@ -42,9 +42,9 @@
 
 
 <script type="text/javascript">
-var patientName = '{{patientName}}';
-var cancerId = '{{cancerId}}';
-var baseUri = '{{baseUri}}';
+const patientName = '{{patientName}}';
+const cancerId = '{{cancerId}}';
+const baseUri = '{{baseUri}}';
 
 // Get pateint info
 getPatientInfo(patientName);
@@ -64,12 +64,12 @@ getTimeline(patientName, "timeline");
 $(function() {
     // Cancer fact click
     $(document).on("click", "#cancer .fact", function() {
-        var cssClass = 'highlighted_fact';
+        const cssClass = 'highlighted_fact';
         
         // Remove the previous highlighting
         $('.fact').removeClass(cssClass);
 
-        var factId = $(this).attr('id');
+        let factId = $(this).attr('id');
         getFact(patientName, factId);
 
         // Highlight the clicked fact
@@ -78,14 +78,14 @@ $(function() {
 
     // Tumor fact click - List View
     $(document).on("click", "#list_view .fact", function() {
-        var cssClass = 'highlighted_fact';
+        const cssClass = 'highlighted_fact';
 
         // Remove the previous highlighting
         $('.fact').removeClass(cssClass);
 
         // "list_view_{{id}}"
-        var id = $(this).attr('id');
-        var factId = id.substring(10);
+        let id = $(this).attr('id');
+        let factId = id.substring(10);
         getFact(patientName, factId);
 
         // Highlight the clicked fact
@@ -97,14 +97,14 @@ $(function() {
 
     // Tumor fact click - Table View
     $(document).on("click", "#table_view .fact", function() {
-        var cssClass = 'highlighted_fact';
+        const cssClass = 'highlighted_fact';
 
         // Remove the previous highlighting
         $('.fact').removeClass(cssClass);
 
         // "table_view_{{id}}"
-        var id = $(this).attr('id');
-        var factId = id.substring(11);
+        let id = $(this).attr('id');
+        let factId = id.substring(11);
         getFact(patientName, factId);
 
         // Highlight the clicked fact
@@ -133,13 +133,13 @@ $(function() {
 
     // Click the fact based report id to display report content
     $(document).on("click", ".fact_based_report_id", function() {
-        var cssClass = 'current_displaying_report';
+        const cssClass = 'current_displaying_report';
         // First remove the previously added highlighting
         $('.fact_based_report_id').removeClass(cssClass);
         // Then add to this one
         $(this).addClass(cssClass);
 
-        var reportId = $(this).attr('id');
+        let reportId = $(this).attr('id');
         getReport(reportId);
 
         // Also highlight the selected report circle in timeline
@@ -149,20 +149,20 @@ $(function() {
     // Click the report mentioned term to show it in the report text
     $(document).on("click", ".report_mentioned_term", function() {
         // Highlight the selected term in the term list
-        var cssClass = 'current_mentioned_term';
+        const cssClass = 'current_mentioned_term';
         // First remove the previously added highlighting
         $('.report_mentioned_term').removeClass(cssClass);
         // Then add to this one
         $(this).addClass(cssClass);
 
-        var reportTextDiv = $("#report_text");
+        let reportTextDiv = $("#report_text");
 
         // Use text() instead of html() to only get the combined text without any html tags
-        var reportText = reportTextDiv.text();
+        let reportText = reportTextDiv.text();
 
-        var textMentions = [];
+        let textMentions = [];
 
-        var termObj = {};
+        let termObj = {};
         termObj.text = $(this).text();
         termObj.startOffset = $(this).data('start');
         termObj.endOffset = $(this).data('end');
@@ -170,7 +170,7 @@ $(function() {
         textMentions.push(termObj);
 
         // Highlight this term in the report text
-        var highlightedReportText = highlightMentionedTexts(textMentions, reportText);
+        let highlightedReportText = highlightMentionedTexts(textMentions, reportText);
 
         // Use html() for html rendering
         $("#report_text").html(highlightedReportText);
