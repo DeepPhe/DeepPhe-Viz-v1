@@ -1,27 +1,27 @@
-// Keep the pateints data in memory
-var allPatients = [];
-
-var allStages = "All stages";
-
 // Global settings
-var transitionDuration = 800; // time in ms
+const transitionDuration = 800; // time in ms
+
+// Keep the pateints data in memory
+let allPatients = [];
+
+const allStagesLabel = "All stages";
 
 // Min and max age across all the patients
-var minAge;
-var maxAge;
+let minAge;
+let maxAge;
 
 // encounterDateStr is a string, not Date object
 function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
-        // birthday is a string
-        var ageDiffMs =  new Date(encounterDateStr).getTime() - new Date(birthday).getTime();
-        var ageDate = new Date(ageDiffMs); // miliseconds from epoch
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    // birthday is a string
+    let ageDiffMs =  new Date(encounterDateStr).getTime() - new Date(birthday).getTime();
+    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 // Entry point
 function showCohort() {
     // Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/cohortData',
 	    method: 'GET', 
 	    async : true,
@@ -38,7 +38,7 @@ function showCohort() {
         allPatients = response.patientsInfo.patients;
 
         // By default show charts of all pateints and all stages
-        showDerivedCharts(allPatients, allStages);
+        showDerivedCharts(allPatients, allStagesLabel);
 	});
 
 	jqxhr.fail(function () { 
@@ -47,16 +47,16 @@ function showCohort() {
 }
 
 function showStagesChart(svgContainerId, data) {
-	var patientsCounts = {};
+	let patientsCounts = {};
 
 	// In order to get the minAge and maxAge
-	var minAges = [];
-	var maxAges = [];
+	let minAges = [];
+	let maxAges = [];
 
 	// Calculate and add the box plot data to each stageInfo object
 	data.forEach(function(stageInfo) {
 		// Initialise stats object
-	    var ageStats = {
+	    let ageStats = {
 	        minVal: Infinity,
 	        lowerWhisker: Infinity,
 	        q1Val: Infinity,
@@ -95,22 +95,22 @@ function showStagesChart(svgContainerId, data) {
     maxAge = Math.max.apply(null, maxAges);
 
 	// set the dimensions and margins of the graph
-	var svgWidth = 420;
-	var svgHeight = 280;
+	const svgWidth = 420;
+	const svgHeight = 280;
 	// svgPadding.top is used to position the chart title
 	// svgPadding.left is the space for Y axis labels
-	var svgPadding = {top: 10, right: 15, bottom: 15, left: 75};
-	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const svgPadding = {top: 10, right: 15, bottom: 15, left: 75};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	// Gap between svg top and chart top, nothing to do with svgPadding.top
-	var chartTopMargin = 48;
+	const chartTopMargin = 48;
 
     // Box plot
-    var boxHeight = 4;
-    var textBottomPadding = 1;
+    const boxHeight = 4;
+    const textBottomPadding = 1;
 
     // Sort this uniqueStages array in a specific order
-    var orderedCancerStages = [
+    const orderedCancerStages = [
         'Stage 0', 
         // Stage I
         'Stage I',
@@ -135,7 +135,7 @@ function showStagesChart(svgContainerId, data) {
     ];
 
     // All top-level stages
-    var topLevelStages = [
+    const topLevelStages = [
         'Stage 0', 
         'Stage I', 
         'Stage II', 
@@ -144,30 +144,30 @@ function showStagesChart(svgContainerId, data) {
     ];
 
     // All stages found in data
-    var allStages = data.map(function(d) { 
+    let allStages = data.map(function(d) { 
 		return d.stage; 
 	});
 
 	// By default only show the top level stages
-	var topStagesData = data.filter(function(d) { 
+	let topStagesData = data.filter(function(d) { 
 		if (topLevelStages.indexOf(d.stage) !== -1) {
             return d.stage;
 		}
 	});
 
 	// set the ranges
-	var x = d3.scaleLinear()
+	let x = d3.scaleLinear()
 	    .range([0, chartWidth])
 	    // Integer age range based on rounding the minAge and maxAge
 	    .domain([Math.floor(minAge/10) * 10, Math.ceil(maxAge/10) * 10]);
 	    
-    var xCount = d3.scaleLinear()
+    let xCount = d3.scaleLinear()
 	    .range([0, chartWidth])
 	    .domain([0, d3.max(data, function(d) { 
 			return d.patientsCount; 
 		})]);
 
-	var y = d3.scaleBand()
+	let y = d3.scaleBand()
 		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		// Set the y domain based on the filteredData
 		.domain(topStagesData.map(function(d) { 
@@ -175,11 +175,11 @@ function showStagesChart(svgContainerId, data) {
 		}))
 		.padding(0.1); // blank space between bands
 
-	var svg = d3.select("#" + svgContainerId).append("svg")
+	let svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", svgWidth)
 		.attr("height", svgHeight);
 
-	var stagesChartGrp = svg.append("g")
+	let stagesChartGrp = svg.append("g")
 		.attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
 
     // Chart title
@@ -238,8 +238,8 @@ function showStagesChart(svgContainerId, data) {
 			})
 			.attr("height", y.bandwidth())
 			.on("click", function(d) {
-	            var clickedBar = d3.select(this);
-	            var css = "clicked_bar";
+	            let clickedBar = d3.select(this);
+	            let css = "clicked_bar";
 
 	            // Toggle
 	            if (!clickedBar.classed(css)) {
@@ -252,8 +252,7 @@ function showStagesChart(svgContainerId, data) {
 	            	// When clicked again, remove highlight and show all patients
 	            	clickedBar.classed(css, false);
 	            	// allPatients is the patient data saved in memory
-	            	// allStages is the global string label
-	            	showDerivedCharts(allPatients, allStages);
+	            	showDerivedCharts(allPatients, allStagesLabel);
 	            }
 			})
 			.transition()
@@ -264,7 +263,7 @@ function showStagesChart(svgContainerId, data) {
 
 
 	    // Only show the patient age when the stage has only one patient
-	    var singlePatientGrp = stagesChartGrp.append("g").selectAll(".single_patient_group")
+	    let singlePatientGrp = stagesChartGrp.append("g").selectAll(".single_patient_group")
 			.data(data.filter(function(d) {
 				return d.patientsCount === 1;
 			}))
@@ -300,7 +299,7 @@ function showStagesChart(svgContainerId, data) {
 			});
 
 		// Show the box plot for stage that has more than one patient
-		var boxplotGrp = stagesChartGrp.append("g").selectAll(".boxplot")
+		let boxplotGrp = stagesChartGrp.append("g").selectAll(".boxplot")
 			.data(data.filter(function(d) {
 				return d.patientsCount > 1;
 			}))
@@ -457,12 +456,12 @@ function showStagesChart(svgContainerId, data) {
 
         // Only add click event to top level stages
 		d3.selectAll(".top_stage").on("click", function(d) {
-            var displayStages = y.domain();
+            let displayStages = y.domain();
 
             // Click top-level stage label to show sub level stages
-            var subLevels = [d + "A",  d + "B", d  + "C"];
-            var addedSubStages = [];
-            var removedSubStages = [];
+            let subLevels = [d + "A",  d + "B", d  + "C"];
+            let addedSubStages = [];
+            let removedSubStages = [];
 
 			subLevels.forEach(function(stage) {
 			    // sub stage must belong to the allStages
@@ -476,7 +475,7 @@ function showStagesChart(svgContainerId, data) {
 	                    // No need to sort this array since it's based on the A, B, C
 	                    addedSubStages.push(stage);
 				    } else {
-	                    var index = displayStages.indexOf(stage);
+	                    let index = displayStages.indexOf(stage);
 	                    displayStages.splice(index, 1);
 
                         // Also add to removedSubStages
@@ -487,7 +486,7 @@ function showStagesChart(svgContainerId, data) {
 
             // Same as the one in dataProcessor
             function sortByProvidedOrder(array, orderArr) {
-		        var orderMap = {};
+		        let orderMap = {};
 
 		        orderArr.forEach(function(item) { 
 		            // Remember the index of each item in order array
@@ -495,7 +494,7 @@ function showStagesChart(svgContainerId, data) {
 		        });
 
 		        // Sort the original array by the item's index in the orderArr
-		        var sortedArray = array.sort(function(a, b){ 
+		        let sortedArray = array.sort(function(a, b){ 
 		            return orderMap[a] - orderMap[b];
 		        });
 
@@ -503,7 +502,7 @@ function showStagesChart(svgContainerId, data) {
 		    }
 
             // Need to sort the displayStages so the sub-stages appear under each top-stage
-            var sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
+            let sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
 
             // Also update the y.domain()
 		    y.domain(sortedDisplayStages);
@@ -540,7 +539,7 @@ function showStagesChart(svgContainerId, data) {
 
             // Add sub stage bars and boxplots
             if (addedSubStages.length > 0) {
-                var updatedData = data.filter(function(d) { 
+                let updatedData = data.filter(function(d) { 
 					if (addedSubStages.indexOf(d.stage) !== -1) {
 			            return d.stage;
 					}
@@ -575,7 +574,7 @@ function showStagesChart(svgContainerId, data) {
 // No rest call since each stage data contains the patients list info
 function showDerivedCharts(patientsArr, stage) {
 	// Create an array of patient names
-    var patientNames = [];
+    let patientNames = [];
     patientsArr.forEach(function(patient) {
     	patientNames.push(patient.name);
     });
@@ -596,30 +595,29 @@ function showDerivedCharts(patientsArr, stage) {
 // All patients is a separate call
 // patients of each stage is alrady loaded data
 function showPatientsTable(containerId, data, stage) {
-    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
-
     // Group patients by age of first encounter
-    var rangeStartAge = Math.floor(minAge/10) * 10;
-    var rangeEndAge = Math.ceil(maxAge/10) * 10;
+    let rangeStartAge = Math.floor(minAge/10) * 10;
+    let rangeEndAge = Math.ceil(maxAge/10) * 10;
 
     // Calculate the age range
-    var range = [];
-    for (var i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
+    let range = [];
+    let ageRange = [];
+    for (let i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
         if (i === 0) {
-            var ageRange = [rangeStartAge + i * 10, rangeStartAge + i * 10 + 10];
+            ageRange = [rangeStartAge + i * 10, rangeStartAge + i * 10 + 10];
         } else {
-        	var ageRange = [rangeStartAge + i * 10 + 1, rangeStartAge + i * 10 + 10];
+        	ageRange = [rangeStartAge + i * 10 + 1, rangeStartAge + i * 10 + 10];
         }
 
         range.push(ageRange);
     }
 
-    var rangePatients = [];
+    let rangePatients = [];
     range.forEach(function(range) {
-    	var patients = [];
+    	let patients = [];
     	// The data is already sorted by patient age of first encounter
         data.forEach(function(patient) {
-            var firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
+            let firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
 
             if (firstEncounterAge >= range[0] && firstEncounterAge <= range[1]) {
                 patients.push(patient);
@@ -628,11 +626,11 @@ function showPatientsTable(containerId, data, stage) {
         rangePatients.push(patients);
     });
 
-    var html =  '<table class="patients_table">'
-        + '<caption class="patients_table_title">Patients Table (' + data.length + ' patients from ' + targetStage + ')</caption>'
+    let html =  '<table class="patients_table">'
+        + '<caption class="patients_table_title">Patients Table (' + data.length + ' patients from ' + stage + ')</caption>'
         + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th><th>Count</th></tr>';
 
-    for (var i = 0; i < rangePatients.length; i++) {
+    for (let i = 0; i < rangePatients.length; i++) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
         html += '<td><ul class="patient_age_range_list">';
         rangePatients[i].forEach(function(patient) {
@@ -647,27 +645,25 @@ function showPatientsTable(containerId, data, stage) {
 }
 
 function showPatientsChart(svgContainerId, data, stage) {
-    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
-
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
-    var patients = {
+    let patients = {
     	"children": data
     };
 
-    var svgWidth = 420;
-    var svgHeight = 280;
-    var svgPadding = {top: 10, right: 10, bottom: 10, left: 10};
-	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
-	var chartTopMargin = 30;
+    const svgWidth = 420;
+    const svgHeight = 280;
+    const svgPadding = {top: 10, right: 10, bottom: 10, left: 10};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartTopMargin = 30;
 
-	var svg = d3.select("#" + svgContainerId).append("svg")
+	let svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "patients_chart") // Used for CSS styling
 			.attr("width", svgWidth)
 			.attr("height", svgHeight);
 
-	var patientsChartGrp = svg.append("g")
+	let patientsChartGrp = svg.append("g")
 			    .attr("class", "patients_chart_group")
 			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
     
@@ -677,20 +673,20 @@ function showPatientsChart(svgContainerId, data, stage) {
         .attr("transform", function(d) { 
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Patients (" + data.length + " patients from " + targetStage + ")");
+        .text("Patients (" + data.length + " patients from " + stage + ")");
 
     // Creates a new pack layout with the default settings
-	var pack = d3.pack()
+	let pack = d3.pack()
 		.size([chartWidth, chartHeight - chartTopMargin])
 		.padding(3);
 
 
-	var root = d3.hierarchy(patients)
+	let root = d3.hierarchy(patients)
 	    .sum(function(d) { 
 	    	return getPatientEncounterAgeByDateString(d.firstEncounterDate, d.birthday); 
 	    });
 
-	var node = patientsChartGrp.selectAll(".node")
+	let node = patientsChartGrp.selectAll(".node")
 		.data(pack(root).leaves())
 		.enter().append("g")
 		.attr("class", "node")
@@ -707,8 +703,7 @@ function showPatientsChart(svgContainerId, data, stage) {
 			return d.r; 
 		})
 		.on("click", function(d) {
-			console.log(d);
-			var patientName = d.data.name;
+			let patientName = d.data.name;
 			window.location = baseUri + "/patient/" + patientName;
 		});
 
@@ -730,38 +725,36 @@ function getPatientLongName(shortName) {
 function showDiagnosisChart(svgContainerId, data, stage) {
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
-	var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
+    const svgWidth = 620;
+    const svgHeight = 280;
+	const svgPadding = {top: 10, right: 15, bottom: 12, left: 248};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartTopMargin = 40;
 
-    var svgWidth = 620;
-    var svgHeight = 280;
-	var svgPadding = {top: 10, right: 15, bottom: 12, left: 248};
-	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
-	var chartTopMargin = 40;
-
-	var svg = d3.select("#" + svgContainerId).append("svg")
+	let svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "diagnosis_chart") // Used for CSS styling
 			.attr("width", svgWidth)
 			.attr("height", svgHeight);
 
-	var diagnosisChartGrp = svg.append("g")
+	let diagnosisChartGrp = svg.append("g")
 			    .attr("class", "diagnosis_chart_group")
 			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
     
-    var dotColor = "rgb(107, 174, 214)";
-    var highlightedDotColor = "rgb(230, 85, 13)";
+    const dotColor = "rgb(107, 174, 214)";
+    const highlightedDotColor = "rgb(230, 85, 13)";
 
-    var xDomain = [];
+    let xDomain = [];
     
-    var diagnosisDots = [];
+    let diagnosisDots = [];
 
     data.data.forEach(function(d) {
-    	var patientShortName = getPatientShortName(d.patient);
+    	let patientShortName = getPatientShortName(d.patient);
 
     	xDomain.push(patientShortName);
 
     	d.diagnosis.forEach(function(diagnosis) {
-    		var dot = {};
+    		let dot = {};
     		dot.patientShortName = patientShortName;
     		dot.diagnosis = diagnosis;
 
@@ -770,16 +763,16 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     });
 
 	// set the ranges
-	var x = d3.scalePoint()
+	let x = d3.scalePoint()
 	    .range([10, chartWidth])
 	    .domain(xDomain);
 	    
-	var y = d3.scalePoint()
+	let y = d3.scalePoint()
 		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - 10]) // extra 10 gap
 		.domain(data.diagnosis);
 	
 	// Replace all spaces and () with underscores
-    var diagnosis2Class = function(diagnosis) {
+    let diagnosis2Class = function(diagnosis) {
         return diagnosis.replace(/ |\(|\)/g, "_");
     };
 
@@ -789,7 +782,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
         .attr("transform", function(d) { 
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Diagnosis (" + xDomain.length + " patients from " + targetStage + ")");
+        .text("Diagnosis (" + xDomain.length + " patients from " + stage + ")");
 
 	// Patient diagnosis dots
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
@@ -833,7 +826,6 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 			// Also highlight the corresponding Y labels
 			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
-				console.log(diagnosis);
 				$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
 			});
         })
@@ -868,53 +860,51 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 
 function showBiomarkersChart(svgContainerId, data, stage) {
-    var targetStage = (typeof stage === "undefined") ? "All Stages" : stage;
- 
-    var biomarkerStatus = ['positive', 'negative', 'unknown'];
+    const biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-    var svgWidth = 420;
-    var svgHeight = 280;
-	var svgPadding = {top: 10, right: 10, bottom: 15, left: 45};
-	var chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	var chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
-	var chartTopMargin = 35;
+    const svgWidth = 420;
+    const svgHeight = 280;
+	const svgPadding = {top: 10, right: 10, bottom: 15, left: 45};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartTopMargin = 35;
 
-    var legendGroupWidth = 60;
-    var legendRectSize = 10;
-    var legnedTextRectPad = 3;
+    const legendGroupWidth = 60;
+    const legendRectSize = 10;
+    const legnedTextRectPad = 3;
 
     // Band scale of biomarkers
-	var biomarkerScale = d3.scaleBand()
+	let biomarkerScale = d3.scaleBand()
 	    .domain(data.biomarkersPool)
 	    .rangeRound([0, chartHeight - chartTopMargin])
 	    .padding(0.15);
 
     // Band scale of status
-	var statusScale = d3.scaleBand()
+	let statusScale = d3.scaleBand()
 	    .domain(biomarkerStatus)
 	    .rangeRound([0, biomarkerScale.bandwidth()])
 	    .padding(0.15);
 
     // Percentage
-	var x = d3.scaleLinear()
+	let x = d3.scaleLinear()
 	    .rangeRound([0, chartWidth - legendGroupWidth])
 	    .domain([0, 1]);
 
     // Colors of status: positive, negative, unknown
-    var color = d3.scaleOrdinal()
+    let color = d3.scaleOrdinal()
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
     // https://github.com/d3/d3-format
-    var formatPercent = d3.format(".0%");
+    let formatPercent = d3.format(".0%");
 
     // Only draw everything for the first time
     if (d3.select(".biomarkers_chart_group").empty()) {
-	    var svg = d3.select("#" + svgContainerId).append("svg")
+	    let svg = d3.select("#" + svgContainerId).append("svg")
 		    .attr("class", "biomarkers_chart") // Used for CSS styling
 			.attr("width", svgWidth)
 			.attr("height", svgHeight);
 		
-		var biomarkersChartGrp = svg.append("g")
+		let biomarkersChartGrp = svg.append("g")
 			    .attr("class", "biomarkers_chart_group")
 			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
 
@@ -924,10 +914,10 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	        .attr("transform", function(d) { 
 				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 			})
-	        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
+	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
 
 
-	    var biomarkerGrp = biomarkersChartGrp.selectAll(".biomarker_group")
+	    let biomarkerGrp = biomarkersChartGrp.selectAll(".biomarker_group")
 			.data(data.data)
 			.enter().append("g")
 			.attr("class", "biomarker_group")
@@ -941,7 +931,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.data(function(d) { 
 				// Creates a new data array of objects
 				// each object is like {status: "positive", percentage: 0.73}
-				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				let statusPercentageArr = biomarkerStatus.map(function(status) { 
 				    return {status: status, percentage: d[status]}; 
 				}); 
 
@@ -974,7 +964,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.data(function(d) { 
 				// Creates a new data array of objects
 				// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
-				var statusPercentageArr = biomarkerStatus.map(function(status) { 
+				let statusPercentageArr = biomarkerStatus.map(function(status) { 
 				    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
 				}); 
 
@@ -999,7 +989,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			})
 			// percentage text tween transition
 	        .tween("text", function(d) {
-				var i = d3.interpolate(0, d.percentage);
+				let i = d3.interpolate(0, d.percentage);
 				return function(t) {
 	                // Don't use d3.select(this) here
 	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
@@ -1024,7 +1014,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 				.text("Percentage of biomarker status");
 
 	    // Status legend
-		var legend = biomarkersChartGrp.append("g")
+		let legend = biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_legend")
 			.selectAll("g")
 			.data(biomarkerStatus)
@@ -1054,7 +1044,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			});
     } else {
     	// No worries about ordering
-    	var percents = [];
+    	let percents = [];
     	data.data.forEach(function(obj) {
             percents.push(obj.positive);
             percents.push(obj.negative);
@@ -1088,8 +1078,8 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     	    	// The d3.interpolate method receives the beginning and end values of the transition, 
     	    	// and returns an interpolator function. An interpolator function receives a value between 0 and 1, 
     	    	// and returns the interpolated value.
-    	    	var previousPercent = (parseFloat(d3.select("#" + d.biomarker + "_" + d.status).text()) / 100).toFixed(2);
-				var interpolate = d3.interpolate(previousPercent, percents[i]);
+    	    	let previousPercent = (parseFloat(d3.select("#" + d.biomarker + "_" + d.status).text()) / 100).toFixed(2);
+				let interpolate = d3.interpolate(previousPercent, percents[i]);
 				return function(t) {
 	                // Don't use d3.select(this) here
 	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
@@ -1099,13 +1089,13 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 
         // Also update the chart title with patients count
         d3.select(".biomarkers_chart_title")
-	        .text("Biomarkers (" + data.patients.length + " patients from " + targetStage + ")");
+	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
     }
 }
 
 function getPatientsTumorInfo(patientNames, stage) {
     // Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,
@@ -1125,7 +1115,7 @@ function getPatientsTumorInfo(patientNames, stage) {
 
 function getDiagnosis(patientNames, stage) {
     // Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/diagnosis/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,

@@ -1,18 +1,18 @@
 // Global settings
-var transitionDuration = 800; // time in ms
-var factBasedReports = [];
+const transitionDuration = 800; // time in ms
+let factBasedReports = [];
 
 function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
 	// encounterDateObj is Date object while birthday is a string
-    var ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
-    var ageDate = new Date(ageDiffMs); // miliseconds from epoch
+    let ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
+    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
 // Show patient info
 function getPatientInfo(patientName) {
 	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/patient/' + patientName + '/info',
 	    method: 'GET', 
 	    async : true,
@@ -34,7 +34,7 @@ function getPatientInfo(patientName) {
 // Get cancer summary
 function getCancerSummary(patientName) {
 	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/patient/' + patientName + '/cancers',
 	    method: 'GET', 
 	    async : true,
@@ -56,7 +56,7 @@ function getCancerSummary(patientName) {
 // Get tumor summary
 function getTumorSummary(patientName, cancerId) {
 	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/patient/' + patientName + '/' + cancerId + '/tumors',
 	    method: 'GET', 
 	    async : true,
@@ -76,11 +76,11 @@ function getTumorSummary(patientName, cancerId) {
 }
 
 function highlightMentionedTexts(textMentions, reportText) {
-    var cssClass = "highlighted_term";
+    const cssClass = "highlighted_term";
 
     // Sort the textMentions array first based on startOffset
     textMentions.sort(function(a, b) {
-        var comp = a.startOffset - b.startOffset;
+        let comp = a.startOffset - b.startOffset;
         if (comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
@@ -88,10 +88,10 @@ function highlightMentionedTexts(textMentions, reportText) {
         }
     });
 
-    var textFragments = [];
+    let textFragments = [];
 
     if (textMentions.length === 1) {
-        var textMention = textMentions[0];
+        let textMention = textMentions[0];
 
         if (textMention.startOffset === 0) {
             textFragments.push('');
@@ -102,11 +102,11 @@ function highlightMentionedTexts(textMentions, reportText) {
         textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
         textFragments.push(reportText.substring(textMention.endOffset));
     } else {
-        var lastValidTMIndex = 0;
+        let lastValidTMIndex = 0;
 
-        for (var i = 0; i < textMentions.length; i++) {
-            var textMention = textMentions[i];
-            var lastValidTM = textMentions[lastValidTMIndex];
+        for (let i = 0; i < textMentions.length; i++) {
+            let textMention = textMentions[i];
+            let lastValidTM = textMentions[lastValidTMIndex];
 
             // If this is the first textmention, paste the start of the document before the first TM.
             if (i === 0) {
@@ -132,9 +132,9 @@ function highlightMentionedTexts(textMentions, reportText) {
     }
 
     // Assemble the final report content with highlighted texts
-    var highlightedReportText = '';
+    let highlightedReportText = '';
 
-    for (var j = 0; j < textFragments.length; j++) {
+    for (let j = 0; j < textFragments.length; j++) {
         highlightedReportText += textFragments[j];
     }
 
@@ -145,7 +145,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 // We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
 	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
@@ -157,10 +157,10 @@ function getFact(patientId, factId) {
 	    $('#fact_detail').hide().html(response).fadeIn('slow');
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
-        var reportIds = [];
+        let reportIds = [];
 
         // Grab the report IDs from the rendered HTML
-        var elements = $('.fact_based_report_id').toArray();
+        let elements = $('.fact_based_report_id').toArray();
 	    elements.forEach(function(el) {
             reportIds.push(el.id);
 	    });
@@ -203,7 +203,7 @@ function removeFactBasedHighlighting(reportId) {
 function getReport(reportId) {
 	// Separate the ajax request with callbacks
 	// Must use encodeURIComponent() otherwise may have URI parsing issue
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/reports/' + reportId ,
 	    method: 'GET', 
 	    async : true,
@@ -211,18 +211,18 @@ function getReport(reportId) {
 	});
 
 	jqxhr.done(function(response) {
-        var reportText = response.text;
-        var mentionedTerms = response.mentionedTerms;
+        let reportText = response.text;
+        let mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
-        var cssClass = 'current_displaying_report';
+        const cssClass = 'current_displaying_report';
         $('.fact_based_report_id').removeClass(cssClass);
         $('#' + reportId).addClass(cssClass);
 
         $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
-        var renderedMentionedTerms = '<ul class="mentioned_terms_list">';
+        let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
         mentionedTerms.forEach(function(obj) {
         	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.startOffset + '" data-end="' + obj.endOffset + '">' + obj.text + '</li>';
         });
@@ -247,8 +247,8 @@ function getReport(reportId) {
 // Functions in deepphe.js are used by client side
 // and functions in dataProcessor.js are used by server side
 function getShortDocId(id) {
-    var partsArr = id.split('_');
-    var str = partsArr[2] + '_' + partsArr[3];
+    let partsArr = id.split('_');
+    let str = partsArr[2] + '_' + partsArr[3];
     // Also capitalize the first letter
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -256,7 +256,7 @@ function getShortDocId(id) {
 // Highlight the selected report circle in timeline
 function highlightSelectedTimelineReport(reportId) {
     // Remove previous added highlighting classes
-    var css = "selected_report";
+    const css = "selected_report";
     $('.main_report').removeClass(css);
     $('.overview_report').removeClass(css);
 
@@ -277,7 +277,7 @@ function highlightReportBasedOnFact(reportId) {
 function getTimeline(patientName, svgContainerId) {
 	// First get the data needed for timeline rendering
 	// Separate the ajax request with callbacks
-	var jqxhr = $.ajax({
+	let jqxhr = $.ajax({
 	    url: baseUri + '/patient/' + patientName + '/timeline',
 	    method: 'GET', 
 	    async : true,
@@ -298,10 +298,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     // Vertical count position of each report type
     // E.g., "Progress Note" has max 6 vertical reports, "Surgical Pathology Report" has 3
     // then the vertical position of "Progress Note" bottom line is 6, and "Surgical Pathology Report" is 6+3=9
-    var verticalPositions = {};
+    let verticalPositions = {};
     // Vertical max counts from top to bottom
     // This is used to decide the domain range of mainY and overviewY
-    var totalMaxVerticalCounts = 0;
+    let totalMaxVerticalCounts = 0;
 	Object.keys(maxVerticalCountsPerType).forEach(function(key) {
         totalMaxVerticalCounts += maxVerticalCountsPerType[key];
         if (typeof verticalPositions[key] === 'undefined') {
@@ -309,128 +309,128 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         }
     });
 
-	var margin = {top: 20, right: 20, bottom: 10, left: 170};
-	var mainReportTypeRowHeightPerCount = 14;
-	var overviewReportTypeRowHeightPerCount = 3;
+	const margin = {top: 20, right: 20, bottom: 10, left: 170};
+	const mainReportTypeRowHeightPerCount = 14;
+	const overviewReportTypeRowHeightPerCount = 3;
 
-	var legendHeight = 22;
-    var legendSpacing = 2;
-    var widthPerLetter = 12;
+	const legendHeight = 22;
+    const legendSpacing = 2;
+    const widthPerLetter = 12;
 
-	var episodeAreaHeight = 20;
-	var episodeLegendAnchorPositionX = 100;
-	var episodeLegendAnchorPositionY = 6;
-	var episodeBarHeight = 2;
-	var episodeBarY1 = 10;
-	var episodeBarY2 = 13; // episodeBarY1 + episodeBarHeight + 1px gap
+	const episodeAreaHeight = 20;
+	const episodeLegendAnchorPositionX = 100;
+	const episodeLegendAnchorPositionY = 6;
+	const episodeBarHeight = 2;
+	const episodeBarY1 = 10;
+	const episodeBarY2 = 13; // episodeBarY1 + episodeBarHeight + 1px gap
 
-	var width = 660;
+	const width = 660;
 	// Dynamic height based on vertical counts
-	var height = totalMaxVerticalCounts * mainReportTypeRowHeightPerCount;
+	const height = totalMaxVerticalCounts * mainReportTypeRowHeightPerCount;
 
-    var pad = 25;
+    const pad = 25;
 
     // Dynamic height based on vertical counts
-	var overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
+	const overviewHeight = totalMaxVerticalCounts * overviewReportTypeRowHeightPerCount;
 
-    var ageAreaHeight = 16;
-    var ageAreaBottomPad = 10;
+    const ageAreaHeight = 16;
+    const ageAreaBottomPad = 10;
 
-    var reportMainRadius = 5;
-    var reportOverviewRadius = 1.5;
+    const reportMainRadius = 5;
+    const reportOverviewRadius = 1.5;
 
     // Set the timeline start date 10 days before the min date
     // and end date 10 days after the max date
-    var numOfDays = 10;
+    const numOfDays = 10;
 
     // Gap between texts and mian area left border
-    var textMargin = 10;
+    const textMargin = 10;
 
     // https://github.com/d3/d3-time-format#d3-time-format
-    var formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
-    var parseTime = d3.timeParse("%Y-%m-%d %I:%M %p");
+    const formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
+    const parseTime = d3.timeParse("%Y-%m-%d %I:%M %p");
 
 	// Convert string to date
 	reportData.forEach(function(d) {
 		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
 		// d.origTime.slice(0, 19) returns the time string without the time zone part.
 		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
-		var formattedTimeStr = formatTime(new Date(d.origTime.slice(0, 19)));
+		let formattedTimeStr = formatTime(new Date(d.origTime.slice(0, 19)));
 		// Then convert a string back to a date to be used by d3
         d.formattedTime = parseTime(formattedTimeStr);
 	});
 
 	// The earliest report date
-	var xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
+	let xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
-	var startDate = new Date(xMinDate);
+	let startDate = new Date(xMinDate);
 	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
-	var xMaxDate = d3.max(reportData, function(d) {return d.formattedTime;});
+	let xMaxDate = d3.max(reportData, function(d) {return d.formattedTime;});
 
 	// Set the end date of the x axis 10 days after the xMaxDate
-	var endDate = new Date(xMaxDate);
+	let endDate = new Date(xMaxDate);
 	endDate.setDate(endDate.getDate() + numOfDays);
 
     // Get the index position of target element in the reportTypes array
     // Need this to position the circles in mainY
-    var getIndex = function(element) {
+    let getIndex = function(element) {
     	return reportTypes.indexOf(element);
     };
     
     // Color categories for types of episodes
     // https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
-	var color = d3.scaleOrdinal()
+	let color = d3.scaleOrdinal()
 	        .domain(['PreDiagnostics', 'Diagnostic', 'Decision', 'Treatment', 'Follow-up'])
 	        .range(['rgb(49, 130, 189)', 'rgb(230, 85, 13)', 'rgb(49, 163, 84)', 'rgb(140, 86, 75)', 'rgb(117, 107, 177)']);
 
     // Transition used by focus/defocus episode
-    var transt = d3.transition()
+    let transt = d3.transition()
 		    .duration(transitionDuration)
 		    .ease(d3.easeLinear);
 
 	// Main area and overview area share the same width
-	var mainX = d3.scaleTime()
+	let mainX = d3.scaleTime()
 	        .domain([startDate, endDate])
 			.range([0, width]);
 
-	var overviewX = d3.scaleTime()
+	let overviewX = d3.scaleTime()
 	        .domain([startDate, endDate])
 			.range([0, width]);
 
 	// Y scale to handle main area
-	var mainY = d3.scaleLinear()
+	let mainY = d3.scaleLinear()
 			.domain([0, totalMaxVerticalCounts])
 			.range([0, height]);
 
     // Y scale to handle overview area
-	var overviewY = d3.scaleLinear()
+	let overviewY = d3.scaleLinear()
 	        .domain([0, totalMaxVerticalCounts])
 			.range([0, overviewHeight]);
 
     // Process episode dates
-    var episodeSpansData = [];
+    let episodeSpansData = [];
 
     episodes.forEach(function(episode) {
-    	var obj = {};
-    	var datesArr = episodeDates[episode];
-        var newDatesArr = [];
+    	let obj = {};
+    	let datesArr = episodeDates[episode];
+        let newDatesArr = [];
 
     	datesArr.forEach(function(d) {
 			// Format the date to a human-readable string first, formatTime() takes Date object instead of string
 			// d.slice(0, 19) returns the time string without the time zone part.
 			// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
-			var formattedTimeStr = formatTime(new Date(d.slice(0, 19)));
+			let formattedTimeStr = formatTime(new Date(d.slice(0, 19)));
 			// Then convert a string back to a date to be used by d3
-	        var date = parseTime(formattedTimeStr);
+	        let date = parseTime(formattedTimeStr);
 
 	        newDatesArr.push(date);
 		});
 
-		var minDate = d3.min(newDatesArr, function(d) {return d;});
-    	var maxDate = d3.max(newDatesArr, function(d) {return d;});
+		let minDate = d3.min(newDatesArr, function(d) {return d;});
+    	let maxDate = d3.max(newDatesArr, function(d) {return d;});
 
         // Assemble the obj properties
         obj.episode = episode;
@@ -441,23 +441,23 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     });
 
     // SVG
-	var svg = d3.select("#" + svgContainerId).append("svg")
+	let svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
 	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + ageAreaHeight + margin.bottom);
 
     // Dynamically calculate the x posiiton of each lengend rect
-    var lengendX = function(index) {
-    	var x = 10;
+    let lengendX = function(index) {
+    	let x = 10;
 
-    	for (var i = 0; i < index; i++) {
+    	for (let i = 0; i < index; i++) {
             x += episodes[i].length * widthPerLetter + i * (reportMainRadius*2 + legendSpacing);
     	}
 
     	return episodeLegendAnchorPositionX + legendSpacing + x;
     };
 
-    var episodeLegendGrp = svg.append("g")
+    let episodeLegendGrp = svg.append("g")
         .attr('class', 'episode_legend_group')
 	    .attr("transform", "translate(10, " + margin.top + ")");
 
@@ -478,7 +478,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 		.attr("y2", legendHeight)
 		.attr("class", "legend_group_divider");
 
-    var episodeLegend = episodeLegendGrp.selectAll('.episode_legend')
+    let episodeLegend = episodeLegendGrp.selectAll('.episode_legend')
         .data(episodes)
         .enter()
         .append('g')
@@ -502,19 +502,19 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .on("click", function(d) {
             // Toggle (hide/show reports of the clicked episode)
-            var nodes = d3.selectAll("." + d);
+            let nodes = d3.selectAll("." + d);
             nodes.each(function() {
-            	var node = d3.select(this);
+            	let node = d3.select(this);
                 node.classed("hide", !node.classed("hide"));
             });
 
             // Toggle and episode bar
-            var episodeBar = d3.select("#" + d + "_bar");
+            let episodeBar = d3.select("#" + d + "_bar");
             episodeBar.classed("hide", !episodeBar.classed("hide"));
 
             // Also toggle the episode legend look
-            var legendCircle = d3.select(this);
-            var cssClass = "selected_episode_legend_circle";
+            let legendCircle = d3.select(this);
+            let cssClass = "selected_episode_legend_circle";
             legendCircle.classed(cssClass, !legendCircle.classed(cssClass));
         });
 
@@ -530,8 +530,8 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .on("click", function(d, i) {
             // Toggle
-            var legendText = d3.select(this);
-            var cssClass = "selected_episode_legend_text";
+            let legendText = d3.select(this);
+            let cssClass = "selected_episode_legend_text";
 
             if (legendText.classed(cssClass)) {
                 legendText.classed(cssClass, false);
@@ -546,7 +546,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
                 // episodeSpansData maintains the same order of episodes as the episodes array
                 // so we can safely use i to get the corresponding startDate and endDate
-            	var episodeSpanObj = episodeSpansData[i];
+            	let episodeSpanObj = episodeSpansData[i];
                 focusEpisode(episodeSpanObj);
             }
         });
@@ -565,7 +565,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("width", width)
 	    .attr("height", height);
 
-    var update = function() {
+    let update = function() {
         // Update the episode bars
     	d3.selectAll(".episode_bar")
 	        .attr("x", function(d) { 
@@ -587,13 +587,13 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	// Function expression to handle mouse wheel zoom or drag on main area
 	// Need to define this before defining zoom since it's function expression instead of function declariation
-	var zoomed = function() {
+	let zoomed = function() {
 		// Ignore zoom-by-brush
 		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "brush") {
 		    return; 
 		}; 
 
-		var transform = d3.event.transform;
+		let transform = d3.event.transform;
 
 		mainX.domain(transform.rescaleX(overviewX).domain());
 
@@ -607,14 +607,14 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    // First we need to get the current brush selection
 	    // https://github.com/d3/d3-brush#brushSelection
 	    // The node desired in the argument for d3.brushSelection is the g element corresponding to your brush.
-		var selection = d3.brushSelection(overviewBrush.node());
+		let selection = d3.brushSelection(overviewBrush.node());
 
 		// Then translate the x of each custom brush handle
 		showAndMoveCustomBrushHandles(selection);
 	};
 
 	// Zoom rect that covers the main main area
-	var zoom = d3.zoom()
+	let zoom = d3.zoom()
 	    .scaleExtent([1, Infinity])
 	    .translateExtent([[0, 0], [width, height + episodeAreaHeight]])
 	    .extent([[0, 0], [width, height + episodeAreaHeight]])
@@ -631,26 +631,26 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	// Main area
 	// Create main area after zoom panel, so we can select the report circles
-	var main = svg.append("g")
+	let main = svg.append("g")
 	    .attr("class", "main")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
 
     // Encounter ages
-    var age = svg.append("g")
+    let age = svg.append("g")
 	    .attr("class", "age")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
 
 	// Mini overview
-	var overview = svg.append("g")
+	let overview = svg.append("g")
 	    .attr("class", "overview")
 	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + ageAreaHeight + ageAreaBottomPad) + ")");
 
-    var getReportCirclePositionY = function(d, yScaleCallback, reportTypeRowHeightPerCount) {
-    	var arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
+    let getReportCirclePositionY = function(d, yScaleCallback, reportTypeRowHeightPerCount) {
+    	let arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
 
         if (arr.length > 1) {
-            var index = 0;
-            for (var i = 0; i < arr.length; i++) {
+            let index = 0;
+            for (let i = 0; i < arr.length; i++) {
                 if (arr[i].id === d.id) {
                     index = i;
                     break;
@@ -658,7 +658,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
             }
             
             // The height of per chunk 
-            var h = maxVerticalCountsPerType[d.type] * reportTypeRowHeightPerCount / arr.length;
+            let h = maxVerticalCountsPerType[d.type] * reportTypeRowHeightPerCount / arr.length;
             return yScaleCallback(verticalPositions[d.type]) - ((arr.length - (index + 1)) * h + h/2); 
         } else {
         	// Vertically center the dot if only one
@@ -667,15 +667,15 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     };
 
     // Episode interval spans
-    var focusEpisode = function(episode) {
+    let focusEpisode = function(episode) {
     	// Here we we add extra days before the start and after the end date to have a little cushion
-        var daysDiff = Math.floor((episode.endDate - episode.startDate) / (1000 * 60 * 60 * 24));
-        var numOfDays = daysDiff > 30 ? 3 : 1;
+        let daysDiff = Math.floor((episode.endDate - episode.startDate) / (1000 * 60 * 60 * 24));
+        let numOfDays = daysDiff > 30 ? 3 : 1;
 
         // setDate() will change the start and end dates, and we still need the origional dates to update the episode bar
         // so we clone the date objects
-        var newStartDate = new Date(episode.startDate.getTime());
-        var newEndDate = new Date(episode.endDate.getTime());
+        let newStartDate = new Date(episode.startDate.getTime());
+        let newEndDate = new Date(episode.endDate.getTime());
 
         // The setDate() method sets the day of the month to the date object.
 		newStartDate.setDate(newStartDate.getDate() - numOfDays);
@@ -684,7 +684,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         // Span the episode coverage across the whole main area using this new domain
         mainX.domain([newStartDate, newEndDate]);
 
-        var transt = d3.transition()
+        let transt = d3.transition()
 		    .duration(transitionDuration)
 		    .ease(d3.easeLinear);
 
@@ -696,7 +696,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         overview.select(".brush").transition(transt).call(brush.move, [overviewX(newStartDate), overviewX(newEndDate)]);
     };
 
-    var defocusEpisode = function() {
+    let defocusEpisode = function() {
         // Reset the mainX domain
         mainX.domain([startDate, endDate]);
 
@@ -706,12 +706,12 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         overview.select(".brush").transition(transt).call(brush.move, [overviewX(startDate), overviewX(endDate)]);
     };
 
-    var episodeBarsGrp = svg.append("g")
+    let episodeBarsGrp = svg.append("g")
         .attr("clip-path", "url(#episode_area_clip)")
         .attr('class', 'episode_bars')
         .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
 
-    var episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
+    let episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
         .data(episodeSpansData)
         .enter()
         .append('g')
@@ -774,7 +774,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	// Report dots in main area
 	// Reference the clipping path that shows the report dots
-	var mainReports = main.append("g")
+	let mainReports = main.append("g")
 		.attr("clip-path", "url(#main_area_clip)");
 
     // Report circles in main area
@@ -824,7 +824,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
     // Main area x axis
     // https://github.com/d3/d3-axis#axisBottom
-	var xAxis = d3.axisBottom(mainX)
+	let xAxis = d3.axisBottom(mainX)
 	    // https://github.com/d3/d3-axis#axis_tickSizeInner
 	    .tickSizeInner(5)
 	    .tickSizeOuter(0);
@@ -844,7 +844,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .text("Patient Age");
 
     // Date objects, not strings
-    var encounterDates = [xMinDate, xMaxDate];
+    let encounterDates = [xMinDate, xMaxDate];
     
     age.selectAll(".encounter_age")
         .data(encounterDates)
@@ -905,7 +905,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 		});
 
 	// Overview x axis
-	var overviewXAxis = d3.axisBottom(overviewX)
+	let overviewXAxis = d3.axisBottom(overviewX)
 	    .tickSizeInner(5)
 	    .tickSizeOuter(0);
 
@@ -916,15 +916,15 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .call(overviewXAxis);
 
 	// Add brush to overview
-	var overviewBrush = overview.append("g")
+	let overviewBrush = overview.append("g")
 	    .attr("class", "brush");
 
 	// Add custom brush handles
-	var customBrushHandlesData = [{type: "w"}, {type: "e"}];
+	let customBrushHandlesData = [{type: "w"}, {type: "e"}];
 
 	// Function expression to create custom brush handle path
-	var createCustomBrushHandle = function(d) {
-	    var e = +(d.type === "e"),
+	let createCustomBrushHandle = function(d) {
+	    let e = +(d.type === "e"),
 	        x = e ? 1 : -1,
 	        y = overviewHeight / 2;
 
@@ -932,7 +932,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	};
 
     // Add two custom brush handles
-	var customBrushHandle = overviewBrush.selectAll(".handle--custom")
+	let customBrushHandle = overviewBrush.selectAll(".handle--custom")
 	    .data(customBrushHandlesData)
 	    .enter().append("path")
 	    .attr("class", "handle--custom")
@@ -941,12 +941,12 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 		.attr("d", createCustomBrushHandle)
 		.attr("transform", function(d, i) { 
         	// Position the custom handles based on the default selection range
-        	var selection = [0, width];
+        	let selection = [0, width];
         	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
         });
 
 	// Function expression of updating custom handles positions
-	var showAndMoveCustomBrushHandles = function(selection) {
+	let showAndMoveCustomBrushHandles = function(selection) {
 		customBrushHandle
 		    // First remove the "display: none" added by brushStart to show the handles
 		    .style("display", null)
@@ -957,14 +957,14 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	};
 
     // Hide the custom brush handles on mousedown ( the start of a brush gesture)
-    var hideCustomBrushHandles = function() {
+    let hideCustomBrushHandles = function() {
         // Check if an user event exists
         // Otherwise we'll see the following error in firefox:
         // TypeError: Value being assigned to SVGPoint.x is not a finite floating-point value.
         // Because itss not supported to call d3.mouse when there is not a current user event.
         if (d3.event.sourceEvent) {
-        	var selection = d3.brushSelection(overviewBrush.node());
-        	var mousePosition = d3.mouse(this);
+        	let selection = d3.brushSelection(overviewBrush.node());
+        	let mousePosition = d3.mouse(this);
 	        
 	        // Only hide the brush handles when mouse clicks outside of the selection
 	        // Don't hide the handles when clicks inside the selected brush area
@@ -977,14 +977,14 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	// Function expression to create brush function redraw with selection
 	// Need to define this before defining brush since it's function expression instead of function declariation
-	var brushed = function() {
+	let brushed = function() {
 		// Ignore brush-by-zoom
 		if (d3.event.sourceEvent && d3.event.sourceEvent.type === "zoom") {
 			return; 
 		}
 
 	    // Can also use d3.event.selection as an alternative to d3.brushSelection(overviewBrush.node())
-		var selection = d3.brushSelection(overviewBrush.node());
+		let selection = d3.brushSelection(overviewBrush.node());
 
 	    // Update the position of custom brush handles
     	showAndMoveCustomBrushHandles(selection);
@@ -1001,7 +1001,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	};
 
 	// D3 brush
-	var brush = d3.brushX()
+	let brush = d3.brushX()
 	    .extent([[0, 0], [width, overviewHeight]])
 	    // https://github.com/d3/d3-brush#brush_on
 	    // First to hide the custom handles at the start of a brush gesture(mousedown)
