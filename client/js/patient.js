@@ -283,7 +283,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     // Vertical max counts from top to bottom
     // This is used to decide the domain range of mainY and overviewY
     let totalMaxVerticalCounts = 0;
-	Object.keys(maxVerticalCountsPerType).forEach(function(key) {
+
+    // Use the order in reportTypes to calculate totalMaxVerticalCounts of each report type
+    // to have a consistent report type order
+	reportTypes.forEach(function(key) {
         totalMaxVerticalCounts += maxVerticalCountsPerType[key];
         if (typeof verticalPositions[key] === 'undefined') {
         	verticalPositions[key] = totalMaxVerticalCounts;
