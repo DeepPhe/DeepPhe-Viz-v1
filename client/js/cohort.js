@@ -483,31 +483,28 @@ function showStagesChart(svgContainerId, data) {
 
             // Same as the one in dataProcessor
             function sortByProvidedOrder(array, orderArr) {
-		        let orderMap = {};
+		        let orderMap = new Map();
 
+		        orderArr.forEach(function(item) { 
+		            // Remember the index of each item in order array
+		            orderMap.set(item, orderArr.indexOf(item));
+		        });
 
-				orderArr.forEach(function(item) { 
-				    // Remember the index of each item in order array
-				    if (typeof orderMap[item] === "undefined") {
-				        orderMap[item] = orderArr.indexOf(item); 
-				    }
-				});
+		        // Sort the original array by the item's index in the orderArr
+		        // It's very possible that items are in array may not be in orderArr
+		        // so we assign index starting from orderArr.length for those items
+		        let i = orderArr.length;
+		        let sortedArray = array.sort(function(a, b){ 
+		            if (!orderMap.has(a)) {
+		                orderMap.set(a, i++);
+		            }
+		 
+		            if (!orderMap.has(b)) {
+		                orderMap.set(b, i++);
+		            }
 
-				// Sort the original array by the item's index in the orderArr
-				// It's very possible that items are in array may not be in orderArr
-				// so we assign index starting from orderArr.length for those items
-				let i = orderArr.length;
-				let sortedArray = array.sort(function(a, b){ 
-				    if (typeof orderMap[a] === "undefined") {
-				        orderMap[a] = i++;
-				    }
-
-				    if (typeof orderMap[b] === "undefined") {
-				        orderMap[b] = i++;
-				    }
-
-				    return orderMap[a] - orderMap[b];
-				});
+		            return (orderMap.get(a) - orderMap.get(b));
+		        });
 
 		        return sortedArray;
 		    }
