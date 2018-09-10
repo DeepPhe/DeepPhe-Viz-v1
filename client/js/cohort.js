@@ -20,15 +20,13 @@ function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
 
 // Entry point
 function showCohort() {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/cohortData',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -39,9 +37,8 @@ function showCohort() {
 
         // By default show charts of all pateints and all stages
         showDerivedCharts(allPatients, allStagesLabel);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
 	});
 }
@@ -486,16 +483,27 @@ function showStagesChart(svgContainerId, data) {
 
             // Same as the one in dataProcessor
             function sortByProvidedOrder(array, orderArr) {
-		        let orderMap = {};
+		        let orderMap = new Map();
 
 		        orderArr.forEach(function(item) { 
 		            // Remember the index of each item in order array
-		            orderMap[item] = orderArr.indexOf(item); 
+		            orderMap.set(item, orderArr.indexOf(item));
 		        });
 
 		        // Sort the original array by the item's index in the orderArr
+		        // It's very possible that items are in array may not be in orderArr
+		        // so we assign index starting from orderArr.length for those items
+		        let i = orderArr.length;
 		        let sortedArray = array.sort(function(a, b){ 
-		            return orderMap[a] - orderMap[b];
+		            if (!orderMap.has(a)) {
+		                orderMap.set(a, i++);
+		            }
+		 
+		            if (!orderMap.has(b)) {
+		                orderMap.set(b, i++);
+		            }
+
+		            return (orderMap.get(a) - orderMap.get(b));
 		        });
 
 		        return sortedArray;
@@ -1094,39 +1102,33 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 }
 
 function getPatientsTumorInfo(patientNames, stage) {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    //console.log(response);
         
 	    showBiomarkersChart("biomarkers", response.biomarkersInfo, stage);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get patients tumor info");
 	});
 }
 
 function getDiagnosis(patientNames, stage) {
-    // Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+    $.ajax({
 	    url: baseUri + '/diagnosis/' + patientNames.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    showDiagnosisChart("diagnosis", response, stage);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get patients diagnosis info");
 	});
 }

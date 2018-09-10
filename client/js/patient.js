@@ -11,66 +11,57 @@ function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
 
 // Show patient info
 function getPatientInfo(patientName) {
-	// Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/patient/' + patientName + '/info',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    //console.log(response);
 
 	    // Render response
 	    $('#info').html(response);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get pateint info");
 	});
 }
 
 // Get cancer summary
 function getCancerSummary(patientName) {
-	// Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/patient/' + patientName + '/cancers',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    //console.log(response);
 
 	    // Render response
 	    $('#cancer').html(response);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get cancer summary");
 	});
 }
 
 // Get tumor summary
 function getTumorSummary(patientName, cancerId) {
-	// Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/patient/' + patientName + '/' + cancerId + '/tumors',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    //console.log(response);
 
 	    // Render response
 	    $('#tumors').html(response);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get cancer summary");
 	});
 }
@@ -144,15 +135,13 @@ function highlightMentionedTexts(textMentions, reportText) {
 // Get fact details by ID
 // We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
-	// Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html'
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    // Fade in the fact detail. Need to hide the div in order to fade in.
 	    $('#fact_detail').hide().html(response).fadeIn('slow');
 
@@ -185,9 +174,8 @@ function getFact(patientId, factId) {
 			// And highlight the current displaying report circle with a thicker stroke
 			highlightSelectedTimelineReport(reportIds[0])
 		}
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get fact");
 	});
 }
@@ -201,16 +189,14 @@ function removeFactBasedHighlighting(reportId) {
 
 // Get report content and mentioned terms by ID 
 function getReport(reportId) {
-	// Separate the ajax request with callbacks
 	// Must use encodeURIComponent() otherwise may have URI parsing issue
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/reports/' + reportId ,
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json'
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
         let reportText = response.text;
         let mentionedTerms = response.mentionedTerms;
 
@@ -234,9 +220,8 @@ function getReport(reportId) {
 	    $('#report_text').html(reportText);
 	    // Scroll back to top of the report content div
 	    $("#report_text").animate({scrollTop: 0}, "fast");
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
 }
@@ -275,20 +260,16 @@ function highlightReportBasedOnFact(reportId) {
 
 // Fetch timeline data and render the SVG
 function getTimeline(patientName, svgContainerId) {
-	// First get the data needed for timeline rendering
-	// Separate the ajax request with callbacks
-	let jqxhr = $.ajax({
+	$.ajax({
 	    url: baseUri + '/patient/' + patientName + '/timeline',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
-	});
-
-	jqxhr.done(function(response) {
+	})
+	.done(function(response) {
 	    renderTimeline(svgContainerId, response.patientInfo, response.reportTypes, response.typeCounts, response.maxVerticalCountsPerType, response.episodes, response.episodeCounts, response.episodeDates, response.reportData, response.reportsGroupedByDateAndTypeObj);
-	});
-
-	jqxhr.fail(function () { 
+	})
+	.fail(function () { 
 	    console.log("Ajax error - can't get timeline data");
 	});
 }
@@ -302,7 +283,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     // Vertical max counts from top to bottom
     // This is used to decide the domain range of mainY and overviewY
     let totalMaxVerticalCounts = 0;
-	Object.keys(maxVerticalCountsPerType).forEach(function(key) {
+
+    // Use the order in reportTypes to calculate totalMaxVerticalCounts of each report type
+    // to have a consistent report type order
+	reportTypes.forEach(function(key) {
         totalMaxVerticalCounts += maxVerticalCountsPerType[key];
         if (typeof verticalPositions[key] === 'undefined') {
         	verticalPositions[key] = totalMaxVerticalCounts;
