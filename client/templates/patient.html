@@ -43,7 +43,6 @@
 
 <script type="text/javascript">
 const patientName = '{{patientName}}';
-const cancerId = '{{cancerId}}';
 const baseUri = '{{baseUri}}';
 
 // Get pateint info
@@ -53,7 +52,7 @@ getPatientInfo(patientName);
 getCancerSummary(patientName);
 
 // Hard coded cancer ID for now, 'CancerSummary-Melanoma' or 'CancerSummary-Breast'
-getTumorSummary(patientName, cancerId);
+getTumorSummary(patientName);
 
 // Render timeline to the target container id
 getTimeline(patientName, "timeline");
