@@ -581,10 +581,9 @@ function showStagesChart(svgContainerId, data) {
 
 // No rest call since each stage data contains the patients list info
 function showDerivedCharts(patientsArr, stage) {
-	// Create an array of patient names
-    let patientNames = [];
+    let patientIds = [];
     patientsArr.forEach(function(patient) {
-    	patientNames.push(patient.name);
+    	patientIds.push(patient.name);
     });
 
     // Patients table
@@ -594,10 +593,10 @@ function showDerivedCharts(patientsArr, stage) {
     showPatientsChart("patients2", patientsArr, stage);
 
     // Make another ajax call to get all tumor info for the list of patients
-    getPatientsTumorInfo(patientNames, stage);
+    getPatientsTumorInfo(patientIds, stage);
 
     // Make another ajax call to get diagnosis for the list of patients
-    getDiagnosis(patientNames, stage);
+    getDiagnosis(patientIds, stage);
 }
 
 // All patients is a separate call
@@ -1101,9 +1100,9 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     }
 }
 
-function getPatientsTumorInfo(patientNames, stage) {
+function getPatientsTumorInfo(patientIds, stage) {
     $.ajax({
-	    url: baseUri + '/tumorinfo/' + patientNames.join('+'),
+	    url: baseUri + '/tumorinfo/' + patientIds.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
@@ -1118,9 +1117,9 @@ function getPatientsTumorInfo(patientNames, stage) {
 	});
 }
 
-function getDiagnosis(patientNames, stage) {
+function getDiagnosis(patientIds, stage) {
     $.ajax({
-	    url: baseUri + '/diagnosis/' + patientNames.join('+'),
+	    url: baseUri + '/diagnosis/' + patientIds.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
