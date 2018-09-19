@@ -10,9 +10,9 @@ function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
 }
 
 // Show patient info
-function getPatientInfo(patientName) {
+function getPatientInfo(patientId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientName + '/info',
+	    url: baseUri + '/patient/' + patientId + '/info',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -29,9 +29,9 @@ function getPatientInfo(patientName) {
 }
 
 // Get cancer summary
-function getCancerSummary(patientName) {
+function getCancerSummary(patientId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientName + '/cancers',
+	    url: baseUri + '/patient/' + patientId + '/cancers',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -48,9 +48,9 @@ function getCancerSummary(patientName) {
 }
 
 // Get tumor summary
-function getTumorSummary(patientName) {
+function getTumorSummary(patientId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientName + '/tumors',
+	    url: baseUri + '/patient/' + patientId + '/tumors',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -259,9 +259,9 @@ function highlightReportBasedOnFact(reportId) {
 }
 
 // Fetch timeline data and render the SVG
-function getTimeline(patientName, svgContainerId) {
+function getTimeline(patientId, svgContainerId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientName + '/timeline',
+	    url: baseUri + '/patient/' + patientId + '/timeline',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
