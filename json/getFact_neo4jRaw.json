@@ -1,0 +1,186 @@
+{
+    "results": [
+        {
+            "columns": [
+                "fact",
+                "rel",
+                "n"
+            ],
+            "data": [
+                {
+                    "row": [
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        },
+                        {
+                            "name": "hasTextProvenance"
+                        },
+                        {
+                            "endOffset": 825,
+                            "startOffset": 821,
+                            "documentType": "Surgical_Pathology_Report",
+                            "documentSection": "FinalDiagnosis_Section",
+                            "documentId": "REPORT_patient10_report018_SP_261802930",
+                            "documentName": "patient10_report018_SP",
+                            "text": "DCIS"
+                        }
+                    ],
+                    "meta": [
+                        {
+                            "id": 140,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 142,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 143,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        },
+                        {
+                            "name": "hasTextProvenance"
+                        },
+                        {
+                            "endOffset": 773,
+                            "startOffset": 749,
+                            "documentType": "Surgical_Pathology_Report",
+                            "documentSection": "FinalDiagnosis_Section",
+                            "documentId": "REPORT_patient10_report018_SP_261802930",
+                            "documentName": "patient10_report018_SP",
+                            "text": "DUCTAL CARCINOMA IN SITU"
+                        }
+                    ],
+                    "meta": [
+                        {
+                            "id": 140,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 143,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 144,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        },
+                        {
+                            "name": "hasTextProvenance"
+                        },
+                        {
+                            "endOffset": 1110,
+                            "startOffset": 1106,
+                            "documentType": "Surgical_Pathology_Report",
+                            "documentSection": "FinalDiagnosis_Section",
+                            "documentId": "REPORT_patient10_report018_SP_261802930",
+                            "documentName": "patient10_report018_SP",
+                            "text": "DCIS"
+                        }
+                    ],
+                    "meta": [
+                        {
+                            "id": 140,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 140,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 141,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        {
+                            "rulesApplied": [
+                                "set-Tumor-Diagnosis"
+                            ],
+                            "prettyName": "Ductal_Breast_Carcinoma_In_Situ",
+                            "name": "Ductal_Breast_Carcinoma_In_Situ",
+                            "id": "MedicalRecord_Ductal_Breast_Carcinoma_In_Situ_846",
+                            "type": "Fact",
+                            "uri": "http://ontologies.dbmi.pitt.edu/deepphe/nlpCancer.owl#Ductal_Breast_Carcinoma_In_Situ"
+                        },
+                        {
+                            "name": "hasTextProvenance"
+                        },
+                        {
+                            "endOffset": 779,
+                            "startOffset": 775,
+                            "documentType": "Surgical_Pathology_Report",
+                            "documentSection": "FinalDiagnosis_Section",
+                            "documentId": "REPORT_patient10_report018_SP_261802930",
+                            "documentName": "patient10_report018_SP",
+                            "text": "DCIS"
+                        }
+                    ],
+                    "meta": [
+                        {
+                            "id": 140,
+                            "type": "node",
+                            "deleted": false
+                        },
+                        {
+                            "id": 141,
+                            "type": "relationship",
+                            "deleted": false
+                        },
+                        {
+                            "id": 142,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

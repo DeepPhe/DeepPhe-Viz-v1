@@ -1,0 +1,1893 @@
+{
+    "results": [
+        {
+            "columns": [
+                "r.id",
+                "r.principalDate",
+                "r.title",
+                "r.type",
+                "episode",
+                "p"
+            ],
+            "data": [
+                {
+                    "row": [
+                        "REPORT_patient10_report054_NOTE_418692361",
+                        "04/28/2013 12:00 AM AST",
+                        "patient10_report054_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report055_NOTE_1276244713",
+                        "04/30/2013 12:00 AM AST",
+                        "patient10_report055_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report053_NOTE_569968419",
+                        "04/28/2013 12:00 AM AST",
+                        "patient10_report053_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report052_NOTE_61371885",
+                        "04/28/2013 12:00 AM AST",
+                        "patient10_report052_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report057_NOTE_1960049823",
+                        "05/07/2013 12:00 AM AST",
+                        "patient10_report057_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report059_NOTE_859736035",
+                        "05/08/2013 12:00 AM AST",
+                        "patient10_report059_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report056_NOTE_830280041",
+                        "05/01/2013 12:00 AM AST",
+                        "patient10_report056_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report058_NOTE_1659740923",
+                        "05/07/2013 12:00 AM AST",
+                        "patient10_report058_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report062_NOTE_1374945818",
+                        "08/29/2013 12:00 AM AST",
+                        "patient10_report062_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report063_NOTE_1654800039",
+                        "09/03/2013 12:00 AM AST",
+                        "patient10_report063_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report060_NOTE_367705548",
+                        "05/08/2013 12:00 AM AST",
+                        "patient10_report060_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report061_NOTE_339353709",
+                        "05/20/2013 12:00 AM AST",
+                        "patient10_report061_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report066_RAD_727030878",
+                        "01/08/2014 03:30 PM AST",
+                        "patient10_report066_RAD",
+                        "Radiology_report",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report067_RAD_431154636",
+                        "01/08/2014 05:01 PM AST",
+                        "patient10_report067_RAD",
+                        "Radiology_report",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report064_NOTE_1157523991",
+                        "12/27/2013 01:00 AM AST",
+                        "patient10_report064_NOTE",
+                        "Progress_note",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report065_RAD_2032805478",
+                        "01/08/2014 12:31 PM AST",
+                        "patient10_report065_RAD",
+                        "Radiology_report",
+                        "Follow-up",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report022_NOTE_13648101",
+                        "01/17/2013 01:00 AM AST",
+                        "patient10_report022_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report023_NOTE_1182079327",
+                        "01/17/2013 01:00 AM AST",
+                        "patient10_report023_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report012_NOTE_56255459",
+                        "01/11/2013 01:00 AM AST",
+                        "patient10_report012_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report013_NOTE_1321550392",
+                        "01/11/2013 01:00 AM AST",
+                        "patient10_report013_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report014_NOTE_318009660",
+                        "01/11/2013 01:00 AM AST",
+                        "patient10_report014_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report015_NOTE_2115919857",
+                        "01/11/2013 01:00 AM AST",
+                        "patient10_report015_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report016_RAD_1801483241",
+                        "01/11/2013 12:37 PM AST",
+                        "patient10_report016_RAD",
+                        "Radiology_report",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report017_RAD_1106786378",
+                        "01/11/2013 12:37 PM AST",
+                        "patient10_report017_RAD",
+                        "Radiology_report",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report018_SP_261802930",
+                        "01/11/2013 02:10 PM AST",
+                        "patient10_report018_SP",
+                        "Surgical_Pathology_Report",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report019_DS_1639354197",
+                        "01/11/2013 02:59 PM AST",
+                        "patient10_report019_DS",
+                        "Discharge_summary",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report004_SP_1943774847",
+                        "12/04/2012 01:00 PM AST",
+                        "patient10_report004_SP",
+                        "Surgical_Pathology_Report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report005_NOTE_1134131378",
+                        "12/07/2012 01:00 AM AST",
+                        "patient10_report005_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report006_NOTE_819737235",
+                        "12/07/2012 01:00 AM AST",
+                        "patient10_report006_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report007_RAD_588611925",
+                        "12/17/2012 01:57 PM AST",
+                        "patient10_report007_RAD",
+                        "Radiology_report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report008_NOTE_1650805217",
+                        "12/20/2012 01:00 AM AST",
+                        "patient10_report008_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report009_NOTE_524222636",
+                        "12/27/2012 01:00 AM AST",
+                        "patient10_report009_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report010_NOTE_623387771",
+                        "12/27/2012 01:00 AM AST",
+                        "patient10_report010_NOTE",
+                        "Progress_note",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report011_RAD_915561021",
+                        "12/27/2012 04:57 PM AST",
+                        "patient10_report011_RAD",
+                        "Radiology_report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report001_RAD_2108992908",
+                        "11/28/2012 03:38 PM AST",
+                        "patient10_report001_RAD",
+                        "Radiology_report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report003_RAD_1463234476",
+                        "12/04/2012 12:11 PM AST",
+                        "patient10_report003_RAD",
+                        "Radiology_report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report002_RAD_733680410",
+                        "12/04/2012 12:11 PM AST",
+                        "patient10_report002_RAD",
+                        "Radiology_report",
+                        "PreDiagnostics",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report046_NOTE_54725887",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report046_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report051_NOTE_2076902750",
+                        "04/25/2013 12:00 AM AST",
+                        "patient10_report051_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report047_NOTE_1192488028",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report047_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report050_NOTE_1522310751",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report050_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report045_NOTE_958773688",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report045_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report048_NOTE_453958395",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report048_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report041_NOTE_1044904756",
+                        "04/22/2013 12:00 AM AST",
+                        "patient10_report041_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report049_NOTE_291385189",
+                        "04/24/2013 12:00 AM AST",
+                        "patient10_report049_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report043_NOTE_1684525500",
+                        "04/22/2013 12:00 AM AST",
+                        "patient10_report043_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report042_NOTE_1531419767",
+                        "04/22/2013 12:00 AM AST",
+                        "patient10_report042_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report040_NOTE_1421017722",
+                        "04/21/2013 12:00 AM AST",
+                        "patient10_report040_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report044_NOTE_438847826",
+                        "04/22/2013 12:00 AM AST",
+                        "patient10_report044_NOTE",
+                        "Progress_note",
+                        "Treatment",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report037_NOTE_1289691527",
+                        "04/13/2013 12:00 AM AST",
+                        "patient10_report037_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report039_NOTE_831711584",
+                        "04/21/2013 12:00 AM AST",
+                        "patient10_report039_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report038_NOTE_1661725305",
+                        "04/13/2013 12:00 AM AST",
+                        "patient10_report038_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report036_NOTE_656223900",
+                        "04/13/2013 12:00 AM AST",
+                        "patient10_report036_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report035_NOTE_1805912346",
+                        "04/11/2013 12:00 AM AST",
+                        "patient10_report035_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report034_NOTE_1281545698",
+                        "04/11/2013 12:00 AM AST",
+                        "patient10_report034_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report033_NOTE_11555223",
+                        "04/02/2013 12:00 AM AST",
+                        "patient10_report033_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report031_NOTE_1653673025",
+                        "03/19/2013 12:00 AM AST",
+                        "patient10_report031_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report032_NOTE_1035452750",
+                        "03/19/2013 12:00 AM AST",
+                        "patient10_report032_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report030_NOTE_441645491",
+                        "03/12/2013 12:00 AM AST",
+                        "patient10_report030_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report029_NOTE_323719578",
+                        "03/12/2013 12:00 AM AST",
+                        "patient10_report029_NOTE",
+                        "Progress_note",
+                        "Decision",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report027_NOTE_1668097273",
+                        "02/19/2013 01:00 AM AST",
+                        "patient10_report027_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report028_NOTE_1179794855",
+                        "02/19/2013 01:00 AM AST",
+                        "patient10_report028_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report026_NOTE_279560598",
+                        "02/13/2013 01:00 AM AST",
+                        "patient10_report026_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report025_NOTE_415763813",
+                        "01/24/2013 01:00 AM AST",
+                        "patient10_report025_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report024_NOTE_1810999823",
+                        "01/18/2013 01:00 AM AST",
+                        "patient10_report024_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report021_NOTE_1137924942",
+                        "01/17/2013 01:00 AM AST",
+                        "patient10_report021_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                },
+                {
+                    "row": [
+                        "REPORT_patient10_report020_NOTE_1357005713",
+                        "01/17/2013 01:00 AM AST",
+                        "patient10_report020_NOTE",
+                        "Progress_note",
+                        "Diagnostic",
+                        {
+                            "birthday": "1987/2/9",
+                            "lastEncounterDate": "2014/1/8",
+                            "name": "Patient10",
+                            "firstEncounterDate": "2012/11/28",
+                            "postmenopausal": false
+                        }
+                    ],
+                    "meta": [
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        {
+                            "id": 0,
+                            "type": "node",
+                            "deleted": false
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

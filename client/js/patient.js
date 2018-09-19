@@ -48,9 +48,9 @@ function getCancerSummary(patientName) {
 }
 
 // Get tumor summary
-function getTumorSummary(patientName, cancerId) {
+function getTumorSummary(patientName) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientName + '/' + cancerId + '/tumors',
+	    url: baseUri + '/patient/' + patientName + '/tumors',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
