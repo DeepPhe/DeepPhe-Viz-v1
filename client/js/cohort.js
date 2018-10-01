@@ -27,6 +27,7 @@ function showCohort() {
 	    dataType : 'json'
 	})
 	.done(function(response) {
+		console.log(response);
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -583,7 +584,7 @@ function showStagesChart(svgContainerId, data) {
 function showDerivedCharts(patientsArr, stage) {
     let patientIds = [];
     patientsArr.forEach(function(patient) {
-    	patientIds.push(patient.name);
+    	patientIds.push(patient.id);
     });
 
     // Patients table
