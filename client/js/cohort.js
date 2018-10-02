@@ -27,7 +27,6 @@ function showCohort() {
 	    dataType : 'json'
 	})
 	.done(function(response) {
-		console.log(response);
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -596,7 +595,7 @@ function showStagesChart(svgContainerId, data) {
 function showDerivedCharts(patientsArr, stage) {
     let patientIds = [];
     patientsArr.forEach(function(patient) {
-    	patientIds.push(patient.id);
+    	patientIds.push(patient.patientId);
     });
 
     // Make another ajax call to get diagnosis for the list of patients
@@ -654,7 +653,7 @@ function showPatientsTable(containerId, data, stage) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
         html += '<td><ul class="patient_age_range_list">';
         rangePatients[i].forEach(function(patient) {
-	    	html += '<li><a href="' + baseUri + '/patient/' + patient.id + '">' + getPatientShortId(patient.id) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
+	    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
 	    });
 	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
     }
@@ -664,11 +663,11 @@ function showPatientsTable(containerId, data, stage) {
     $("#" + containerId).html(html);
 }
 
-function showPatientsChart(svgContainerId, data, stage) {
+function showPatientsChart(svgContainerId, patientsArr, stage) {
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
     let patients = {
-    	"children": data
+    	"children": patientsArr
     };
 
     const svgWidth = 420;
@@ -693,7 +692,7 @@ function showPatientsChart(svgContainerId, data, stage) {
         .attr("transform", function(d) { 
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Patients (" + data.length + " patients from " + stage + ")");
+        .text("Patients (" + patientsArr.length + " patients from " + stage + ")");
 
     // Creates a new pack layout with the default settings
 	let pack = d3.pack()
@@ -716,20 +715,20 @@ function showPatientsChart(svgContainerId, data, stage) {
 
 	node.append("circle")
 		.attr("id", function(d) { 
-			return d.id; 
+			return d.patientId; 
 		})
 		.attr("class", "patient_circle")
 		.attr("r", function(d) { 
 			return d.r; 
 		})
 		.on("click", function(d) {
-			window.location = baseUri + "/patient/" + d.data.id;
+			window.location = baseUri + "/patient/" + d.data.patientId;
 		});
 
 	node.append("text")
 	    .attr("class", "patient_id")
 		.text(function(d) { 
-			return getPatientShortId(d.data.id);
+			return getPatientShortId(d.data.patientId);
 		});
 }
 
