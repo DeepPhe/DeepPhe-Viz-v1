@@ -746,7 +746,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
     const svgWidth = 620;
     const svgHeight = 280;
-	const svgPadding = {top: 10, right: 15, bottom: 12, left: 248};
+	const svgPadding = {top: 10, right: 15, bottom: 20, left: 248};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 40;
