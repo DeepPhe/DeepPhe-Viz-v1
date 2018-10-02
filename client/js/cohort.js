@@ -146,29 +146,40 @@ function showStagesChart(svgContainerId, data) {
 		return d.stage; 
 	});
 
-	// By default only show the top level stages
-	let topStagesData = data.filter(function(d) { 
-		if (topLevelStages.indexOf(d.stage) !== -1) {
+	// By default only show the top level stages if has data
+	// otherwise show sub stages directly
+	let defaultStagesData = data.filter(function(d) { 
+		if (orderedCancerStages.indexOf(d.stage) !== -1) {
             return d.stage;
 		}
 	});
 
 	// set the ranges
+
+	// age offset, so the min/max age doesn't overlap the y axis or right boundary
+	let ageOffset = 5;
+
 	let x = d3.scaleLinear()
 	    .range([0, chartWidth])
 	    // Integer age range based on rounding the minAge and maxAge
-	    .domain([Math.floor(minAge/10) * 10, Math.ceil(maxAge/10) * 10]);
+	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset]);
 	    
     let xCount = d3.scaleLinear()
 	    .range([0, chartWidth])
 	    .domain([0, d3.max(data, function(d) { 
 			return d.patientsCount; 
 		})]);
+    
+    // Use the specified integers as x count ticks ranther than the auto generated 
+    let xCountTickValues = [];
+    for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
+        xCountTickValues.push(i);
+    }
 
 	let y = d3.scaleBand()
 		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		// Set the y domain based on the filteredData
-		.domain(topStagesData.map(function(d) { 
+		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
 		.padding(0.1); // blank space between bands
@@ -192,7 +203,7 @@ function showStagesChart(svgContainerId, data) {
 
     // Render the bars and boxplots with the filteredData before rendering the Y axis
     // so the Y axis vertical line covers the bar border
-    renderBarsAndBoxplots(topStagesData);
+    renderBarsAndBoxplots(defaultStagesData);
     // renderYAxis() is based ont the y.domain(), so no argument
     renderYAxis();
 
@@ -200,7 +211,8 @@ function showStagesChart(svgContainerId, data) {
 	stagesChartGrp.append("g")
 		//.attr("transform", "translate(0, 0)")
 		.attr("class", "count_axis")
-		.call(d3.axisTop(xCount))
+		// use the specified xCountTickValues array for ticks ranther than auto generated
+		.call(d3.axisTop(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d")))
 		// Append axis label
 		.append("text")
 		.attr("class", "count_axis_label")
@@ -587,17 +599,17 @@ function showDerivedCharts(patientsArr, stage) {
     	patientIds.push(patient.id);
     });
 
-    // Patients table
-    showPatientsTable("patients", patientsArr, stage);
-
-    // Show patients bubble chart
-    showPatientsChart("patients2", patientsArr, stage);
+    // Make another ajax call to get diagnosis for the list of patients
+    getDiagnosis(patientIds, stage);
 
     // Make another ajax call to get all tumor info for the list of patients
     getPatientsTumorInfo(patientIds, stage);
 
-    // Make another ajax call to get diagnosis for the list of patients
-    getDiagnosis(patientIds, stage);
+    // Show patients bubble chart
+    showPatientsChart("patients2", patientsArr, stage);
+
+    // Patients table
+    showPatientsTable("patients", patientsArr, stage);
 }
 
 // All patients is a separate call
@@ -642,7 +654,7 @@ function showPatientsTable(containerId, data, stage) {
         html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
         html += '<td><ul class="patient_age_range_list">';
         rangePatients[i].forEach(function(patient) {
-	    	html += '<li><a href="' + baseUri + '/patient/' + patient.name + '">' + getPatientShortName(patient.name) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
+	    	html += '<li><a href="' + baseUri + '/patient/' + patient.id + '">' + getPatientShortId(patient.id) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
 	    });
 	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
     }
@@ -711,23 +723,22 @@ function showPatientsChart(svgContainerId, data, stage) {
 			return d.r; 
 		})
 		.on("click", function(d) {
-			let patientName = d.data.name;
-			window.location = baseUri + "/patient/" + patientName;
+			window.location = baseUri + "/patient/" + d.data.id;
 		});
 
 	node.append("text")
-	    .attr("class", "patient_name")
+	    .attr("class", "patient_id")
 		.text(function(d) { 
-			return getPatientShortName(d.data.name);
+			return getPatientShortId(d.data.id);
 		});
 }
 
-function getPatientShortName(longName) {
-    return "P" + longName.slice(7); 
+function getPatientShortId(longId) {
+    return "P" + longId.slice(7); 
 }
 
-function getPatientLongName(shortName) {
-    return "Patient" + shortName.slice(1); 
+function getPatientLongId(shortId) {
+    return "Patient" + shortId.slice(1); 
 }
 
 function showDiagnosisChart(svgContainerId, data, stage) {
@@ -757,7 +768,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     let diagnosisDots = [];
 
     data.data.forEach(function(d) {
-    	let patientShortName = getPatientShortName(d.patient);
+    	let patientShortName = getPatientShortId(d.patient);
 
     	xDomain.push(patientShortName);
 
@@ -833,7 +844,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 				.attr("y2", chartHeight - chartTopMargin);
 
 			// Also highlight the corresponding Y labels
-			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
+			data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
 				$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
 			});
         })
@@ -847,7 +858,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
             d3.selectAll(".diagnosis_guideline").remove();
 
             // Also dehighlight the corresponding Y labels
-			data.patients[getPatientLongName(d)].forEach(function(diagnosis) {
+			data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
 				$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
 			});
         });

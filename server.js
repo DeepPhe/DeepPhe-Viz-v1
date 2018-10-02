@@ -7,7 +7,7 @@ const Inert = require('inert');
 const Vision = require('vision');
 
 // Routes definitions array, local module
-const routes = require('./lib/boltRoutes.js');
+const routes = require('./lib/routes.js');
 
 // Load server configuration data
 const serverConfig = require('./configs/server.json');

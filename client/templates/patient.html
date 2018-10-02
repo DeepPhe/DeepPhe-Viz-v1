@@ -42,20 +42,20 @@
 
 
 <script type="text/javascript">
-const patientName = '{{patientName}}';
+const patientId = '{{patientId}}';
 const baseUri = '{{baseUri}}';
 
 // Get pateint info
-getPatientInfo(patientName);
+getPatientInfo(patientId);
 
 // Get patient cancer symmary and reports
-getCancerSummary(patientName);
+getCancerSummary(patientId);
 
 // Hard coded cancer ID for now, 'CancerSummary-Melanoma' or 'CancerSummary-Breast'
-getTumorSummary(patientName);
+getTumorSummary(patientId);
 
 // Render timeline to the target container id
-getTimeline(patientName, "timeline");
+getTimeline(patientId, "timeline");
 
 // Shorthand for $( document ).ready(), recommended
 // We need to attach the click event to the document or the partial view's parent element
@@ -69,7 +69,7 @@ $(function() {
         $('.fact').removeClass(cssClass);
 
         let factId = $(this).attr('id');
-        getFact(patientName, factId);
+        getFact(patientId, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
@@ -85,7 +85,7 @@ $(function() {
         // "list_view_{{id}}"
         let id = $(this).attr('id');
         let factId = id.substring(10);
-        getFact(patientName, factId);
+        getFact(patientId, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
@@ -104,7 +104,7 @@ $(function() {
         // "table_view_{{id}}"
         let id = $(this).attr('id');
         let factId = id.substring(11);
-        getFact(patientName, factId);
+        getFact(patientId, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
@@ -187,7 +187,7 @@ $(function() {
 
         // Reload timeline
         $('#timeline').html('');
-        getTimeline(patientName, "timeline");
+        getTimeline(patientId, "timeline");
 
         // Reset the fact detail and displaying document content
         $('#fact_detail').html('');
