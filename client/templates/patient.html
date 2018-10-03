@@ -9,9 +9,7 @@
 
 <div id="info"></div>
 
-<div id="cancer"></div>
-
-<div id="tumors"></div>
+<div id="cancer_and_tumor"></div>
 
 </div>
 
@@ -49,10 +47,7 @@ const baseUri = '{{baseUri}}';
 getPatientInfo(patientId);
 
 // Get patient cancer symmary and reports
-getCancerSummary(patientId);
-
-// Hard coded cancer ID for now, 'CancerSummary-Melanoma' or 'CancerSummary-Breast'
-getTumorSummary(patientId);
+getCancerAndTumorSummary(patientId);
 
 // Render timeline to the target container id
 getTimeline(patientId, "timeline");

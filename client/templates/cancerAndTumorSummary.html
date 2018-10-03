@@ -1,4 +1,71 @@
+{{#if cancers.length}}
 
+<div class="section_heading">Cancer Summary</div>
+
+{{#each cancers}}
+
+<h1>{{cancerId}}</h1>
+<table class="table">
+
+<tbody>
+    {{#each collatedFacts}}
+    <tr>
+        <th class="th_vertical">{{categoryName}}</th>
+        <td>
+        <ul class="cancer_fact_list">
+          {{#each facts}}
+            <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+          {{/each}}
+        </ul>
+        </td>
+    </tr>
+    {{/each}}
+</tbody>
+
+</table>
+
+
+
+<!-- TNM -->
+{{#if tnm.length}}
+    <div class="tnm clearfix">
+        {{#each tnm}}
+        <div class="tnm_by_type">
+            <span class="tnm_type">{{type}} TNM:</span>
+            
+            {{#if data.T}}
+            <ul class="cancer_tnm_fact_list">
+                {{#each data.T}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            </ul>
+            {{/if}}
+            
+            {{#if data.N}}
+            <ul class="cancer_tnm_fact_list">
+                {{#each data.N}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            </ul>
+            {{/if}}
+  
+            {{#if data.M}}
+            <ul class="cancer_tnm_fact_list">
+                {{#each data.M}}
+                <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+        {{/each}}
+
+    </div>
+{{/if}}
+
+
+
+<!-- Tumor Summary -->
+{{#if tumors.length}}
 <div class="section_heading">
 <div class="tumor_summary_title">Tumor Summary</div>
 <div class="view_options">
@@ -19,58 +86,58 @@
         {{#each data}}
             {{#if factsObj.facts}} <!-- Don't show empty facts for now, use categoryClass as CSS selectors -->
             <li class="list_view_tumor_list_item {{factsObj.categoryClass}}">
-            	<!-- Don't display prefix for "Body Site" -->
+                <!-- Don't display prefix for "Body Site" -->
                 {{#ifEquals factsObj.category "Body Site"}} 
                     <ul class="list_view_tumor_fact_list">
-                	{{#each factsObj.facts}}
-	                    {{#if laterality}}
-	                    <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
-	                    {{else}}
-	                    <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
-	                    {{/if}}
+                    {{#each factsObj.facts}}
+                        {{#if laterality}}
+                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
+                        {{else}}
+                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
+                        {{/if}}
                     {{/each}}
                     </ul>
                 <!-- Don't display prefix for "Diagnosis" -->
                 {{else ifEquals factsObj.category "Diagnosis"}} 
                     <ul class="list_view_tumor_fact_list">
-                	{{#each factsObj.facts}}
-                    	<li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
+                    {{#each factsObj.facts}}
+                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
                     {{/each}}
                     </ul>
                 <!-- Display prefix for all other categories -->
                 {{else}}
                     <div class="toggleable">
                     {{factsObj.category}}:
-	                <ul class="list_view_tumor_fact_list">
-	                {{#each factsObj.facts}}
-	                    {{#if ordinalinterpretation}}
-	                        <li>
-		                        <span class="fact" id="list_view_{{id}}">
-		                        {{#ifEquals ordinalinterpretation "Positive"}} 
-		                            <span class="positive">&plus;</span>
-		                        {{/ifEquals}}
-		                        
-		                        {{#ifEquals ordinalinterpretation "Negative"}}
-		                            <span class="negative">&ndash;</span>
-		                        {{/ifEquals}}
+                    <ul class="list_view_tumor_fact_list">
+                    {{#each factsObj.facts}}
+                        {{#if ordinalinterpretation}}
+                            <li>
+                                <span class="fact" id="list_view_{{id}}">
+                                {{#ifEquals ordinalinterpretation "Positive"}} 
+                                    <span class="positive">&plus;</span>
+                                {{/ifEquals}}
+                                
+                                {{#ifEquals ordinalinterpretation "Negative"}}
+                                    <span class="negative">&ndash;</span>
+                                {{/ifEquals}}
 
-		                        {{#ifEquals ordinalinterpretation "Unknown"}}
-		                            <span class="unknown">&quest;</span>
-		                        {{/ifEquals}}
-		                        </span>
-	                        </li>
-	                    {{else}}
-	                        <!-- "../"" is the notation to access outer scope variables -->
-	                        {{#inArray prettyName ../../../melanomaAttributes}}
-	                            <!-- Melanoma specific -->
-	                            <li><span class="fact" id="list_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
-	                        {{else}}
-	                            <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
-	                        {{/inArray}}
-	                    {{/if}}
-	                  {{/each}}
-	                </ul>
-	                </div>
+                                {{#ifEquals ordinalinterpretation "Unknown"}}
+                                    <span class="unknown">&quest;</span>
+                                {{/ifEquals}}
+                                </span>
+                            </li>
+                        {{else}}
+                            <!-- "../"" is the notation to access outer scope variables -->
+                            {{#inArray prettyName ../../../melanomaAttributes}}
+                                <!-- Melanoma specific -->
+                                <li><span class="fact" id="list_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
+                            {{else}}
+                                <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
+                            {{/inArray}}
+                        {{/if}}
+                      {{/each}}
+                    </ul>
+                    </div>
                 {{/ifEquals}}
             </li>
             {{/if}}
@@ -150,3 +217,7 @@
 
 </table>
 </div>
+
+{{/if}}
+
+{{/if}}

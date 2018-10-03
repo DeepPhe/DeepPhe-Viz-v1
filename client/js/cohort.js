@@ -733,11 +733,13 @@ function showPatientsChart(svgContainerId, patientsArr, stage) {
 }
 
 function getPatientShortId(longId) {
+	// captilize
     return "P" + longId.slice(7); 
 }
 
 function getPatientLongId(shortId) {
-    return "Patient" + shortId.slice(1); 
+	// lowercase
+    return "patient" + shortId.slice(1); 
 }
 
 function showDiagnosisChart(svgContainerId, data, stage) {
