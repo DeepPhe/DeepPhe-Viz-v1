@@ -1,10 +1,10 @@
+
 {{#if cancers.length}}
 
-<div class="section_heading">Cancer Summary</div>
 
 {{#each cancers}}
+<div class="section_heading">Cancer Summary - {{cancerId}}</div>
 
-<h1>{{cancerId}}</h1>
 <table class="table">
 
 <tbody>
@@ -128,7 +128,7 @@
                             </li>
                         {{else}}
                             <!-- "../"" is the notation to access outer scope variables -->
-                            {{#inArray prettyName ../../../melanomaAttributes}}
+                            {{#inArray prettyName ../../../../melanomaAttributes}}
                                 <!-- Melanoma specific -->
                                 <li><span class="fact" id="list_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
                             {{else}}
@@ -195,7 +195,7 @@
                         <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
                     {{else}}
                         <!-- "../"" is the notation to access outer scope variables -->
-                        {{#inArray prettyName ../../../melanomaAttributes}}
+                        {{#inArray prettyName ../../../../melanomaAttributes}}
                         <!-- Melanoma specific -->
                         <li><span class="fact" id="table_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
                         {{else}}
@@ -219,5 +219,7 @@
 </div>
 
 {{/if}}
+
+{{/each}}
 
 {{/if}}
