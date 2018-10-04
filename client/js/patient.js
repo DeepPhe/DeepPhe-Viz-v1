@@ -28,10 +28,10 @@ function getPatientInfo(patientId) {
 	});
 }
 
-// Get cancer summary
-function getCancerSummary(patientId) {
+// Get cancer and tumor summary in one call
+function getCancerAndTumorSummary(patientId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientId + '/cancers',
+	    url: baseUri + '/patient/' + patientId + '/cancerAndTumorSummary',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -40,29 +40,10 @@ function getCancerSummary(patientId) {
 	    //console.log(response);
 
 	    // Render response
-	    $('#cancer').html(response);
+	    $('#cancer_and_tumor').html(response);
 	})
 	.fail(function () { 
-	    console.log("Ajax error - can't get cancer summary");
-	});
-}
-
-// Get tumor summary
-function getTumorSummary(patientId) {
-	$.ajax({
-	    url: baseUri + '/patient/' + patientId + '/tumors',
-	    method: 'GET', 
-	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	})
-	.done(function(response) {
-	    //console.log(response);
-
-	    // Render response
-	    $('#tumors').html(response);
-	})
-	.fail(function () { 
-	    console.log("Ajax error - can't get cancer summary");
+	    console.log("Ajax error - can't get cancer and tumor summary");
 	});
 }
 
