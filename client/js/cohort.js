@@ -92,11 +92,11 @@ function showStagesChart(svgContainerId, data) {
     maxAge = Math.max.apply(null, maxAges);
 
 	// set the dimensions and margins of the graph
-	const svgWidth = 420;
-	const svgHeight = 280;
+	const svgWidth = 460;
+	const svgHeight = 360;
 	// svgPadding.top is used to position the chart title
 	// svgPadding.left is the space for Y axis labels
-	const svgPadding = {top: 10, right: 15, bottom: 15, left: 75};
+	const svgPadding = {top: 10, right: 15, bottom: 15, left: 110};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	// Gap between svg top and chart top, nothing to do with svgPadding.top
@@ -108,6 +108,7 @@ function showStagesChart(svgContainerId, data) {
 
     // Sort this uniqueStages array in a specific order
     const orderedCancerStages = [
+        'Stage Unknown',
         'Stage 0', 
         // Stage I
         'Stage I',
@@ -133,6 +134,7 @@ function showStagesChart(svgContainerId, data) {
 
     // All top-level stages
     const topLevelStages = [
+        'Stage Unknown',
         'Stage 0', 
         'Stage I', 
         'Stage II', 
@@ -170,10 +172,10 @@ function showStagesChart(svgContainerId, data) {
 		})]);
     
     // Use the specified integers as x count ticks ranther than the auto generated 
-    let xCountTickValues = [];
-    for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
-        xCountTickValues.push(i);
-    }
+    // let xCountTickValues = [];
+    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
+    //     xCountTickValues.push(i);
+    // }
 
 	let y = d3.scaleBand()
 		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
@@ -198,7 +200,7 @@ function showStagesChart(svgContainerId, data) {
         	// to position the text based on upper left corner
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Cancer Stages");
+        .text("Cancer Stages With Patient Count");
 
     // Render the bars and boxplots with the filteredData before rendering the Y axis
     // so the Y axis vertical line covers the bar border
@@ -211,7 +213,8 @@ function showStagesChart(svgContainerId, data) {
 		//.attr("transform", "translate(0, 0)")
 		.attr("class", "count_axis")
 		// use the specified xCountTickValues array for ticks ranther than auto generated
-		.call(d3.axisTop(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d")))
+		//.call(d3.axisTop(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d")))
+		.call(d3.axisTop(xCount))
 		// Append axis label
 		.append("text")
 		.attr("class", "count_axis_label")
@@ -670,8 +673,8 @@ function showPatientsChart(svgContainerId, patientsArr, stage) {
     	"children": patientsArr
     };
 
-    const svgWidth = 420;
-    const svgHeight = 280;
+    const svgWidth = 460;
+    const svgHeight = 360;
     const svgPadding = {top: 10, right: 10, bottom: 10, left: 10};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
@@ -745,8 +748,8 @@ function getPatientLongId(shortId) {
 function showDiagnosisChart(svgContainerId, data, stage) {
     d3.select("#" + svgContainerId).selectAll("*").remove();
 
-    const svgWidth = 620;
-    const svgHeight = 280;
+    const svgWidth = 660;
+    const svgHeight = 360;
 	const svgPadding = {top: 10, right: 15, bottom: 20, left: 248};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
@@ -882,9 +885,9 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 function showBiomarkersChart(svgContainerId, data, stage) {
     const biomarkerStatus = ['positive', 'negative', 'unknown'];
 
-    const svgWidth = 420;
-    const svgHeight = 280;
-	const svgPadding = {top: 10, right: 10, bottom: 15, left: 45};
+    const svgWidth = 460;
+    const svgHeight = 360;
+	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 35;
@@ -1020,7 +1023,16 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	    // Y axis
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_y_axis")
-			.call(d3.axisLeft(biomarkerScale));
+			.call(d3.axisLeft(biomarkerScale))
+			// Now modify the label text to add patients count
+			.selectAll("text")
+			.text(function(d) {
+				if (d === "HER2_Neu") {
+                    return "HER2/Neu"
+				} else {
+					return d.replace("_", " ");
+				}
+			});
 
 	    // X axis
 		biomarkersChartGrp.append("g")
