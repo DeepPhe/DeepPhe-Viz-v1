@@ -63,7 +63,15 @@ $(function() {
         // Remove the previous highlighting
         $('.fact').removeClass(cssClass);
 
-        let factId = $(this).attr('id');
+        let factId;
+        let id = $(this).attr('id');
+        
+        if (id.startsWith("list_view_")) {
+            factId = id.replace("list_view_", "");
+        } else if (id.startsWith("table_view_")) {
+            factId = id.replace("table_view_", "");
+        }
+
         getFact(patientId, factId);
 
         // Highlight the clicked fact
@@ -86,7 +94,7 @@ $(function() {
         $(this).addClass(cssClass);
 
         // Also highlight the same fact in table view
-        $("#table_view_"+factId).addClass(cssClass);
+        $("#table_view_" + factId).addClass(cssClass);
     });
 
     // Tumor fact click - Table View
