@@ -116,7 +116,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 // Get fact details by ID
 // We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
-	$.ajax({
+    $.ajax({
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,

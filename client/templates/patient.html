@@ -57,20 +57,14 @@ getCancerAndTumorSummary(patientId);
 // otherwise we'll have to put the client event listener in the individual view template to get it work
 $(function() {
     // Cancer fact click
-    $(document).on("click", "#cancer_and_tumor .fact", function() {
+    $(document).on("click", "#cancer_and_tnm .fact", function() {
         const cssClass = 'highlighted_fact';
         
         // Remove the previous highlighting
         $('.fact').removeClass(cssClass);
 
-        let factId;
-        let id = $(this).attr('id');
-        
-        if (id.startsWith("list_view_")) {
-            factId = id.replace("list_view_", "");
-        } else if (id.startsWith("table_view_")) {
-            factId = id.replace("table_view_", "");
-        }
+        // In cacner summary table, factId has no prefix
+        let factId = $(this).attr('id');
 
         getFact(patientId, factId);
 
@@ -87,7 +81,8 @@ $(function() {
 
         // "list_view_{{id}}"
         let id = $(this).attr('id');
-        let factId = id.substring(10);
+        let factId = id.replace("list_view_", "");
+        
         getFact(patientId, factId);
 
         // Highlight the clicked fact
@@ -106,14 +101,15 @@ $(function() {
 
         // "table_view_{{id}}"
         let id = $(this).attr('id');
-        let factId = id.substring(11);
+        let factId = id.replace("table_view_", "");
+
         getFact(patientId, factId);
 
         // Highlight the clicked fact
         $(this).addClass(cssClass);
 
         // Also highlight the same fact in list view
-        $("#list_view_"+factId).addClass(cssClass);
+        $("#list_view_" + factId).addClass(cssClass);
     });
 
     // Tumor summary
