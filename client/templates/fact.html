@@ -9,19 +9,6 @@
 <span class="fact_detail_label">Type:</span>  {{detail.type}}
 </li>
 
-{{#if ordinalInterpretations}}
-<li class="clearfix">
-<span class="fact_detail_label">Ordinal Interpretation:</span> 
-<ul>
-    {{#each ordinalInterpretations}}
-    <!-- Use name indead of PrettyName to handle "Gender Unknown" exception -->
-    <li>{{name}}</li>
-    {{/each}}
-</ul>
-</li>
-{{/if}}
-
-
 {{#if procedures}}
 <li class="clearfix">
 <span class="fact_detail_label">Procedures:</span>
