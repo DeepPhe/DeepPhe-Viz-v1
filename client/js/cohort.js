@@ -607,9 +607,6 @@ function showDerivedCharts(patientsArr, stage) {
     // Make another ajax call to get all tumor info for the list of patients
     getPatientsTumorInfo(patientIds, stage);
 
-    // Show patients bubble chart
-    showPatientsChart("patients2", patientsArr, stage);
-
     // Patients table
     showPatientsTable("patients", patientsArr, stage);
 }
@@ -664,75 +661,6 @@ function showPatientsTable(containerId, data, stage) {
     html += '</table>';
 
     $("#" + containerId).html(html);
-}
-
-function showPatientsChart(svgContainerId, patientsArr, stage) {
-    d3.select("#" + svgContainerId).selectAll("*").remove();
-
-    let patients = {
-    	"children": patientsArr
-    };
-
-    const svgWidth = 460;
-    const svgHeight = 360;
-    const svgPadding = {top: 10, right: 10, bottom: 10, left: 10};
-	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
-	const chartTopMargin = 30;
-
-	let svg = d3.select("#" + svgContainerId).append("svg")
-		    .attr("class", "patients_chart") // Used for CSS styling
-			.attr("width", svgWidth)
-			.attr("height", svgHeight);
-
-	let patientsChartGrp = svg.append("g")
-			    .attr("class", "patients_chart_group")
-			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
-    
-    // Chart title
-    svg.append("text")
-        .attr("class", "patients_chart_title")
-        .attr("transform", function(d) { 
-			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
-		})
-        .text("Patients (" + patientsArr.length + " patients from " + stage + ")");
-
-    // Creates a new pack layout with the default settings
-	let pack = d3.pack()
-		.size([chartWidth, chartHeight - chartTopMargin])
-		.padding(3);
-
-
-	let root = d3.hierarchy(patients)
-	    .sum(function(d) { 
-	    	return getPatientEncounterAgeByDateString(d.firstEncounterDate, d.birthday); 
-	    });
-
-	let node = patientsChartGrp.selectAll(".node")
-		.data(pack(root).leaves())
-		.enter().append("g")
-		.attr("class", "node")
-		.attr("transform", function(d) { 
-			return "translate(" + d.x + "," + d.y + ")"; 
-		});
-
-	node.append("circle")
-		.attr("id", function(d) { 
-			return d.patientId; 
-		})
-		.attr("class", "patient_circle")
-		.attr("r", function(d) { 
-			return d.r; 
-		})
-		.on("click", function(d) {
-			window.location = baseUri + "/patient/" + d.data.patientId;
-		});
-
-	node.append("text")
-	    .attr("class", "patient_id")
-		.text(function(d) { 
-			return getPatientShortId(d.data.patientId);
-		});
 }
 
 function getPatientShortId(longId) {
