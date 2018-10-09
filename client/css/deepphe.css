@@ -49,7 +49,8 @@ color:#fff;
 /* Cohort Analysis */
 
 /* HTML div, not the svg */
-#stages,
+#stage_patient_age,
+#stage_patient_count,
 #diagnosis,
 #biomarkers,
 #patients,
@@ -113,31 +114,6 @@ stroke: rgb(253, 174, 107);
 .sub_stage_bar {
 fill: rgb(181, 207, 107);
 stroke: rgb(181, 207, 107);
-}
-
-.count_axis path {
-stroke: rgb(253, 141, 60);
-}
-
-.count_axis line {
-stroke: rgb(253, 141, 60);
-}
-
-.count_axis text {
-fill: rgb(253, 141, 60);
-}
-
-
-.age_axis path {
-stroke: rgb(117, 107, 177);
-}
-
-.age_axis line {
-stroke: rgb(117, 107, 177);
-}
-
-.age_axis text {
-fill: rgb(117, 107, 177);
 }
 
 .age_axis_label ,

@@ -30,7 +30,9 @@ function showCohort() {
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
-        showStagesChart("stages", response.stagesInfo);
+        showPatientAgePerStageChart("stage_patient_age", response.stagesInfo);
+
+		showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
 
         // Keep the data in memory for later use
         allPatients = response.patientsInfo.patients;
@@ -43,7 +45,311 @@ function showCohort() {
 	});
 }
 
-function showStagesChart(svgContainerId, data) {
+function showPatientCountPerStageChart(svgContainerId, data) {
+	let patientsCounts = {};
+
+	// Calculate and add the box plot data to each stageInfo object
+	data.forEach(function(stageInfo) {
+	    // Add to patientsCounts object for later use (modify the Y label)
+	    if (typeof patientsCounts[stageInfo.stage] === "undefined") {
+            patientsCounts[stageInfo.stage] = stageInfo.patientsCount;
+	    }
+	});
+
+	// set the dimensions and margins of the graph
+	const svgWidth = 460;
+	const svgHeight = 360;
+	// svgPadding.top is used to position the chart title
+	// svgPadding.left is the space for Y axis labels
+	const svgPadding = {top: 10, right: 15, bottom: 15, left: 110};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	// Gap between svg top and chart top, nothing to do with svgPadding.top
+	const chartTopMargin = 48;
+
+    // Sort this uniqueStages array in a specific order
+    const orderedCancerStages = [
+        'Stage Unknown',
+        'Stage 0', 
+        // Stage I
+        'Stage I',
+        'Stage IA',
+        'Stage IB',
+        'Stage IC',
+        // Stage II
+        'Stage II',
+        'Stage IIA',
+        'Stage IIB',
+        'Stage IIC',
+        // Stage III
+        'Stage III',
+        'Stage IIIA',
+        'Stage IIIB',
+        'Stage IIIC',
+        // Stage IV
+        'Stage IV',
+        'Stage IVA',
+        'Stage IVB',
+        'Stage IVC'
+    ];
+
+    // All top-level stages
+    const topLevelStages = [
+        'Stage Unknown',
+        'Stage 0', 
+        'Stage I', 
+        'Stage II', 
+        'Stage III', 
+        'Stage IV'
+    ];
+
+    // All stages found in data
+    let allStages = data.map(function(d) { 
+		return d.stage; 
+	});
+
+	// By default only show the top level stages if has data
+	// otherwise show sub stages directly
+	let defaultStagesData = data.filter(function(d) { 
+		if (orderedCancerStages.indexOf(d.stage) !== -1) {
+            return d.stage;
+		}
+	});
+
+    let xCount = d3.scaleLinear()
+	    .range([0, chartWidth])
+	    .domain([0, d3.max(data, function(d) { 
+			return d.patientsCount; 
+		})]);
+    
+    // Use the specified integers as x count ticks ranther than the auto generated 
+    // let xCountTickValues = [];
+    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
+    //     xCountTickValues.push(i);
+    // }
+
+	let y = d3.scaleBand()
+		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
+		// Set the y domain based on the filteredData
+		.domain(defaultStagesData.map(function(d) { 
+			return d.stage; 
+		}))
+		.padding(0.2); // blank space between bands
+
+	let svg = d3.select("#" + svgContainerId).append("svg")
+		.attr("width", svgWidth)
+		.attr("height", svgHeight);
+
+	let stagesChartGrp = svg.append("g")
+		.attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
+
+    // Chart title
+    svg.append("text")
+        .attr("class", "stages_chart_title")
+        .attr("transform", function(d) { 
+        	// Works together with "dominant-baseline:text-before-edge;"" in CSS
+        	// to position the text based on upper left corner
+			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
+		})
+        .text("Patient Count Per Stage");
+
+    // Render the bars and boxplots with the filteredData before rendering the Y axis
+    // so the Y axis vertical line covers the bar border
+    renderDistribution(defaultStagesData);
+    // renderYAxis() is based ont the y.domain(), so no argument
+    renderYAxis();
+
+    // Add patients count top X axis
+	stagesChartGrp.append("g")
+		.attr("transform", "translate(0, " + (chartHeight - chartTopMargin) + ")")
+		.attr("class", "count_axis")
+		.call(d3.axisBottom(xCount))
+		// Append axis label
+		.append("text")
+		.attr("class", "count_axis_label")
+		.attr("x", chartWidth)
+		.attr("y", -6)
+		.text("Number of patients");
+  
+
+    // Render all stage bars and boxplots
+	function renderDistribution(data) {
+	    // Bar chart of patients counts
+		stagesChartGrp.append("g").selectAll(".stage_bar")
+			.data(data)
+			.enter().append("rect")
+			.attr("class", function(d) {
+				// Distiguish the top stages and sub stages using different bg and border colors
+				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
+			})
+			.attr("transform", function(d) { 
+				return "translate(0, " + y(d.stage) + ")"; 
+			})
+			.attr("height", y.bandwidth())
+			.on("click", function(d) {
+	            let clickedBar = d3.select(this);
+	            let css = "clicked_bar";
+
+	            // Toggle
+	            if (!clickedBar.classed(css)) {
+	            	// Remove previouly added css class
+		            svg.selectAll(".stage_bar").classed(css, false);
+	                // Highlight the clicked box and show corresponding patients
+	            	clickedBar.classed(css, true);
+	            	showDerivedCharts(d.patients, d.stage);
+	            } else {
+	            	// When clicked again, remove highlight and show all patients
+	            	clickedBar.classed(css, false);
+	            	// allPatients is the patient data saved in memory
+	            	showDerivedCharts(allPatients, allStagesLabel);
+	            }
+			})
+			.transition()
+	        .duration(transitionDuration)
+			.attr("width", function(d) { 
+				return xCount(d.patientsCount);
+			});
+	}
+
+    // Render Y axis
+	function renderYAxis() {
+		stagesChartGrp.append("g")
+		    .attr("transform", "translate(0, 0)")
+		    .attr("id", "patient_count_chart_y_axis")
+			.call(d3.axisLeft(y))
+			// Add custom id to each tick group
+			.selectAll(".tick")
+			.attr("class", function(d) {
+				// Distiguish the top stage and sub stage labels using different colors
+				return "tick " + ((topLevelStages.indexOf(d) !== -1) ? "top_stage" : "sub_stage");
+			})
+			// Now modify the label text to add patients count
+			.selectAll("text")
+			.text(function(d) {
+				return d + " (" + patientsCounts[d] + ")";
+			});
+
+        // Only add click event to top level stages
+		svg.selectAll(".top_stage").on("click", function(d) {
+            let displayStages = y.domain();
+
+            // Click top-level stage label to show sub level stages
+            let subLevels = [d + "A",  d + "B", d  + "C"];
+            let addedSubStages = [];
+            let removedSubStages = [];
+
+			subLevels.forEach(function(stage) {
+			    // sub stage must belong to the allStages
+			    if (allStages.indexOf(stage) !== -1) {
+                    // Add this sub stage to the stages to display when expanding the top stage
+                    // Remove the sub stage from the display stages when collapsing the top stage
+                    if (displayStages.indexOf(stage) === -1) {
+	                    displayStages.push(stage);
+
+	                    // Also add to updatedSubStages so we know the changes
+	                    // No need to sort this array since it's based on the A, B, C
+	                    addedSubStages.push(stage);
+				    } else {
+	                    let index = displayStages.indexOf(stage);
+	                    displayStages.splice(index, 1);
+
+                        // Also add to removedSubStages
+	                    removedSubStages.push(stage);
+				    }
+                }
+			});
+
+            // Same as the one in dataProcessor
+            function sortByProvidedOrder(array, orderArr) {
+		        let orderMap = new Map();
+
+		        orderArr.forEach(function(item) { 
+		            // Remember the index of each item in order array
+		            orderMap.set(item, orderArr.indexOf(item));
+		        });
+
+		        // Sort the original array by the item's index in the orderArr
+		        // It's very possible that items are in array may not be in orderArr
+		        // so we assign index starting from orderArr.length for those items
+		        let i = orderArr.length;
+		        let sortedArray = array.sort(function(a, b){ 
+		            if (!orderMap.has(a)) {
+		                orderMap.set(a, i++);
+		            }
+		 
+		            if (!orderMap.has(b)) {
+		                orderMap.set(b, i++);
+		            }
+
+		            return (orderMap.get(a) - orderMap.get(b));
+		        });
+
+		        return sortedArray;
+		    }
+
+            // Need to sort the displayStages so the sub-stages appear under each top-stage
+            let sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
+
+            // Also update the y.domain()
+		    y.domain(sortedDisplayStages);
+
+            // Now for UI updates
+            svg.selectAll("#patient_count_chart_y_axis").remove();
+
+            function reposition() {
+	            // Repoition the existing stage bars and resize height
+	            svg.selectAll(".stage_bar")
+	                .transition()
+					.duration(transitionDuration)
+	                .attr("transform", function(d) {
+	                	return "translate(0, " + y(d.stage) + ")";
+	                })
+					.attr("height", y.bandwidth());
+
+	            // Reposition the single pateint groups
+	            svg.selectAll(".single_patient_group")
+	                .transition()
+					.duration(transitionDuration)
+	                .attr("transform", function(d) {
+	                	return "translate(0, " + (y(d.stage) + y.bandwidth()/2) + ")";
+	                });
+            }
+
+            // Add sub stage bars and boxplots
+            if (addedSubStages.length > 0) {
+                let updatedData = data.filter(function(d) { 
+					if (addedSubStages.indexOf(d.stage) !== -1) {
+			            return d.stage;
+					}
+				});
+
+                // Reposition the exisiting stages BEFORE adding new sub stages
+	            reposition();
+
+                // The last thing is to add new sub stages
+				renderDistribution(updatedData);
+            }
+
+            // Or remove sub stage bars and boxplots
+			if (removedSubStages.length > 0) {
+				removedSubStages.forEach(function(stage) {
+                    // Can't get the transition work here with reposition
+                    svg.selectAll("." + stage.replace(" ", "_"))
+						.remove();
+						
+				});
+
+				// Reposition the rest of stages AFTER removing target sub stages
+				reposition();
+			}	
+
+            // Re-render Y axis after the bars/boxplots so the vertical line covers the bar border
+		    renderYAxis();
+		});
+    }
+}
+
+function showPatientAgePerStageChart(svgContainerId, data) {
 	let patientsCounts = {};
 
 	// In order to get the minAge and maxAge
@@ -73,10 +379,11 @@ function showStagesChart(svgContainerId, data) {
 	    ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
 	    ageStats.maxVal = stageInfo.ages[stageInfo.ages.length - 1];
         
+
         // Add new property
 	    stageInfo.ageStats = ageStats;
 
-	    // Add to patientsCounts object for later use (modify the Y label)
+        // Add to patientsCounts object for later use (modify the Y label)
 	    if (typeof patientsCounts[stageInfo.stage] === "undefined") {
             patientsCounts[stageInfo.stage] = stageInfo.patientsCount;
 	    }
@@ -103,8 +410,8 @@ function showStagesChart(svgContainerId, data) {
 	const chartTopMargin = 48;
 
     // Box plot
-    const boxHeight = 4;
-    const textBottomPadding = 1;
+    const boxHeight = 15;
+    const textBottomPadding = 3;
 
     // Sort this uniqueStages array in a specific order
     const orderedCancerStages = [
@@ -165,12 +472,6 @@ function showStagesChart(svgContainerId, data) {
 	    // Integer age range based on rounding the minAge and maxAge
 	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset]);
 	    
-    let xCount = d3.scaleLinear()
-	    .range([0, chartWidth])
-	    .domain([0, d3.max(data, function(d) { 
-			return d.patientsCount; 
-		})]);
-    
     // Use the specified integers as x count ticks ranther than the auto generated 
     // let xCountTickValues = [];
     // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
@@ -183,7 +484,7 @@ function showStagesChart(svgContainerId, data) {
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
-		.padding(0.1); // blank space between bands
+		.padding(0.2); // blank space between bands
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", svgWidth)
@@ -200,28 +501,14 @@ function showStagesChart(svgContainerId, data) {
         	// to position the text based on upper left corner
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Cancer Stages With Patient Count");
+        .text("Patient Age of First Encounter Per Stage");
 
     // Render the bars and boxplots with the filteredData before rendering the Y axis
     // so the Y axis vertical line covers the bar border
-    renderBarsAndBoxplots(defaultStagesData);
+    renderDistribution(defaultStagesData);
     // renderYAxis() is based ont the y.domain(), so no argument
     renderYAxis();
 
-    // Add patients count top X axis
-	stagesChartGrp.append("g")
-		//.attr("transform", "translate(0, 0)")
-		.attr("class", "count_axis")
-		// use the specified xCountTickValues array for ticks ranther than auto generated
-		//.call(d3.axisTop(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d")))
-		.call(d3.axisTop(xCount))
-		// Append axis label
-		.append("text")
-		.attr("class", "count_axis_label")
-		.attr("x", chartWidth)
-		.attr("y", 12)
-		.text("Number of patients");
-   
     // Add the ages bottom X Axis
 	stagesChartGrp.append("g")
 		.attr("transform", "translate(0, " + (chartHeight - chartTopMargin) + ")")
@@ -236,44 +523,7 @@ function showStagesChart(svgContainerId, data) {
 
 
     // Render all stage bars and boxplots
-	function renderBarsAndBoxplots(data) {
-	    // Bar chart of patients counts
-		stagesChartGrp.append("g").selectAll(".stage_bar")
-			.data(data)
-			.enter().append("rect")
-			.attr("class", function(d) {
-				// Distiguish the top stages and sub stages using different bg and border colors
-				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
-			})
-			.attr("transform", function(d) { 
-				return "translate(0, " + y(d.stage) + ")"; 
-			})
-			.attr("height", y.bandwidth())
-			.on("click", function(d) {
-	            let clickedBar = d3.select(this);
-	            let css = "clicked_bar";
-
-	            // Toggle
-	            if (!clickedBar.classed(css)) {
-	            	// Remove previouly added css class
-		            d3.selectAll(".stage_bar").classed(css, false);
-	                // Highlight the clicked box and show corresponding patients
-	            	clickedBar.classed(css, true);
-	            	showDerivedCharts(d.patients, d.stage);
-	            } else {
-	            	// When clicked again, remove highlight and show all patients
-	            	clickedBar.classed(css, false);
-	            	// allPatients is the patient data saved in memory
-	            	showDerivedCharts(allPatients, allStagesLabel);
-	            }
-			})
-			.transition()
-	        .duration(transitionDuration)
-			.attr("width", function(d) { 
-				return xCount(d.patientsCount);
-			});
-
-
+	function renderDistribution(data) {
 	    // Only show the patient age when the stage has only one patient
 	    let singlePatientGrp = stagesChartGrp.append("g").selectAll(".single_patient_group")
 			.data(data.filter(function(d) {
@@ -452,7 +702,7 @@ function showStagesChart(svgContainerId, data) {
 	function renderYAxis() {
 		stagesChartGrp.append("g")
 		    .attr("transform", "translate(0, 0)")
-		    .attr("id", "y_axis")
+		    .attr("id", "patient_age_chart_y_axis")
 			.call(d3.axisLeft(y))
 			// Add custom id to each tick group
 			.selectAll(".tick")
@@ -467,7 +717,7 @@ function showStagesChart(svgContainerId, data) {
 			});
 
         // Only add click event to top level stages
-		d3.selectAll(".top_stage").on("click", function(d) {
+		svg.selectAll(".top_stage").on("click", function(d) {
             let displayStages = y.domain();
 
             // Click top-level stage label to show sub level stages
@@ -531,20 +781,11 @@ function showStagesChart(svgContainerId, data) {
 		    y.domain(sortedDisplayStages);
 
             // Now for UI updates
-            d3.selectAll("#y_axis").remove();
+            svg.selectAll("#patient_age_chart_y_axis").remove();
 
             function reposition() {
-	            // Repoition the existing stage bars and resize height
-	            d3.selectAll(".stage_bar")
-	                .transition()
-					.duration(transitionDuration)
-	                .attr("transform", function(d) {
-	                	return "translate(0, " + y(d.stage) + ")";
-	                })
-					.attr("height", y.bandwidth());
-
 	            // Reposition the single pateint groups
-	            d3.selectAll(".single_patient_group")
+	            svg.selectAll(".single_patient_group")
 	                .transition()
 					.duration(transitionDuration)
 	                .attr("transform", function(d) {
@@ -552,7 +793,7 @@ function showStagesChart(svgContainerId, data) {
 	                });
 
 	            // Reposition the boxplots
-	            d3.selectAll(".boxplot")
+	            svg.selectAll(".boxplot")
 	                .transition()
 					.duration(transitionDuration)
 	                .attr("transform", function(d) {
@@ -572,14 +813,14 @@ function showStagesChart(svgContainerId, data) {
 	            reposition();
 
                 // The last thing is to add new sub stages
-				renderBarsAndBoxplots(updatedData);
+				renderDistribution(updatedData);
             }
 
             // Or remove sub stage bars and boxplots
 			if (removedSubStages.length > 0) {
 				removedSubStages.forEach(function(stage) {
                     // Can't get the transition work here with reposition
-                    d3.selectAll("." + stage.replace(" ", "_"))
+                    svg.selectAll("." + stage.replace(" ", "_"))
 						.remove();
 						
 				});
@@ -593,6 +834,7 @@ function showStagesChart(svgContainerId, data) {
 		});
     }
 }
+
 
 // No rest call since each stage data contains the patients list info
 function showDerivedCharts(patientsArr, stage) {
