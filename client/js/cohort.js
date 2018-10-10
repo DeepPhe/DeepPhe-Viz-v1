@@ -921,10 +921,10 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     const svgWidth = 660;
     const svgHeight = 360;
     const overviewHeight = 35;
-    const verticalGapBetweenYAxisAndXAxis = 10;
+    const gapBetweenYAxisAndXAxis = 10;
 	const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - verticalGapBetweenYAxisAndXAxis;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
 	const chartTopMargin = 40;
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
@@ -962,19 +962,19 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     });
 
     let widthPerPatient = chartWidth/xDomain.length;
-    let patientsNumDisplay = 8;
+    let patientsNumDisplay = 10;
 
 	// set the ranges
 	let x = d3.scalePoint()
-	    .range([10, chartWidth])
+	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis])
 	    .domain(xDomain.slice(0, patientsNumDisplay));
 	    
 	let overviewX = d3.scalePoint()
-	    .range([10, chartWidth])
+	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis])
 	    .domain(xDomain);
 
 	let y = d3.scalePoint()
-		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - verticalGapBetweenYAxisAndXAxis]) // extra 10 gap
+		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - gapBetweenYAxisAndXAxis]) // extra 10 gap
 		.domain(data.diagnosis);
 
 	let overviewY = d3.scalePoint()
@@ -1082,13 +1082,13 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	// Overview area with slider
 	let overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + svgPadding.left + "," + (svgPadding.top + chartHeight + verticalGapBetweenYAxisAndXAxis) + ")");
+	    .attr("transform", "translate(" + svgPadding.left + "," + (svgPadding.top + chartHeight + gapBetweenYAxisAndXAxis) + ")");
 
 	overview.selectAll(".overview_diagnosis_dot")
 		.data(diagnosisDots)
 		.enter().append("g").append("circle")
 		.attr('class', 'overview_diagnosis_dot')
-		.attr("cx", function(d, i) {
+		.attr("cx", function(d) {
             return overviewX(d.patientShortName);
 		})
 		.attr("cy", function(d) { 
@@ -1103,7 +1103,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     // Add overview slider 
 	let overviewMover = overview.append("rect")
 	    .attr("class", "slider")
-	    .attr("x", overviewDotRadius)
+	    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
 		.attr("y", -overviewDotRadius) // take care of the radius
 		.attr("height", overviewHeight + 2*overviewDotRadius)
 		.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
