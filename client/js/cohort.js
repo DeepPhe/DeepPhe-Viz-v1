@@ -1164,16 +1164,13 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 				.attr("fill", dotColor);
 		};
 	}
-		
-	
 }
 
 
 function showBiomarkersChart(svgContainerId, data, stage) {
     const biomarkerStatus = ['positive', 'negative', 'unknown'];
-
     const svgWidth = 460;
-    const svgHeight = 360;
+    const svgHeight = 200;
 	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
@@ -1183,17 +1180,23 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     const legendRectSize = 10;
     const legnedTextRectPad = 3;
 
+ //    // Band scale of biomarkers
+	// let biomarkerScale = d3.scaleBand()
+	//     .domain(data.biomarkersPool)
+	//     .rangeRound([0, chartHeight - chartTopMargin])
+	//     .padding(0.15);
+
+ //    // Band scale of status
+	// let statusScale = d3.scaleBand()
+	//     .domain(biomarkerStatus)
+	//     .rangeRound([0, biomarkerScale.bandwidth()])
+	//     .padding(0.15);
+
     // Band scale of biomarkers
-	let biomarkerScale = d3.scaleBand()
+    let y = d3.scaleBand()
 	    .domain(data.biomarkersPool)
 	    .rangeRound([0, chartHeight - chartTopMargin])
-	    .padding(0.15);
-
-    // Band scale of status
-	let statusScale = d3.scaleBand()
-	    .domain(biomarkerStatus)
-	    .rangeRound([0, biomarkerScale.bandwidth()])
-	    .padding(0.15);
+	    .padding(0.3);
 
     // Percentage
 	let x = d3.scaleLinear()
@@ -1205,7 +1208,17 @@ function showBiomarkersChart(svgContainerId, data, stage) {
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
     // https://github.com/d3/d3-format
-    let formatPercent = d3.format(".0%");
+    // keep one decimal in percentage, like 45.3%
+    let formatPercent = d3.format(".1%");
+
+    // Create the stack data structure
+    // https://github.com/d3/d3-shape/blob/master/README.md#stack
+	var stack = d3.stack()
+	    .keys(biomarkerStatus)
+	    .order(d3.stackOrderNone)
+	    .offset(d3.stackOffsetNone);
+
+	var stackData = stack(data.data);
 
     // Only draw everything for the first time
     if (d3.select(".biomarkers_chart_group").empty()) {
@@ -1227,90 +1240,82 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
 
 
-	    let biomarkerGrp = biomarkersChartGrp.selectAll(".biomarker_group")
-			.data(data.data)
+	    let biomarkerStatusGrp = biomarkersChartGrp.selectAll(".biomarker_status_group")
+			.data(stackData)
 			.enter().append("g")
-			.attr("class", "biomarker_group")
-			.attr("transform", function(d) { 
-				return "translate(0, " + biomarkerScale(d.biomarker) + ")"; 
+			.attr("class", function(d) {
+				return "biomarker_status_group " + d.key;
+			})
+			.attr("fill", function(d) {
+                return color(d.key);
 			});
 
 	    // Status bars inside each biomarker group
-		biomarkerGrp.selectAll(".biomarker_status_bar")
-		    // here d is each object in the data.data array
-			.data(function(d) { 
-				// Creates a new data array of objects
-				// each object is like {status: "positive", percentage: 0.73}
-				let statusPercentageArr = biomarkerStatus.map(function(status) { 
-				    return {status: status, percentage: d[status]}; 
-				}); 
-
-				return statusPercentageArr;
+		biomarkerStatusGrp.selectAll(".biomarker_status_bar")
+		    // here d is each object in the stackData array
+			.data(function(d) {
+				
+				return d;
 			})
 			.enter().append("rect")
-			.attr("class", function(d) {
-				return "biomarker_status_bar " + d.status;
+			.attr("class", "biomarker_status_bar")
+			.attr("x", function(d) {
+                return x(d[0]);
 			})
-			.attr("x", 0)
 			.attr("y", function(d) { 
-				return statusScale(d.status); 
+				return y(d.data.biomarker); 
 			})
-			.attr("height", statusScale.bandwidth())
-			// fill-opacity is specified in CSS
-			.attr("fill", function(d) { 
-				return color(d.status); 
-			})
-			.attr("stroke", function(d) { 
-				return color(d.status); 
-			})
+			.attr("height", y.bandwidth())
 			.transition()
 	        .duration(transitionDuration)
 			.attr("width", function(d) { 
-				return x(d.percentage);
+				return x(d[1] - d[0]);
 			});
 
-	    // Show percentage text by the each status bar
-	    biomarkerGrp.selectAll(".biomarker_status_percentage")
-			.data(function(d) { 
-				// Creates a new data array of objects
-				// each object is like {biomarker: "ER", status: "positive", percentage: 0.73}
-				let statusPercentageArr = biomarkerStatus.map(function(status) { 
-				    return {biomarker: d.biomarker, status: status, percentage: d[status]}; 
-				}); 
+        // Append the percentage text
+        biomarkerStatusGrp.selectAll(".biomarker_status_percentage")
+		    // here d is each object in the stackData array
+			.data(function(d) {
+				// Add status property to make it available in the text()
+				d.forEach(function(item) {
+					item.status = d.key;
+				});
 
-				return statusPercentageArr;
+				return d;
 			})
 			.enter().append("text")
-			.attr("class", "biomarker_status_percentage")
 			.attr("id", function(d) {
-				return d.biomarker + "_" + d.status;
+                return d.data.biomarker + "_" + d.status;
+			})
+			.attr("class", "biomarker_status_percentage")
+			.attr("x", function(d) {
+                return x(d[0]);
 			})
 			.attr("y", function(d) { 
-				return statusScale(d.status) + statusScale.bandwidth()/2; 
+				return y(d.data.biomarker) + y.bandwidth()/2; 
 			})
 			.text(function(d) {
-				return formatPercent(d.percentage);
-			})
-			// text x position transition
-			.transition()
-	        .duration(transitionDuration) // time in ms
-			.attr("x", function(d) { 
-				return x(d.percentage) + 2;
-			})
-			// percentage text tween transition
+                return formatPercent(d.data[d.status]);
+            })
+            // percentage text tween transition
+            .transition()
+            .duration(transitionDuration) // time in ms
 	        .tween("text", function(d) {
-				let i = d3.interpolate(0, d.percentage);
+	        	// The d3.interpolate method receives the beginning and end values of the transition, 
+    	    	// and returns an interpolator function. An interpolator function receives a value between 0 and 1, 
+    	    	// and returns the interpolated value.
+				let interpolate = d3.interpolate(0, d.data[d.status]);
 				return function(t) {
 	                // Don't use d3.select(this) here
 	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
-					d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(i(t)));
+					d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
 				};
 			});
 
 	    // Y axis
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_y_axis")
-			.call(d3.axisLeft(biomarkerScale))
+			.call(d3.axisLeft(y))
 			// Now modify the label text to add patients count
 			.selectAll("text")
 			.text(function(d) {
@@ -1362,48 +1367,58 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 				return d; 
 			});
     } else {
-    	// No worries about ordering
-    	let percents = [];
-    	data.data.forEach(function(obj) {
-            percents.push(obj.positive);
-            percents.push(obj.negative);
-            percents.push(obj.unknown);
-    	});
+        // Update the data
+        let biomarkerStatusGrp = d3.selectAll(".biomarkers_chart_group").selectAll(".biomarker_status_group")
+			.data(stackData);
 
-        // Update the width of each status bar with new data
-        d3.selectAll(".biomarker_status_bar")
-            .transition()
+	    // Update the status bars position and width
+		biomarkerStatusGrp.selectAll(".biomarker_status_bar")
+		    // here d is each object in the stackData array
+			.data(function(d) {
+				return d;
+			})
+			.attr("x", function(d) {
+                return x(d[0]);
+			})
+			.transition()
             .duration(transitionDuration)
     	    .attr("width", function(d, i) {
-    	    	// Here d still maintains the old data from the first load
-    	    	// E.g., {status: "positive", percentage: "0.73"}
-    	    	return x(percents[i]);
+    	    	return x(d[1] - d[0]);
     	    });
 
-        // Update percentage texts and x position with new data
-        d3.selectAll(".biomarker_status_percentage")
+        // Update the percentage text and x position
+        biomarkerStatusGrp.selectAll(".biomarker_status_percentage")
+		    // here d is each object in the stackData array
+			.data(function(d) {
+				// Add status property to make it available in the text()
+				d.forEach(function(item) {
+					item.status = d.key;
+				});
+
+				return d;
+			})
+			.attr("x", function(d) {
+                return x(d[0]);
+			})
+			.text(function(d) {
+				if (d.data[d.status] > 0) {
+                    return formatPercent(d.data[d.status]);
+				}
+            })
+            // percentage text tween transition
             .transition()
-            .duration(transitionDuration)
-    	    .attr("x", function(d, i) {
-    	    	// Here d still maintains the old data from the first load before any partial update
-	        	// But we need to use the new percentage data
-    	    	// E.g., {biomarker: "ER", status: "positive", percentage: "0.73"}
-    	    	return x(percents[i]) + 2;
-    	    })
-    	    .text(function(d, i) {
-    	    	return formatPercent(percents[i]);
-    	    })
-	        .tween("text", function(d, i) {
-    	    	// The d3.interpolate method receives the beginning and end values of the transition, 
-    	    	// and returns an interpolator function. An interpolator function receives a value between 0 and 1, 
-    	    	// and returns the interpolated value.
-    	    	let previousPercent = (parseFloat(d3.select("#" + d.biomarker + "_" + d.status).text()) / 100).toFixed(2);
-				let interpolate = d3.interpolate(previousPercent, percents[i]);
-				return function(t) {
-	                // Don't use d3.select(this) here
-	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
-					d3.select("#" + d.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
-				};
+            .duration(transitionDuration) // time in ms
+	        .tween("text", function(d) {
+	        	if (d.data[d.status] > 0) {
+                    let previousPercent = (parseFloat(d3.select("#" + d.data.biomarker + "_" + d.status).text()) / 100).toFixed(2);
+					let interpolate = d3.interpolate(previousPercent, d.data[d.status]);
+					return function(t) {
+		                // Don't use d3.select(this) here
+		                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+						d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
+					};
+				}
+
 			});
 
         // Also update the chart title with patients count
