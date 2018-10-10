@@ -119,6 +119,7 @@ stroke: rgb(181, 207, 107);
 .age_axis_label ,
 .count_axis_label {
 text-anchor: end;
+fill: #222;
 }
 
 .top_stage > text {
@@ -131,7 +132,7 @@ fill: rgb(51, 102, 204);
 
 /* Diagnosis chart */
 .diagnosis_x_label {
-text-anchor: end;
+text-anchor: middle;
 cursor:default;
 }
 
@@ -148,6 +149,13 @@ shape-rendering: crispEdges;
 
 .highlighted_diagnosis_label {
 fill: rgb(230, 85, 13);
+}
+
+.slider {
+stroke: #999;
+stroke-opacity: .5;
+fill: dodgerblue;
+fill-opacity: 0.3;
 }
 
 /* Patients age range table */

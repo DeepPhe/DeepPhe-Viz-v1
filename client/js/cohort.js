@@ -920,9 +920,11 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
     const svgWidth = 660;
     const svgHeight = 360;
-	const svgPadding = {top: 10, right: 15, bottom: 20, left: 248};
+    const overviewHeight = 35;
+    const verticalGapBetweenYAxisAndXAxis = 10;
+	const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
-	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - verticalGapBetweenYAxisAndXAxis;
 	const chartTopMargin = 40;
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
@@ -936,6 +938,10 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     
     const dotColor = "rgb(107, 174, 214)";
     const highlightedDotColor = "rgb(230, 85, 13)";
+
+    const diagnosisDotRadius = 4;
+    const highlightedDotRadius = 5;
+    const overviewDotRadius = 1.5;
 
     let xDomain = [];
     
@@ -955,13 +961,24 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     	});
     });
 
+    let widthPerPatient = chartWidth/xDomain.length;
+    let patientsNumDisplay = 8;
+
 	// set the ranges
 	let x = d3.scalePoint()
 	    .range([10, chartWidth])
-	    .domain(xDomain);
+	    .domain(xDomain.slice(0, patientsNumDisplay));
 	    
+	let overviewX = d3.scalePoint()
+	    .range([10, chartWidth])
+	    .domain(xDomain);
+
 	let y = d3.scalePoint()
-		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - 10]) // extra 10 gap
+		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - verticalGapBetweenYAxisAndXAxis]) // extra 10 gap
+		.domain(data.diagnosis);
+
+	let overviewY = d3.scalePoint()
+		.range([0, overviewHeight])
 		.domain(data.diagnosis);
 	
 	// Replace all spaces and () with underscores
@@ -979,7 +996,10 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	// Patient diagnosis dots
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
-		.data(diagnosisDots)
+		.data(diagnosisDots.filter(function(obj) {
+			// By default only show the dots of patients in the x.domain()
+			return x.domain().indexOf(obj.patientShortName) !== -1
+		}))
 		.enter().append("circle")
 		.attr("class", function(d) {
 			return "diagnosis_dot " + d.patientShortName;
@@ -990,52 +1010,61 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		.attr("cy", function(d) { 
             return y(d.diagnosis);
 		})
-		.attr("r", 4)
+		.attr("r", diagnosisDotRadius)
 		.attr("fill", dotColor);
 		
 		
 	// add the x Axis
 	diagnosisChartGrp.append("g")
 		.attr("transform", "translate(0," + (chartHeight - chartTopMargin - svgPadding.bottom) + ")")
-		.call(d3.axisBottom(x))
-		.selectAll("text")	
-		.attr("class", "diagnosis_x_label")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)")
-        .on("mouseover", function(d) {
-            // Highlight all dots of this patient
-            d3.selectAll("." + d)
-                .attr("r", 7)
-                .attr("fill", highlightedDotColor);
+		.attr("class", "diagnosis_x_axis");
+    
+    createXAxis();
 
-            // Insert instead of append() guideline so it gets covered by dots
-            d3.select(".diagnosis_chart_group").insert("line", ":first-child")
-				.attr("class", "diagnosis_guideline")
-				.attr("x1", x(d))
-				.attr("y1", 0)
-				.attr("x2", x(d))
-				.attr("y2", chartHeight - chartTopMargin);
+    // Will be reused when moving slider
+	function createXAxis() {
+		diagnosisChartGrp.append("g")
+			.attr("transform", "translate(0," + (chartHeight - chartTopMargin - svgPadding.bottom) + ")")
+			.attr("class", "diagnosis_x_axis")
+			.call(d3.axisBottom(x))
+				.selectAll("text")	
+				.attr("class", "diagnosis_x_label")
+		        .on("mouseover", function(d) {
+		            // Highlight all dots of this patient
+		            d3.selectAll("." + d)
+		                .attr("r", highlightedDotRadius)
+		                .attr("fill", highlightedDotColor);
 
-			// Also highlight the corresponding Y labels
-			data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
-				$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
-			});
-        })
-        .on("mouseout", function(d) {
-            // Reset dot size and color
-            d3.selectAll("." + d)
-                .attr("r", 4)
-                .attr("fill", dotColor);
+		            // Insert instead of append() guideline so it gets covered by dots
+		            d3.select(".diagnosis_chart_group").insert("line", ":first-child")
+						.attr("class", "diagnosis_guideline")
+						.attr("x1", x(d))
+						.attr("y1", 0)
+						.attr("x2", x(d))
+						.attr("y2", chartHeight - chartTopMargin);
 
-            // Remove added guideline
-            d3.selectAll(".diagnosis_guideline").remove();
+					// Also highlight the corresponding Y labels
+					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+						$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
+					});
+		        })
+		        .on("mouseout", function(d) {
+		            // Reset dot size and color
+		            d3.selectAll("." + d)
+		                .attr("r", diagnosisDotRadius)
+		                .attr("fill", dotColor);
 
-            // Also dehighlight the corresponding Y labels
-			data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
-				$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
-			});
-        });
+		            // Remove added guideline
+		            d3.selectAll(".diagnosis_guideline").remove();
+
+		            // Also dehighlight the corresponding Y labels
+					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+						$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
+					});
+		        });
+	}
+
+		
 
 	// add the y Axis
 	diagnosisChartGrp.append("g")
@@ -1049,6 +1078,88 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		.text(function(d) {
 			return d;
 		});
+
+	// Overview area with slider
+	let overview = svg.append("g")
+	    .attr("class", "overview")
+	    .attr("transform", "translate(" + svgPadding.left + "," + (svgPadding.top + chartHeight + verticalGapBetweenYAxisAndXAxis) + ")");
+
+	overview.selectAll(".overview_diagnosis_dot")
+		.data(diagnosisDots)
+		.enter().append("g").append("circle")
+		.attr('class', 'overview_diagnosis_dot')
+		.attr("cx", function(d, i) {
+            return overviewX(d.patientShortName);
+		})
+		.attr("cy", function(d) { 
+            return overviewY(d.diagnosis);
+		})
+		.attr("r", overviewDotRadius)
+		.attr("fill", dotColor);
+    
+    // d3.scalePoint() doesn't have invert
+    
+
+    // Add overview slider 
+	let overviewMover = overview.append("rect")
+	    .attr("class", "slider")
+	    .attr("x", overviewDotRadius)
+		.attr("y", -overviewDotRadius) // take care of the radius
+		.attr("height", overviewHeight + 2*overviewDotRadius)
+		.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
+		.attr("pointer-events", "all")
+		.attr("cursor", "ew-resize")
+		.call(d3.drag().on("drag", display));
+
+    function display() {
+        let xPosInt = parseInt(d3.select(this).attr("x"));
+
+        let nx = xPosInt + d3.event.dx;
+        let widthInt = parseInt(d3.select(this).attr("width"));
+
+	    if ( nx < 0 || nx + widthInt > chartWidth ) return;
+
+        // Move the slider rect to new position
+	    d3.select(this).attr("x", nx);
+
+        // Now we need to know the start and end index of the domain array
+        let startIndex = Math.floor(xPosInt/widthPerPatient);
+        let endIndex = startIndex + patientsNumDisplay;
+
+        // Element of endIndex is not included
+        let newXDomain = xDomain.slice(startIndex, endIndex);
+
+        // Update x domain
+        x.domain(newXDomain);
+
+        // Remove and recreate the x axis
+        diagnosisChartGrp.selectAll(".diagnosis_x_axis").remove();
+        createXAxis();
+
+        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
+        	return newXDomain.indexOf(obj.patientShortName) !== -1
+        });
+
+        // Remove all old dots
+        diagnosisChartGrp.selectAll(".diagnosis_dot").remove();
+
+        // Recreate and position the new dots
+        diagnosisChartGrp.selectAll(".diagnosis_dot")
+			.data(newDiagnosisDots)
+			.enter().append("circle")
+			.attr("class", function(d) {
+				return "diagnosis_dot " + d.patientShortName;
+			})
+			.attr("cx", function(d) {
+	            return x(d.patientShortName);
+			})
+			.attr("cy", function(d) { 
+	            return y(d.diagnosis);
+			})
+			.attr("r", 4)
+			.attr("fill", dotColor);
+	};
+	
 }
 
 
