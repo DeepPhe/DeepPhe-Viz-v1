@@ -1208,8 +1208,8 @@ function showBiomarkersChart(svgContainerId, data, stage) {
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
     // https://github.com/d3/d3-format
-    // keep one decimal in percentage, like 45.3%
-    let formatPercent = d3.format(".1%");
+    // keep one decimal in percentage, like 45%
+    let formatPercent = d3.format(".0%");
 
     // Create the stack data structure
     // https://github.com/d3/d3-shape/blob/master/README.md#stack
