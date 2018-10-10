@@ -1064,8 +1064,6 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		        });
 	}
 
-		
-
 	// add the y Axis
 	diagnosisChartGrp.append("g")
 		.call(d3.axisLeft(y))
@@ -1079,86 +1077,94 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 			return d;
 		});
 
-	// Overview area with slider
-	let overview = svg.append("g")
-	    .attr("class", "overview")
-	    .attr("transform", "translate(" + svgPadding.left + "," + (svgPadding.top + chartHeight + gapBetweenYAxisAndXAxis) + ")");
+    // Only show the slider when there are more patients than patientsNumDisplay
+	if (xDomain.length > patientsNumDisplay) {
+        createSlider();
+	}
 
-	overview.selectAll(".overview_diagnosis_dot")
-		.data(diagnosisDots)
-		.enter().append("g").append("circle")
-		.attr('class', 'overview_diagnosis_dot')
-		.attr("cx", function(d) {
-            return overviewX(d.patientShortName);
-		})
-		.attr("cy", function(d) { 
-            return overviewY(d.diagnosis);
-		})
-		.attr("r", overviewDotRadius)
-		.attr("fill", dotColor);
-    
-    // d3.scalePoint() doesn't have invert
-    
+	function createSlider() {
+        // Overview area with slider
+		let overview = svg.append("g")
+		    .attr("class", "overview")
+		    .attr("transform", "translate(" + svgPadding.left + "," + (svgPadding.top + chartHeight + gapBetweenYAxisAndXAxis) + ")");
 
-    // Add overview slider 
-	let overviewMover = overview.append("rect")
-	    .attr("class", "slider")
-	    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
-		.attr("y", -overviewDotRadius) // take care of the radius
-		.attr("height", overviewHeight + 2*overviewDotRadius)
-		.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
-		.attr("pointer-events", "all")
-		.attr("cursor", "ew-resize")
-		.call(d3.drag().on("drag", display));
-
-    function display() {
-        let xPosInt = parseInt(d3.select(this).attr("x"));
-
-        let nx = xPosInt + d3.event.dx;
-        let widthInt = parseInt(d3.select(this).attr("width"));
-
-	    if ( nx < 0 || nx + widthInt > chartWidth ) return;
-
-        // Move the slider rect to new position
-	    d3.select(this).attr("x", nx);
-
-        // Now we need to know the start and end index of the domain array
-        let startIndex = Math.floor(xPosInt/widthPerPatient);
-        let endIndex = startIndex + patientsNumDisplay;
-
-        // Element of endIndex is not included
-        let newXDomain = xDomain.slice(startIndex, endIndex);
-
-        // Update x domain
-        x.domain(newXDomain);
-
-        // Remove and recreate the x axis
-        diagnosisChartGrp.selectAll(".diagnosis_x_axis").remove();
-        createXAxis();
-
-        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
-        	return newXDomain.indexOf(obj.patientShortName) !== -1
-        });
-
-        // Remove all old dots
-        diagnosisChartGrp.selectAll(".diagnosis_dot").remove();
-
-        // Recreate and position the new dots
-        diagnosisChartGrp.selectAll(".diagnosis_dot")
-			.data(newDiagnosisDots)
-			.enter().append("circle")
-			.attr("class", function(d) {
-				return "diagnosis_dot " + d.patientShortName;
-			})
+		overview.selectAll(".overview_diagnosis_dot")
+			.data(diagnosisDots)
+			.enter().append("g").append("circle")
+			.attr('class', 'overview_diagnosis_dot')
 			.attr("cx", function(d) {
-	            return x(d.patientShortName);
+	            return overviewX(d.patientShortName);
 			})
 			.attr("cy", function(d) { 
-	            return y(d.diagnosis);
+	            return overviewY(d.diagnosis);
 			})
-			.attr("r", 4)
+			.attr("r", overviewDotRadius)
 			.attr("fill", dotColor);
-	};
+	    
+	    // d3.scalePoint() doesn't have invert
+	    
+
+	    // Add overview slider 
+		let overviewMover = overview.append("rect")
+		    .attr("class", "slider")
+		    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
+			.attr("y", -overviewDotRadius) // take care of the radius
+			.attr("height", overviewHeight + 2*overviewDotRadius)
+			.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
+			.attr("pointer-events", "all")
+			.attr("cursor", "ew-resize")
+			.call(d3.drag().on("drag", display));
+
+	    function display() {
+	        let xPosInt = parseInt(d3.select(this).attr("x"));
+
+	        let nx = xPosInt + d3.event.dx;
+	        let widthInt = parseInt(d3.select(this).attr("width"));
+
+		    if ( nx < 0 || nx + widthInt > chartWidth ) return;
+
+	        // Move the slider rect to new position
+		    d3.select(this).attr("x", nx);
+
+	        // Now we need to know the start and end index of the domain array
+	        let startIndex = Math.floor(xPosInt/widthPerPatient);
+	        let endIndex = startIndex + patientsNumDisplay;
+
+	        // Element of endIndex is not included
+	        let newXDomain = xDomain.slice(startIndex, endIndex);
+
+	        // Update x domain
+	        x.domain(newXDomain);
+
+	        // Remove and recreate the x axis
+	        diagnosisChartGrp.selectAll(".diagnosis_x_axis").remove();
+	        createXAxis();
+
+	        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
+	        	return newXDomain.indexOf(obj.patientShortName) !== -1
+	        });
+
+	        // Remove all old dots
+	        diagnosisChartGrp.selectAll(".diagnosis_dot").remove();
+
+	        // Recreate and position the new dots
+	        diagnosisChartGrp.selectAll(".diagnosis_dot")
+				.data(newDiagnosisDots)
+				.enter().append("circle")
+				.attr("class", function(d) {
+					return "diagnosis_dot " + d.patientShortName;
+				})
+				.attr("cx", function(d) {
+		            return x(d.patientShortName);
+				})
+				.attr("cy", function(d) { 
+		            return y(d.diagnosis);
+				})
+				.attr("r", 4)
+				.attr("fill", dotColor);
+		};
+	}
+		
 	
 }
 
