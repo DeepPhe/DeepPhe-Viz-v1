@@ -1177,7 +1177,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 function showBiomarkersChart(svgContainerId, data, stage) {
     const svgWidth = 460;
-    const svgHeight = 200;
+    const svgHeight = 150;
 	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
@@ -1191,7 +1191,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     let y = d3.scaleBand()
         .domain(data.biomarkersPool)
 	    .range([0, chartHeight - chartTopMargin])
-	    .padding(0.3);
+	    .padding(0.2);
 
     // Percentage X
 	let x = d3.scaleLinear()
@@ -1325,12 +1325,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_x_axis")
 			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
-			.call(d3.axisBottom(x).tickFormat(formatPercent))
-			.append("text")
-			    .attr("class", "biomarkers_chart_x_axis_label")
-				.attr("y", -3)
-				.attr("x", x(x.ticks().pop()) + 0.5)
-				.text("Percentage of biomarker status");
+			.call(d3.axisBottom(x).tickFormat(formatPercent));
 
 	    // Status legend
 		let legend = biomarkersChartGrp.append("g")
