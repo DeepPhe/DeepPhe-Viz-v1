@@ -117,10 +117,10 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 	});
 
     let xCount = d3.scaleLinear()
-	    .range([0, chartWidth])
 	    .domain([0, d3.max(data, function(d) { 
 			return d.patientsCount; 
-		})]);
+		})])
+		.range([0, chartWidth]);
     
     // Use the specified integers as x count ticks ranther than the auto generated 
     // let xCountTickValues = [];
@@ -129,11 +129,11 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     // }
 
 	let y = d3.scaleBand()
-		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
-		// Set the y domain based on the filteredData
+	    // Set the y domain based on the filteredData
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
+		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		.padding(0.2); // blank space between bands
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
@@ -168,7 +168,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 		.append("text")
 		.attr("class", "count_axis_label")
 		.attr("x", chartWidth)
-		.attr("y", -6)
+		.attr("y", -3)
 		.text("Number of patients");
   
 
@@ -468,9 +468,9 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	let ageOffset = 5;
 
 	let x = d3.scaleLinear()
-	    .range([0, chartWidth])
 	    // Integer age range based on rounding the minAge and maxAge
-	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset]);
+	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset])
+	    .range([0, chartWidth]);
 	    
     // Use the specified integers as x count ticks ranther than the auto generated 
     // let xCountTickValues = [];
@@ -479,11 +479,11 @@ function showPatientAgePerStageChart(svgContainerId, data) {
     // }
 
 	let y = d3.scaleBand()
-		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		// Set the y domain based on the filteredData
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
+		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
 		.padding(0.2); // blank space between bands
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
@@ -518,7 +518,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 		.append("text")
 		.attr("class", "age_axis_label")
 		.attr("x", chartWidth)
-		.attr("y", -6)
+		.attr("y", -3)
 		.text("Age of first encounter");
 
 
@@ -966,20 +966,20 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 	// set the ranges
 	let x = d3.scalePoint()
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis])
-	    .domain(xDomain.slice(0, patientsNumDisplay));
+	    .domain(xDomain.slice(0, patientsNumDisplay))
+	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
 	    
 	let overviewX = d3.scalePoint()
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis])
-	    .domain(xDomain);
+	    .domain(xDomain)
+	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
 
 	let y = d3.scalePoint()
-		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - gapBetweenYAxisAndXAxis]) // extra 10 gap
-		.domain(data.diagnosis);
+	    .domain(data.diagnosis)
+		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - gapBetweenYAxisAndXAxis]);
 
 	let overviewY = d3.scalePoint()
-		.range([0, overviewHeight])
-		.domain(data.diagnosis);
+	    .domain(data.diagnosis)
+		.range([0, overviewHeight]);
 	
 	// Replace all spaces and () with underscores
     let diagnosis2Class = function(diagnosis) {
@@ -1168,7 +1168,6 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 
 function showBiomarkersChart(svgContainerId, data, stage) {
-    const biomarkerStatus = ['positive', 'negative', 'unknown'];
     const svgWidth = 460;
     const svgHeight = 200;
 	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
@@ -1176,32 +1175,20 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 35;
 
-    const legendGroupWidth = 60;
+    const legendGroupWidth = 65;
     const legendRectSize = 10;
     const legnedTextRectPad = 3;
 
- //    // Band scale of biomarkers
-	// let biomarkerScale = d3.scaleBand()
-	//     .domain(data.biomarkersPool)
-	//     .rangeRound([0, chartHeight - chartTopMargin])
-	//     .padding(0.15);
-
- //    // Band scale of status
-	// let statusScale = d3.scaleBand()
-	//     .domain(biomarkerStatus)
-	//     .rangeRound([0, biomarkerScale.bandwidth()])
-	//     .padding(0.15);
-
     // Band scale of biomarkers
     let y = d3.scaleBand()
-	    .domain(data.biomarkersPool)
-	    .rangeRound([0, chartHeight - chartTopMargin])
+        .domain(data.biomarkersPool)
+	    .range([0, chartHeight - chartTopMargin])
 	    .padding(0.3);
 
-    // Percentage
+    // Percentage X
 	let x = d3.scaleLinear()
-	    .rangeRound([0, chartWidth - legendGroupWidth])
-	    .domain([0, 1]);
+	    .domain([0, 1])
+	    .range([0, chartWidth - legendGroupWidth]);
 
     // Colors of status: positive, negative, unknown
     let color = d3.scaleOrdinal()
@@ -1214,7 +1201,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
     // Create the stack data structure
     // https://github.com/d3/d3-shape/blob/master/README.md#stack
 	var stack = d3.stack()
-	    .keys(biomarkerStatus)
+	    .keys(data.biomarkerStatus)
 	    .order(d3.stackOrderNone)
 	    .offset(d3.stackOffsetNone);
 
@@ -1307,7 +1294,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 				let interpolate = d3.interpolate(0, d.data[d.status]);
 				return function(t) {
 	                // Don't use d3.select(this) here
-	                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+	                // must explicitly use d3.select("#" + d.data.biomarker + "_" + d.status)
 					d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
 				};
 			});
@@ -1333,7 +1320,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.call(d3.axisBottom(x).tickFormat(formatPercent))
 			.append("text")
 			    .attr("class", "biomarkers_chart_x_axis_label")
-				.attr("y", -6)
+				.attr("y", -3)
 				.attr("x", x(x.ticks().pop()) + 0.5)
 				.text("Percentage of biomarker status");
 
@@ -1341,7 +1328,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 		let legend = biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_legend")
 			.selectAll("g")
-			.data(biomarkerStatus)
+			.data(data.biomarkerStatus)
 			.enter().append("g")
 			.attr("transform", function(d, i) { 
 				return "translate(0," + i * (legendRectSize + legnedTextRectPad) + ")"; 
@@ -1401,6 +1388,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
                 return x(d[0]);
 			})
 			.text(function(d) {
+				// Only show percentage text for status with value
 				if (d.data[d.status] > 0) {
                     return formatPercent(d.data[d.status]);
 				}
@@ -1409,12 +1397,13 @@ function showBiomarkersChart(svgContainerId, data, stage) {
             .transition()
             .duration(transitionDuration) // time in ms
 	        .tween("text", function(d) {
+	        	// Only show percentage text for status with value
 	        	if (d.data[d.status] > 0) {
                     let previousPercent = (parseFloat(d3.select("#" + d.data.biomarker + "_" + d.status).text()) / 100).toFixed(2);
 					let interpolate = d3.interpolate(previousPercent, d.data[d.status]);
 					return function(t) {
 		                // Don't use d3.select(this) here
-		                // must explicitly use d3.select("#" + d.biomarker + "_" + d.status)
+		                // must explicitly use d3.select("#" + d.data.biomarker + "_" + d.status)
 						d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
 					};
 				}

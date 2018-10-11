@@ -229,6 +229,7 @@ shape-rendering: crispEdges;
 font-size:10px;
 }
 
+/* Vertical middle alignment */
 .biomarker_status_percentage{
 dominant-baseline: middle;
 }
