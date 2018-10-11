@@ -905,14 +905,22 @@ function showPatientsTable(containerId, data, stage) {
     $("#" + containerId).html(html);
 }
 
+// Lonf ID: patient14_14 --> short ID: P14
 function getPatientShortId(longId) {
 	// captilize
-    return "P" + longId.slice(7); 
+    return "P" + longId.slice(7, 9); 
 }
 
+// P14 --> patient14_14
+// P02 --> patient02_2
 function getPatientLongId(shortId) {
+	let numStr = shortId.slice(1);
 	// lowercase
-    return "patient" + shortId.slice(1); 
+	if (numStr.startsWith("0")) {
+        return "patient" + numStr + "_" + numStr.slice(1);
+	} else {
+		return "patient" + numStr + "_" + numStr;
+	}
 }
 
 function showDiagnosisChart(svgContainerId, data, stage) {
@@ -928,13 +936,13 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	const chartTopMargin = 40;
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
-		    .attr("class", "diagnosis_chart") // Used for CSS styling
-			.attr("width", svgWidth)
-			.attr("height", svgHeight);
+	    .attr("class", "diagnosis_chart") // Used for CSS styling
+		.attr("width", svgWidth)
+		.attr("height", svgHeight);
 
 	let diagnosisChartGrp = svg.append("g")
-			    .attr("class", "diagnosis_chart_group")
-			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
+	    .attr("class", "diagnosis_chart_group")
+	    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
     
     const dotColor = "rgb(107, 174, 214)";
     const highlightedDotColor = "rgb(230, 85, 13)";
@@ -948,13 +956,13 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     let diagnosisDots = [];
 
     data.data.forEach(function(d) {
-    	let patientShortName = getPatientShortId(d.patient);
+    	let patientShortId = getPatientShortId(d.patient);
 
-    	xDomain.push(patientShortName);
+    	xDomain.push(patientShortId);
 
     	d.diagnosis.forEach(function(diagnosis) {
     		let dot = {};
-    		dot.patientShortName = patientShortName;
+    		dot.patientShortId = patientShortId;
     		dot.diagnosis = diagnosis;
 
     		diagnosisDots.push(dot);
@@ -998,14 +1006,14 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
 		.data(diagnosisDots.filter(function(obj) {
 			// By default only show the dots of patients in the x.domain()
-			return x.domain().indexOf(obj.patientShortName) !== -1
+			return x.domain().indexOf(obj.patientShortId) !== -1
 		}))
 		.enter().append("circle")
 		.attr("class", function(d) {
-			return "diagnosis_dot " + d.patientShortName;
+			return "diagnosis_dot " + d.patientShortId;
 		})
 		.attr("cx", function(d, i) {
-            return x(d.patientShortName);
+            return x(d.patientShortId);
 		})
 		.attr("cy", function(d) { 
             return y(d.diagnosis);
@@ -1093,7 +1101,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 			.enter().append("g").append("circle")
 			.attr('class', 'overview_diagnosis_dot')
 			.attr("cx", function(d) {
-	            return overviewX(d.patientShortName);
+	            return overviewX(d.patientShortId);
 			})
 			.attr("cy", function(d) { 
 	            return overviewY(d.diagnosis);
@@ -1141,7 +1149,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	        createXAxis();
 
 	        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
-	        	return newXDomain.indexOf(obj.patientShortName) !== -1
+	        	return newXDomain.indexOf(obj.patientShortId) !== -1
 	        });
 
 	        // Remove all old dots
@@ -1152,10 +1160,10 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 				.data(newDiagnosisDots)
 				.enter().append("circle")
 				.attr("class", function(d) {
-					return "diagnosis_dot " + d.patientShortName;
+					return "diagnosis_dot " + d.patientShortId;
 				})
 				.attr("cx", function(d) {
-		            return x(d.patientShortName);
+		            return x(d.patientShortId);
 				})
 				.attr("cy", function(d) { 
 		            return y(d.diagnosis);
