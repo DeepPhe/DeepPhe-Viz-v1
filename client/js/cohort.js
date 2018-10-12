@@ -1175,7 +1175,6 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			})
 	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
 
-
 	    let biomarkerStatusGrp = biomarkersChartGrp.selectAll(".biomarker_status_group")
 			.data(stackData)
 			.enter().append("g")
@@ -1295,7 +1294,8 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.attr("x", chartWidth - legendRectSize - legnedTextRectPad)
 			.attr("y", 9)
 			.text(function(d) { 
-				return d; 
+				// Capitalized
+				return d.charAt(0).toUpperCase() + d.slice(1);; 
 			});
     } else {
         // Update the data
