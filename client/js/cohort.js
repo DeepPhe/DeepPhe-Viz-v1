@@ -358,6 +358,13 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 	// Calculate and add the box plot data to each stageInfo object
 	data.forEach(function(stageInfo) {
+		// Must sort the ages by asending order
+        // By default, the sort method sorts elements alphabetically. 
+        // To sort numerically just add a new method which handles numeric sorts
+        stageInfo.ages.sort(function(a, b) {
+            return a - b;
+        });
+
 		// Initialise stats object
 	    let ageStats = {
 	        minVal: Infinity,
@@ -378,7 +385,6 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	    ageStats.q3Val = Math.round(d3.quantile(stageInfo.ages, .75));
 	    ageStats.iqr = ageStats.q3Val - ageStats.q1Val;
 	    ageStats.maxVal = stageInfo.ages[stageInfo.ages.length - 1];
-        
 
         // Add new property
 	    stageInfo.ageStats = ageStats;
@@ -879,7 +885,6 @@ function showPatientsTable(containerId, data, stage) {
     	// The data is already sorted by patient age of first encounter
         data.forEach(function(patient) {
             let firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
-
             if (firstEncounterAge >= range[0] && firstEncounterAge <= range[1]) {
                 patients.push(patient);
             }

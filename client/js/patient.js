@@ -345,11 +345,31 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     	return reportTypes.indexOf(element);
     };
     
+    // This is all the possible episodes, each patient may only have some of these
+    // but we'll need to render the colors consistently across patients
+    let allEpisodes = [
+            'Pre-diagnostic',
+            'Diagnostic',
+            'Decision',
+            'Treatment',
+            'Follow-up',
+            "Unknown"
+        ];
+
     // Color categories for types of episodes
     // https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
+    let episodeColors = [
+            'rgb(49, 130, 189)', 
+            'rgb(230, 85, 13)', 
+            'rgb(49, 163, 84)', 
+            'rgb(140, 86, 75)', 
+            'rgb(117, 107, 177)',
+            'rgb(99, 99, 99)'
+        ];
+
 	let color = d3.scaleOrdinal()
-	        .domain(['PreDiagnostics', 'Diagnostic', 'Decision', 'Treatment', 'Follow-up'])
-	        .range(['rgb(49, 130, 189)', 'rgb(230, 85, 13)', 'rgb(49, 163, 84)', 'rgb(140, 86, 75)', 'rgb(117, 107, 177)']);
+	        .domain(allEpisodes)
+	        .range(episodeColors);
 
     // Transition used by focus/defocus episode
     let transt = d3.transition()
