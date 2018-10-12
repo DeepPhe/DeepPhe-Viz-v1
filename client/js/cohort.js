@@ -6,6 +6,42 @@ let allPatients = [];
 
 const allStagesLabel = "All stages";
 
+// All stages in a sorted order
+const orderedCancerStages = [
+    'Stage 0', 
+    // Stage I
+    'Stage I',
+    'Stage IA',
+    'Stage IB',
+    'Stage IC',
+    // Stage II
+    'Stage II',
+    'Stage IIA',
+    'Stage IIB',
+    'Stage IIC',
+    // Stage III
+    'Stage III',
+    'Stage IIIA',
+    'Stage IIIB',
+    'Stage IIIC',
+    // Stage IV
+    'Stage IV',
+    'Stage IVA',
+    'Stage IVB',
+    'Stage IVC',
+    // Stage Unknown
+    'Stage Unknown'
+];
+
+// All top-level stages
+const topLevelStages = [
+    'Stage 0', 
+    'Stage I', 
+    'Stage II', 
+    'Stage III', 
+    'Stage IV'
+];
+
 // Min and max age across all the patients
 let minAge;
 let maxAge;
@@ -67,42 +103,6 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 	// Gap between svg top and chart top, nothing to do with svgPadding.top
 	const chartTopMargin = 48;
 
-    // Sort this uniqueStages array in a specific order
-    const orderedCancerStages = [
-        'Stage Unknown',
-        'Stage 0', 
-        // Stage I
-        'Stage I',
-        'Stage IA',
-        'Stage IB',
-        'Stage IC',
-        // Stage II
-        'Stage II',
-        'Stage IIA',
-        'Stage IIB',
-        'Stage IIC',
-        // Stage III
-        'Stage III',
-        'Stage IIIA',
-        'Stage IIIB',
-        'Stage IIIC',
-        // Stage IV
-        'Stage IV',
-        'Stage IVA',
-        'Stage IVB',
-        'Stage IVC'
-    ];
-
-    // All top-level stages
-    const topLevelStages = [
-        'Stage Unknown',
-        'Stage 0', 
-        'Stage I', 
-        'Stage II', 
-        'Stage III', 
-        'Stage IV'
-    ];
-
     // All stages found in data
     let allStages = data.map(function(d) { 
 		return d.stage; 
@@ -110,6 +110,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 
 	// By default only show the top level stages if has data
 	// otherwise show sub stages directly
+	// Here the data is already sorted by stage name in dataProcessor
 	let defaultStagesData = data.filter(function(d) { 
 		if (orderedCancerStages.indexOf(d.stage) !== -1) {
             return d.stage;
@@ -129,7 +130,6 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     // }
 
 	let y = d3.scaleBand()
-	    // Set the y domain based on the filteredData
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
@@ -153,7 +153,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 		})
         .text("Patient Count Per Stage");
 
-    // Render the bars and boxplots with the filteredData before rendering the Y axis
+    // Render the boxplots before rendering the Y axis
     // so the Y axis vertical line covers the bar border
     renderDistribution(defaultStagesData);
     // renderYAxis() is based ont the y.domain(), so no argument
@@ -230,7 +230,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			});
 
         // Only add click event to top level stages
-		svg.selectAll(".top_stage").on("click", function(d) {
+		svg.selectAll(".top_stage > text").on("click", function(d) {
             let displayStages = y.domain();
 
             // Click top-level stage label to show sub level stages
@@ -259,34 +259,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
                 }
 			});
 
-            // Same as the one in dataProcessor
-            function sortByProvidedOrder(array, orderArr) {
-		        let orderMap = new Map();
-
-		        orderArr.forEach(function(item) { 
-		            // Remember the index of each item in order array
-		            orderMap.set(item, orderArr.indexOf(item));
-		        });
-
-		        // Sort the original array by the item's index in the orderArr
-		        // It's very possible that items are in array may not be in orderArr
-		        // so we assign index starting from orderArr.length for those items
-		        let i = orderArr.length;
-		        let sortedArray = array.sort(function(a, b){ 
-		            if (!orderMap.has(a)) {
-		                orderMap.set(a, i++);
-		            }
-		 
-		            if (!orderMap.has(b)) {
-		                orderMap.set(b, i++);
-		            }
-
-		            return (orderMap.get(a) - orderMap.get(b));
-		        });
-
-		        return sortedArray;
-		    }
-
+            
             // Need to sort the displayStages so the sub-stages appear under each top-stage
             let sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
 
@@ -336,7 +309,6 @@ function showPatientCountPerStageChart(svgContainerId, data) {
                     // Can't get the transition work here with reposition
                     svg.selectAll("." + stage.replace(" ", "_"))
 						.remove();
-						
 				});
 
 				// Reposition the rest of stages AFTER removing target sub stages
@@ -419,42 +391,6 @@ function showPatientAgePerStageChart(svgContainerId, data) {
     const boxHeight = 15;
     const textBottomPadding = 3;
 
-    // Sort this uniqueStages array in a specific order
-    const orderedCancerStages = [
-        'Stage Unknown',
-        'Stage 0', 
-        // Stage I
-        'Stage I',
-        'Stage IA',
-        'Stage IB',
-        'Stage IC',
-        // Stage II
-        'Stage II',
-        'Stage IIA',
-        'Stage IIB',
-        'Stage IIC',
-        // Stage III
-        'Stage III',
-        'Stage IIIA',
-        'Stage IIIB',
-        'Stage IIIC',
-        // Stage IV
-        'Stage IV',
-        'Stage IVA',
-        'Stage IVB',
-        'Stage IVC'
-    ];
-
-    // All top-level stages
-    const topLevelStages = [
-        'Stage Unknown',
-        'Stage 0', 
-        'Stage I', 
-        'Stage II', 
-        'Stage III', 
-        'Stage IV'
-    ];
-
     // All stages found in data
     let allStages = data.map(function(d) { 
 		return d.stage; 
@@ -485,7 +421,6 @@ function showPatientAgePerStageChart(svgContainerId, data) {
     // }
 
 	let y = d3.scaleBand()
-		// Set the y domain based on the filteredData
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
@@ -509,7 +444,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 		})
         .text("Patient Age of First Encounter Per Stage");
 
-    // Render the bars and boxplots with the filteredData before rendering the Y axis
+    // Render the bars before rendering the Y axis
     // so the Y axis vertical line covers the bar border
     renderDistribution(defaultStagesData);
     // renderYAxis() is based ont the y.domain(), so no argument
@@ -752,34 +687,6 @@ function showPatientAgePerStageChart(svgContainerId, data) {
                 }
 			});
 
-            // Same as the one in dataProcessor
-            function sortByProvidedOrder(array, orderArr) {
-		        let orderMap = new Map();
-
-		        orderArr.forEach(function(item) { 
-		            // Remember the index of each item in order array
-		            orderMap.set(item, orderArr.indexOf(item));
-		        });
-
-		        // Sort the original array by the item's index in the orderArr
-		        // It's very possible that items are in array may not be in orderArr
-		        // so we assign index starting from orderArr.length for those items
-		        let i = orderArr.length;
-		        let sortedArray = array.sort(function(a, b){ 
-		            if (!orderMap.has(a)) {
-		                orderMap.set(a, i++);
-		            }
-		 
-		            if (!orderMap.has(b)) {
-		                orderMap.set(b, i++);
-		            }
-
-		            return (orderMap.get(a) - orderMap.get(b));
-		        });
-
-		        return sortedArray;
-		    }
-
             // Need to sort the displayStages so the sub-stages appear under each top-stage
             let sortedDisplayStages = sortByProvidedOrder(displayStages, orderedCancerStages);
 
@@ -927,6 +834,35 @@ function getPatientLongId(shortId) {
 		return "patient" + numStr + "_" + numStr;
 	}
 }
+
+// Same as the one in dataProcessor
+function sortByProvidedOrder(array, orderArr) {
+    let orderMap = new Map();
+
+    orderArr.forEach(function(item) { 
+        // Remember the index of each item in order array
+        orderMap.set(item, orderArr.indexOf(item));
+    });
+
+    // Sort the original array by the item's index in the orderArr
+    // It's very possible that items are in array may not be in orderArr
+    // so we assign index starting from orderArr.length for those items
+    let i = orderArr.length;
+    let sortedArray = array.sort(function(a, b){ 
+        if (!orderMap.has(a)) {
+            orderMap.set(a, i++);
+        }
+
+        if (!orderMap.has(b)) {
+            orderMap.set(b, i++);
+        }
+
+        return (orderMap.get(a) - orderMap.get(b));
+    });
+
+    return sortedArray;
+}
+
 
 function showDiagnosisChart(svgContainerId, data, stage) {
     d3.select("#" + svgContainerId).selectAll("*").remove();

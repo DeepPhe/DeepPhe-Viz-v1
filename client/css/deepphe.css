@@ -124,9 +124,6 @@ fill: #222;
 
 .top_stage > text {
 cursor: pointer;
-}
-
-.sub_stage > text {
 fill: rgb(51, 102, 204);
 }
 

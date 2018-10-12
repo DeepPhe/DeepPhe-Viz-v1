@@ -350,10 +350,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     let allEpisodes = [
             'Pre-diagnostic',
             'Diagnostic',
-            'Decision',
+            'Medical Decision-making',
             'Treatment',
             'Follow-up',
-            "Unknown"
+            'Unknown'
         ];
 
     // Color categories for types of episodes
