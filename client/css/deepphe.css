@@ -859,7 +859,7 @@ margin-right:3px;
 }
 
 #table_view {
-overflow: scroll;
+overflow: auto;
 }
 
 /* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
