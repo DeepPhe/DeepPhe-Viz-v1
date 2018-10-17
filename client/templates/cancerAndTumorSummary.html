@@ -3,7 +3,7 @@
 
 
 {{#each cancers}}
-<div class="section_heading">Cancer Summary - {{cancerId}}</div>
+<div class="section_heading">Cancer Summary <span class="cancer_id">({{cancerId}})</span></div>
 
 <div id="cancer_and_tnm">
 <table class="table">
@@ -68,7 +68,7 @@
 <!-- Tumor Summary -->
 {{#if tumors.length}}
 <div class="section_heading">
-<div class="tumor_summary_title">Tumor Summary - {{cancerId}}</div>
+<div class="tumor_summary_title">Tumor Summary <span class="cancer_id">({{cancerId}})</span></div>
 <div class="view_options">
 <input type="radio" id="list_view_option" name="view_options" value="List View" checked/>
 <label for="list_view_option"><i class="fas fa-list"></i> List View</label>

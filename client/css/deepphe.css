@@ -377,10 +377,6 @@ border:1px solid #dbdbdb;
 background:#e9ecef;
 }
 
-#table_view {
-overflow: scroll;
-}
-
 /* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
 .clearfix:before,
 .clearfix:after {
@@ -420,6 +416,11 @@ padding:5px 10px;
 float:left;
 width:860px;
 margin-right:20px;
+}
+
+.cancer_id {
+font-size:10px;
+font-weight:normal;
 }
 
 .right {
@@ -855,6 +856,10 @@ margin:0;
 .list_view_tumor_fact_list li {
 display:inline;
 margin-right:3px;
+}
+
+#table_view {
+overflow: scroll;
 }
 
 /* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
