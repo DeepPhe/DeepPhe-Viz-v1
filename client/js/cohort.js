@@ -1303,7 +1303,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.transition()
             .duration(transitionDuration)
     	    .attr("width", function(d, i) {
-    	    	return x(d[1] - d[0]);
+    	    	return x(d[1]) - x(d[0]);
     	    });
 
         // Update the percentage text and x position
