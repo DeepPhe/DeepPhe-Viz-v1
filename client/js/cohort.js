@@ -1204,7 +1204,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.transition()
 	        .duration(transitionDuration)
 			.attr("width", function(d) { 
-				return x(d[1] - d[0]);
+				return x(d[1]) - x(d[0]);
 			});
 
         // Append the percentage text
@@ -1230,22 +1230,11 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 				return y(d.data.biomarker) + y.bandwidth()/2; 
 			})
 			.text(function(d) {
-                return formatPercent(d.data[d.status]);
-            })
-            // percentage text tween transition
-            .transition()
-            .duration(transitionDuration) // time in ms
-	        .tween("text", function(d) {
-	        	// The d3.interpolate method receives the beginning and end values of the transition, 
-    	    	// and returns an interpolator function. An interpolator function receives a value between 0 and 1, 
-    	    	// and returns the interpolated value.
-				let interpolate = d3.interpolate(0, d.data[d.status]);
-				return function(t) {
-	                // Don't use d3.select(this) here
-	                // must explicitly use d3.select("#" + d.data.biomarker + "_" + d.status)
-					d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
-				};
-			});
+				// Only show percentage text for values bigger than 10%
+				if (d.data[d.status] > 0.1) {
+					return formatPercent(d.data[d.status]);
+				}
+            });
 
 	    // Y axis
 		biomarkersChartGrp.append("g")
@@ -1332,27 +1321,11 @@ function showBiomarkersChart(svgContainerId, data, stage) {
                 return x(d[0]) + 5;
 			})
 			.text(function(d) {
-				// Only show percentage text for status with value
-				if (d.data[d.status] > 0) {
+				// Only show percentage text for values bigger than 10%
+				if (d.data[d.status] > 0.1) {
                     return formatPercent(d.data[d.status]);
 				}
-            })
-            // percentage text tween transition
-            .transition()
-            .duration(transitionDuration) // time in ms
-	        .tween("text", function(d) {
-	        	// Only show percentage text for status with value
-	        	if (d.data[d.status] > 0) {
-                    let previousPercent = (parseFloat(d3.select("#" + d.data.biomarker + "_" + d.status).text()) / 100).toFixed(2);
-					let interpolate = d3.interpolate(previousPercent, d.data[d.status]);
-					return function(t) {
-		                // Don't use d3.select(this) here
-		                // must explicitly use d3.select("#" + d.data.biomarker + "_" + d.status)
-						d3.select("#" + d.data.biomarker + "_" + d.status).text(formatPercent(interpolate(t)));
-					};
-				}
-
-			});
+            });
 
         // Also update the chart title with patients count
         d3.select(".biomarkers_chart_title")
