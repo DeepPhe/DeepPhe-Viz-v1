@@ -377,6 +377,9 @@ border:1px solid #dbdbdb;
 background:#e9ecef;
 }
 
+#table_view {
+overflow: scroll;
+}
 
 /* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
 .clearfix:before,
