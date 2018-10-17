@@ -871,10 +871,7 @@ background:rgb(253, 208, 162);
 background:rgb(198, 219, 239);
 }
 
-.hasERStatus,
-.hasPRStatus,
-.hasHer2Status,
-.hasKi67Status {
+.hasReceptorStatus {
 background:rgb(229, 216, 189);
 }
 
