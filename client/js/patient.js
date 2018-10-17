@@ -280,10 +280,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	const legendHeight = 22;
     const legendSpacing = 2;
-    const widthPerLetter = 12;
+    const widthPerLetter = 9;
 
 	const episodeAreaHeight = 20;
-	const episodeLegendAnchorPositionX = 100;
+	const episodeLegendAnchorPositionX = 60;
 	const episodeLegendAnchorPositionY = 6;
 	const episodeBarHeight = 2;
 	const episodeBarY1 = 10;
