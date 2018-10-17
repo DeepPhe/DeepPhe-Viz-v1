@@ -1224,7 +1224,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			})
 			.attr("class", "biomarker_status_percentage")
 			.attr("x", function(d) {
-                return x(d[0]);
+                return x(d[0]) + 5; // Add 5px margin to left
 			})
 			.attr("y", function(d) { 
 				return y(d.data.biomarker) + y.bandwidth()/2; 
@@ -1329,7 +1329,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 				return d;
 			})
 			.attr("x", function(d) {
-                return x(d[0]);
+                return x(d[0]) + 5;
 			})
 			.text(function(d) {
 				// Only show percentage text for status with value
