@@ -1118,7 +1118,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 
 function showBiomarkersChart(svgContainerId, data, stage) {
     const svgWidth = 460;
-    const svgHeight = 150;
+    const svgHeight = 180;
 	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;

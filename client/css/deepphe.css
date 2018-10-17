@@ -157,8 +157,8 @@ fill-opacity: 0.3;
 
 /* Patients age range table */
 #patients {
-width: 640px;
-height:345px;
+max-width: 1122px;
+height:auto;
 padding:10px;
 }
 
