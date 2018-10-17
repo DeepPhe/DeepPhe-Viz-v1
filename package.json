@@ -8,11 +8,12 @@
   },
   "keywords": [
     "DeepPhe",
+    "Cancer",
     "Health NLP",
     "visualization"
   ],
   "author": "University of Pittsburgh, Department of Biomedical Informatics",
-  "license": "GPL-2.0",
+  "license": "SEE LICENSE FILE",
   "bugs": {
     "url": "https://github.com/DeepPhe/DeepPhe-Viz/issues"
   },
