@@ -49,7 +49,8 @@ color:#fff;
 /* Cohort Analysis */
 
 /* HTML div, not the svg */
-#stages,
+#stage_patient_age,
+#stage_patient_count,
 #diagnosis,
 #biomarkers,
 #patients,
@@ -115,47 +116,20 @@ fill: rgb(181, 207, 107);
 stroke: rgb(181, 207, 107);
 }
 
-.count_axis path {
-stroke: rgb(253, 141, 60);
-}
-
-.count_axis line {
-stroke: rgb(253, 141, 60);
-}
-
-.count_axis text {
-fill: rgb(253, 141, 60);
-}
-
-
-.age_axis path {
-stroke: rgb(117, 107, 177);
-}
-
-.age_axis line {
-stroke: rgb(117, 107, 177);
-}
-
-.age_axis text {
-fill: rgb(117, 107, 177);
-}
-
 .age_axis_label ,
 .count_axis_label {
 text-anchor: end;
+fill: #222;
 }
 
 .top_stage > text {
 cursor: pointer;
-}
-
-.sub_stage > text {
 fill: rgb(51, 102, 204);
 }
 
 /* Diagnosis chart */
 .diagnosis_x_label {
-text-anchor: end;
+text-anchor: middle;
 cursor:default;
 }
 
@@ -174,29 +148,17 @@ shape-rendering: crispEdges;
 fill: rgb(230, 85, 13);
 }
 
-/* Patients bubble chart */
-.patient_circle {
-fill-opacity:0.3;
-fill: rgb(44, 160, 44);
-stroke:#ccc;
-cursor:pointer;
-}
-
-.patient_circle:hover {
-fill-opacity:1;
-stroke-width: 3px;
-}
-
-.patient_name {
-font-size:9px;
-text-anchor: middle;
-dominant-baseline: middle;
+.slider {
+stroke: #999;
+stroke-opacity: .5;
+fill: dodgerblue;
+fill-opacity: 0.3;
 }
 
 /* Patients age range table */
 #patients {
-width: 600px;
-height:265px;
+max-width: 1122px;
+height:auto;
 padding:10px;
 }
 
@@ -264,6 +226,7 @@ shape-rendering: crispEdges;
 font-size:10px;
 }
 
+/* Vertical middle alignment */
 .biomarker_status_percentage{
 dominant-baseline: middle;
 }
@@ -414,7 +377,6 @@ border:1px solid #dbdbdb;
 background:#e9ecef;
 }
 
-
 /* clearfix hack http://nicolasgallagher.com/micro-clearfix-hack/ */
 .clearfix:before,
 .clearfix:after {
@@ -454,6 +416,11 @@ padding:5px 10px;
 float:left;
 width:860px;
 margin-right:20px;
+}
+
+.cancer_id {
+font-size:10px;
+font-weight:normal;
 }
 
 .right {
@@ -891,6 +858,10 @@ display:inline;
 margin-right:3px;
 }
 
+#table_view {
+overflow: auto;
+}
+
 /* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
 .hasBodySite {
 background:rgb(253, 208, 162);
@@ -900,10 +871,7 @@ background:rgb(253, 208, 162);
 background:rgb(198, 219, 239);
 }
 
-.hasERStatus,
-.hasPRStatus,
-.hasHer2Status,
-.hasKi67Status {
+.hasReceptorStatus {
 background:rgb(229, 216, 189);
 }
 

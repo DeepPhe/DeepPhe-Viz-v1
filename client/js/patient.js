@@ -28,10 +28,10 @@ function getPatientInfo(patientId) {
 	});
 }
 
-// Get cancer summary
-function getCancerSummary(patientId) {
+// Get cancer and tumor summary in one call
+function getCancerAndTumorSummary(patientId) {
 	$.ajax({
-	    url: baseUri + '/patient/' + patientId + '/cancers',
+	    url: baseUri + '/patient/' + patientId + '/cancerAndTumorSummary',
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
@@ -40,29 +40,10 @@ function getCancerSummary(patientId) {
 	    //console.log(response);
 
 	    // Render response
-	    $('#cancer').html(response);
+	    $('#cancer_and_tumor').html(response);
 	})
 	.fail(function () { 
-	    console.log("Ajax error - can't get cancer summary");
-	});
-}
-
-// Get tumor summary
-function getTumorSummary(patientId) {
-	$.ajax({
-	    url: baseUri + '/patient/' + patientId + '/tumors',
-	    method: 'GET', 
-	    async : true,
-	    dataType : 'html' // Use 'html' instead of 'json' for rendered html content
-	})
-	.done(function(response) {
-	    //console.log(response);
-
-	    // Render response
-	    $('#tumors').html(response);
-	})
-	.fail(function () { 
-	    console.log("Ajax error - can't get cancer summary");
+	    console.log("Ajax error - can't get cancer and tumor summary");
 	});
 }
 
@@ -135,7 +116,7 @@ function highlightMentionedTexts(textMentions, reportText) {
 // Get fact details by ID
 // We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
-	$.ajax({
+    $.ajax({
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
@@ -299,10 +280,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
 	const legendHeight = 22;
     const legendSpacing = 2;
-    const widthPerLetter = 12;
+    const widthPerLetter = 9;
 
 	const episodeAreaHeight = 20;
-	const episodeLegendAnchorPositionX = 100;
+	const episodeLegendAnchorPositionX = 60;
 	const episodeLegendAnchorPositionY = 6;
 	const episodeBarHeight = 2;
 	const episodeBarY1 = 10;
@@ -364,11 +345,31 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     	return reportTypes.indexOf(element);
     };
     
+    // This is all the possible episodes, each patient may only have some of these
+    // but we'll need to render the colors consistently across patients
+    let allEpisodes = [
+            'Pre-diagnostic',
+            'Diagnostic',
+            'Medical Decision-making',
+            'Treatment',
+            'Follow-up',
+            'Unknown'
+        ];
+
     // Color categories for types of episodes
     // https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9
+    let episodeColors = [
+            'rgb(49, 130, 189)', 
+            'rgb(230, 85, 13)', 
+            'rgb(49, 163, 84)', 
+            'rgb(140, 86, 75)', 
+            'rgb(117, 107, 177)',
+            'rgb(99, 99, 99)'
+        ];
+
 	let color = d3.scaleOrdinal()
-	        .domain(['PreDiagnostics', 'Diagnostic', 'Decision', 'Treatment', 'Follow-up'])
-	        .range(['rgb(49, 130, 189)', 'rgb(230, 85, 13)', 'rgb(49, 163, 84)', 'rgb(140, 86, 75)', 'rgb(117, 107, 177)']);
+	        .domain(allEpisodes)
+	        .range(episodeColors);
 
     // Transition used by focus/defocus episode
     let transt = d3.transition()
