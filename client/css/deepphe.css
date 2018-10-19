@@ -1,7 +1,7 @@
 html{
 color:#363636;
 background-color: #f5f8fa;
-font: 12px Helvetica;
+font: 12px sans-serif;
 }
 
 a {
@@ -574,7 +574,7 @@ color:#f6941e;
 
 .count {
 font-size: .85em;
-font-family: serif;
+font-family: sans-serif;
 }
 
 .highlighted_term {
