@@ -2,6 +2,17 @@
 
 The DeepPhe NLP extracts information from the patient cancer reports and stores the data in Neo4j graph database. The DeepPhe-Viz tool represents the extracted information in an organized workflow to end users, enabling exploration and discovery of patient data.
 
+## Table of Contents
+
+- [Installation](#installation)
+  * [Configuration](#configuration)
+  * [Starting the Neo4J Database Server](#starting-the-neo4j-database-server)
+  * [Launching The Viz Server](#launching-the-viz-server)
+  * [Development Mode](#development-mode)
+- [Usage And Workflow Instructions](#usage-and-workflow-instructions)
+  * [Cohort Analysis](#cohort-analysis)
+  * [Individual Patient Profile](#individual-patient-profile)
+  
 ## Installation
 
 You must have the following tools installed:
@@ -70,7 +81,7 @@ Then just use `nodemon` instead of `node` to run your code, and now your process
 nodemon server.js
 ````
 
-## Usage & Workflow Instructions
+## Usage And Workflow Instructions
 
 The Viz tool consists of two major components-- cohort analysis and individual patient profiles.
 
@@ -80,23 +91,23 @@ When we first load the Viz tool, you'll see a cohort analysis page. The system q
 
 ![Cohort Analysis](cohort_analysis.png "Cohort Analysis")
 
-#### A. Patient Count Per Stage
+**A. Patient Count Per Stage**
 
 This chart shows the number of patients of each cancer stage. When users click one of the stage bars in the first chart, the viz tool will show updated charts of that stage with patients from that stage. Users can also click the top-level stage label text to show/hide all its sub-stages. The top stage stays unchanged. Note that some patients may have more than one stage, so the total number across all stages might be larger than the total number of patients in the cohort. 
 
-#### B. Patient Age of First Encounter Per Stage
+**B. Patient Age of First Encounter Per Stage**
 
 Box-whisker plots summarizing the distribution of patient age of diagnosis across all cancer stages.
 
-#### C. Diagnosis
+**C. Diagnosis**
 
 The diagnosis chart is a summary of all the diagnosis across all the patient or patients from the selected stage. Moving the bottom slider scrolls through the patients in the X axis.
 
-#### D. Biomarkers
+**D. Biomarkers**
 
 The biomarkers chart is a stacked bar chart that shows the percentage of patients who are positive, negative, and unknown for major biomarkers. Note - as of October 2018, this display is only meaningful for breast cancer data.
 
-#### E. Patients Table
+**E. Patients Table**
 
 The patient table groups the target patients by their age of first encounter and serves as the entry point to the individual patient profile.
 
