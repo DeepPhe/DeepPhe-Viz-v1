@@ -22,14 +22,7 @@ You must have the following tools installed:
 
 Currently, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
 
-Next download/clone the `DeepPhe-Viz` repo and enter the project directory/
-
-````
-git clone https://github.com/DeepPhe/DeepPhe-Viz.git
-cd DeepPhe-Viz
-````
-
-Installing this package and all its depedencies can be done with a simple command in the package root directory with no arguments:
+Next download or clone the `DeepPhe-Viz` repo and enter the project directory. Installing this package and all its depedencies can be done with a simple command with no arguments:
 
 ````
 npm install
@@ -37,14 +30,10 @@ npm install
 
 ### Configuration
 
-There are two configuration files under the `configs/` directory:
+There are two configuration files under the `configs/` directory: 
 
-- `neo4j.josn`
-- `server.json`
-
-First you will need to put your neo4j database connection username and password in `neo4j.json`. This assumes that have a running neo4j server and you've loaded the DeepPhe NLP gerenated data (Breast cancer data or Melanoma cancer data) into your Neo4j database. If you have set `dbms.security.auth_enabled=false` for your neo4j installation, you can set the user name and passwords to be empty strings (or ignore them).
-
-The `server.json` is where you can define the HTTP server host and port number.
+- `neo4j.josn` is where you specify the neo4j database connection username and password
+- `server.json` is where you can define the Viz HTTP server host and port number
 
 ### Starting the Neo4J Database Server
 
