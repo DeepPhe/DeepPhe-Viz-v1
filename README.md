@@ -78,6 +78,8 @@ The Viz tool consists of two major components-- cohort analysis and individual p
 
 When we first load the Viz tool, you'll see a cohort analysis page. The system queries Neo4j to get all the patients of all cancer stages, and the results are represented in a series of charts.
 
+![Cohort Analysis](cohort_analysis.png "Cohort Analysis")
+
 #### A. Patient Count Per Stage
 
 This chart shows the number of patients of each cancer stage. When users click one of the stage bars in the first chart, the viz tool will show updated charts of that stage with patients from that stage. Users can also click the top-level stage label text to show/hide all its sub-stages. The top stage stays unchanged. Note that some patients may have more than one stage, so the total number across all stages might be larger than the total number of patients in the cohort. 
@@ -101,6 +103,8 @@ The patient table groups the target patients by their age of first encounter and
 ### Individual Patient Profile
 
 Clicking a target patient from the Cohort Analysis patient table, leads to display of the individual patient page.
+
+![Individual Patient Profile](individual_patient_profile.png "Individual Patient Profile")
 
 The patient view starts with personal information on the upper left (A), followed by the cancer summary (B)  and tumor summaries (C). The default tumor summary list view stacks all the tumors and the table view shows comparable items side by side. Similar concepts are grouped and share background colors. Concepts are ordered by importance, and each can be clicked to display their original sources in clinical notes on the right. 
 
