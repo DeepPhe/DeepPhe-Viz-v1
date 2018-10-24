@@ -8,10 +8,10 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
   * [Configuration](#configuration)
   * [Starting the Neo4J Database Server](#starting-the-neo4j-database-server)
   * [Launching The Viz Server](#launching-the-viz-server)
-  * [Development Mode](#development-mode)
 - [Usage And Workflow Instructions](#usage-and-workflow-instructions)
   * [Cohort Analysis](#cohort-analysis)
   * [Individual Patient Profile](#individual-patient-profile)
+- [For Developers](#for-developers)
   
 ## Installation
 
@@ -54,7 +54,6 @@ Put all the user-defined functions jars under `NEO4J_ROOT/plugings/` before star
 
 Then go to the `NEO4J_ROOT/bin` and start the database server by using `./neo4j start` command.
 
-
 ### Launching The Viz Server
 
 Now you can start the node server with
@@ -63,27 +62,13 @@ Now you can start the node server with
 node server.js
 ````
 
-This will start the web server on port 8383 by default. You can go to http://localhost:8383/cohortAnalysis to see the result.
+This will start the web server on port 8383 by default. You can go to http://localhost:8383/cohortAnalysis to see the result. We'll describe the usage and workflow later.
 
 Note: you can type `lsof -i :8383` to see if port 8383 is being used. 
 
-### Development Mode
-
-During development, you don't want to restart the server with `node server.js` every time after you make changes in the source code. [Nodemon](https://github.com/remy/nodemon) is a utility that will monitor for any changes in your source and automatically restart your server. Perfect for development. To install, 
-
-````
-npm install -g nodemon
-````
-
-Then just use `nodemon` instead of `node` to run your code, and now your process will automatically restart when your code changes.
-
-````
-nodemon server.js
-````
-
 ## Usage And Workflow Instructions
 
-The Viz tool consists of two major components-- cohort analysis and individual patient profiles.
+The Viz tool consists of two major components&mdash;cohort analysis and individual patient profiles. Please note that the DeepPhe NLP may extract multiple cancers of the same patient if present. Currently the Viz tool can render multi-cancer patient in the individual patient profile to show all the cancers and tumors summaries. However, the cohort analysis page doesn't take this into consideration at this point. We are working on a comprehensive solution to the multi-cancer cases.
 
 ### Cohort Analysis
 
@@ -147,7 +132,19 @@ Note that the text in this example is obscured to protect the privacy of the pat
 All of the summary items from the full cancer and tumor summaries can also be clicked to show their source report in the timeline.
 
 
+## For Developers
 
+If you would like to poke around the Viz tool and make changes to the source code, you must don't want to restart the server with `node server.js` every time after code changes. [Nodemon](https://github.com/remy/nodemon) is a utility that will monitor for any changes in your source and automatically restart your server. Perfect for development. To install, 
+
+````
+npm install -g nodemon
+````
+
+Then just use `nodemon` instead of `node` to start the server, and now your process will automatically restart when your code changes.
+
+````
+nodemon server.js
+````
 
 
 
