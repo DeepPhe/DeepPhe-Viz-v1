@@ -492,11 +492,8 @@ margin-right:0;
 
 /* Grouped text mentions */
 .grouped_text_provenance {
-margin-right:20px !important;
-}
-
-.grouped_text_provenance:last-child {
-margin-right:0;
+width:100%; /* display:block; doesn't work */
+padding:2px 0;
 }
 
 .fact_detail_report_id {

@@ -275,7 +275,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     });
 
 	const margin = {top: 20, right: 20, bottom: 10, left: 170};
-	const mainReportTypeRowHeightPerCount = 14;
+	const mainReportTypeRowHeightPerCount = 16;
 	const overviewReportTypeRowHeightPerCount = 3;
 
 	const legendHeight = 22;
