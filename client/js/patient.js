@@ -436,7 +436,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     	let x = 10;
 
     	for (let i = 0; i < index; i++) {
-            x += episodes[i].length * widthPerLetter + i * (reportMainRadius*2 + legendSpacing);
+            // Remove white spaces and hyphens, treat the string as one single word
+            // this yeilds a better (still not perfect) calculation of the x
+            let processedEpisodeStr = episodes[i].replace(/-|\s/g,"");
+            x += processedEpisodeStr.length * widthPerLetter + i * (reportMainRadius*2 + legendSpacing);
     	}
 
     	return episodeLegendAnchorPositionX + legendSpacing + x;
