@@ -281,13 +281,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	const legendHeight = 22;
     const legendSpacing = 2;
     const widthPerLetter = 9;
-
-	const episodeAreaHeight = 20;
 	const episodeLegendAnchorPositionX = 60;
 	const episodeLegendAnchorPositionY = 6;
-	const episodeBarHeight = 2;
-	const episodeBarY1 = 10;
-	const episodeBarY2 = 13; // episodeBarY1 + episodeBarHeight + 1px gap
+
+    const gapBetweenlegendAndMain = 5;
 
 	const width = 660;
 	// Dynamic height based on vertical counts
@@ -306,7 +303,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
     // Set the timeline start date 10 days before the min date
     // and end date 10 days after the max date
-    const numOfDays = 10;
+    const numOfDays = 100
 
     // Gap between texts and mian area left border
     const textMargin = 10;
@@ -429,7 +426,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	let svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "timeline_svg")
 	    .attr("width", margin.left + width + margin.right)
-	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + ageAreaHeight + margin.bottom);
+	    .attr("height", margin.top + legendHeight + gapBetweenlegendAndMain + height + pad + overviewHeight + pad + ageAreaHeight + margin.bottom);
 
     // Dynamically calculate the x posiiton of each legend rect
     let episodeLegendX = function(index) {
@@ -458,7 +455,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("text-anchor", "end") // the end of the text string is at the initial current text position
 	    .text("Episodes:");
 
-    // Divider line
+    // Bottom divider line
     episodeLegendGrp.append("line")
 		.attr("x1", 0)
 		.attr("y1", legendHeight)
@@ -545,16 +542,10 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Specify a specific region of an element to display, rather than showing the complete area
 	// Any parts of the drawing that lie outside of the region bounded by the currently active clipping path are not drawn.
 	svg.append("defs").append("clipPath")
-	    .attr("id", "episode_area_clip")
-	    .append("rect")
-	    .attr("width", width)
-	    .attr("height", episodeAreaHeight);
-
-	svg.append("defs").append("clipPath")
 	    .attr("id", "main_area_clip")
 	    .append("rect")
 	    .attr("width", width)
-	    .attr("height", height);
+	    .attr("height", height + gapBetweenlegendAndMain);
 
     let update = function() {
         // Update the episode bars
@@ -607,8 +598,8 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Zoom rect that covers the main main area
 	let zoom = d3.zoom()
 	    .scaleExtent([1, Infinity])
-	    .translateExtent([[0, 0], [width, height + episodeAreaHeight]])
-	    .extent([[0, 0], [width, height + episodeAreaHeight]])
+	    .translateExtent([[0, 0], [width, height]])
+	    .extent([[0, 0], [width, height]])
 	    .on("zoom", zoomed);
 
     // Appending zoom rect after the main area will prevent clicking on the report circles/
@@ -616,25 +607,25 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	svg.append("rect")
 		.attr("class", "zoom")
 		.attr("width", width)
-		.attr("height", height + episodeAreaHeight)
-		.attr("transform", "translate(" + margin.left + "," + (margin.top + + episodeAreaHeight) + ")")
+		.attr("height", height + gapBetweenlegendAndMain)
+		.attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) + ")")
 		.call(zoom);
 
 	// Main area
 	// Create main area after zoom panel, so we can select the report circles
 	let main = svg.append("g")
 	    .attr("class", "main")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + gapBetweenlegendAndMain) + ")");
 
     // Encounter ages
     let age = svg.append("g")
 	    .attr("class", "age")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + gapBetweenlegendAndMain + height + pad) + ")");
 
 	// Mini overview
 	let overview = svg.append("g")
 	    .attr("class", "overview")
-	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + episodeAreaHeight + height + pad + ageAreaHeight + ageAreaBottomPad) + ")");
+	    .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight + gapBetweenlegendAndMain + height + pad + ageAreaHeight + ageAreaBottomPad) + ")");
 
     let getReportCirclePositionY = function(d, yScaleCallback, reportTypeRowHeightPerCount) {
     	let arr = reportsGroupedByDateAndTypeObj[d.date][d.type];
@@ -696,41 +687,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         //Can also use brush.move(d3.select(".brush"), [overviewX(newStartDate), overviewX(newEndDate)]);
         overview.select(".brush").transition(transt).call(brush.move, [overviewX(startDate), overviewX(endDate)]);
     };
-
-    let episodeBarsGrp = svg.append("g")
-        .attr("clip-path", "url(#episode_area_clip)")
-        .attr('class', 'episode_bars')
-        .attr("transform", "translate(" + margin.left + "," + (margin.top + legendHeight) +  ")");
-
-    let episodeBarGrp = episodeBarsGrp.selectAll('.episode_bar_group')
-        .data(episodeSpansData)
-        .enter()
-        .append('g')
-        .attr('class', 'episode_bar_group');
-
-    episodeBarGrp.append('rect')
-        .attr('class', 'episode_bar')
-        .attr("id", function(d) {
-            return d.episode + "_bar";
-        })
-        .attr("x", function(d) { 
-			return mainX(d.startDate) - reportMainRadius; 
-		})
-        .attr('y', function(d, i) {
-        	// Stagger the bars
-        	if (i % 2 === 0) {
-                return episodeBarY1;
-        	} else {
-        		return episodeBarY2;
-        	}
-        })
-        .attr('width', function(d) {
-            return mainX(d.endDate) - mainX(d.startDate) + reportMainRadius*2;
-        })
-        .attr('height', episodeBarHeight)
-        .style('fill', function(d) {
-            return color(d.episode);
-        });
 
     // Mian report type divider lines
     // Put this before rendering the report dots so the enlarged dot on hover will cover the divider line
@@ -1020,7 +976,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Reset button
 	svg.append("foreignObject")
 	    .attr('id', 'reset')
-	    .attr("transform", "translate(20, " + (margin.top + legendHeight + pad + height + pad + ageAreaHeight + ageAreaBottomPad + overviewHeight) + ")")
+	    .attr("transform", "translate(20, " + (margin.top + pad + height + pad + ageAreaHeight + ageAreaBottomPad + overviewHeight) + ")")
 	    .append("xhtml:body")
         .html('<button>Reset</button>');
 
