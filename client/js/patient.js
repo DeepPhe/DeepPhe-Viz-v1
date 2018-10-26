@@ -431,9 +431,9 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("width", margin.left + width + margin.right)
 	    .attr("height", margin.top + legendHeight + episodeAreaHeight + height + pad + overviewHeight + pad + ageAreaHeight + margin.bottom);
 
-    // Dynamically calculate the x posiiton of each lengend rect
-    let lengendX = function(index) {
-    	let x = 10;
+    // Dynamically calculate the x posiiton of each legend rect
+    let episodeLegendX = function(index) {
+        let x = 10;
 
     	for (let i = 0; i < index; i++) {
             // Remove white spaces and hyphens, treat the string as one single word
@@ -454,7 +454,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("x", episodeLegendAnchorPositionX) // Relative to episodeLegendGrp
 	    .attr("y", episodeLegendAnchorPositionY) 
 	    .attr("dy", ".5ex")
-	    .attr('class', 'legend_text')
+	    .attr('class', 'episode_legend_text')
 	    .attr("text-anchor", "end") // the end of the text string is at the initial current text position
 	    .text("Episodes:");
 
@@ -478,7 +478,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
             return d;
         })
         .attr('cx', function(d, i) {
-            return lengendX(i);
+            return episodeLegendX(i);
         })
         .attr('cy', 6)
         .attr('r', reportMainRadius)
@@ -509,10 +509,13 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     // Legend label text
     episodeLegend.append('text')
         .attr('x', function(d, i) {
-            return reportMainRadius*2 + legendSpacing + lengendX(i);
+            return reportMainRadius*2 + legendSpacing + episodeLegendX(i);
         })
         .attr('y', 10)
-        .attr('class', 'legend_text')
+        .attr('class', 'episode_legend_text')
+        .attr('id', function(d) {
+            return "episode_" + d.replace(" ", "_");
+        })
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
         })
@@ -528,7 +531,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
                 defocusEpisode();
             } else {
             	// Remove previously added class on other legend text
-            	$(".legend_text").removeClass(cssClass);
+            	$(".episode_legend_text").removeClass(cssClass);
 
             	legendText.classed(cssClass, true);
 
@@ -815,7 +818,9 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	let xAxis = d3.axisBottom(mainX)
 	    // https://github.com/d3/d3-axis#axis_tickSizeInner
 	    .tickSizeInner(5)
-	    .tickSizeOuter(0);
+	    .tickSizeOuter(0)
+        // Abbreviated month format 
+        .tickFormat(d3.timeFormat('%b'));
 
 	// Append x axis to the bottom of main area
 	main.append("g")
@@ -895,7 +900,9 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Overview x axis
 	let overviewXAxis = d3.axisBottom(overviewX)
 	    .tickSizeInner(5)
-	    .tickSizeOuter(0);
+	    .tickSizeOuter(0)
+        // Abbreviated month format 
+        .tickFormat(d3.timeFormat('%b'));
 
 	// Append x axis to the bottom of overview area
 	overview.append("g")

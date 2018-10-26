@@ -1,7 +1,7 @@
 html{
 color:#363636;
 background-color: #f5f8fa;
-font: 12px sans-serif;
+font: 12px Helvetica, sans-serif;
 }
 
 a {
@@ -571,7 +571,6 @@ color:#f6941e;
 
 .count {
 font-size: .85em;
-font-family: sans-serif;
 }
 
 .highlighted_term {
@@ -586,6 +585,10 @@ font-weight: 600;
 .episode_legend_circle,
 .main_report {
 fill-opacity:0.5;
+}
+
+.episode_legend_text {
+font-size:11px;
 }
 
 .hide {
@@ -633,7 +636,6 @@ pointer-events: visibleFill;
 .overview-x-axis {
 stroke-width: 0.5px;
 stroke: #888;
-font: 10px avenir next, sans-serif;
 }
 
 .main-x-axis > path,
@@ -658,10 +660,6 @@ fill-opacity: 0.3;
 fill: #eee;
 stroke: #666;
 fill-opacity: 0.3;	
-}
-
-.legend_text {
-font-size:11px;
 }
 
 .legend_group_divider {
