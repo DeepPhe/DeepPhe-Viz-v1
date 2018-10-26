@@ -101,7 +101,7 @@ This timeline view (D) provides a temporal view of all of the reports for this p
 - Discharge Summary
 - Clinical Note
 
-On top of the timeline are horizontal bars representing time spans for episodes, with an interactive legend above. You can toggle the visibility for episode types by clicking on each level. Currently we have the following episode types:
+On top of the timeline is an interactive episode legend. You can toggle the visibility for episode types by clicking on the episode circle, you can also zoom in/out the reports of each episode by clicking the legend text. Currently we have the following episode types:
 
 - Pre-diagnostic
 - Diagnostic
