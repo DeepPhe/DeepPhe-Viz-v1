@@ -28,6 +28,8 @@ Next download or clone the `DeepPhe-Viz` repo and enter the project directory. I
 npm install
 ````
 
+After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md) you have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target`.  This compressed file contains a directory named `plugins`.  The contents of the `plugins` directory must be copied to your Neo4j 3.2.x plugins directory.   Neo4j 3.2.x uses these libraries in `NEO4J_HOME/plugins` to interact with the customized DeepPhe system database.
+
 ### Configuration
 
 There are two configuration files under the `configs/` directory: 
