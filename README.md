@@ -28,8 +28,6 @@ Next download or clone the `DeepPhe-Viz` repo and enter the project directory. I
 npm install
 ````
 
-After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md) you have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target`.  This compressed file contains a directory named `plugins`.  The contents of the `plugins` directory must be copied to your Neo4j 3.2.x plugins directory.   Neo4j 3.2.x uses these libraries in `NEO4J_HOME/plugins` to interact with the customized DeepPhe system database.
-
 ### Configuration
 
 There are two configuration files under the `configs/` directory: 
@@ -39,9 +37,13 @@ There are two configuration files under the `configs/` directory:
 
 ### Starting the Neo4J Database Server
 
-Put the DeepPhe NLP generated `deepphe.db` under your `NEO4J_ROOT/data/databases/` and configure the `NEO4J_ROOT/conf/neo4j.conf` to point to this database.
+After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `NEO4J_ROOT/data/databases/` and configure the `NEO4J_ROOT/conf/neo4j.conf` to point to this database.
 
-Put all the user-defined functions jars under `NEO4J_ROOT/plugings/` before starting the server.
+````
+dbms.active_database=deepphe.db
+````
+
+You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target`.  This compressed file contains a directory named `plugins`.  The contents of the `plugins` directory must be copied to your Neo4j 3.2.x plugins directory. Neo4j 3.2.x uses these libraries in `NEO4J_ROOT/plugins` for the Viz tool to interact with the customized DeepPhe system database.
 
 Then go to the `NEO4J_ROOT/bin` and start the database server by using `./neo4j start` command.
 
