@@ -24,6 +24,8 @@ Currently, we have been successfully using the [nvm](https://github.com/creation
 
 For neo4j server installation, we have tested the "Neo4j Community Edition 3.2.13" with this DeepPhe release, and you can download it from the [Neo4j Releases page](https://neo4j.com/download-center/#releases) by choosing the correct download for your platform. Then follow their [installation instructions](https://neo4j.com/docs/operations-manual/current/installation/) to configure and start the server.
 
+![Neo4j server download](neo4j_server_download.png "Neo4j server download")
+
 Next download or clone the `DeepPhe-Viz` repo and enter the project directory. Installing this package and all its depedencies can be done with a simple command with no arguments:
 
 ````
