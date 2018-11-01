@@ -6,8 +6,8 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 
 - [Installation](#installation)
   * [Configuration](#configuration)
-  * [Starting the Neo4J Database Server](#starting-the-neo4j-database-server)
-  * [Launching The Viz Server](#launching-the-viz-server)
+  * [Starting The Neo4J Database Server](#starting-the-neo4j-database-server)
+  * [Launching The DeepPhe-Viz HTTP Server](#launching-the-deepphe-viz-http-server)
 - [Usage And Workflow Instructions](#usage-and-workflow-instructions)
   * [Cohort Analysis](#cohort-analysis)
   * [Individual Patient Profile](#individual-patient-profile)
@@ -17,10 +17,10 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 
 You must have the following tools installed:
 
-- [Nodejs 8.12.0 (includes npm 6.4.1)](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
+- [Nodejs 10.13.0 (includes npm 6.4.1) or the latest LTS version](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
 - [Neo4j 3.2.x Server](https://neo4j.com/download-center/#releases) - is used to store the graph output from DeepPhe NLP
 
-Currently, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
+if you need to manage multiple versions of NodeJS, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
 
 For neo4j server installation, we have tested the "Neo4j Community Edition 3.2.13" with this DeepPhe release, and you can download it from the [Neo4j Releases page](https://neo4j.com/download-center/#releases) by choosing the correct download for your platform. Then follow their [installation instructions](https://neo4j.com/docs/operations-manual/current/installation/) to configure and start the server.
 
@@ -37,25 +37,31 @@ npm install
 There are two configuration files under the `configs/` directory: 
 
 - `neo4j.josn` is where you specify the neo4j database connection username and password
-- `server.json` is where you can define the Viz HTTP server host and port number
+- `server.json` is where you can define the DeepPhe-Viz HTTP server host and port number
 
-### Starting the Neo4J Database Server
+### Starting The Neo4J Database Server
 
-After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `NEO4J_ROOT/data/databases/` and configure the `NEO4J_ROOT/conf/neo4j.conf` to point to this database.
+NOTE: the top level directory is referred to as `NEO4J_HOME`, where you see the `bin` and `plugins`.
+
+After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `<NEO4J_HOME>/data/databases/` and configure the `<NEO4J_HOME>/conf/neo4j.conf` to point to this database.
 
 ````
 dbms.active_database=deepphe.db
 ````
 
-You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target`.  This compressed file contains a directory named `plugins`.  The contents of the `plugins` directory must be copied to your Neo4j 3.2.x plugins directory. Neo4j 3.2.x uses these libraries in `NEO4J_ROOT/plugins` for the Viz tool to interact with the customized DeepPhe system database.
+You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The DeepPhe-Viz uses these libraries to interact with the customized DeepPhe system database.
 
-Then go to the `NEO4J_ROOT/bin` and start the database server by using `./neo4j start` command.
+To run Neo4j as a console application, use:
+`./<NEO4J_HOME>/bin/neo4j console`
 
-NOTE: we use `NEO4J_ROOT` to indicate the neo4j directory where you see the `bin` and `plugins`.
+To run Neo4j in a background process, use:
+`./<NEO4J_HOME>/bin/neo4j start`
 
-### Launching The Viz Server
+Once you create a new password for the 'neo4j' user upon visiting the Neo4j Browser at http://localhost:7474 the first time, you'll have full access to the Neo4j database. The same username and password will also need to be configured in the DeepPhe-Viz configuration file: `configs/neo4j.json` so the DeepPhe-Viz can talk to the neo4j server.
 
-Now you can start the node server with
+### Launching The DeepPhe-Viz HTTP Server
+
+Now you can start the DeepPhe-Viz HTTP server with
 
 ````
 node server.js
@@ -63,7 +69,7 @@ node server.js
 
 This will start the web server on port 8383 by default. You can go to http://localhost:8383/cohortAnalysis to see the result. We'll describe the usage and workflow later.
 
-Note: you can type `lsof -i :8383` to see if port 8383 is being used. 
+Note: you can type `lsof -i :8383` to see if port 8383 is being used. If you need to use a different port for running the DeepPhe-Viz HTTP server, specify the port number in the DeepPhe-Viz configuration file: `configs/server.json` then restart the DeepPhe-Viz HTTP server.
 
 ## Usage And Workflow Instructions
 
@@ -71,7 +77,7 @@ The Viz tool consists of two major components&mdash;cohort analysis and individu
 
 ### Cohort Analysis
 
-When we first load the Viz tool, you'll see a cohort analysis page. The system queries Neo4j to get all the patients of all cancer stages, and the results are represented in a series of charts.
+When we first load the DeepPhe-Viz in the web browser, you'll see a cohort analysis page. The system queries Neo4j to get all the patients of all cancer stages, and the results are represented in a series of charts.
 
 ![Cohort Analysis](cohort_analysis.png "Cohort Analysis")
 
