@@ -6,7 +6,7 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 
 - [Installation](#installation)
   * [Configuration](#configuration)
-  * [Starting the Neo4J Database Server](#starting-the-neo4j-database-server)
+  * [Starting The Neo4J Database Server](#starting-the-neo4j-database-server)
   * [Launching The DeepPhe-Viz HTTP Server](#launching-the-deepphe-viz-http-server)
 - [Usage And Workflow Instructions](#usage-and-workflow-instructions)
   * [Cohort Analysis](#cohort-analysis)
@@ -39,7 +39,7 @@ There are two configuration files under the `configs/` directory:
 - `neo4j.josn` is where you specify the neo4j database connection username and password
 - `server.json` is where you can define the DeepPhe-Viz HTTP server host and port number
 
-### Starting the Neo4J Database Server
+### Starting The Neo4J Database Server
 
 NOTE: the top level directory is referred to as `NEO4J_HOME`, where you see the `bin` and `plugins`.
 
