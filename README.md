@@ -51,6 +51,8 @@ You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `d
 
 Then go to the `NEO4J_ROOT/bin` and start the database server by using `./neo4j start` command.
 
+NOTE: we use `NEO4J_ROOT` to indicate the neo4j directory where you see the `bin` and `plugins`.
+
 ### Launching The Viz Server
 
 Now you can start the node server with
