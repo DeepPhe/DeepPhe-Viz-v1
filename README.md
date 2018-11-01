@@ -36,7 +36,7 @@ npm install
 
 There are two configuration files under the `configs/` directory: 
 
-- `neo4j.josn` is where you specify the neo4j database connection username and password
+- `neo4j.json` is where you specify the neo4j database connection username and password
 - `server.json` is where you can define the DeepPhe-Viz HTTP server host and port number
 
 ### Starting The Neo4J Database Server
