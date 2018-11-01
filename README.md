@@ -17,10 +17,10 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 
 You must have the following tools installed:
 
-- [Nodejs 8.12.0 (includes npm 6.4.1)](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
+- [Nodejs 10.13.0 (includes npm 6.4.1) or the latest LTS version](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
 - [Neo4j 3.2.x Server](https://neo4j.com/download-center/#releases) - is used to store the graph output from DeepPhe NLP
 
-Currently, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
+if you need to manage multiple versions of NodeJS, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
 
 For neo4j server installation, we have tested the "Neo4j Community Edition 3.2.13" with this DeepPhe release, and you can download it from the [Neo4j Releases page](https://neo4j.com/download-center/#releases) by choosing the correct download for your platform. Then follow their [installation instructions](https://neo4j.com/docs/operations-manual/current/installation/) to configure and start the server.
 
@@ -41,17 +41,23 @@ There are two configuration files under the `configs/` directory:
 
 ### Starting the Neo4J Database Server
 
-After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `NEO4J_ROOT/data/databases/` and configure the `NEO4J_ROOT/conf/neo4j.conf` to point to this database.
+NOTE: the top level directory is referred to as `NEO4J_HOME`, where you see the `bin` and `plugins`.
+
+After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `<NEO4J_HOME>/data/databases/` and configure the `<NEO4J_HOME>/conf/neo4j.conf` to point to this database.
 
 ````
 dbms.active_database=deepphe.db
 ````
 
-You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target`.  This compressed file contains a directory named `plugins`.  The contents of the `plugins` directory must be copied to your Neo4j 3.2.x plugins directory. Neo4j 3.2.x uses these libraries in `NEO4J_ROOT/plugins` for the Viz tool to interact with the customized DeepPhe system database.
+You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The Viz tool uses these libraries to interact with the customized DeepPhe system database.
 
-Then go to the `NEO4J_ROOT/bin` and start the database server by using `./neo4j start` command.
+To run Neo4j as a console application, use:
+`./<NEO4J_HOME>/bin/neo4j console`
 
-NOTE: we use `NEO4J_ROOT` to indicate the neo4j directory where you see the `bin` and `plugins`.
+To run Neo4j in a background process, use:
+`./<NEO4J_HOME>/bin/neo4j start`
+
+Once you create a new password for the 'neo4j' user upon visiting the Neo4j Browser at http://localhost:7474 the first time, you'll have full access to the Neo4j database. The same username and password will also need to be configured in the Viz tool's configuration file: `configs/neo4j.json` so the Viz tool can talk to the neo4j server.
 
 ### Launching The Viz Server
 
