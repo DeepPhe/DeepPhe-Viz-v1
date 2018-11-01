@@ -817,22 +817,15 @@ function showPatientsTable(containerId, data, stage) {
     $("#" + containerId).html(html);
 }
 
-// Lonf ID: patient14_14 --> short ID: P14
+// Leave this for future use 
+// since different data source may have different ID format
 function getPatientShortId(longId) {
-	// captilize
-    return "P" + longId.slice(7, 9); 
+    return longId; 
 }
 
-// P14 --> patient14_14
-// P02 --> patient02_2
+// Leave this for future use
 function getPatientLongId(shortId) {
-	let numStr = shortId.slice(1);
-	// lowercase
-	if (numStr.startsWith("0")) {
-        return "patient" + numStr + "_" + numStr.slice(1);
-	} else {
-		return "patient" + numStr + "_" + numStr;
-	}
+	return shortId;
 }
 
 // Same as the one in dataProcessor
@@ -911,7 +904,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     });
 
     let widthPerPatient = chartWidth/xDomain.length;
-    let patientsNumDisplay = 10;
+    let patientsNumDisplay = 5;
 
 	// set the ranges
 	let x = d3.scalePoint()
