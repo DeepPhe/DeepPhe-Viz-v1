@@ -1,6 +1,5 @@
 html{
 color:#363636;
-background-color: #f5f8fa;
 font: 12px Helvetica, sans-serif;
 }
 
@@ -56,7 +55,7 @@ color:#fff;
 #patients,
 #patients2 {
 background:#fff;
-border:1px solid #ccc;
+border:1px solid #fff;
 margin:10px;
 padding:0px;
 float:left;
@@ -176,13 +175,13 @@ margin-bottom:10px;
 .patients_table th {
 padding:4px; 
 background:#ebeff9;
-border:1px solid #ccc;
+border:1px solid #fff;
 /* The text in th are bold and centered by default. */
 }
 
 .patients_table td {
 padding:5px; 
-border:1px solid #ccc;
+border:1px solid #fff;
 }
 
 .patient_age_range_list {
@@ -357,20 +356,21 @@ margin:10px 0 20px;
 
 .table th.th {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 /* The text in th are bold and centered by default. */
+text-align:left;
 }
 
 .table th.th_vertical {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 /* The text in th are bold and centered by default. */
 text-align:left;
 }
 
 .table td {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 }
 
 .table td.empty_cell {
