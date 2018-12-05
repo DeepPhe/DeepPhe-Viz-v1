@@ -6,6 +6,10 @@ const Inert = require('inert');
 
 const Vision = require('vision');
 
+const HapiSwagger = require('hapi-swagger');
+
+const packageJson = require('./package.json');
+
 // Routes definitions array, local module
 const routes = require('./lib/routes.js');
 
@@ -35,6 +39,19 @@ const init = async function() {
 
     // Register vision plugin to render view templates
     await server.register(Vision);
+
+    const swaggerOptions = {
+        info: {
+                title: 'Test API Documentation',
+                version: packageJson.version,
+            },
+        };
+
+    await server.register(
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        });
 
     server.views({
         // Using handlebars as template engine responsible for
