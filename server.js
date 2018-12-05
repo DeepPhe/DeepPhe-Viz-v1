@@ -40,13 +40,15 @@ const init = async function() {
     // Register vision plugin to render view templates
     await server.register(Vision);
 
+    // HapiSwagger settings for API documentation
     const swaggerOptions = {
         info: {
-                title: 'Test API Documentation',
+                title: 'DeepPhe-Viz API Documentation',
                 version: packageJson.version,
             },
         };
 
+    // Register HapiSwagger
     await server.register(
         {
             plugin: HapiSwagger,
