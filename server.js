@@ -44,7 +44,7 @@ const init = async function() {
     const swaggerOptions = {
         info: {
                 title: 'DeepPhe-Viz API Documentation',
-                version: packageJson.version,
+                version: packageJson.version, // Use Viz version as API version, can be different though
             },
         };
 
@@ -55,6 +55,7 @@ const init = async function() {
             options: swaggerOptions
         });
 
+    // View templates rendering
     server.views({
         // Using handlebars as template engine responsible for
         // rendering templates with an extension of .html
