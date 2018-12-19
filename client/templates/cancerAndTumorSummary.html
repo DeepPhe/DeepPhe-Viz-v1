@@ -1,29 +1,27 @@
 
 {{#if cancers.length}}
 
+<div class="section_heading">Cancer Summary</div>
 
 {{#each cancers}}
-<div class="section_heading">Cancer Summary <span class="cancer_id">({{cancerId}})</span></div>
+<div class="cancer_and_tumor_summary clearfix">
 
-<div id="cancer_and_tnm">
-<table class="table">
+<span class="cancer_id">{{cancerId}}: </span>
 
-<tbody>
+<div class="cancer_and_tnm">
+
+<ul class="cancer_facts">
     {{#each collatedFacts}}
-    <tr>
-        <th class="th_vertical">{{categoryName}}</th>
-        <td>
+    <li class="cancer_facts_item">
+        <em class="cancer_fact_category_name">{{categoryName}}: </em>
         <ul class="cancer_fact_list">
           {{#each facts}}
             <li><span class="fact" id="{{id}}">{{prettyName}}</span></li>
           {{/each}}
         </ul>
-        </td>
-    </tr>
+    </li>
     {{/each}}
-</tbody>
-
-</table>
+</ul>
 
 
 
@@ -187,6 +185,8 @@
 </div>
 
 {{/if}}
+
+</div>
 
 {{/each}}
 
