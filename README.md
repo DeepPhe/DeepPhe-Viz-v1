@@ -18,6 +18,7 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 You must have the following tools installed:
 
 - [Nodejs 10.13.0 (includes npm 6.4.1) or the latest LTS version](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
+- [hapi](https://hapijs.com/) - a framework used by the DeepPhe-Viz tool
 - [Neo4j 3.2.x Server](https://neo4j.com/download-center/#releases) - is used to store the graph output from DeepPhe NLP
 
 if you need to manage multiple versions of NodeJS, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
