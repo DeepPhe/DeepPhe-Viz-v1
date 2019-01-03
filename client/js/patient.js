@@ -9,6 +9,11 @@ function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
 
+// Lowercase the episode name and replae space with hyphen
+function episode2CssClass(episode) {
+    return episode.replace(/\s+/g, '-').toLowerCase();
+}
+
 // Show patient info
 function getPatientInfo(patientId) {
 	$.ajax({
@@ -471,9 +476,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
     episodeLegend.append('circle')
         .attr("class", "episode_legend_circle")
-        .attr("id", function(d) {
-            return d;
-        })
         .attr('cx', function(d, i) {
             return episodeLegendX(i);
         })
@@ -487,15 +489,11 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .on("click", function(d) {
             // Toggle (hide/show reports of the clicked episode)
-            let nodes = d3.selectAll("." + d);
+            let nodes = d3.selectAll("." + episode2CssClass(d));
             nodes.each(function() {
             	let node = d3.select(this);
                 node.classed("hide", !node.classed("hide"));
             });
-
-            // Toggle and episode bar
-            let episodeBar = d3.select("#" + d + "_bar");
-            episodeBar.classed("hide", !episodeBar.classed("hide"));
 
             // Also toggle the episode legend look
             let legendCircle = d3.select(this);
@@ -510,9 +508,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .attr('y', 10)
         .attr('class', 'episode_legend_text')
-        .attr('id', function(d) {
-            return "episode_" + d.replace(" ", "_");
-        })
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
         })
@@ -730,7 +725,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .enter().append("g")
 	    .append("circle")
 	    .attr('class', function(d) {
-	    	return 'main_report ' + d.episode;
+	    	return 'main_report ' + episode2CssClass(d.episode);
 	    })
 	    .attr("id", function(d) {
             // Prefix with "main_"
