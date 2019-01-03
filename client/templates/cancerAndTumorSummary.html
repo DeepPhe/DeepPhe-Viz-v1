@@ -65,15 +65,15 @@
 
 <!-- Tumor Summary -->
 {{#if tumors.length}}
-<div class="section_heading">
-<div class="tumor_summary_title">Tumor Summary <span class="cancer_id">({{cancerId}})</span></div>
+<div class="tumor_summary">
+<div class="tumor_summary_title" title="{{cancerId}}">Tumor Summary</div>
 <div class="view_options">
 <input type="radio" id="list_view_option" name="view_options" value="List View" checked/>
 <label for="list_view_option"><i class="fas fa-list"></i> List View</label>
 <input type="radio" id="table_view_option" name="view_options" value="Table View" />
 <label for="table_view_option"><i class="fas fa-table"></i> Table View</label>
 </div>
-</div>
+
 
 
 <!-- List View -->
@@ -131,10 +131,6 @@
 
 
 
-
-
-
-
 <!-- Table View -->
 <div id="table_view">
 <table class="table">
@@ -182,6 +178,8 @@
 </tbody>
 
 </table>
+</div>
+
 </div>
 
 {{/if}}

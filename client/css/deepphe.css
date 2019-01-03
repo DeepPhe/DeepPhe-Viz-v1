@@ -283,7 +283,7 @@ margin:0;
 
 .cancer_facts_item {
 display:inline-block;
-margin:2px 3px;
+margin:2px 3px 2px 0;
 border:1px solid #ddd;
 padding:3px 2px 1px;
 }
@@ -320,7 +320,7 @@ padding:2px 5px;
 }
 
 .tnm {
-margin-bottom:20px;
+margin-bottom:5px;
 }
 
 .tnm_by_type {
@@ -452,10 +452,12 @@ margin-right:20px;
 
 .cancer_id {
 font-weight:bold;
+font-size:1.2em;
 }
 
-.cancer_and_tnm {
-margin-left:60px;
+.cancer_and_tnm,
+.tumor_summary {
+margin-left:20px;
 }
 
 .right {
@@ -752,10 +754,15 @@ color: orange;
 
 
 /* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
+.tumor_summary {
+
+}
+
 .tumor_summary_title,
 .view_options { /* Align the title and siwtch vertically */
 display:inline-block;
 vertical-align: middle;
+font-weight:bold;
 }
 
 /* Hide the table view and expanded arrow as well as all toggleable facts by default */
@@ -787,7 +794,7 @@ width: 80px;
 background-color: #fff;
 color: rgba(0, 0, 0, 0.6);
 text-align: center;
-font-size: .75em;
+font-size: .85em;
 font-weight:normal;
 padding: 3px 10px 2px;
 border: 1px solid #ccc;
@@ -811,9 +818,7 @@ background-color: rgb(141, 211, 199);
 
 /* Tumor list */
 #list_view {
-margin:10px 0;
 background-color:#fff;
-border:1px solid #dbdbdb;
 padding:10px 5px;
 }
 
@@ -843,7 +848,7 @@ cursor:pointer;
 }
 
 .list_view_tumor_list {
-width:716px;
+width:688px;
 float:left;
 list-style-type: none;
 padding:0;
@@ -890,6 +895,10 @@ margin-right:3px;
 
 #table_view {
 overflow: auto;
+}
+
+#table_view .table {
+margin:0;
 }
 
 /* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
