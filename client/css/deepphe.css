@@ -283,7 +283,7 @@ margin:0;
 
 .cancer_facts_item {
 display:inline-block;
-margin:2px 3px 2px 0;
+margin:2px 2px 2px 0;
 border:1px solid #ddd;
 padding:3px 2px 1px;
 }
@@ -313,14 +313,14 @@ margin:0;
 
 .cancer_tnm_fact_list {
 float:left;
-margin-right:10px;
+margin-right:5px;
 background:#fff;
 border:1px solid #dbdbdb;
-padding:2px 5px;
+padding:2px;
 }
 
 .tnm {
-margin-bottom:5px;
+margin-bottom:2px;
 }
 
 .tnm_by_type {
@@ -453,6 +453,7 @@ margin-right:20px;
 .cancer_id {
 font-weight:bold;
 font-size:1.2em;
+margin-bottom:5px;
 }
 
 .cancer_and_tnm,
@@ -820,10 +821,6 @@ background-color: rgb(141, 211, 199);
 #list_view {
 background-color:#fff;
 padding:10px 5px;
-}
-
-.list_view_tumor {
-margin-bottom:5px;
 }
 
 .arrow {
