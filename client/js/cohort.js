@@ -379,6 +379,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	const svgWidth = 460;
 	const svgHeight = 360;
+
 	// svgPadding.top is used to position the chart title
 	// svgPadding.left is the space for Y axis labels
 	const svgPadding = {top: 10, right: 15, bottom: 15, left: 110};
@@ -461,6 +462,34 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 		.attr("x", chartWidth)
 		.attr("y", -3)
 		.text("Age of first encounter");
+
+
+    // Age range selection
+    var brush = d3.brushX()
+	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
+	    .on("start brush", brushed);
+
+    stagesChartGrp.append("g")
+		.attr("transform", "translate(0, 0)")
+		.attr("class", "age_selection_brush")
+		.call(brush)
+		.call(brush.move, [minAge, maxAge].map(x))
+		.selectAll(".overlay")
+		.each(function(d) { d.type = "selection"; }) // Treat overlay interaction as move.
+		.on("mousedown touchstart", brushcentered); // Recenter before brushing.
+
+	function brushcentered() {
+		var dx = x(1) - x(0), // Use a fixed width when recentering.
+		cx = d3.mouse(this)[0],
+		x0 = cx - dx / 2,
+		x1 = cx + dx / 2;
+		d3.select(this.parentNode).call(brush.move, x1 > chartWidth ? [chartWidth - dx, chartWidth] : x0 < 0 ? [0, dx] : [x0, x1]);
+	}
+
+	function brushed() {
+		var extent = d3.event.selection.map(x.invert, x);
+		//dot.classed("selected", function(d) { return extent[0] <= d[0] && d[0] <= extent[1]; });
+	}
 
 
     // Render all stage bars and boxplots

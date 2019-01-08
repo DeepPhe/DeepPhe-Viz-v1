@@ -67,6 +67,13 @@ font-family: Helvetica;
 font-size:10px;
 }
 
+/* Age selection */
+.age_selection_brush .selection {
+stroke: #999;
+fill: dodgerblue;
+fill-opacity: 0.3;
+}
+
 /* Box plot */
 .single_patient_age_line,
 .boxplot_min,
