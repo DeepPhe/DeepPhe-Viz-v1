@@ -74,6 +74,11 @@ fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
+.age_range {
+font-size:10px;
+text-anchor: middle;
+}
+
 /* Box plot */
 .single_patient_age_line,
 .boxplot_min,

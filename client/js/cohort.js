@@ -123,12 +123,6 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 		})])
 		.range([0, chartWidth]);
     
-    // Use the specified integers as x count ticks ranther than the auto generated 
-    // let xCountTickValues = [];
-    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
-    //     xCountTickValues.push(i);
-    // }
-
 	let y = d3.scaleBand()
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
@@ -414,12 +408,6 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	    // Integer age range based on rounding the minAge and maxAge
 	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset])
 	    .range([0, chartWidth]);
-	    
-    // Use the specified integers as x count ticks ranther than the auto generated 
-    // let xCountTickValues = [];
-    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
-    //     xCountTickValues.push(i);
-    // }
 
 	let y = d3.scaleBand()
 		.domain(defaultStagesData.map(function(d) { 
@@ -469,7 +457,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
 	    .on("start brush", brushed);
 
-    stagesChartGrp.append("g")
+    var ageSelectionGrp = stagesChartGrp.append("g")
 		.attr("transform", "translate(0, 0)")
 		.attr("class", "age_selection_brush")
 		.call(brush)
@@ -477,6 +465,23 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 		.selectAll(".overlay")
 		.each(function(d) { d.type = "selection"; }) // Treat overlay interaction as move.
 		.on("mousedown touchstart", brushcentered); // Recenter before brushing.
+
+    // Lower age text
+    stagesChartGrp.append("text")
+        .attr("class", "age_range")
+        .attr("id", "lower_age")
+        .attr("x", x(minAge))
+        .attr("y", 0)
+        .text(minAge);
+
+    // Upper age text
+    stagesChartGrp.append("text")
+        .attr("class", "age_range")
+        .attr("id", "upper_age")
+        .attr("x", x(maxAge))
+        .attr("y", 0)
+        .text(maxAge);
+
 
 	function brushcentered() {
 		var dx = x(1) - x(0), // Use a fixed width when recentering.
@@ -488,7 +493,20 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 	function brushed() {
 		var extent = d3.event.selection.map(x.invert, x);
-		//dot.classed("selected", function(d) { return extent[0] <= d[0] && d[0] <= extent[1]; });
+		console.log(extent);
+		
+        // Update lower and upper ages
+        // Rounding to integer only
+		d3.select("#lower_age")
+		    .attr("x", x(extent[0]))
+	        .text(Math.round(extent[0]));
+
+	    d3.select("#upper_age")
+		    .attr("x", x(extent[1]))
+	        .text(Math.round(extent[1]));
+
+	    // Now update the patient list and other charts
+	    console.log(data);
 	}
 
 
