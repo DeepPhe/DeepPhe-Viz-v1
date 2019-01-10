@@ -4,6 +4,12 @@ const transitionDuration = 800; // time in ms
 // Keep the pateints data in memory
 let allPatients = [];
 
+// Patients array based on the current stage chart selection
+let patientsByStage = [];
+
+// Patients array based on the current first encounter age chart selection
+let patientsByFirstEncounterAge = [];
+
 const allStagesLabel = "All stages";
 
 // All stages in a sorted order
@@ -46,12 +52,17 @@ const topLevelStages = [
 let minAge;
 let maxAge;
 
-// encounterDateStr is a string, not Date object
-function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
-    // birthday is a string
-    let ageDiffMs =  new Date(encounterDateStr).getTime() - new Date(birthday).getTime();
-    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+// Return the intersection of two patient arrays
+function filterTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
+	// https://stackoverflow.com/questions/33356504/difference-and-intersection-of-two-arrays-containing-objects
+	const operation = (list1, list2, isUnion = false) =>
+		list1.filter(
+		    (set => a => isUnion === set.has(a.patientId))(new Set(list2.map(b => b.patientId)))
+		);
+
+	let intersection = operation(patientsByStage, patientsByFirstEncounterAge, true);
+
+	return intersection;
 }
 
 // Entry point
@@ -63,17 +74,21 @@ function showCohort() {
 	    dataType : 'json'
 	})
 	.done(function(response) {
-        // Draw the stages chart
-        // We can click the stage bar to show charts of this stage 
-        // and unclick to show all again
-        showPatientAgePerStageChart("stage_patient_age", response.stagesInfo);
-
-		showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
-
         // Keep the data in memory for later use
         allPatients = response.patientsInfo.patients;
 
-        // By default show charts of all pateints and all stages
+        // Set as all the target patients for the first load
+        patientsByStage = response.patientsInfo.patients;
+        patientsByFirstEncounterAge = response.patientsInfo.patients;
+
+        // Draw the stages chart
+        // We can click the stage bar to show charts of this stage 
+        // and unclick to show all again
+        showPatientFirstEncounterAgePerStageChart("stage_patient_age", response.stagesInfo);
+
+		showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
+
+        // By default show charts of all pateints of all ages (first encounter age) from all stages
         showDerivedCharts(allPatients, allStagesLabel);
 	})
 	.fail(function () { 
@@ -190,12 +205,24 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 		            svg.selectAll(".stage_bar").classed(css, false);
 	                // Highlight the clicked box and show corresponding patients
 	            	clickedBar.classed(css, true);
-	            	showDerivedCharts(d.patients, d.stage);
+
+	            	// Update patientsByStage
+	            	patientsByStage = d.patients;
+
+                    let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+	            	showDerivedCharts(targetPatients, d.stage);
 	            } else {
 	            	// When clicked again, remove highlight and show all patients
 	            	clickedBar.classed(css, false);
+
+	            	// Update patientsByStage
 	            	// allPatients is the patient data saved in memory
-	            	showDerivedCharts(allPatients, allStagesLabel);
+	            	patientsByStage = allPatients;
+	            	
+	            	let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+	            	showDerivedCharts(targetPatients, allStagesLabel);
 	            }
 			})
 			.transition()
@@ -315,7 +342,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     }
 }
 
-function showPatientAgePerStageChart(svgContainerId, data) {
+function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	let patientsCounts = {};
 
 	// In order to get the minAge and maxAge
@@ -453,20 +480,56 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 
     // Age range selection
-    var brush = d3.brushX()
-	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
-	    .on("start brush", brushed);
 
-    var ageSelectionGrp = stagesChartGrp.append("g")
+    // Add custom brush handles
+	let customBrushHandlesData = [{type: "w"}, {type: "e"}];
+
+    // Function expression to create custom brush handle path
+	let createCustomBrushHandle = function(d) {
+	    let e = +(d.type === "e"),
+	        x = e ? 1 : -1,
+	        y = chartHeight / 2;
+
+	    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+	};
+
+	let customBrushHandle = stagesChartGrp.selectAll(".handle--custom")
+	    .data(customBrushHandlesData)
+	    .enter().append("path")
+	    .attr("class", "handle--custom")
+	    .attr("cursor", "ew-resize")
+		.attr("d", createCustomBrushHandle)
+		.attr("transform", function(d, i) { 
+        	// Position the custom handles based on the default selection range
+        	let selection = [minAge, maxAge].map(x);
+        	return "translate(" + [selection[i], -chartHeight/3] + ")"; 
+        });
+
+    // Function expression of updating custom handles positions
+	let moveCustomBrushHandles = function(selection) {
+		customBrushHandle
+	        .attr("transform", function(d, i) { 
+	        	return "translate(" + [selection[i], -chartHeight/3] + ")"; 
+	        });
+	};
+
+    let brush = d3.brushX()
+	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
+	    // First to hide the custom handles at the start of a brush gesture(mousedown)
+	    //.on("start", hideCustomBrushHandles)
+	    .on("brush", duringBrush)
+	    // Only activate listener at the end of a brush gesture, such as on mouseup.
+	    // Update the resulting charts on brush end
+	    .on("end", endBrush);
+
+    let ageSelectionGrp = stagesChartGrp.append("g")
 		.attr("transform", "translate(0, 0)")
 		.attr("class", "age_selection_brush")
 		.call(brush)
+		// By default, move the brush to start at minAge and end at maxAge
 		.call(brush.move, [minAge, maxAge].map(x))
-		.selectAll(".overlay")
-		.each(function(d) { d.type = "selection"; }) // Treat overlay interaction as move.
-		.on("mousedown touchstart", brushcentered); // Recenter before brushing.
 
-    // Lower age text
+    // Lower age text, default to minAge
     stagesChartGrp.append("text")
         .attr("class", "age_range")
         .attr("id", "lower_age")
@@ -474,7 +537,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
         .attr("y", 0)
         .text(minAge);
 
-    // Upper age text
+    // Upper age text, default to maxAge
     stagesChartGrp.append("text")
         .attr("class", "age_range")
         .attr("id", "upper_age")
@@ -482,31 +545,47 @@ function showPatientAgePerStageChart(svgContainerId, data) {
         .attr("y", 0)
         .text(maxAge);
 
+    // Update/move the range limits as the brush moves
+    // Also update the position of custom brush handles
+    function duringBrush() {
+		let selection = d3.event.selection;
 
-	function brushcentered() {
-		var dx = x(1) - x(0), // Use a fixed width when recentering.
-		cx = d3.mouse(this)[0],
-		x0 = cx - dx / 2,
-		x1 = cx + dx / 2;
-		d3.select(this.parentNode).call(brush.move, x1 > chartWidth ? [chartWidth - dx, chartWidth] : x0 < 0 ? [0, dx] : [x0, x1]);
-	}
-
-	function brushed() {
-		var extent = d3.event.selection.map(x.invert, x);
-		console.log(extent);
+		let extent = selection.map(x.invert, x);
 		
+        let lowerAge = extent[0];
+        let upperAge = extent[1];
+
         // Update lower and upper ages
         // Rounding to integer only
 		d3.select("#lower_age")
-		    .attr("x", x(extent[0]))
-	        .text(Math.round(extent[0]));
+		    .attr("x", x(lowerAge))
+	        .text(Math.round(lowerAge));
 
 	    d3.select("#upper_age")
-		    .attr("x", x(extent[1]))
-	        .text(Math.round(extent[1]));
+		    .attr("x", x(upperAge))
+	        .text(Math.round(upperAge));
 
-	    // Now update the patient list and other charts
-	    console.log(data);
+	    // Update the position of custom brush handles
+    	moveCustomBrushHandles(selection);
+	}
+
+    // Filter the patients based on age selection 
+    // Then update derived resulting charts
+	function endBrush() {
+		let extent = d3.event.selection.map(x.invert, x);
+		
+        let lowerAge = extent[0];
+        let upperAge = extent[1];
+
+	    // Update patientsByFirstEncounterAge by filtering allPatients
+	    patientsByFirstEncounterAge = allPatients.filter(function(obj) {
+            return ((obj.firstEncounterAge >= lowerAge) && (obj.firstEncounterAge <= upperAge));
+	    });
+
+        // Update the final target patients array and resulting charts
+        let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+	    showDerivedCharts(targetPatients, allStagesLabel);
 	}
 
 
@@ -798,69 +877,51 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 // No rest call since each stage data contains the patients list info
 function showDerivedCharts(patientsArr, stage) {
-    let patientIds = [];
-    patientsArr.forEach(function(patient) {
-    	patientIds.push(patient.patientId);
-    });
+    if (patientsArr.length > 0) {
+        let patientIds = [];
+	    patientsArr.forEach(function(patient) {
+	    	patientIds.push(patient.patientId);
+	    });
 
-    // Make another ajax call to get diagnosis for the list of patients
-    getDiagnosis(patientIds, stage);
+        // Resulting target patients table
+	    showPatientsTable("patients", patientsArr, stage);
 
-    // Make another ajax call to get all tumor info for the list of patients
-    getPatientsTumorInfo(patientIds, stage);
+	    // Make another ajax call to get diagnosis for the list of patients
+	    getDiagnosis(patientIds);
 
-    // Patients table
-    showPatientsTable("patients", patientsArr, stage);
+	    // Make another ajax call to get all tumor info for the list of patients
+	    getPatientsTumorInfo(patientIds);
+
+	    
+    } else {
+        console.log("Empty target patients list");
+
+        // We'll need to remove the previous resulting charts
+        removeChart("patients");
+        removeChart("diagnosis");
+        removeChart("biomarkers");
+    }
+}
+
+// Remove a chart of the given containerId
+function removeChart(containerId) {
+    d3.select("#" + containerId).selectAll("*").remove();
 }
 
 // All patients is a separate call
 // patients of each stage is alrady loaded data
 function showPatientsTable(containerId, data, stage) {
-    // Group patients by age of first encounter
-    let rangeStartAge = Math.floor(minAge/10) * 10;
-    let rangeEndAge = Math.ceil(maxAge/10) * 10;
+    removeChart(containerId);
 
-    // Calculate the age range
-    let range = [];
-    let ageRange = [];
-    for (let i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
-        if (i === 0) {
-            ageRange = [rangeStartAge + i * 10, rangeStartAge + i * 10 + 10];
-        } else {
-        	ageRange = [rangeStartAge + i * 10 + 1, rangeStartAge + i * 10 + 10];
-        }
+    let html = '<table class="patients_table">'
+        + '<tr><th>Target Patient List Ordered By First Encounter Age (' + data.length + ' patients from ' + stage + ')</th></tr>'
+        + '<tr><td><ul class="patient_age_range_list">';
 
-        range.push(ageRange);
-    }
-
-    let rangePatients = [];
-    range.forEach(function(range) {
-    	let patients = [];
-    	// The data is already sorted by patient age of first encounter
-        data.forEach(function(patient) {
-            let firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
-            if (firstEncounterAge >= range[0] && firstEncounterAge <= range[1]) {
-                patients.push(patient);
-            }
-        });
-        rangePatients.push(patients);
+    data.forEach(function(patient) {
+    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + patient.firstEncounterAge + ')</li>';
     });
-
-    let html =  '<table class="patients_table">'
-        + '<caption class="patients_table_title">Patients Table (' + data.length + ' patients from ' + stage + ')</caption>'
-        + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th><th>Count</th></tr>';
-
-    for (let i = 0; i < rangePatients.length; i++) {
-        html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
-        html += '<td><ul class="patient_age_range_list">';
-        rangePatients[i].forEach(function(patient) {
-	    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
-	    });
-	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
-    }
+    html += '</ul></td></tr></table>';
     
-    html += '</table>';
-
     $("#" + containerId).html(html);
 }
 
@@ -904,8 +965,8 @@ function sortByProvidedOrder(array, orderArr) {
 }
 
 
-function showDiagnosisChart(svgContainerId, data, stage) {
-    d3.select("#" + svgContainerId).selectAll("*").remove();
+function showDiagnosisChart(svgContainerId, data) {
+    removeChart(svgContainerId)
 
     const svgWidth = 660;
     const svgHeight = 360;
@@ -981,7 +1042,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
         .attr("transform", function(d) { 
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Diagnosis (" + xDomain.length + " patients from " + stage + ")");
+        .text("Diagnosis");
 
 	// Patient diagnosis dots
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
@@ -1053,7 +1114,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		        });
 	}
 
-	// add the y Axis
+	// Add the y Axis
 	diagnosisChartGrp.append("g")
 		.call(d3.axisLeft(y))
 		// Now add class to the label text
@@ -1155,8 +1216,8 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	}
 }
 
-
-function showBiomarkersChart(svgContainerId, data, stage) {
+// We don NOT remove the biomarkers chart on each redraw, due to the animation
+function showBiomarkersChart(svgContainerId, data) {
     const svgWidth = 460;
     const svgHeight = 180;
 	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
@@ -1213,7 +1274,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	        .attr("transform", function(d) { 
 				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 			})
-	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
+	        .text("Biomarkers");
 
 	    let biomarkerStatusGrp = biomarkersChartGrp.selectAll(".biomarker_status_group")
 			.data(stackData)
@@ -1366,14 +1427,10 @@ function showBiomarkersChart(svgContainerId, data, stage) {
                     return formatPercent(d.data[d.status]);
 				}
             });
-
-        // Also update the chart title with patients count
-        d3.select(".biomarkers_chart_title")
-	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
     }
 }
 
-function getPatientsTumorInfo(patientIds, stage) {
+function getPatientsTumorInfo(patientIds) {
     $.ajax({
 	    url: baseUri + '/tumorinfo/' + patientIds.join('+'),
 	    method: 'GET', 
@@ -1382,15 +1439,14 @@ function getPatientsTumorInfo(patientIds, stage) {
 	})
 	.done(function(response) {
 	    //console.log(response);
-        
-	    showBiomarkersChart("biomarkers", response.biomarkersInfo, stage);
+	    showBiomarkersChart("biomarkers", response.biomarkersInfo);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get patients tumor info");
 	});
 }
 
-function getDiagnosis(patientIds, stage) {
+function getDiagnosis(patientIds) {
     $.ajax({
 	    url: baseUri + '/diagnosis/' + patientIds.join('+'),
 	    method: 'GET', 
@@ -1398,7 +1454,7 @@ function getDiagnosis(patientIds, stage) {
 	    dataType : 'json' 
 	})
 	.done(function(response) {
-	    showDiagnosisChart("diagnosis", response, stage);
+	    showDiagnosisChart("diagnosis", response);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get patients diagnosis info");

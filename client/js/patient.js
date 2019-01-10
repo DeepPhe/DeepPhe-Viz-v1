@@ -882,7 +882,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .data(customBrushHandlesData)
 	    .enter().append("path")
 	    .attr("class", "handle--custom")
-	    .attr("stroke", "#000")
 	    .attr("cursor", "ew-resize")
 		.attr("d", createCustomBrushHandle)
 		.attr("transform", function(d, i) { 
