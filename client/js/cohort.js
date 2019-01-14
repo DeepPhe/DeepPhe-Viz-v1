@@ -955,7 +955,7 @@ function showPatientsList(containerId, data, stage, firstEncounterAgeRange) {
     let html = '<ul class="patient_list">';
 
     data.forEach(function(patient) {
-    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + patient.firstEncounterAge + ')</li>';
+    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + getPatientShortId(patient.patientId) + '</a> (' + patient.firstEncounterAge + ')</li>';
     });
 
     html += '</ul>';
