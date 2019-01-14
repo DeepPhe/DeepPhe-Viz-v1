@@ -110,6 +110,9 @@ function showCohort() {
         patientsByStage = response.patientsInfo.patients;
         patientsByFirstEncounterAge = response.patientsInfo.patients;
 
+        // Here we call getTargetPatients() to ensure the sorting consistency.
+        let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -119,7 +122,7 @@ function showCohort() {
         showPatientFirstEncounterAgePerStageChart("stage_patient_age", response.stagesInfo);
 
         // By default show charts of all pateints of all ages (first encounter age) from all stages
-        showDerivedCharts(allPatients, allStagesLabel, currentFirstEncounterAgeRange);
+        showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
