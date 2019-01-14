@@ -46,6 +46,14 @@ color:#fff;
 }
 
 /* Cohort Analysis */
+.filters {
+border: 1px solid #ddd;
+margin-bottom:10px;
+}
+
+.results {
+border: 1px solid #ddd;
+}
 
 /* HTML div, not the svg */
 #stage_patient_age,
@@ -710,6 +718,7 @@ fill-opacity: 0.3;
 fill: #eee;
 stroke: #666;
 fill-opacity: 0.3;	
+shape-rendering: crispEdges;
 }
 
 .legend_group_divider {
