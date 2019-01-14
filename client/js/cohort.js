@@ -12,6 +12,9 @@ let patientsByFirstEncounterAge = [];
 
 const allStagesLabel = "All stages";
 
+// Array that contains the current min age and max age based on age chart selection
+let currentFirstEncounterAgeRange = [];
+
 // All stages in a sorted order
 const orderedCancerStages = [
     'Stage 0', 
@@ -73,6 +76,21 @@ function getTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
     	return targetPatientIds.indexOf(obj.patientId) > -1;
     });
 
+    // Order the patients by firstEncounterAge
+    targetPatients.sort(function(a, b) {
+		if (a.firstEncounterAge < b.firstEncounterAge) {
+		    return -1;
+		} else if (a.firstEncounterAge > b.firstEncounterAge) {
+		    return 1;
+		} else {
+			return 0;
+		}
+    });
+
+    // Also update currentFirstEncounterAgeRange
+    // Not directly based on the user selection, but the min and max of the targetPatients
+    currentFirstEncounterAgeRange = [targetPatients[0].firstEncounterAge, targetPatients[targetPatients.length - 1].firstEncounterAge];
+
 	return targetPatients;
 }
 
@@ -95,12 +113,13 @@ function showCohort() {
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
+        showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
+
+        // Patient first encounter age chart
         showPatientFirstEncounterAgePerStageChart("stage_patient_age", response.stagesInfo);
 
-		showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
-
         // By default show charts of all pateints of all ages (first encounter age) from all stages
-        showDerivedCharts(allPatients, allStagesLabel);
+        showDerivedCharts(allPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
@@ -222,7 +241,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 
                     let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
-	            	showDerivedCharts(targetPatients, d.stage);
+	            	showDerivedCharts(targetPatients, d.stage, currentFirstEncounterAgeRange);
 	            } else {
 	            	// When clicked again, remove highlight and show all patients
 	            	clickedBar.classed(css, false);
@@ -233,7 +252,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 	            	
 	            	let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
-	            	showDerivedCharts(targetPatients, allStagesLabel);
+	            	showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	            }
 			})
 			.transition()
@@ -562,6 +581,9 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
         .attr("y", 0)
         .text(maxAge);
 
+    // Set the default of currentFirstEncounterAgeRange
+    currentFirstEncounterAgeRange = [minAge, maxAge];
+
     // Update/move the range limits as the brush moves
     // Also update the position of custom brush handles
     function duringBrush() {
@@ -602,7 +624,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
         // Update the final target patients array and resulting charts
         let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
-	    showDerivedCharts(targetPatients, allStagesLabel);
+	    showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	}
 
 
@@ -893,7 +915,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 
 
 // No rest call since each stage data contains the patients list info
-function showDerivedCharts(patientsArr, stage) {
+function showDerivedCharts(patientsArr, stage, firstEncounterAgeRange) {
     if (patientsArr.length > 0) {
         let patientIds = [];
 	    patientsArr.forEach(function(patient) {
@@ -901,7 +923,7 @@ function showDerivedCharts(patientsArr, stage) {
 	    });
 
         // Resulting target patients table
-	    showPatientsTable("patients", patientsArr, stage);
+	    showPatientsTable("patients", patientsArr, stage, firstEncounterAgeRange);
 
 	    // Make another ajax call to get diagnosis for the list of patients
 	    getDiagnosis(patientIds);
@@ -925,11 +947,11 @@ function removeChart(containerId) {
 
 // All patients is a separate call
 // patients of each stage is alrady loaded data
-function showPatientsTable(containerId, data, stage) {
+function showPatientsTable(containerId, data, stage, firstEncounterAgeRange) {
     removeChart(containerId);
 
     let html = '<table class="patients_table">'
-        + '<tr><th>Target Patient List Ordered By First Encounter Age (' + data.length + ' patients from ' + stage + ')</th></tr>'
+        + '<tr><th>Target Patient List (' + data.length + ' patients from ' + stage + ') Ordered By First Encounter Age ( between ' + firstEncounterAgeRange[0] + ' and ' + firstEncounterAgeRange[1] + ')</th></tr>'
         + '<tr><td><ul class="patient_age_range_list">';
 
     data.forEach(function(patient) {
