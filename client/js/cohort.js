@@ -68,7 +68,7 @@ function getTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
         return patientsByFirstEncounterAgeIds.indexOf(id) > -1;
     });
 
-    // Find the patient objects based on common IDs
+    // Find the patient objects based on common patient IDs
     let targetPatients = patientsByStage.filter(function(obj) {
     	return targetPatientIds.indexOf(obj.patientId) > -1;
     });
@@ -526,8 +526,6 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 
     let brush = d3.brushX()
 	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
-	    // First to hide the custom handles at the start of a brush gesture(mousedown)
-	    //.on("start", hideCustomBrushHandles)
 	    .on("brush", duringBrush)
 	    // Only activate listener at the end of a brush gesture, such as on mouseup.
 	    // Update the resulting charts on brush end
@@ -539,6 +537,12 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 		.call(brush)
 		// By default, move the brush to start at minAge and end at maxAge
 		.call(brush.move, [minAge, maxAge].map(x))
+
+	// Remove pointer events on brushe overlay, this prevents new brush from being made
+	// when users click outside the current brush area
+	// So basically, we force the users to only either move the current brush selection 
+	// or use the custom handles to resieze the brush selection.
+	ageSelectionGrp.selectAll('.overlay').style('pointer-events', 'none');
 
     // Lower age text, default to minAge
     stagesChartGrp.append("text")

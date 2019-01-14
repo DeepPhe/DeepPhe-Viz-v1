@@ -901,25 +901,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	        });
 	};
 
-    // Hide the custom brush handles on mousedown ( the start of a brush gesture)
-    let hideCustomBrushHandles = function() {
-        // Check if an user event exists
-        // Otherwise we'll see the following error in firefox:
-        // TypeError: Value being assigned to SVGPoint.x is not a finite floating-point value.
-        // Because itss not supported to call d3.mouse when there is not a current user event.
-        if (d3.event.sourceEvent) {
-        	let selection = d3.brushSelection(overviewBrush.node());
-        	let mousePosition = d3.mouse(this);
-	        
-	        // Only hide the brush handles when mouse clicks outside of the selection
-	        // Don't hide the handles when clicks inside the selected brush area
-	        if (mousePosition[0] === selection[0] || mousePosition[0] === selection[1]) {
-	            customBrushHandle
-			    	.style("display", "none");
-	        }
-        }  
-    };
-
 	// Function expression to create brush function redraw with selection
 	// Need to define this before defining brush since it's function expression instead of function declariation
 	let brushed = function() {
@@ -948,10 +929,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// D3 brush
 	let brush = d3.brushX()
 	    .extent([[0, 0], [width, overviewHeight]])
-	    // https://github.com/d3/d3-brush#brush_on
-	    // First to hide the custom handles at the start of a brush gesture(mousedown)
-	    .on("start", hideCustomBrushHandles)
-	    // Then update the UI on brush move
+	    // Update the UI on brush move
 	    .on("brush", brushed);
 
 	// Applying brush on the overviewBrush element
