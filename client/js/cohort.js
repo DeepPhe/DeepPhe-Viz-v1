@@ -53,16 +53,27 @@ let minAge;
 let maxAge;
 
 // Return the intersection of two patient arrays
-function filterTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
-	// https://stackoverflow.com/questions/33356504/difference-and-intersection-of-two-arrays-containing-objects
-	const operation = (list1, list2, isUnion = false) =>
-		list1.filter(
-		    (set => a => isUnion === set.has(a.patientId))(new Set(list2.map(b => b.patientId)))
-		);
+function getTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
+	// Create a list of IDs
+	let patientsByStageIds = patientsByStage.map(function(obj) {
+        return obj.patientId;
+	});
 
-	let intersection = operation(patientsByStage, patientsByFirstEncounterAge, true);
+    let patientsByFirstEncounterAgeIds = patientsByFirstEncounterAge.map(function(obj) {
+        return obj.patientId;
+	});
 
-	return intersection;
+    // Find common patient Ids
+    let targetPatientIds = patientsByStageIds.filter(function(id) {
+        return patientsByFirstEncounterAgeIds.indexOf(id) > -1;
+    });
+
+    // Find the patient objects based on common IDs
+    let targetPatients = patientsByStage.filter(function(obj) {
+    	return targetPatientIds.indexOf(obj.patientId) > -1;
+    });
+
+	return targetPatients;
 }
 
 // Entry point
@@ -209,7 +220,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 	            	// Update patientsByStage
 	            	patientsByStage = d.patients;
 
-                    let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+                    let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
 	            	showDerivedCharts(targetPatients, d.stage);
 	            } else {
@@ -220,7 +231,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 	            	// allPatients is the patient data saved in memory
 	            	patientsByStage = allPatients;
 	            	
-	            	let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+	            	let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
 	            	showDerivedCharts(targetPatients, allStagesLabel);
 	            }
@@ -583,7 +594,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	    });
 
         // Update the final target patients array and resulting charts
-        let targetPatients = filterTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+        let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
 
 	    showDerivedCharts(targetPatients, allStagesLabel);
 	}
@@ -891,8 +902,6 @@ function showDerivedCharts(patientsArr, stage) {
 
 	    // Make another ajax call to get all tumor info for the list of patients
 	    getPatientsTumorInfo(patientIds);
-
-	    
     } else {
         console.log("Empty target patients list");
 
