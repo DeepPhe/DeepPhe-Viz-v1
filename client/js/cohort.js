@@ -72,24 +72,10 @@ function getTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
     });
 
     // Find the patient objects based on common patient IDs
+    // No need to sort/order the targetPatients since it's already sorted in dataProcessor
     let targetPatients = patientsByStage.filter(function(obj) {
     	return targetPatientIds.indexOf(obj.patientId) > -1;
     });
-
-    // Order the patients by firstEncounterAge
-    targetPatients.sort(function(a, b) {
-		if (a.firstEncounterAge < b.firstEncounterAge) {
-		    return -1;
-		} else if (a.firstEncounterAge > b.firstEncounterAge) {
-		    return 1;
-		} else {
-			return 0;
-		}
-    });
-
-    // Also update currentFirstEncounterAgeRange
-    // Not directly based on the user selection, but the min and max of the targetPatients
-    currentFirstEncounterAgeRange = [targetPatients[0].firstEncounterAge, targetPatients[targetPatients.length - 1].firstEncounterAge];
 
 	return targetPatients;
 }
@@ -110,9 +96,6 @@ function showCohort() {
         patientsByStage = response.patientsInfo.patients;
         patientsByFirstEncounterAge = response.patientsInfo.patients;
 
-        // Here we call getTargetPatients() to ensure the sorting consistency.
-        let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
-
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
@@ -122,7 +105,7 @@ function showCohort() {
         showPatientFirstEncounterAgePerStageChart("stage_patient_age", response.stagesInfo);
 
         // By default show charts of all pateints of all ages (first encounter age) from all stages
-        showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
+        showDerivedCharts(allPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
@@ -514,7 +497,8 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 
     // Age range selection
     let brush = d3.brushX()
-	    .extent([[0, 0], [chartWidth, (chartHeight - chartTopMargin)]])
+        // Restrict the brush move between minAge and maxAge
+	    .extent([[x(minAge), 0], [x(maxAge), (chartHeight - chartTopMargin)]])
 	    .on("brush", duringBrush)
 	    // Only activate listener at the end of a brush gesture, such as on mouseup.
 	    // Update the resulting charts on brush end
@@ -562,6 +546,9 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 		// By default, move the brush to start at minAge and end at maxAge
 		.call(brush.move, [minAge, maxAge].map(x))
 
+	// Update the default currentFirstEncounterAgeRange
+	currentFirstEncounterAgeRange = [minAge, maxAge];
+
     // Remove pointer events on brushe overlay, this prevents new brush from being made
 	// when users click outside the current brush area
 	// So basically, we force the users to only either move the current brush selection 
@@ -594,18 +581,18 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 
 		let extent = selection.map(x.invert, x);
 		
-        let lowerAge = extent[0];
-        let upperAge = extent[1];
+        let lowerAge = Math.round(extent[0]);
+        let upperAge = Math.round(extent[1]);
 
         // Update lower and upper ages
         // Rounding to integer only
 		d3.select("#lower_age")
 		    .attr("x", x(lowerAge))
-	        .text(Math.round(lowerAge));
+	        .text(lowerAge);
 
 	    d3.select("#upper_age")
 		    .attr("x", x(upperAge))
-	        .text(Math.round(upperAge));
+	        .text(upperAge);
 
 	    // Update the position of custom brush handles
     	moveCustomBrushHandles(selection);
@@ -616,16 +603,19 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	function endBrush() {
 		let extent = d3.event.selection.map(x.invert, x);
 		
-        let lowerAge = extent[0];
-        let upperAge = extent[1];
+        let lowerAge = Math.round(extent[0]);
+        let upperAge = Math.round(extent[1]);
 
-	    // Update patientsByFirstEncounterAge by filtering allPatients
+        // Update patientsByFirstEncounterAge by filtering allPatients
 	    patientsByFirstEncounterAge = allPatients.filter(function(obj) {
             return ((obj.firstEncounterAge >= lowerAge) && (obj.firstEncounterAge <= upperAge));
 	    });
 
         // Update the final target patients array and resulting charts
         let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+        // Update currentFirstEncounterAgeRange
+	    currentFirstEncounterAgeRange = [lowerAge, upperAge];
 
 	    showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	}
