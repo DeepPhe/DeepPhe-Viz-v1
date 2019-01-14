@@ -174,49 +174,24 @@ fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
-/* Patients age range table */
+#results_title {
+padding:20px;
+font-weight: 700;
+text-align: center;
+}
+
+/* Target patients list */
 #patients {
-max-width: 1122px;
-height:auto;
+max-width: 200px;
+max-height:540px;
+overflow-y: scroll;
 padding:10px;
 }
 
-.patients_table {
-width:100%;
-border:1px solid #ccc;
-margin-top:0;
-}
-
-/* Table caption is inside <table> tag */
-.patients_table caption {
-margin-bottom:10px;
-}
-
-.patients_table th {
-padding:4px; 
-background:#ebeff9;
-border:1px solid #fff;
-/* The text in th are bold and centered by default. */
-}
-
-.patients_table td {
-padding:5px; 
-border:1px solid #fff;
-}
-
-.patient_age_range_list {
-list-style-type: none;
-padding:0;
+.patient_list {
+list-style: none;
 margin:0;
-}
-
-.patient_age_range_list li {
-float: left;
-margin:2px 4px;
-}
-
-.patient_age_range_list li:last-child {
-margin-right:0;
+padding:0;
 }
 
 /* Biomarkers chart */

@@ -914,8 +914,10 @@ function showDerivedCharts(patientsArr, stage, firstEncounterAgeRange) {
 	    	patientIds.push(patient.patientId);
 	    });
 
-        // Resulting target patients table
-	    showPatientsTable("patients", patientsArr, stage, firstEncounterAgeRange);
+        showResultsTitle("results_title", patientsArr, stage, firstEncounterAgeRange);
+
+        // Resulting target patients list
+	    showPatientsList("patients", patientsArr, stage, firstEncounterAgeRange);
 
 	    // Make another ajax call to get diagnosis for the list of patients
 	    getDiagnosis(patientIds);
@@ -937,19 +939,26 @@ function removeChart(containerId) {
     d3.select("#" + containerId).selectAll("*").remove();
 }
 
-// All patients is a separate call
-// patients of each stage is alrady loaded data
-function showPatientsTable(containerId, data, stage, firstEncounterAgeRange) {
+function showResultsTitle(containerId, data, stage, firstEncounterAgeRange) {
     removeChart(containerId);
 
-    let html = '<table class="patients_table">'
-        + '<tr><th>Target Patient List (' + data.length + ' patients from ' + stage + ') Ordered By First Encounter Age ( between ' + firstEncounterAgeRange[0] + ' and ' + firstEncounterAgeRange[1] + ')</th></tr>'
-        + '<tr><td><ul class="patient_age_range_list">';
+    let html = 'Target Patients (' + data.length + ' patients from ' + stage + ', first encounter age between ' + firstEncounterAgeRange[0] + ' and ' + firstEncounterAgeRange[1] + ')';
+
+    $("#" + containerId).html(html);
+}
+
+// All patients is a separate call
+// patients of each stage is alrady loaded data
+function showPatientsList(containerId, data, stage, firstEncounterAgeRange) {
+    removeChart(containerId);
+
+    let html = '<ul class="patient_list">';
 
     data.forEach(function(patient) {
     	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + patient.firstEncounterAge + ')</li>';
     });
-    html += '</ul></td></tr></table>';
+
+    html += '</ul>';
     
     $("#" + containerId).html(html);
 }
