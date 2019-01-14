@@ -448,8 +448,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	let ageOffset = 5;
 
 	let x = d3.scaleLinear()
-	    // Integer age range based on rounding the minAge and maxAge
-	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset])
+	    .domain([minAge - ageOffset, maxAge + ageOffset])
 	    .range([0, chartWidth]);
 
 	let y = d3.scaleBand()
