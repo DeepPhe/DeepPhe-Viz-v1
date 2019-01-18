@@ -91,7 +91,7 @@ function showCohort() {
 	.done(function(response) {
         // Keep the data in memory for later use
         allPatients = response.patients;
-console.log(response);
+
         // Set as all the target patients for the first load
         patientsByStage = response.patients;
         patientsByFirstEncounterAge = response.patients;
@@ -1069,9 +1069,9 @@ function showDiagnosisChart(svgContainerId, data) {
 	    .domain(data.diagnosis)
 		.range([0, overviewHeight]);
 	
-	// Replace all spaces and () with underscores
+	// Replace all spaces, commas, and () with underscores
     let diagnosis2Class = function(diagnosis) {
-        return diagnosis.replace(/ |\(|\)/g, "_");
+        return diagnosis.replace(/ |,|\(|\)|/g, "_");
     };
 
 	// Chart title
