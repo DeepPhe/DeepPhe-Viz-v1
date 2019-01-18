@@ -90,11 +90,11 @@ function showCohort() {
 	})
 	.done(function(response) {
         // Keep the data in memory for later use
-        allPatients = response.patientsInfo.patients;
-
+        allPatients = response.patients;
+console.log(response);
         // Set as all the target patients for the first load
-        patientsByStage = response.patientsInfo.patients;
-        patientsByFirstEncounterAge = response.patientsInfo.patients;
+        patientsByStage = response.patients;
+        patientsByFirstEncounterAge = response.patients;
 
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
