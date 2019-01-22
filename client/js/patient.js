@@ -183,7 +183,7 @@ function getReport(reportId) {
 	    dataType : 'json'
 	})
 	.done(function(response) {
-        let reportText = response.text;
+        let reportText = response.reportText;
         let mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
@@ -196,7 +196,7 @@ function getReport(reportId) {
         // Show rendered mentioned terms
         let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
         mentionedTerms.forEach(function(obj) {
-        	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.startOffset + '" data-end="' + obj.endOffset + '">' + obj.text + '</li>';
+        	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
         });
         renderedMentionedTerms += "</ul>";
 
