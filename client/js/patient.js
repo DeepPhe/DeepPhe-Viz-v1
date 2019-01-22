@@ -314,28 +314,28 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     const textMargin = 10;
 
     // https://github.com/d3/d3-time-format#d3-time-format
-    const formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
-    const parseTime = d3.timeParse("%Y-%m-%d %I:%M %p");
+    const formatTime = d3.timeFormat("%Y-%m-%d");
+    const parseTime = d3.timeParse("%Y-%m-%d");
 
 	// Convert string to date
 	reportData.forEach(function(d) {
 		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
 		// d.origTime.slice(0, 19) returns the time string without the time zone part.
-		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
-		let formattedTimeStr = formatTime(new Date(d.origTime.slice(0, 19)));
+		// E.g., "2012/11/28" from "11/28/2012 01:00 AM AST"
+		let formattedDateStr = formatTime(new Date(d.date));
 		// Then convert a string back to a date to be used by d3
-        d.formattedTime = parseTime(formattedTimeStr);
+        d.formattedDate = parseTime(formattedDateStr);
 	});
 
 	// The earliest report date
-	let xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
+	let xMinDate = d3.min(reportData, function(d) {return d.formattedDate;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
 	let startDate = new Date(xMinDate);
 	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
-	let xMaxDate = d3.max(reportData, function(d) {return d.formattedTime;});
+	let xMaxDate = d3.max(reportData, function(d) {return d.formattedDate;});
 
 	// Set the end date of the x axis 10 days after the xMaxDate
 	let endDate = new Date(xMaxDate);
@@ -555,7 +555,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     	// Update main area
 		d3.selectAll(".main_report")
 			.attr("cx", function(d) { 
-				return mainX(d.formattedTime); 
+				return mainX(d.formattedDate); 
 			});
 	
 	    // Update the main x axis
@@ -737,7 +737,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    })
 	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
-	    	return mainX(d.formattedTime); 
+	    	return mainX(d.formattedDate); 
 	    })
 	    // Vertically spread the dots with same time
 	    .attr("cy", function(d) { 
@@ -839,7 +839,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 		.attr('class', 'overview_report')
 		.attr("r", reportOverviewRadius)
 		.attr("cx", function(d) { 
-			return overviewX(d.formattedTime); 
+			return overviewX(d.formattedDate); 
 		})
 		.attr("cy", function(d) { 
 			return getReportCirclePositionY(d, overviewY, overviewReportTypeRowHeightPerCount);
