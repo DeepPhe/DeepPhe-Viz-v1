@@ -922,8 +922,8 @@ function showDerivedCharts(patientsArr, stage, firstEncounterAgeRange) {
 	    // Make another ajax call to get diagnosis for the list of patients
 	    getDiagnosis(patientIds);
 
-	    // Make another ajax call to get all tumor info for the list of patients
-	    getPatientsTumorInfo(patientIds);
+	    // Make another ajax call to get biomarkers info for the list of patients
+	    getBiomarkers(patientIds);
     } else {
         console.log("Empty target patients list");
 
@@ -1468,19 +1468,19 @@ function showBiomarkersChart(svgContainerId, data) {
     }
 }
 
-function getPatientsTumorInfo(patientIds) {
+function getBiomarkers(patientIds) {
     $.ajax({
-	    url: baseUri + '/tumorinfo/' + patientIds.join('+'),
+	    url: baseUri + '/biomarkers/' + patientIds.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
 	})
 	.done(function(response) {
 	    //console.log(response);
-	    showBiomarkersChart("biomarkers", response.biomarkersInfo);
+	    showBiomarkersChart("biomarkers", response);
 	})
 	.fail(function () { 
-	    console.log("Ajax error - can't get patients tumor info");
+	    console.log("Ajax error - can't get patients biomarkers info");
 	});
 }
 
