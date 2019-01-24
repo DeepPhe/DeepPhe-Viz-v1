@@ -64,7 +64,7 @@
 
 
 <!-- Tumor Summary -->
-{{#if tumors.length}}
+{{#if tumors.tumors.length}}
 <div class="tumor_summary">
 <div class="tumor_summary_title" title="{{cancerId}}">Tumor Summary</div>
 <div class="view_options">
@@ -78,37 +78,31 @@
 
 <!-- List View -->
 <div id="list_view">
-{{#each tumors}}
+{{#each tumors.listViewData}}
 <div class="list_view_tumor clearfix">
     <div class="list_view_tumor_type" title="Click to expand/collapse"><span class="arrow"><i class="fas fa-caret-right"></i><i class="fas fa-caret-down"></i></span> {{type}}</div>
     <ul class="list_view_tumor_list clearfix">
         {{#each data}}
-            {{#if factsObj.facts}} <!-- Don't show empty facts for now, use categoryClass as CSS selectors -->
-            <li class="list_view_tumor_list_item {{factsObj.categoryClass}}">
-                <!-- Don't display prefix for "Body Site" -->
-                {{#ifEquals factsObj.category "Body Site"}} 
+            {{#if facts}} <!-- Don't show empty facts for now, use categoryClass as CSS selectors -->
+            <li class="list_view_tumor_list_item {{categoryClass}}">
+                <!-- Show full info of Body Site and Diagnosis, others just bars until expanded -->
+                {{#ifEquals category "Body Site"}} 
                     <ul class="list_view_tumor_fact_list">
-                    {{#each factsObj.facts}}
-                        {{#if laterality}}
-                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
-                        {{else}}
-                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
-                        {{/if}}
-                    {{/each}}
-                    </ul>
-                <!-- Don't display prefix for "Diagnosis" -->
-                {{else ifEquals factsObj.category "Diagnosis"}} 
-                    <ul class="list_view_tumor_fact_list">
-                    {{#each factsObj.facts}}
+                    {{#each facts}}
                         <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
                     {{/each}}
                     </ul>
-                <!-- Display prefix for all other categories -->
+                {{else ifEquals category "Diagnosis"}} 
+                    <ul class="list_view_tumor_fact_list">
+                    {{#each facts}}
+                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
+                    {{/each}}
+                    </ul>
                 {{else}}
                     <div class="toggleable">
-                    {{factsObj.category}}:
+                    {{category}}:
                     <ul class="list_view_tumor_fact_list">
-                    {{#each factsObj.facts}}
+                    {{#each facts}}
                         <!-- "../"" is the notation to access outer scope variables -->
                         {{#inArray prettyName ../../../../melanomaAttributes}}
                             <!-- Melanoma specific -->
@@ -138,39 +132,34 @@
 <thead>
     <tr>
         <th class="th"></th>
-        {{#each tumors}}
+        {{#each tumors.tumors}}
             <th class="th">{{type}}</th>
         {{/each}}
     </tr>
 </thead>
 
 <tbody>
-    {{#each collatedFactsByCategory}}
+    {{#each tumors.tableViewData}}
     <tr>
         <th class="th_vertical {{categoryClass}}">{{category}}</th>
         {{#each data}}
             {{#if facts}}
                 <td>
                 <ul class="tumor_fact_list">
-                  {{#each facts}}
-                    {{#if laterality}}
-                        <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span> ({{laterality}})</li>
-                    {{else}}
+                    {{#each facts}}
                         <!-- "../"" is the notation to access outer scope variables -->
                         {{#inArray prettyName ../../../../melanomaAttributes}}
                         <!-- Melanoma specific -->
-                        <li><span class="fact" id="table_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
+                            <li><span class="fact" id="table_view_{{id}}"><span class="present">&#x2714;</span> Present</span></li>
                         {{else}}
-                        <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span></li>
+                            <li><span class="fact" id="table_view_{{id}}">{{prettyName}}</span></li>
                         {{/inArray}}
-                    {{/if}}
-                  {{/each}}
+                    {{/each}}
                 </ul>
                 </td>
-                {{else}}
+            {{else}}
                 <td class="empty_cell"></td>
             {{/if}}
-            
         {{/each}}
     </tr>
     {{/each}}
