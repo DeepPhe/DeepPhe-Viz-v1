@@ -1,6 +1,6 @@
 {
   "name": "DeepPhe-Viz",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DeepPhe-Viz",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
     "hapi-swagger": "^9.2.0",
     "inert": "^5.1.0",
     "lodash": "^4.17.10",
-    "neo4j-driver": "^1.6.3",
+    "neo4j-driver": "^1.7.1",
     "vision": "^5.3.3"
   },
   "main": "server.js"

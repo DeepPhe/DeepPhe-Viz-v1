@@ -183,6 +183,8 @@ function getReport(reportId) {
 	    dataType : 'json'
 	})
 	.done(function(response) {
+        console.log("==========");
+        console.log(response);
         let reportText = response.reportText;
         let mentionedTerms = response.mentionedTerms;
 
