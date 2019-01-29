@@ -2,13 +2,6 @@
 const transitionDuration = 800; // time in ms
 let factBasedReports = [];
 
-function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
-	// encounterDateObj is Date object while birthday is a string
-    let ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
-    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-}
-
 // Lowercase the episode name and replae space with hyphen
 function episode2CssClass(episode) {
     return episode.replace(/\s+/g, '-').toLowerCase();
@@ -789,9 +782,12 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("class", "age_label")
 	    .text("Patient Age");
 
-    // Date objects, not strings
+    // Patient's first and last encounter dates and corresponding ages
+    // We use the dates to render x position
     let encounterDates = [xMinDate, xMaxDate];
-    
+    // We use the calculated ages to render the text of age
+    let encounterAges = [patientInfo.firstEncounterAge, patientInfo.lastEncounterAge];
+
     age.selectAll(".encounter_age")
         .data(encounterDates)
         .enter()
@@ -802,8 +798,8 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("y", ageAreaHeight/2)
 	    .attr("dy", ".5ex")
 	    .attr("class", "encounter_age")
-	    .text(function(d) {
-	    	return getPatientEncounterAgeByDateObject(d, patientInfo.birthday);
+	    .text(function(d, i) {
+	    	return encounterAges[i];
 	    });
 
     // Vertical guidelines based on min and max dates (date objects)
