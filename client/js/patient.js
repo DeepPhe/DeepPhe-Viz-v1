@@ -152,6 +152,18 @@ function getFact(patientId, factId) {
 
 			// And highlight the current displaying report circle with a thicker stroke
 			highlightSelectedTimelineReport(reportIds[0])
+		} else {
+			// Dehighlight the previously selected report dot 
+		    const css = "selected_report";
+		    $('.main_report').removeClass(css);
+		    $('.overview_report').removeClass(css);
+		    // Also remove the "fact_highlighted_report" class
+		    $('.main_report').removeClass("fact_highlighted_report");
+
+		    // And empty the report area
+		    $('#report_id').empty();
+		    $('#report_mentioned_terms').empty();
+		    $('#report_text').empty();
 		}
 	})
 	.fail(function () { 

@@ -550,7 +550,7 @@ color:orange;
 
 
 /* Report content area */
-.report_area_left {
+#report_info {
 width:165px;
 float:left;
 padding:10px 5px 10px 10px;
