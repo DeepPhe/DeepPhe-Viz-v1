@@ -137,8 +137,9 @@ $(function() {
         // Then add to this one
         $(this).addClass(cssClass);
 
-        let reportId = $(this).attr('id');
-        getReport(reportId);
+        let reportId = $(this).attr('data-report');
+        let factId = $(this).attr('data-fact');
+        getReport(reportId, factId);
 
         // Also highlight the selected report circle in timeline
         highlightSelectedTimelineReport(reportId)

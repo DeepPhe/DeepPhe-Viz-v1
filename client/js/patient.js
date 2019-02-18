@@ -1,6 +1,9 @@
 // Global settings
 const transitionDuration = 800; // time in ms
-let factBasedReports = [];
+
+// This object stores the target reportId as the key, and the value is another object 
+// that stores each factId as key and fact-based terms (non-duplicate) in an array
+let factBasedReports = {};
 
 // Lowercase the episode name and replae space with hyphen
 function episode2CssClass(episode) {
@@ -118,40 +121,76 @@ function getFact(patientId, factId) {
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'html'
+	    dataType : 'json'
 	})
 	.done(function(response) {
+        let docIds = Object.keys(response.groupedTextProvenances);
+
+        // Render the html fact info
+        let factHtml = '<ul class="fact_detail_list">'
+                 + '<li><span class="fact_detail_label">Selected Fact:</span> ' + response.sourceFact.prettyName + '</li>';
+
+        if (docIds.length > 0) {
+            factHtml += '<li class="clearfix"><span class="fact_detail_label">Related Text Provenances in Source Reports:</span><ul>';
+            
+            docIds.forEach(function(id) {
+                let group = response.groupedTextProvenances[id];
+                // Use a combination of reportId and factId to identify this element
+                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + group.shortDocId + '</span> --></span><ul>';
+                           
+				let innerHtml = "";
+				group.textCounts.forEach(function(textCount) {
+					innerHtml += '<li>' + textCount.text + ' <span class="count">(' + textCount.count + ')</span></li>';
+				});
+
+			    factHtml += innerHtml + '</ul></li>';
+            });    
+        }
+
+        factHtml += '</ul>';
+
 	    // Fade in the fact detail. Need to hide the div in order to fade in.
-	    $('#fact_detail').hide().html(response).fadeIn('slow');
+	    $('#fact_detail').hide().html(factHtml).fadeIn('slow');
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
-        let reportIds = [];
-
-        // Grab the report IDs from the rendered HTML
-        let elements = $('.fact_based_report_id').toArray();
-	    elements.forEach(function(el) {
-            reportIds.push(el.id);
-	    });
-
 		// Highlight report circles in timeline
-		if (reportIds.length > 0) {
-			// Add to the global factBasedReports array for later use
-            factBasedReports = reportIds;
-
+		if (docIds.length > 0) {
 			// Remove the previouly fact-based highlighting
 			$('.main_report').removeClass("fact_highlighted_report");
 
-			reportIds.forEach(function(id) {
+			docIds.forEach(function(id) {
 				// Set fill-opacity to 1
                 highlightReportBasedOnFact(id);
+
+                // Add to the global factBasedReports object for highlighting 
+                // the fact-based terms among all extracted terms of a given report
+                if (typeof factBasedReports[id] === "undefined") {
+	                factBasedReports[id] = {};
+	            } 
+
+                if (typeof factBasedReports[id][factId] === "undefined") {
+	                // Define an array for each factId 
+	                factBasedReports[id][factId] = [];
+	            } 
+
+                // If not already added, add terms
+                // Otherwise reuse what we have in the memory
+                if (factBasedReports[id][factId].length === 0) {
+	                // Only store the unique text
+	                response.groupedTextProvenances[id].terms.forEach(function(obj) {
+                        if (factBasedReports[id][factId].indexOf(obj.term) === -1) {
+                            factBasedReports[id][factId].push(obj.term);
+                        }
+	                });
+                }
 			});
 
 			// Also show the content of the first report
-			// The reportIds is sorted
-			getReport(reportIds[0]);
+			// The docIds is sorted
+			getReport(docIds[0], factId);
 
 			// And highlight the current displaying report circle with a thicker stroke
-			highlightSelectedTimelineReport(reportIds[0])
+			highlightSelectedTimelineReport(docIds[0])
 		} else {
 			// Dehighlight the previously selected report dot 
 		    const css = "selected_report";
@@ -179,7 +218,7 @@ function removeFactBasedHighlighting(reportId) {
 }
 
 // Get report content and mentioned terms by ID 
-function getReport(reportId) {
+function getReport(reportId, factId) {
 	// Must use encodeURIComponent() otherwise may have URI parsing issue
 	$.ajax({
 	    url: baseUri + '/reports/' + reportId ,
@@ -188,22 +227,29 @@ function getReport(reportId) {
 	    dataType : 'json'
 	})
 	.done(function(response) {
-        console.log("==========");
-        console.log(response);
         let reportText = response.reportText;
         let mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
         const cssClass = 'current_displaying_report';
         $('.fact_based_report_id').removeClass(cssClass);
-        $('#' + reportId).addClass(cssClass);
+
+        // Highlight the curent displaying report name
+        $('#' + reportId + "_" + factId).addClass(cssClass);
 
         $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
+        // First check if this report is a fact-based report so we cna highlight the fact-related terms in the renderedMentionedTerms
+        let factBasedTerms = [];
+        if (Object.keys(factBasedReports).indexOf(reportId) !== -1 && Object.keys(factBasedReports[reportId]).indexOf(factId) !== -1) {
+            factBasedTerms = factBasedReports[reportId][factId];
+        }
+
         let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
         mentionedTerms.forEach(function(obj) {
-        	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
+            let fact_based_term_class = (factBasedTerms.indexOf(obj.term) !== -1) ? ' fact_based_term' : '';
+        	renderedMentionedTerms += '<li class="report_mentioned_term' + fact_based_term_class + '" + data-start="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
         });
         renderedMentionedTerms += "</ul>";
 
@@ -759,7 +805,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .on("click", function(d) {
             // Check to see if this report is one of the fact-based reports that are being highlighted
             // d.id has no prefix, just raw id
-            if (factBasedReports.indexOf(d.id) === -1) {
+            if (Object.keys(factBasedReports).indexOf(d.id) === -1) {
                 // Remove the fact related highlighting
                 removeFactBasedHighlighting(d.id);
             }

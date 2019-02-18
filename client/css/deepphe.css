@@ -597,6 +597,11 @@ background-color:#fff;
 color:#75438a;
 }
 
+/* Highlight the fact-based terms among all extracted terms */
+.fact_based_term {
+border:1px solid orange;
+}
+
 .mentioned_terms_list:last-child {
 margin-right:0;
 }

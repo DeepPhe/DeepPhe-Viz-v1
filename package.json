@@ -25,7 +25,7 @@
     "inert": "^5.1.0",
     "lodash": "^4.17.10",
     "neo4j-driver": "^1.7.1",
-    "vision": "^5.3.3"
+    "vision": "^5.4.4"
   },
   "main": "server.js"
 }
