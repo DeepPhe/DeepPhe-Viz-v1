@@ -19,12 +19,12 @@
   },
   "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "handlebars": "^4.0.11",
-    "hapi": "^17.5.2",
-    "hapi-swagger": "^9.2.0",
-    "inert": "^5.1.0",
-    "lodash": "^4.17.10",
-    "neo4j-driver": "^1.7.1",
+    "handlebars": "^4.1.0",
+    "hapi": "^18.1.0",
+    "hapi-swagger": "^9.3.1",
+    "inert": "^5.1.2",
+    "lodash": "^4.17.11",
+    "neo4j-driver": "^1.7.2",
     "vision": "^5.4.4"
   },
   "main": "server.js"
