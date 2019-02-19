@@ -136,11 +136,11 @@ function getFact(patientId, factId) {
             docIds.forEach(function(id) {
                 let group = response.groupedTextProvenances[id];
                 // Use a combination of reportId and factId to identify this element
-                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + group.shortDocId + '</span> --></span><ul>';
+                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + group.shortDocId + '</span> --></span><ul id="terms_list_' + id + "_" + factId + '">';
                            
 				let innerHtml = "";
 				group.textCounts.forEach(function(textCount) {
-					innerHtml += '<li>' + textCount.text + ' <span class="count">(' + textCount.count + ')</span></li>';
+					innerHtml += '<li><span class="fact_based_term_span">' + textCount.text + '</span> <span class="count">(' + textCount.count + ')</span></li>';
 				});
 
 			    factHtml += innerHtml + '</ul></li>';
@@ -231,13 +231,18 @@ function getReport(reportId, factId) {
         let mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
-        const cssClass = 'current_displaying_report';
-        $('.fact_based_report_id').removeClass(cssClass);
+        const currentReportCssClass = 'current_displaying_report';
+        const currentFactTermsCssClass = 'fact_based_term';
+        $('.fact_based_report_id').removeClass(currentReportCssClass);
+        $('.fact_based_term_span').removeClass(currentFactTermsCssClass);
 
         // Highlight the curent displaying report name
-        $('#' + reportId + "_" + factId).addClass(cssClass);
-
-        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
+        $('#' + reportId + "_" + factId).addClass(currentReportCssClass);
+        // Also highlight all the fact-based text mentions in the fact info area
+        $('#terms_list_' + reportId + "_" + factId).children().find(">:first-child").addClass(currentFactTermsCssClass);
+        
+        // Show report ID
+        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + currentReportCssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
         // First check if this report is a fact-based report so we cna highlight the fact-related terms in the renderedMentionedTerms
