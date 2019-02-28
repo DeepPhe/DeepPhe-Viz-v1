@@ -146,38 +146,14 @@ $(function() {
     });
 
     // Click the report mentioned term to show it in the report text
-    $(document).on("click", ".report_mentioned_term", function() {
-        // Highlight the selected term in the term list
-        const cssClass = 'current_mentioned_term';
-        // First remove the previously added highlighting
-        $('.report_mentioned_term').removeClass(cssClass);
-        // Then add to this one
-        $(this).addClass(cssClass);
+    $(document).on("click", ".report_mentioned_term", function() { 
+        let obj = {};
+        obj.term = $(this).text();
+        obj.begin = $(this).data('begin');
+        obj.end = $(this).data('end');
 
-        let reportTextDiv = $("#report_text");
-
-        // Use text() instead of html() to only get the combined text without any html tags
-        let reportText = reportTextDiv.text();
-
-        let textMentions = [];
-
-        let termObj = {};
-        termObj.text = $(this).text();
-        termObj.startOffset = $(this).data('start');
-        termObj.endOffset = $(this).data('end');
-        
-        textMentions.push(termObj);
-
-        // Highlight this term in the report text
-        let highlightedReportText = highlightMentionedTexts(textMentions, reportText);
-
-        // Use html() for html rendering
-        $("#report_text").html(highlightedReportText);
-
-        // Scroll to that position inside the report text div
-        // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
-        // 5 is position tweak
-        reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
+        let reportText = $("#report_text").text();
+        scrollToTerm(obj, reportText);
     });
 
     // Reset button event

@@ -51,9 +51,9 @@ function getCancerAndTumorSummary(patientId) {
 function highlightMentionedTexts(textMentions, reportText) {
     const cssClass = "highlighted_term";
 
-    // Sort the textMentions array first based on startOffset
+    // Sort the textMentions array first based on beginOffset
     textMentions.sort(function(a, b) {
-        let comp = a.startOffset - b.startOffset;
+        let comp = a.beginOffset - b.beginOffset;
         if (comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
@@ -66,13 +66,13 @@ function highlightMentionedTexts(textMentions, reportText) {
     if (textMentions.length === 1) {
         let textMention = textMentions[0];
 
-        if (textMention.startOffset === 0) {
+        if (textMention.beginOffset === 0) {
             textFragments.push('');
         } else {
-            textFragments.push(reportText.substring(0, textMention.startOffset));
+            textFragments.push(reportText.substring(0, textMention.beginOffset));
         }
 
-        textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+        textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.beginOffset, textMention.endOffset) + '</span>');
         textFragments.push(reportText.substring(textMention.endOffset));
     } else {
         let lastValidTMIndex = 0;
@@ -83,21 +83,21 @@ function highlightMentionedTexts(textMentions, reportText) {
 
             // If this is the first textmention, paste the start of the document before the first TM.
             if (i === 0) {
-                if (textMention.startOffset === 0) {
+                if (textMention.beginOffset === 0) {
                     textFragments.push('');
                 } else {
-                    textFragments.push(reportText.substring(0, textMention.startOffset));
+                    textFragments.push(reportText.substring(0, textMention.beginOffset));
                 }
             } else { // Otherwise, check if this text mention is valid. if it is, paste the text from last valid TM to this one.
-                if (textMention.startOffset < lastValidTM.endOffset) {
+                if (textMention.beginOffset < lastValidTM.endOffset) {
                         // Push end of the document
                     continue; // Skipping this TM.
                 } else{
-                    textFragments.push(reportText.substring(lastValidTM.endOffset, textMention.startOffset));
+                    textFragments.push(reportText.substring(lastValidTM.endOffset, textMention.beginOffset));
                 }
             }
 
-            textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+            textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.beginOffset, textMention.endOffset) + '</span>');
             lastValidTMIndex = i;
         }
         // Push end of the document
@@ -112,6 +112,37 @@ function highlightMentionedTexts(textMentions, reportText) {
     }
 
     return highlightedReportText;
+}
+
+function scrollToTerm(obj, reportText) {
+    // Highlight the selected term in the term list
+    const cssClass = 'current_mentioned_term';
+    // First remove the previously added highlighting
+    $('.report_mentioned_term').removeClass(cssClass);
+    // Then add to this one
+    $('li[data-begin="' + obj.begin + '"][data-end="' + obj.end + '"]').addClass(cssClass);
+
+    let reportTextDiv = $("#report_text");
+
+    let textMentions = [];
+
+    let termObj = {};
+    termObj.text = obj.term;
+    termObj.beginOffset = obj.begin;
+    termObj.endOffset = obj.end;
+    
+    textMentions.push(termObj);
+
+    // Highlight this term in the report text
+    let highlightedReportText = highlightMentionedTexts(textMentions, reportText);
+
+    // Use html() for html rendering
+    $("#report_text").html(highlightedReportText);
+
+    // Scroll to that position inside the report text div
+    // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
+    // 5 is position tweak
+    reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
 }
 
 // Get fact details by ID
@@ -245,25 +276,36 @@ function getReport(reportId, factId) {
         $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + currentReportCssClass + '">' + getShortDocId(reportId) + '</span>');
 
         // Show rendered mentioned terms
-        // First check if this report is a fact-based report so we cna highlight the fact-related terms in the renderedMentionedTerms
+        // First check if this report is a fact-based report so we cna highlight the fact-related terms
         let factBasedTerms = [];
         if (Object.keys(factBasedReports).indexOf(reportId) !== -1 && Object.keys(factBasedReports[reportId]).indexOf(factId) !== -1) {
             factBasedTerms = factBasedReports[reportId][factId];
         }
 
+        let factBasedTermsWithPosition = [];
+
         let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
         mentionedTerms.forEach(function(obj) {
-            let fact_based_term_class = (factBasedTerms.indexOf(obj.term) !== -1) ? ' fact_based_term' : '';
-        	renderedMentionedTerms += '<li class="report_mentioned_term' + fact_based_term_class + '" + data-start="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
+            let fact_based_term_class = '';
+            if (factBasedTerms.indexOf(obj.term) !== -1) {
+                factBasedTermsWithPosition.push(obj);
+                fact_based_term_class = ' fact_based_term';
+            }
+        	renderedMentionedTerms += '<li class="report_mentioned_term' + fact_based_term_class + '" data-begin="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
         });
         renderedMentionedTerms += "</ul>";
 
         $('#report_mentioned_terms').html(renderedMentionedTerms);
 
-	    // Show report content, either highlighted or not
-	    $('#report_text').html(reportText);
-	    // Scroll back to top of the report content div
-	    $("#report_text").animate({scrollTop: 0}, "fast");
+        // Also scroll to the first fact based term if any in the report text
+        if (factBasedTermsWithPosition.length > 0) {
+            scrollToTerm(factBasedTermsWithPosition[0], reportText);
+        } else {
+            // Show report content, either highlighted or not
+            $("#report_text").html(reportText);
+            // Scroll back to top of the report content div
+            $("#report_text").animate({scrollTop: 0}, "fast");
+        }
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get report");
