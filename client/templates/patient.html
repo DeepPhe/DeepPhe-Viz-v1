@@ -73,7 +73,7 @@ $(function() {
     });
 
     // Tumor fact click - List View
-    $(document).on("click", "#list_view .fact", function() {
+    $(document).on("click", ".list_view .fact", function() {
         const cssClass = 'highlighted_fact';
 
         // Remove the previous highlighting
@@ -93,7 +93,7 @@ $(function() {
     });
 
     // Tumor fact click - Table View
-    $(document).on("click", "#table_view .fact", function() {
+    $(document).on("click", ".table_view .fact", function() {
         const cssClass = 'highlighted_fact';
 
         // Remove the previous highlighting
@@ -113,14 +113,18 @@ $(function() {
     });
 
     // Tumor summary
-    $(document).on("click", "#list_view_option", function() {
-        $("#table_view").hide();
-        $("#list_view").show();
+    $(document).on("click", ".list_view_option", function() {
+        console.log("dsdasdsaddsa");
+        let cancerId = $(this).attr('id').replace("list_view_option_", "");
+        console.log(cancerId);
+        $("#table_view_" + cancerId).hide();
+        $("#list_view_" + cancerId).show();
     });
 
-    $(document).on("click", "#table_view_option", function() {
-        $("#list_view").hide();
-        $("#table_view").show();
+    $(document).on("click", ".table_view_option", function() {
+        let cancerId = $(this).attr('id').replace("table_view_option_", "");
+        $("#list_view_" + cancerId).hide();
+        $("#table_view_" + cancerId).show();
     });
 
     // Toggle for each tumor type under list view
@@ -153,7 +157,7 @@ $(function() {
         obj.end = $(this).data('end');
 
         let reportText = $("#report_text").text();
-        
+
         scrollToHighlightedTextMention(obj, reportText);
     });
 
