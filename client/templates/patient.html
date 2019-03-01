@@ -153,7 +153,8 @@ $(function() {
         obj.end = $(this).data('end');
 
         let reportText = $("#report_text").text();
-        scrollToTerm(obj, reportText);
+        
+        scrollToHighlightedTextMention(obj, reportText);
     });
 
     // Reset button event

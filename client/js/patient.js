@@ -48,7 +48,8 @@ function getCancerAndTumorSummary(patientId) {
 	});
 }
 
-function highlightMentionedTexts(textMentions, reportText) {
+// Can highlight one or multiple text mentions
+function highlightTextMentions(textMentions, reportText) {
     const cssClass = "highlighted_term";
 
     // Sort the textMentions array first based on beginOffset
@@ -114,30 +115,31 @@ function highlightMentionedTexts(textMentions, reportText) {
     return highlightedReportText;
 }
 
-function scrollToTerm(obj, reportText) {
+// The target obj has properties: "term", "begin", and "end"
+function scrollToHighlightedTextMention(obj, reportText) {
     // Highlight the selected term in the term list
     const cssClass = 'current_mentioned_term';
     // First remove the previously added highlighting
     $('.report_mentioned_term').removeClass(cssClass);
-    // Then add to this one
+    // Then add to this current one by selecting the attributes
     $('li[data-begin="' + obj.begin + '"][data-end="' + obj.end + '"]').addClass(cssClass);
 
     let reportTextDiv = $("#report_text");
 
     let textMentions = [];
 
-    let termObj = {};
-    termObj.text = obj.term;
-    termObj.beginOffset = obj.begin;
-    termObj.endOffset = obj.end;
+    let textMentionObj = {};
+    textMentionObj.text = obj.term;
+    textMentionObj.beginOffset = obj.begin;
+    textMentionObj.endOffset = obj.end;
     
-    textMentions.push(termObj);
+    textMentions.push(textMentionObj);
 
     // Highlight this term in the report text
-    let highlightedReportText = highlightMentionedTexts(textMentions, reportText);
+    let highlightedReportText = highlightTextMentions(textMentions, reportText);
 
     // Use html() for html rendering
-    $("#report_text").html(highlightedReportText);
+    reportTextDiv.html(highlightedReportText);
 
     // Scroll to that position inside the report text div
     // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
@@ -282,6 +284,8 @@ function getReport(reportId, factId) {
             factBasedTerms = factBasedReports[reportId][factId];
         }
 
+        // mentionedTerms doesn't have position info, so we need to keep the posiiton info 
+        // for highlighting and scroll to
         let factBasedTermsWithPosition = [];
 
         let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
@@ -299,12 +303,13 @@ function getReport(reportId, factId) {
 
         // Also scroll to the first fact based term if any in the report text
         if (factBasedTermsWithPosition.length > 0) {
-            scrollToTerm(factBasedTermsWithPosition[0], reportText);
+            scrollToHighlightedTextMention(factBasedTermsWithPosition[0], reportText);
         } else {
+            let reportTextDiv = $("#report_text");
             // Show report content, either highlighted or not
-            $("#report_text").html(reportText);
+            reportTextDiv.html(reportText);
             // Scroll back to top of the report content div
-            $("#report_text").animate({scrollTop: 0}, "fast");
+            reportTextDiv.animate({scrollTop: 0}, "fast");
         }
 	})
 	.fail(function () { 
