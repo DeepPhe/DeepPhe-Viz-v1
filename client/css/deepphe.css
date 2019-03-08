@@ -285,7 +285,6 @@ margin:0;
 .cancer_facts_item {
 display:inline-block;
 margin:2px 2px 2px 0;
-border:1px solid #ddd;
 padding:3px 2px 1px;
 }
 
@@ -593,15 +592,13 @@ margin:0;
 float:left;
 margin:0 5px 5px 0;
 padding:3px 2px 0;
-border:1px solid #dbdbdb;
 cursor:pointer;
-background-color:#fff;
-color:#75438a;
+background:#a8d1ff;
 }
 
 /* Highlight the fact-based terms among all extracted terms */
 .fact_based_term {
-border:1px solid orange;
+background: #ffb7b7;
 }
 
 .mentioned_terms_list:last-child {
@@ -609,8 +606,7 @@ margin-right:0;
 }
 
 .current_mentioned_term {
-background: #fff;
-color:#f6941e;
+background:#FFDC00;
 }
 
 .count {
@@ -618,10 +614,8 @@ font-size: .85em;
 }
 
 .highlighted_term {
+display:inline-block;
 background:#FFDC00;
-color:#222;
-/* 400 is the same as normal, and 700 is the same as bold */
-font-weight: 600;
 }
 
 
@@ -864,20 +858,11 @@ height:15px;
 margin-right:3px;
 margin-bottom: 3px;
 padding:3px 2px 1px;
-color:#333;}
-
-.list_view_tumor_list_item:hover {
-background-color:#FFDC00;
-}
-
-.list_view_tumor_fact_list .fact {
-color:#333;
 }
 
 .highlighted_fact {
-font-style: italic;
-color:orange !important;
 text-decoration: underline;
+font-style: italic;
 }
 
 .list_view_tumor_fact_list {
