@@ -285,7 +285,7 @@ margin:0;
 .cancer_facts_item {
 display:inline-block;
 margin:2px 2px 2px 0;
-padding:3px 2px 1px;
+padding:3px 0 1px;
 }
 
 .cancer_fact_category_name {
@@ -313,9 +313,8 @@ margin:0;
 
 .cancer_tnm_fact_list {
 float:left;
-margin-right:5px;
+margin-right:8px;
 background:#fff;
-border:1px solid #dbdbdb;
 padding:2px;
 }
 
@@ -330,9 +329,8 @@ margin-right:20px;
 
 .tnm_type {
 float:left;
-margin-right:5px;
-font-weight: bold;
-padding-top:4px;
+margin-right:3px;
+padding-top:2px;
 }
 
 .tumor_fact_list li {
