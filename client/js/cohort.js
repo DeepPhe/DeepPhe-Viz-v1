@@ -153,7 +153,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			return d.patientsCount; 
 		})])
 		.range([0, chartWidth]);
-    
+
 	let y = d3.scaleBand()
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
@@ -184,11 +184,25 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     // renderYAxis() is based ont the y.domain(), so no argument
     renderYAxis();
 
+    // Show only integer numbers for the ticks when the max count is less than 10
+    // otherwise use the default ticks
+    let xCountAxis;
+    if (xCount.domain()[1] >= 10) {
+        xCountAxis = d3.axisBottom(xCount);
+    } else {
+    	let xCountTickValues = [];
+	    for (let i = 0; i <= xCount.domain()[1]; i++) {
+	        xCountTickValues.push(i);
+	    }
+    	xCountAxis = d3.axisBottom(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d"));
+    }
+
     // Add patients count top X axis
 	stagesChartGrp.append("g")
 		.attr("transform", "translate(0, " + (chartHeight - chartTopMargin) + ")")
 		.attr("class", "count_axis")
-		.call(d3.axisBottom(xCount))
+		
+		.call(xCountAxis)
 		// Append axis label
 		.append("text")
 		.attr("class", "count_axis_label")
