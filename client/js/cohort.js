@@ -969,23 +969,12 @@ function showPatientsList(containerId, data, stage, firstEncounterAgeRange) {
     let html = '<ul class="patient_list">';
 
     data.forEach(function(patient) {
-    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + getPatientShortId(patient.patientId) + '</a> (' + patient.firstEncounterAge + ')</li>';
+    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + patient.patientId + '</a> (' + patient.firstEncounterAge + ')</li>';
     });
 
     html += '</ul>';
     
     $("#" + containerId).html(html);
-}
-
-// Leave this for future use 
-// since different data source may have different ID format
-function getPatientShortId(longId) {
-    return longId; 
-}
-
-// Leave this for future use
-function getPatientLongId(shortId) {
-	return shortId;
 }
 
 // Same as the one in dataProcessor
@@ -1050,13 +1039,11 @@ function showDiagnosisChart(svgContainerId, data) {
     let diagnosisDots = [];
 
     data.data.forEach(function(d) {
-    	let patientShortId = getPatientShortId(d.patient);
-
-    	xDomain.push(patientShortId);
+    	xDomain.push(d.patient);
 
     	d.diagnosis.forEach(function(diagnosis) {
     		let dot = {};
-    		dot.patientShortId = patientShortId;
+    		dot.patientId = d.patient;
     		dot.diagnosis = diagnosis;
 
     		diagnosisDots.push(dot);
@@ -1100,14 +1087,14 @@ function showDiagnosisChart(svgContainerId, data) {
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
 		.data(diagnosisDots.filter(function(obj) {
 			// By default only show the dots of patients in the x.domain()
-			return x.domain().indexOf(obj.patientShortId) !== -1
+			return x.domain().indexOf(obj.patientId) !== -1
 		}))
 		.enter().append("circle")
 		.attr("class", function(d) {
-			return "diagnosis_dot " + d.patientShortId;
+			return "diagnosis_dot " + d.patientId;
 		})
 		.attr("cx", function(d, i) {
-            return x(d.patientShortId);
+            return x(d.patientId);
 		})
 		.attr("cy", function(d) { 
             return y(d.diagnosis);
@@ -1146,7 +1133,7 @@ function showDiagnosisChart(svgContainerId, data) {
 						.attr("y2", chartHeight - chartTopMargin);
 
 					// Also highlight the corresponding Y labels
-					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+					data.patients[d].forEach(function(diagnosis) {
 						$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
 					});
 		        })
@@ -1160,7 +1147,7 @@ function showDiagnosisChart(svgContainerId, data) {
 		            d3.selectAll(".diagnosis_guideline").remove();
 
 		            // Also dehighlight the corresponding Y labels
-					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+					data.patients[d].forEach(function(diagnosis) {
 						$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
 					});
 		        });
@@ -1195,7 +1182,7 @@ function showDiagnosisChart(svgContainerId, data) {
 			.enter().append("g").append("circle")
 			.attr('class', 'overview_diagnosis_dot')
 			.attr("cx", function(d) {
-	            return overviewX(d.patientShortId);
+	            return overviewX(d.patientId);
 			})
 			.attr("cy", function(d) { 
 	            return overviewY(d.diagnosis);
@@ -1243,7 +1230,7 @@ function showDiagnosisChart(svgContainerId, data) {
 	        createXAxis();
 
 	        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
-	        	return newXDomain.indexOf(obj.patientShortId) !== -1
+	        	return newXDomain.indexOf(obj.patientId) !== -1
 	        });
 
 	        // Remove all old dots
@@ -1254,10 +1241,10 @@ function showDiagnosisChart(svgContainerId, data) {
 				.data(newDiagnosisDots)
 				.enter().append("circle")
 				.attr("class", function(d) {
-					return "diagnosis_dot " + d.patientShortId;
+					return "diagnosis_dot " + d.patientId;
 				})
 				.attr("cx", function(d) {
-		            return x(d.patientShortId);
+		            return x(d.patientId);
 				})
 				.attr("cy", function(d) { 
 		            return y(d.diagnosis);

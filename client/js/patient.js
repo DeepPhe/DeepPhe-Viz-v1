@@ -169,7 +169,7 @@ function getFact(patientId, factId) {
             docIds.forEach(function(id) {
                 let group = response.groupedTextProvenances[id];
                 // Use a combination of reportId and factId to identify this element
-                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + group.shortDocId + '</span> --></span><ul id="terms_list_' + id + "_" + factId + '">';
+                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + id + '</span> --></span><ul id="terms_list_' + id + "_" + factId + '">';
                            
 				let innerHtml = "";
 				group.textCounts.forEach(function(textCount) {
@@ -275,7 +275,7 @@ function getReport(reportId, factId) {
         $('#terms_list_' + reportId + "_" + factId).children().find(">:first-child").addClass(currentFactTermsCssClass);
         
         // Show report ID
-        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + currentReportCssClass + '">' + getShortDocId(reportId) + '</span>');
+        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + currentReportCssClass + '">' + reportId + '</span>');
 
         // Show rendered mentioned terms
         // First check if this report is a fact-based report so we cna highlight the fact-related terms
@@ -315,11 +315,6 @@ function getReport(reportId, factId) {
 	.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
-}
-
-// This is application-specific 
-function getShortDocId(id) {
-    return id;
 }
 
 // Highlight the selected report circle in timeline
