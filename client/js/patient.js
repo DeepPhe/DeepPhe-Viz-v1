@@ -317,16 +317,9 @@ function getReport(reportId, factId) {
 	});
 }
 
-// "REPORT_patient10_report051_NOTE_2076902750" -> "Report051_NOTE"
-// This utility funtion can also be found in dataProcessor.js
-// But we can't reuse it due to the fact of different componments
-// Functions in deepphe.js are used by client side
-// and functions in dataProcessor.js are used by server side
+// This is application-specific 
 function getShortDocId(id) {
-    let partsArr = id.split('_');
-    let str = partsArr[2] + '_' + partsArr[3];
-    // Also capitalize the first letter
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    return id;
 }
 
 // Highlight the selected report circle in timeline
