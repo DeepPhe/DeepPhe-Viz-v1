@@ -479,6 +479,10 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	let stagesChartGrp = svg.append("g")
 		.attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
 
+    let distributionGrp = stagesChartGrp.append("g");
+
+    let ageSelectionGrp = stagesChartGrp.append("g");
+
     // Chart title
     svg.append("text")
         .attr("class", "stages_chart_title")
@@ -517,7 +521,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	    // Update the resulting charts on brush end
 	    .on("end", endBrush);
 
-    let ageSelectionGrp = stagesChartGrp.append("g")
+    let ageSelectionBrush = ageSelectionGrp.append("g")
 		.attr("transform", "translate(0, 0)")
 		.attr("class", "age_selection_brush");
 		
@@ -533,7 +537,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
 	};
 
-	let customBrushHandle = ageSelectionGrp.selectAll(".handle--custom")
+	let customBrushHandle = ageSelectionBrush.selectAll(".handle--custom")
 	    .data(customBrushHandlesData)
 	    .enter().append("path")
 	    .attr("class", "handle--custom")
@@ -555,7 +559,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 
     // Attach brush and move to default position
     // must call this before removing pointer events
-	ageSelectionGrp.call(brush)
+	ageSelectionBrush.call(brush)
 		// By default, move the brush to start at minAge and end at maxAge
 		.call(brush.move, [minAge, maxAge].map(x))
 
@@ -566,10 +570,10 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	// when users click outside the current brush area
 	// So basically, we force the users to only either move the current brush selection 
 	// or use the custom handles to resieze the brush selection.
-	ageSelectionGrp.selectAll('.overlay').style('pointer-events', 'none');
+	ageSelectionBrush.selectAll('.overlay').style('pointer-events', 'none');
 
     // Lower age text, default to minAge
-    stagesChartGrp.append("text")
+    ageSelectionGrp.append("text")
         .attr("class", "age_range")
         .attr("id", "lower_age")
         .attr("x", x(minAge))
@@ -577,7 +581,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
         .text(minAge);
 
     // Upper age text, default to maxAge
-    stagesChartGrp.append("text")
+    ageSelectionGrp.append("text")
         .attr("class", "age_range")
         .attr("id", "upper_age")
         .attr("x", x(maxAge))
@@ -637,7 +641,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
     // Render all stage bars and boxplots
 	function renderDistribution(data) {
 	    // Only show the patient age when the stage has only one patient
-	    let singlePatientGrp = stagesChartGrp.append("g").selectAll(".single_patient_group")
+	    let singlePatientGrp = distributionGrp.append("g").selectAll(".single_patient_group")
 			.data(data.filter(function(d) {
 				return d.patientsCount === 1;
 			}))
@@ -673,7 +677,7 @@ function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 			});
 
 		// Show the box plot for stage that has more than one patient
-		let boxplotGrp = stagesChartGrp.append("g").selectAll(".boxplot")
+		let boxplotGrp = distributionGrp.append("g").selectAll(".boxplot")
 			.data(data.filter(function(d) {
 				return d.patientsCount > 1;
 			}))
