@@ -1015,12 +1015,14 @@ function showDiagnosisChart(svgContainerId, data) {
 
     const svgWidth = 660;
     const svgHeight = 360;
-    const overviewHeight = 35;
+    const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
     const gapBetweenYAxisAndXAxis = 10;
-	const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
+    const overviewWidth = svgWidth - svgPadding.left - svgPadding.right - gapBetweenYAxisAndXAxis;
+    const overviewHeight = 35;
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
 	const chartTopMargin = 40;
+
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "diagnosis_chart") // Used for CSS styling
@@ -1054,7 +1056,7 @@ function showDiagnosisChart(svgContainerId, data) {
     	});
     });
 
-    let widthPerPatient = chartWidth/xDomain.length;
+    let widthPerPatient = (chartWidth - gapBetweenYAxisAndXAxis*2)/(xDomain.length - 1);
     let patientsNumDisplay = 5;
 
 	// set the ranges
@@ -1202,8 +1204,8 @@ function showDiagnosisChart(svgContainerId, data) {
 		    .attr("class", "slider")
 		    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
 			.attr("y", -overviewDotRadius) // take care of the radius
+			.attr("width", widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius) 
 			.attr("height", overviewHeight + 2*overviewDotRadius)
-			.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
 			.attr("pointer-events", "all")
 			.attr("cursor", "ew-resize")
 			.call(d3.drag().on("drag", display));
@@ -1214,7 +1216,9 @@ function showDiagnosisChart(svgContainerId, data) {
 	        let nx = xPosInt + d3.event.dx;
 	        let widthInt = parseInt(d3.select(this).attr("width"));
 
-		    if ( nx < 0 || nx + widthInt > chartWidth ) return;
+		    if ( nx < 0 || nx + widthInt > chartWidth ) {
+		    	return;
+		    }
 
 	        // Move the slider rect to new position
 		    d3.select(this).attr("x", nx);
@@ -1222,7 +1226,7 @@ function showDiagnosisChart(svgContainerId, data) {
 	        // Now we need to know the start and end index of the domain array
 	        let startIndex = Math.floor(xPosInt/widthPerPatient);
 	        let endIndex = startIndex + patientsNumDisplay;
-
+console.log(startIndex, endIndex);
 	        // Element of endIndex is not included
 	        let newXDomain = xDomain.slice(startIndex, endIndex);
 
