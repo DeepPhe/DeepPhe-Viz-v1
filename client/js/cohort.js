@@ -218,7 +218,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			.data(data)
 			.enter().append("rect")
 			.attr("class", function(d) {
-				// Distiguish the top stages and sub stages using different bg and border colors
+				// Distiguish the top stages, sub stages, and unknown stage using different bg and border colors
 				if (d.stage !== "Stage Unknown") {
                     return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
 				} else {
@@ -1061,7 +1061,7 @@ function showDiagnosisChart(svgContainerId, data) {
     });
 
     let widthPerPatient = (chartWidth - gapBetweenYAxisAndXAxis*2)/(xDomain.length - 1);
-    let patientsNumDisplay = 5;
+    let patientsNumDisplay = 4;
 
 	// set the ranges
 	let x = d3.scalePoint()
@@ -1199,39 +1199,49 @@ function showDiagnosisChart(svgContainerId, data) {
 			})
 			.attr("r", overviewDotRadius)
 			.attr("fill", dotColor);
-	    
-	    // d3.scalePoint() doesn't have invert
-	    
 
-	    // Add overview slider 
-		let overviewMover = overview.append("rect")
+	    // Add overview step slider 
+	    let sliderWidth = widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius;
+
+		overview.append("rect")
 		    .attr("class", "slider")
 		    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
 			.attr("y", -overviewDotRadius) // take care of the radius
-			.attr("width", widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius) 
+			.attr("width", sliderWidth) 
 			.attr("height", overviewHeight + 2*overviewDotRadius)
 			.attr("pointer-events", "all")
 			.attr("cursor", "ew-resize")
 			.call(d3.drag().on("drag", dragged));
 
 	    function dragged() {
-	        let xPosInt = parseInt(d3.select(this).attr("x")) + d3.event.dx;
-	        let widthInt = parseInt(d3.select(this).attr("width"));
+	        let dragX = d3.event.x;
 
             // Restrict start and end point of the move
-		    if ((xPosInt < (gapBetweenYAxisAndXAxis - overviewDotRadius)) || ((xPosInt + widthInt - overviewDotRadius) > overviewWidth)) {
+		    if ((dragX < (gapBetweenYAxisAndXAxis - overviewDotRadius)) || ((dragX + sliderWidth - overviewDotRadius) > overviewWidth)) {
 		    	return;
 		    }
 
-	        // Move the slider rect to new position
-		    d3.select(this).attr("x", xPosInt);
-
 	        // Now we need to know the start and end index of the domain array
-	        let startIndex = Math.floor(xPosInt/widthPerPatient);
-	        let endIndex = startIndex + patientsNumDisplay;
+	        let startIndex = Math.floor(dragX/widthPerPatient);
 
+            // Step Slider
+			let midPoint = (overviewX(xDomain[startIndex]) + overviewX(xDomain[startIndex + 1]))/2;
+
+			let targetIndex = null;
+			if (dragX < midPoint) {
+				targetIndex = startIndex;
+			} else {
+				targetIndex = startIndex + 1;
+			}
+
+            let endIndex = targetIndex + patientsNumDisplay;
+            
+			// Move the slider rect to new position
+			let newX = overviewX(xDomain[targetIndex]) - overviewDotRadius;
+			d3.select(this).attr("x", newX);
+	 
 	        // Element of endIndex is not included
-	        let newXDomain = xDomain.slice(startIndex, endIndex);
+	        let newXDomain = xDomain.slice(targetIndex, endIndex);
 
 	        // Update x domain
 	        x.domain(newXDomain);
