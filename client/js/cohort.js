@@ -1208,25 +1208,24 @@ function showDiagnosisChart(svgContainerId, data) {
 			.attr("height", overviewHeight + 2*overviewDotRadius)
 			.attr("pointer-events", "all")
 			.attr("cursor", "ew-resize")
-			.call(d3.drag().on("drag", display));
+			.call(d3.drag().on("drag", dragged));
 
-	    function display() {
-	        let xPosInt = parseInt(d3.select(this).attr("x"));
-
-	        let nx = xPosInt + d3.event.dx;
+	    function dragged() {
+	        let xPosInt = parseInt(d3.select(this).attr("x")) + d3.event.dx;
 	        let widthInt = parseInt(d3.select(this).attr("width"));
 
-		    if ( nx < 0 || nx + widthInt > chartWidth ) {
+            // Restrict start and end point of the move
+		    if ((xPosInt < (gapBetweenYAxisAndXAxis - overviewDotRadius)) || ((xPosInt + widthInt - overviewDotRadius) > overviewWidth)) {
 		    	return;
 		    }
 
 	        // Move the slider rect to new position
-		    d3.select(this).attr("x", nx);
+		    d3.select(this).attr("x", xPosInt);
 
 	        // Now we need to know the start and end index of the domain array
 	        let startIndex = Math.floor(xPosInt/widthPerPatient);
 	        let endIndex = startIndex + patientsNumDisplay;
-console.log(startIndex, endIndex);
+
 	        // Element of endIndex is not included
 	        let newXDomain = xDomain.slice(startIndex, endIndex);
 
