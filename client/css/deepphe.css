@@ -135,6 +135,11 @@ fill: rgb(181, 207, 107);
 stroke: rgb(181, 207, 107);
 }
 
+.unknown_stage_bar {
+fill: #ddd;
+stroke: #ccc;
+}
+
 .age_axis_label ,
 .count_axis_label {
 text-anchor: end;

@@ -219,7 +219,11 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			.enter().append("rect")
 			.attr("class", function(d) {
 				// Distiguish the top stages and sub stages using different bg and border colors
-				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
+				if (d.stage !== "Stage Unknown") {
+                    return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
+				} else {
+                    return "stage_bar unknown_stage_bar " + d.stage.replace(" ", "_") ;
+				}
 			})
 			.attr("transform", function(d) { 
 				return "translate(0, " + y(d.stage) + ")"; 
