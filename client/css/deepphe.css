@@ -836,7 +836,7 @@ color:#e6550d;
 }
 
 .list_view_tumor_type {
-width:127px;
+width:135px;
 float:left;
 font-weight:bold;
 margin-right:5px;
@@ -844,7 +844,7 @@ cursor:pointer;
 }
 
 .list_view_tumor_list {
-width:686px;
+width:678px;
 float:left;
 list-style-type: none;
 padding:0;
