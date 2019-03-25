@@ -1018,11 +1018,11 @@ function showDiagnosisChart(svgContainerId, data) {
     removeChart(svgContainerId)
 
     const svgWidth = 660;
-    const svgHeight = 360;
+    const svgHeight = data.diagnosis.length * 15;
     const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
     const gapBetweenYAxisAndXAxis = 10;
     const overviewWidth = svgWidth - svgPadding.left - svgPadding.right - gapBetweenYAxisAndXAxis;
-    const overviewHeight = 35;
+    const overviewHeight = data.diagnosis.length * 2;
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
 	const chartTopMargin = 40;
@@ -1215,7 +1215,7 @@ function showDiagnosisChart(svgContainerId, data) {
 
 	    function dragged() {
 	        let dragX = d3.event.x;
-
+console.log(d3.select(this).attr("x"), d3.event.x);
             // Restrict start and end point of the move
 		    if ((dragX < (gapBetweenYAxisAndXAxis - overviewDotRadius)) || ((dragX + sliderWidth - overviewDotRadius) > overviewWidth)) {
 		    	return;
@@ -1233,7 +1233,7 @@ function showDiagnosisChart(svgContainerId, data) {
 			} else {
 				targetIndex = startIndex + 1;
 			}
-
+//console.log(startIndex, targetIndex);
             let endIndex = targetIndex + patientsNumDisplay;
             
 			// Move the slider rect to new position
