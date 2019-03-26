@@ -1290,7 +1290,7 @@ function showDiagnosisChart(svgContainerId, data) {
 	}
 }
 
-// We don NOT remove the biomarkers chart on each redraw, due to the animation
+// We do NOT remove the biomarkers chart on each redraw, due to the animation
 function showBiomarkersChart(svgContainerId, data) {
     const svgWidth = 460;
     const svgHeight = 180;
@@ -1364,7 +1364,6 @@ function showBiomarkersChart(svgContainerId, data) {
 		biomarkerStatusGrp.selectAll(".biomarker_status_bar")
 		    // here d is each object in the stackData array
 			.data(function(d) {
-				
 				return d;
 			})
 			.enter().append("rect")
@@ -1379,7 +1378,8 @@ function showBiomarkersChart(svgContainerId, data) {
 			.transition()
 	        .duration(transitionDuration)
 			.attr("width", function(d) { 
-				return x(d[1]) - x(d[0]);
+				// Return the absolute value to avoid errors due to negative value
+    	    	return Math.abs(x(d[1]) - x(d[0]));
 			});
 
         // Append the percentage text
@@ -1478,7 +1478,9 @@ function showBiomarkersChart(svgContainerId, data) {
 			.transition()
             .duration(transitionDuration)
     	    .attr("width", function(d, i) {
-    	    	return x(d[1]) - x(d[0]);
+    	    	// Return the absolute value to avoid errors due to negative value
+    	    	// during transitioning from one stage to another stage
+    	    	return Math.abs(x(d[1]) - x(d[0]));
     	    });
 
         // Update the percentage text and x position
