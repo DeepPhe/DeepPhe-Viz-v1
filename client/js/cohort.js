@@ -1015,18 +1015,21 @@ function sortByProvidedOrder(array, orderArr) {
 
 
 function showDiagnosisChart(svgContainerId, data) {
-    removeChart(svgContainerId)
-
-    const svgWidth = 660;
-    const svgHeight = data.diagnosis.length * 15;
+    removeChart(svgContainerId);
+    
     const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
     const gapBetweenYAxisAndXAxis = 10;
-    const overviewWidth = svgWidth - svgPadding.left - svgPadding.right - gapBetweenYAxisAndXAxis;
+    const chartTopMargin = 40;
+    const xAxisHeight = 20;
+    // 12 is the line height of each Y axis label
+    const yAxisHeight = data.diagnosis.length * 12;
+    // 2 is the line height of each dot in overview
     const overviewHeight = data.diagnosis.length * 2;
+    const svgWidth = 660;
+    const svgHeight = xAxisHeight + yAxisHeight + chartTopMargin + overviewHeight + gapBetweenYAxisAndXAxis * 2;
+    const overviewWidth = svgWidth - svgPadding.left - svgPadding.right - gapBetweenYAxisAndXAxis;
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
-	const chartTopMargin = 40;
-
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "diagnosis_chart") // Used for CSS styling
