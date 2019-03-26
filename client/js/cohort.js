@@ -977,7 +977,7 @@ function showPatientsList(containerId, data, stage, firstEncounterAgeRange) {
     let html = '<ul class="patient_list">';
 
     data.forEach(function(patient) {
-    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + patient.patientId + '</a> (' + patient.firstEncounterAge + ')</li>';
+    	html += '<li><a id="' + patient.patientId + '" class="target_patient" href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + patient.patientId + '</a> (' + patient.firstEncounterAge + ')</li>';
     });
 
     html += '</ul>';
@@ -1064,9 +1064,12 @@ function showDiagnosisChart(svgContainerId, data) {
     let widthPerPatient = (chartWidth - gapBetweenYAxisAndXAxis*2)/(xDomain.length - 1);
     let patientsNumDisplay = 4;
 
-	// set the ranges
+    // Show the first patientsNumDisplay patients by default
+    let defaultPatients = xDomain.slice(0, patientsNumDisplay);
+    
+	// Set the ranges
 	let x = d3.scalePoint()
-	    .domain(xDomain.slice(0, patientsNumDisplay))
+	    .domain(defaultPatients)
 	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 	    
 	let overviewX = d3.scalePoint()
@@ -1114,7 +1117,7 @@ function showDiagnosisChart(svgContainerId, data) {
 		.attr("fill", dotColor);
 		
 		
-	// add the x Axis
+	// Add the x Axis
 	diagnosisChartGrp.append("g")
 		.attr("transform", "translate(0," + (chartHeight - chartTopMargin - svgPadding.bottom) + ")")
 		.attr("class", "diagnosis_x_axis");
@@ -1204,6 +1207,9 @@ function showDiagnosisChart(svgContainerId, data) {
 	    // Add overview step slider 
 	    let sliderWidth = widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius;
 
+        // Highlight the target patients in target patients list by default
+        highlightTargetPatients(defaultPatients);
+
         let drag = d3.drag()
             .on("drag", dragged);
 
@@ -1286,8 +1292,18 @@ function showDiagnosisChart(svgContainerId, data) {
 				})
 				.attr("r", 4)
 				.attr("fill", dotColor);
+
+			// Also highlight the target patients in the patient list
+            $(".target_patient").removeClass("highlighted_target_patient_in_diagnosis");
+			highlightTargetPatients(newXDomain);
 		};
 	}
+}
+
+function highlightTargetPatients(patientsArr) {
+    patientsArr.forEach(function(patient) {
+        $("#" + patient).addClass("highlighted_target_patient_in_diagnosis");
+	});
 }
 
 // We do NOT remove the biomarkers chart on each redraw, due to the animation

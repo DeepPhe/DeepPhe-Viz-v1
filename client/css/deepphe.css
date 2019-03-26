@@ -244,7 +244,7 @@ fill: #222;
 text-anchor: end;	
 }
 
-/* Old patients list */
+/* Target patients list */
 .patients_list{
 list-style-type: none;
 margin:0;
@@ -275,6 +275,12 @@ margin-right:10px;
 margin-right:0;
 }
 
+.highlighted_target_patient_in_diagnosis {
+color: #e6550d;
+}
+
+
+/* Individual patient view */
 .cancer_and_tumor_summary {
 padding:5px;
 margin: 10px 0;
