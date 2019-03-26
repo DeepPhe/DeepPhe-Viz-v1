@@ -1016,19 +1016,21 @@ function sortByProvidedOrder(array, orderArr) {
 
 function showDiagnosisChart(svgContainerId, data) {
     removeChart(svgContainerId);
-    
+
+    const diagnosisDotRadius = 4;
+    const highlightedDotRadius = 5;
+    const overviewDotRadius = 1.5;
     const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
     const gapBetweenYAxisAndXAxis = 10;
     const chartTopMargin = 40;
     const xAxisHeight = 20;
     // 12 is the line height of each Y axis label
     const yAxisHeight = data.diagnosis.length * 12;
-    // 2 is the line height of each dot in overview
-    const overviewHeight = data.diagnosis.length * 2;
+    const overviewHeight = data.diagnosis.length * overviewDotRadius * 2;
     const svgWidth = 660;
     const svgHeight = xAxisHeight + yAxisHeight + chartTopMargin + overviewHeight + gapBetweenYAxisAndXAxis * 2;
-    const overviewWidth = svgWidth - svgPadding.left - svgPadding.right - gapBetweenYAxisAndXAxis;
-	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+    const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+    const overviewWidth = chartWidth - gapBetweenYAxisAndXAxis;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
@@ -1042,10 +1044,6 @@ function showDiagnosisChart(svgContainerId, data) {
     
     const dotColor = "rgb(107, 174, 214)";
     const highlightedDotColor = "rgb(230, 85, 13)";
-
-    const diagnosisDotRadius = 4;
-    const highlightedDotRadius = 5;
-    const overviewDotRadius = 1.5;
 
     let xDomain = [];
     
@@ -1069,11 +1067,11 @@ function showDiagnosisChart(svgContainerId, data) {
 	// set the ranges
 	let x = d3.scalePoint()
 	    .domain(xDomain.slice(0, patientsNumDisplay))
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
+	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 	    
 	let overviewX = d3.scalePoint()
 	    .domain(xDomain)
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
+	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 
 	let y = d3.scalePoint()
 	    .domain(data.diagnosis)
@@ -1206,6 +1204,9 @@ function showDiagnosisChart(svgContainerId, data) {
 	    // Add overview step slider 
 	    let sliderWidth = widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius;
 
+        let drag = d3.drag()
+            .on("drag", dragged);
+
 		overview.append("rect")
 		    .attr("class", "slider")
 		    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
@@ -1214,15 +1215,24 @@ function showDiagnosisChart(svgContainerId, data) {
 			.attr("height", overviewHeight + 2*overviewDotRadius)
 			.attr("pointer-events", "all")
 			.attr("cursor", "ew-resize")
-			.call(d3.drag().on("drag", dragged));
+			.call(drag);
 
-	    function dragged() {
+	    function dragged(d) {
 	        let dragX = d3.event.x;
-console.log(d3.select(this).attr("x"), d3.event.x);
-            // Restrict start and end point of the move
-		    if ((dragX < (gapBetweenYAxisAndXAxis - overviewDotRadius)) || ((dragX + sliderWidth - overviewDotRadius) > overviewWidth)) {
-		    	return;
-		    }
+
+            // Restrict start and end point of the slider
+            const beginX = 0;
+            // endX is always the x position of the first patient dot in the slider
+            // when the slider is moved to the very end
+            const endX = overviewX(xDomain[xDomain.length - patientsNumDisplay]) - overviewDotRadius * 2;
+
+            if (dragX < beginX) {
+            	dragX = beginX;
+            }
+
+            if (dragX > endX) {
+            	dragX = endX;
+            }
 
 	        // Now we need to know the start and end index of the domain array
 	        let startIndex = Math.floor(dragX/widthPerPatient);
@@ -1236,11 +1246,12 @@ console.log(d3.select(this).attr("x"), d3.event.x);
 			} else {
 				targetIndex = startIndex + 1;
 			}
-//console.log(startIndex, targetIndex);
+
             let endIndex = targetIndex + patientsNumDisplay;
             
 			// Move the slider rect to new position
 			let newX = overviewX(xDomain[targetIndex]) - overviewDotRadius;
+
 			d3.select(this).attr("x", newX);
 	 
 	        // Element of endIndex is not included
