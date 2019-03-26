@@ -1319,8 +1319,11 @@ function showBiomarkersChart(svgContainerId, data) {
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
     // https://github.com/d3/d3-format
-    // keep one decimal in percentage, like 45%
-    let formatPercent = d3.format(".0%");
+    // keep one decimal in percentage, like 45.5%
+    let formatPercentBarText = d3.format(".1%");
+
+    // No decimal, like 45%
+    let formatPercentAxisTick = d3.format(".0%");
 
     // Create the stack data structure
     // https://github.com/d3/d3-shape/blob/master/README.md#stack
@@ -1407,7 +1410,7 @@ function showBiomarkersChart(svgContainerId, data) {
 			.text(function(d) {
 				// Only show percentage text for values bigger than 10%
 				if (d.data[d.status] > 0.1) {
-					return formatPercent(d.data[d.status]);
+					return formatPercentBarText(d.data[d.status]);
 				}
             });
 
@@ -1429,7 +1432,7 @@ function showBiomarkersChart(svgContainerId, data) {
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_x_axis")
 			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
-			.call(d3.axisBottom(x).tickFormat(formatPercent));
+			.call(d3.axisBottom(x).tickFormat(formatPercentAxisTick));
 
 	    // Status legend
 		let legend = biomarkersChartGrp.append("g")
@@ -1500,7 +1503,7 @@ function showBiomarkersChart(svgContainerId, data) {
 			.text(function(d) {
 				// Only show percentage text for values bigger than 10%
 				if (d.data[d.status] > 0.1) {
-                    return formatPercent(d.data[d.status]);
+                    return formatPercentBarText(d.data[d.status]);
 				}
             });
     }
