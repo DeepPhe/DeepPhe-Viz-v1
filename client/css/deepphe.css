@@ -203,6 +203,14 @@ width:120px;
 margin:2px 5px 2px 0;
 }
 
+.highlighted_target_patient_in_diagnosis {
+color: rgb(230, 85, 13);
+}
+
+.patient_list li a:hover {
+text-decoration: underline;
+}
+
 /* Biomarkers chart */
 .stages_chart_title,
 .diagnosis_chart_title,
@@ -243,42 +251,6 @@ fill: #222;
 .biomarkers_chart_legend {
 text-anchor: end;	
 }
-
-/* Target patients list */
-.patients_list{
-list-style-type: none;
-margin:0;
-padding:0;
-}
-
-.patients_list > li {
-padding:6px 10px 3px;
-border-bottom:1px solid #ddd;
-}
-
-.patients_list li .cancer_stage_list {
-list-style-type: none;
-padding:0;
-margin:0;
-display:inline-block;
-}
-
-.patients_list li .cancer_stage_list li {
-display:inline-block;
-padding:0;
-margin:0;
-width:133px;
-margin-right:10px;
-}
-
-.patients_list li .cancer_stage_list li {
-margin-right:0;
-}
-
-.highlighted_target_patient_in_diagnosis {
-color: #e6550d;
-}
-
 
 /* Individual patient view */
 .cancer_and_tumor_summary {
