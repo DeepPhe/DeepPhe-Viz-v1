@@ -1024,9 +1024,9 @@ function showDiagnosisChart(svgContainerId, data) {
     const gapBetweenYAxisAndXAxis = 10;
     const chartTopMargin = 40;
     const xAxisHeight = 20;
-    // 12 is the line height of each Y axis label
-    const yAxisHeight = data.diagnosis.length * 12;
-    const overviewHeight = data.diagnosis.length * overviewDotRadius * 2;
+    // 15 is the line height of each Y axis label
+    const yAxisHeight = data.diagnosisGroups.length * 15;
+    const overviewHeight = data.diagnosisGroups.length * overviewDotRadius * 2;
     const svgWidth = 660;
     const svgHeight = xAxisHeight + yAxisHeight + chartTopMargin + overviewHeight + gapBetweenYAxisAndXAxis * 2;
     const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
@@ -1052,10 +1052,10 @@ function showDiagnosisChart(svgContainerId, data) {
     data.data.forEach(function(d) {
     	xDomain.push(d.patient);
 
-    	d.diagnosis.forEach(function(diagnosis) {
+    	d.diagnosisGroups.forEach(function(diagGrp) {
     		let dot = {};
     		dot.patientId = d.patient;
-    		dot.diagnosis = diagnosis;
+    		dot.diagnosisGroups = diagGrp;
 
     		diagnosisDots.push(dot);
     	});
@@ -1077,11 +1077,11 @@ function showDiagnosisChart(svgContainerId, data) {
 	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 
 	let y = d3.scalePoint()
-	    .domain(data.diagnosis)
+	    .domain(data.diagnosisGroups)
 		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - gapBetweenYAxisAndXAxis]);
 
 	let overviewY = d3.scalePoint()
-	    .domain(data.diagnosis)
+	    .domain(data.diagnosisGroups)
 		.range([0, overviewHeight]);
 	
 	// Replace all spaces, commas, and () with underscores
@@ -1111,7 +1111,7 @@ function showDiagnosisChart(svgContainerId, data) {
             return x(d.patientId);
 		})
 		.attr("cy", function(d) { 
-            return y(d.diagnosis);
+            return y(d.diagnosisGroups);
 		})
 		.attr("r", diagnosisDotRadius)
 		.attr("fill", dotColor);
@@ -1199,7 +1199,7 @@ function showDiagnosisChart(svgContainerId, data) {
 	            return overviewX(d.patientId);
 			})
 			.attr("cy", function(d) { 
-	            return overviewY(d.diagnosis);
+	            return overviewY(d.diagnosisGroups);
 			})
 			.attr("r", overviewDotRadius)
 			.attr("fill", dotColor);
@@ -1288,7 +1288,7 @@ function showDiagnosisChart(svgContainerId, data) {
 		            return x(d.patientId);
 				})
 				.attr("cy", function(d) { 
-		            return y(d.diagnosis);
+		            return y(d.diagnosisGroups);
 				})
 				.attr("r", 4)
 				.attr("fill", dotColor);
