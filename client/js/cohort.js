@@ -1026,7 +1026,7 @@ function showDiagnosisChart(svgContainerId, data) {
     const xAxisHeight = 20;
     // 15 is the line height of each Y axis label
     const yAxisHeight = data.diagnosisGroups.length * 15;
-    const overviewHeight = data.diagnosisGroups.length * overviewDotRadius * 2;
+    const overviewHeight = data.diagnosisGroups.length * overviewDotRadius * 3;
     const svgWidth = 660;
     const svgHeight = xAxisHeight + yAxisHeight + chartTopMargin + overviewHeight + gapBetweenYAxisAndXAxis * 2;
     const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
