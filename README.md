@@ -136,6 +136,9 @@ Note that the text in this example is obscured to protect the privacy of the pat
 
 All of the summary items from the full cancer and tumor summaries can also be clicked to show their source report in the timeline.
 
+## API Documentation
+
+We've created a set of API endpoints using Swagger UI for advanced users to explore the potential use cases for their additional needs. The API documentation can be accessed at http://localhost:8383/documentation once you have the DeepPhe-Viz server running. This documentation allows the users to visualize and interact with the API's resources without having any of the implementation logic in place.
 
 ## For Developers
 
