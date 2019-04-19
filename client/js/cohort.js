@@ -1437,8 +1437,12 @@ function showBiomarkersChart(svgContainerId, data) {
 			// Now modify the label text to add patients count
 			.selectAll("text")
 			.text(function(d) {
-				if (d === "HER2_Neu") {
-                    return "HER2/Neu"
+				if (d === "has_ER_Status") {
+                    return "Estrogen Receptor";
+				} else if (d === "has_PR_Status") {
+                    return "Progesterone Receptor";
+				} else if (d === "has_HER2_Status") {
+					return "HER2/Neu";
 				} else {
 					return d.replace("_", " ");
 				}

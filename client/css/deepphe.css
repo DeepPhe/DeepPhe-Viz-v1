@@ -191,7 +191,7 @@ padding:10px;
 }
 
 .patient_list {
-width:375px;
+width:335px;
 list-style: none;
 margin:0;
 padding:0;
@@ -199,7 +199,7 @@ padding:0;
 
 .patient_list li {
 float:left;
-width:120px;
+width:160px;
 margin:2px 5px 2px 0;
 }
 
