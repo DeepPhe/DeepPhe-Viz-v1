@@ -533,7 +533,7 @@ color:orange;
 
 /* Report content area */
 #report_info {
-width:165px;
+width:218px;
 float:left;
 padding:10px 5px 10px 10px;
 }
@@ -545,8 +545,8 @@ padding-left:10px;
 #report_text {
 position: relative; /* Must explicitly specify the position of this dive for dynamic scrolling */
 float:left;
-width:653px;
-height:500px;
+width:600px;
+height:600px;
 padding:10px 10px 10px 5px;
 overflow-y: scroll;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
@@ -814,7 +814,7 @@ color:#e6550d;
 }
 
 .list_view_tumor_type {
-width:135px;
+width:85px;
 float:left;
 font-weight:bold;
 margin-right:5px;
@@ -822,7 +822,7 @@ cursor:pointer;
 }
 
 .list_view_tumor_list {
-width:678px;
+width:728px;
 float:left;
 list-style-type: none;
 padding:0;
