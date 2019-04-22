@@ -252,6 +252,12 @@ fill: #222;
 text-anchor: end;	
 }
 
+.biomarker_patients_chart_bar {
+fill: steelblue;
+fill-opacity:0.5;
+shape-rendering: crispEdges;
+}
+
 /* Individual patient view */
 .cancer_and_tumor_summary {
 padding:5px;

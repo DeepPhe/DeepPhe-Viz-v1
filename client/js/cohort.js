@@ -1306,11 +1306,107 @@ function highlightTargetPatients(patientsArr) {
 	});
 }
 
+// We do NOT remove the biomarkers patients chart on each redraw, due to the animation
+function showBiomarkersPatientsChart(svgContainerId, data) {
+    const svgWidth = 460;
+    const svgHeight = 120;
+	const svgPadding = {top: 10, right: 10, bottom: 15, left: 150};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartTopMargin = 35;
+
+    const legendGroupWidth = 65;
+    const legendRectSize = 10;
+    const legnedTextRectPad = 3;
+
+	let yLables = [];
+	data.forEach(function(obj) {
+	    yLables.push(obj.label);
+	});
+
+    // Band scale of biomarkers
+    let y = d3.scaleBand()
+        .domain(yLables)
+	    .range([0, chartHeight - chartTopMargin])
+	    .padding(0.2);
+
+    // Percentage X
+	let x = d3.scaleLinear()
+	    .domain([0, 1])
+	    .range([0, chartWidth - legendGroupWidth]);
+
+    // https://github.com/d3/d3-format
+    // keep one decimal in percentage, like 45.5%
+    let formatPercentBarText = d3.format(".1%");
+
+    // No decimal, like 45%
+    let formatPercentAxisTick = d3.format(".0%");
+
+    // Only draw everything for the first time
+    if (d3.select(".biomarkers_patients_chart_group").empty()) {
+	    let svg = d3.select("#" + svgContainerId).append("svg")
+		    .attr("class", "biomarkers_patients_chart") // Used for CSS styling
+			.attr("width", svgWidth)
+			.attr("height", svgHeight);
+		
+		let biomarkersPatientsChartGrp = svg.append("g")
+			    .attr("class", "biomarkers_patients_chart_group")
+			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
+
+        // Bars
+        biomarkersPatientsChartGrp.selectAll(".biomarkers_patients_chart_bar_group")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "biomarker_patients_chart_bar_group")
+            .append("rect")
+            .attr("class", "biomarker_patients_chart_bar")
+			.attr("x", 0)
+			.attr("y", function(d) { 
+				return y(d.label); 
+			})
+			.attr("height", y.bandwidth())
+			.transition()
+	        .duration(transitionDuration)
+			.attr("width", function(d) {
+				return x(d.count);
+			});
+
+	    // Y axis
+		biomarkersPatientsChartGrp.append("g")
+			.attr("class", "biomarkers_patients_chart_y_axis")
+			.call(d3.axisLeft(y));
+
+	    // X axis
+		biomarkersPatientsChartGrp.append("g")
+			.attr("class", "biomarkers_patients_chart_x_axis")
+			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
+			.call(d3.axisBottom(x).tickFormat(formatPercentAxisTick));
+ 
+    } else {
+        // Update the data
+        let biomarkersPatientsGrp = d3.selectAll(".biomarkers_patients_chart_bar_group")
+			.data(data);
+
+	    // Update the bar width for each category
+		biomarkersPatientsGrp.selectAll(".biomarker_patients_chart_bar")
+		    // here d is each object in the data array
+			.data(function(d) {
+				return d;
+			})
+			.transition()
+            .duration(transitionDuration)
+    	    .attr("width", function(d) {
+    	    	return x(d.count);
+    	    });
+    }
+}
+
+
 // We do NOT remove the biomarkers chart on each redraw, due to the animation
 function showBiomarkersChart(svgContainerId, data) {
     const svgWidth = 460;
     const svgHeight = 180;
-	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
+	const svgPadding = {top: 10, right: 10, bottom: 15, left: 80};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 35;
@@ -1438,9 +1534,9 @@ function showBiomarkersChart(svgContainerId, data) {
 			.selectAll("text")
 			.text(function(d) {
 				if (d === "has_ER_Status") {
-                    return "Estrogen Receptor";
+                    return "ER";
 				} else if (d === "has_PR_Status") {
-                    return "Progesterone Receptor";
+                    return "PR";
 				} else if (d === "has_HER2_Status") {
 					return "HER2/Neu";
 				} else {
@@ -1529,6 +1625,7 @@ function showBiomarkersChart(svgContainerId, data) {
     }
 }
 
+
 function getBiomarkers(patientIds) {
     $.ajax({
 	    url: baseUri + '/biomarkers/' + patientIds.join('+'),
@@ -1538,7 +1635,8 @@ function getBiomarkers(patientIds) {
 	})
 	.done(function(response) {
 	    //console.log(response);
-	    showBiomarkersChart("biomarkers", response);
+	    showBiomarkersPatientsChart("biomarkers_patients", response.biomarkersPatientsChartData);
+	    showBiomarkersChart("biomarkers", response.biomarkersChartData);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get patients biomarkers info");
