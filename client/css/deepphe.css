@@ -191,7 +191,7 @@ padding:10px;
 }
 
 .patient_list {
-width:335px;
+width:330px;
 list-style: none;
 margin:0;
 padding:0;
@@ -212,6 +212,10 @@ text-decoration: underline;
 }
 
 /* Biomarkers chart */
+#biomarkers_overview {
+margin-bottom:20px;
+}
+
 .stages_chart_title,
 .diagnosis_chart_title,
 .biomarkers_chart_title,
@@ -232,12 +236,14 @@ stroke-width:1;
 shape-rendering: crispEdges;
 }
 
+.biomarkers_overview_chart_bar_percentage,
 .biomarker_status_percentage,
 .biomarker_status_legend_text {
 font-size:10px;
 }
 
 /* Vertical middle alignment */
+.biomarkers_overview_chart_bar_percentage,
 .biomarker_status_percentage{
 dominant-baseline: middle;
 }
@@ -252,7 +258,7 @@ fill: #222;
 text-anchor: end;	
 }
 
-.biomarker_patients_chart_bar {
+.biomarkers_overview_chart_bar {
 fill: steelblue;
 fill-opacity:0.5;
 shape-rendering: crispEdges;
