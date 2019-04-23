@@ -887,7 +887,9 @@ background:rgb(253, 208, 162);
 background:rgb(198, 219, 239);
 }
 
-.hasReceptorStatus {
+.has_ER_Status,
+.has_PR_Status,
+.has_HER2_Status {
 background:rgb(229, 216, 189);
 }
 
@@ -898,7 +900,7 @@ background:rgb(229, 216, 189);
 background:rgb(204, 235, 197);
 }
 
-.hasNuclearGrade {
+.hasClockface {
 background:rgb(218, 218, 235);
 }
 
