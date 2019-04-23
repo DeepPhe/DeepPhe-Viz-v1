@@ -77,7 +77,7 @@ The Viz tool consists of two major components&mdash;cohort analysis and individu
 
 ### Cohort Analysis
 
-When we first load the DeepPhe-Viz in the web browser, you'll see a cohort analysis page. The system queries Neo4j to get all the patients of all cancer stages, and the results are represented in a series of charts.
+When we first load the DeepPhe-Viz in the web browser, you'll see a cohort analysis page. The system queries Neo4j to get all the patients of all cancer stages, and the results are represented in a series of charts. The two charts (A) and (B) on the top section can be used as filters to narrow down the target patients (C) and the resulting charts (D), (E), and (F).
 
 ![Cohort Analysis](cohort_analysis.png "Cohort Analysis")
 
@@ -87,19 +87,24 @@ This chart shows the number of patients of each cancer stage. When users click o
 
 **B. Patient Age of First Encounter Per Stage**
 
-Box-whisker plots summarizing the distribution of patient age of diagnosis across all cancer stages.
+Box-whisker plots summarizing the distribution of patient age of diagnosis across all cancer stages. The age range sliders on both sides can be used to specify the target range of first encounter age.
 
-**C. Diagnosis**
+**C. Target Patients**
 
-The diagnosis chart is a summary of all the diagnosis across all the patient or patients from the selected stage. Moving the bottom slider scrolls through the patients in the X axis.
+The target patients list is grouped by their age of first encounter and serves as the entry point to the individual patient profile. The highlighted patients are the ones being displayed in the Diagnosis chart (D).
 
-**D. Biomarkers**
+**D. Diagnosis**
 
-The biomarkers chart is a stacked bar chart that shows the percentage of patients who are positive, negative, and unknown for major biomarkers. Note - as of October 2018, this display is only meaningful for breast cancer data.
+The diagnosis chart is a summary of all the grouped diagnosis across all the target patients based on the filters. Moving the bottom slider scrolls through the patients in the X axis.
 
-**E. Patients Table**
+**E. Biomarkers Overview**
 
-The patient table groups the target patients by their age of first encounter and serves as the entry point to the individual patient profile.
+The biomarkers overview chart is a simple distrubtion that shows the percentage of patients with biomarkers and patients without biomarkers among the target patients. Because biomarkers don't apply to patients with certain diagnosis.
+
+**F. Patients With Biomarkers**
+
+The biomarkers overview chart is a stacked bar chart that shows the percentage of patients who are positive, negative, and unknown for major biomarkers. 
+
 
 ### Individual Patient Profile
 
@@ -107,9 +112,9 @@ Clicking a target patient from the Cohort Analysis patient table, leads to displ
 
 ![Individual Patient Profile](individual_patient_profile.png "Individual Patient Profile")
 
-The patient view starts with personal information on the upper left (A), followed by the cancer summary (B)  and tumor summaries (C). The default tumor summary list view stacks all the tumors and the table view shows comparable items side by side. Similar concepts are grouped and share background colors. Concepts are ordered by importance, and each can be clicked to display their original sources in clinical notes on the right. 
+The patient view starts with personal information on the upper left (A), followed by the cancer and tumor summary (B). The default tumor summary list view stacks all the tumors and the table view shows comparable items side by side. Similar concepts are grouped and share background colors. Concepts are ordered by importance, and each can be clicked to display their original sources in clinical notes on the right. 
 
-This timeline view (D) provides a temporal view of all of the reports for this patient. Currently we have the following report types:
+This timeline view (C) provides a temporal view of all of the reports for this patient. Currently we have the following report types:
 
 - Progress Note
 - Radiology Report
@@ -130,7 +135,7 @@ The double-thumb slider below the timeline  can also be used to zoom and scroll 
 
 All information shown in the cohort graphs, cancer and tumor summaries, and patient timeline are extracted from clinical notes or inferred via domain rules.
 
-When you click one of the report dots, the report text is shown underneath the timeline (E) with all of the concepts extracted from the report. Clicking on these terms scauses the document text to scroll to the relevant span.
+When you click one of the report dots, the report text is shown underneath the timeline (D) with all of the concepts extracted from the report. Clicking on these terms scauses the document text to scroll to the relevant span.
 
 Note that the text in this example is obscured to protect the privacy of the patient. 
 
