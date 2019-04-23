@@ -1,4 +1,4 @@
-# DeepPhe-Viz v0.2.0
+# DeepPhe-Viz v0.3.0
 
 The DeepPhe NLP extracts information from the patient cancer reports and stores the data in Neo4j graph database. The DeepPhe-Viz tool represents the extracted information in an organized workflow to end users, enabling exploration and discovery of patient data.
 
@@ -144,6 +144,8 @@ All of the summary items from the full cancer and tumor summaries can also be cl
 ## API Documentation
 
 We've created a set of API endpoints using Swagger UI for advanced users to explore the potential use cases for their additional needs. The API documentation can be accessed at http://localhost:8383/documentation once you have the DeepPhe-Viz server running. This documentation allows the users to visualize and interact with the API's resources without having any of the implementation logic in place.
+
+![Swagger API Documentation](swagger_api.png "Swagger API Documentation")
 
 ## For Developers
 
