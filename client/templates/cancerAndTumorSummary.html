@@ -92,6 +92,12 @@
                         <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
                     {{/each}}
                     </ul>
+                {{else ifEquals category "Laterality"}} 
+                    <ul class="list_view_tumor_fact_list">
+                    {{#each facts}}
+                        <li><span class="fact" id="list_view_{{id}}">{{prettyName}}</span></li>
+                    {{/each}}
+                    </ul>
                 {{else ifEquals category "Diagnosis"}} 
                     <ul class="list_view_tumor_fact_list">
                     {{#each facts}}
