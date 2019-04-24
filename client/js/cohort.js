@@ -1310,7 +1310,7 @@ function highlightTargetPatients(patientsArr) {
 function showBiomarkersOverviewChart(svgContainerId, data) {
     const svgWidth = 480;
     const svgHeight = 120;
-	const svgPadding = {top: 10, right: 15, bottom: 15, left: 150};
+	const svgPadding = {top: 10, right: 15, bottom: 15, left: 180};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 35;
@@ -1485,7 +1485,7 @@ function showPatientsWithBiomarkersChart(svgContainerId, data) {
 	        .attr("transform", function(d) { 
 				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 			})
-	        .text("Patients With Biomarkers");
+	        .text("Patients With Biomarkers Found");
 
 	    let biomarkerStatusGrp = biomarkersChartGrp.selectAll(".biomarker_status_group")
 			.data(stackData)
