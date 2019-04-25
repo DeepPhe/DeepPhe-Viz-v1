@@ -1,4 +1,4 @@
-# DeepPhe-Viz v0.3.0
+# DeepPhe-Viz v0.2.0
 
 The DeepPhe NLP extracts information from the patient cancer reports and stores the data in Neo4j graph database. The DeepPhe-Viz tool represents the extracted information in an organized workflow to end users, enabling exploration and discovery of patient data.
 
@@ -18,11 +18,11 @@ The DeepPhe NLP extracts information from the patient cancer reports and stores 
 You must have the following tools installed:
 
 - [Nodejs 10.13.0 (includes npm 6.4.1) or the latest LTS version](https://nodejs.org/en/download/) - which the DeepPhe-Viz tool is built upon
-- [Neo4j 3.5.x Server](https://neo4j.com/download-center/#releases) - is used to store the graph output from DeepPhe NLP
+- [Neo4j 3.2.x Server](https://neo4j.com/download-center/#releases) - is used to store the graph output from DeepPhe NLP
 
 if you need to manage multiple versions of NodeJS, we have been successfully using the [nvm](https://github.com/creationix/nvm) tool to configure and manage our NodeJS environment; nvm enables a user to associate a paritcular NodeJS and NPM version with their Unix shell, allowing for each switching between NodeJS versions across different projects.
 
-For neo4j server installation, we have tested the "Neo4j Community Edition 3.5.1" with this DeepPhe release, and you can download it from the [Neo4j Releases page](https://neo4j.com/download-center/#releases) by choosing the correct download for your platform. Then follow their [installation instructions](https://neo4j.com/docs/operations-manual/current/installation/) to configure and start the server.
+For neo4j server installation, we have tested the "Neo4j Community Edition 3.2.13" with this DeepPhe release, and you can download it from the [Neo4j Releases page](https://neo4j.com/download-center/#releases) by choosing the correct download for your platform. Then follow their [installation instructions](https://neo4j.com/docs/operations-manual/current/installation/) to configure and start the server.
 
 ![Neo4j server download](neo4j_server_download.png "Neo4j server download")
 
@@ -49,7 +49,7 @@ After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/b
 dbms.active_database=deepphe.db
 ````
 
-You'll also have a file named `deepphe-viz-0.3.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The DeepPhe-Viz uses these libraries to interact with the customized DeepPhe system database.
+You'll also have a file named `deepphe-viz-0.2.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The DeepPhe-Viz uses these libraries to interact with the customized DeepPhe system database.
 
 To run Neo4j as a console application, use:
 `./<NEO4J_HOME>/bin/neo4j console`
