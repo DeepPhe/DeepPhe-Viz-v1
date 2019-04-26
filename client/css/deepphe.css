@@ -1,6 +1,5 @@
 html{
 color:#363636;
-background-color: #f5f8fa;
 font: 12px Helvetica, sans-serif;
 }
 
@@ -47,6 +46,14 @@ color:#fff;
 }
 
 /* Cohort Analysis */
+.filters {
+border: 1px solid #ddd;
+margin-bottom:10px;
+}
+
+.results {
+border: 1px solid #ddd;
+}
 
 /* HTML div, not the svg */
 #stage_patient_age,
@@ -56,7 +63,7 @@ color:#fff;
 #patients,
 #patients2 {
 background:#fff;
-border:1px solid #ccc;
+border:1px solid #fff;
 margin:10px;
 padding:0px;
 float:left;
@@ -66,6 +73,18 @@ float:left;
 svg .tick text {
 font-family: Helvetica;
 font-size:10px;
+}
+
+/* Age selection */
+.age_selection_brush .selection {
+stroke: #999;
+fill: dodgerblue;
+fill-opacity: 0.3;
+}
+
+.age_range {
+font-size:10px;
+text-anchor: middle;
 }
 
 /* Box plot */
@@ -116,6 +135,11 @@ fill: rgb(181, 207, 107);
 stroke: rgb(181, 207, 107);
 }
 
+.unknown_stage_bar {
+fill: #dcdcdc;
+stroke: #bbb;
+}
+
 .age_axis_label ,
 .count_axis_label {
 text-anchor: end;
@@ -155,52 +179,43 @@ fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
-/* Patients age range table */
+#results_title {
+padding:20px;
+font-weight: 700;
+text-align: center;
+}
+
+/* Target patients list */
 #patients {
-max-width: 1122px;
-height:auto;
 padding:10px;
 }
 
-.patients_table {
-width:100%;
-border:1px solid #ccc;
-margin-top:0;
-}
-
-/* Table caption is inside <table> tag */
-.patients_table caption {
-margin-bottom:10px;
-}
-
-.patients_table th {
-padding:4px; 
-background:#ebeff9;
-border:1px solid #ccc;
-/* The text in th are bold and centered by default. */
-}
-
-.patients_table td {
-padding:5px; 
-border:1px solid #ccc;
-}
-
-.patient_age_range_list {
-list-style-type: none;
-padding:0;
+.patient_list {
+width:330px;
+list-style: none;
 margin:0;
+padding:0;
 }
 
-.patient_age_range_list li {
-float: left;
-margin:2px 4px;
+.patient_list li {
+float:left;
+width:160px;
+margin:2px 5px 2px 0;
 }
 
-.patient_age_range_list li:last-child {
-margin-right:0;
+.highlighted_target_patient_in_diagnosis {
+color: rgb(230, 85, 13);
+}
+
+.patient_list li a:hover {
+text-decoration: underline;
 }
 
 /* Biomarkers chart */
+#biomarkers_overview {
+margin-bottom:20px;
+}
+
 .stages_chart_title,
 .diagnosis_chart_title,
 .biomarkers_chart_title,
@@ -221,12 +236,14 @@ stroke-width:1;
 shape-rendering: crispEdges;
 }
 
+.biomarkers_overview_chart_bar_percentage,
 .biomarker_status_percentage,
 .biomarker_status_legend_text {
 font-size:10px;
 }
 
 /* Vertical middle alignment */
+.biomarkers_overview_chart_bar_percentage,
 .biomarker_status_percentage{
 dominant-baseline: middle;
 }
@@ -241,35 +258,44 @@ fill: #222;
 text-anchor: end;	
 }
 
-/* Old patients list */
-.patients_list{
+.biomarkers_overview_chart_bar {
+fill: steelblue;
+fill-opacity:0.5;
+shape-rendering: crispEdges;
+}
+
+/* Individual patient view */
+.cancer_and_tumor_summary {
+padding:5px;
+margin: 10px 0;
+border: 1px solid #ddd;
+}
+
+.cancer_facts {
 list-style-type: none;
-margin:0;
-padding:0;
-}
-
-.patients_list > li {
-padding:6px 10px 3px;
-border-bottom:1px solid #ddd;
-}
-
-.patients_list li .cancer_stage_list {
-list-style-type: none;
 padding:0;
 margin:0;
+}
+
+.cancer_facts_item {
 display:inline-block;
+margin:2px 2px 2px 0;
+padding:3px 0 1px;
 }
 
-.patients_list li .cancer_stage_list li {
-display:inline-block;
-padding:0;
-margin:0;
-width:133px;
-margin-right:10px;
+.cancer_fact_category_name {
+float:left;
+margin-right:3px;
 }
 
-.patients_list li .cancer_stage_list li {
+/* No right margin on the last `cancer_facts_item` */
+.cancer_facts > li:last-child {
 margin-right:0;
+}
+
+.cancer_fact_list {
+display:table-cell;
+float:left;
 }
 
 .cancer_fact_list,
@@ -282,14 +308,13 @@ margin:0;
 
 .cancer_tnm_fact_list {
 float:left;
-margin-right:10px;
+margin-right:8px;
 background:#fff;
-border:1px solid #dbdbdb;
-padding:2px 5px;
+padding:2px;
 }
 
 .tnm {
-margin-bottom:20px;
+margin-bottom:2px;
 }
 
 .tnm_by_type {
@@ -299,12 +324,10 @@ margin-right:20px;
 
 .tnm_type {
 float:left;
-margin-right:5px;
-font-weight: bold;
-padding-top:4px;
+margin-right:3px;
+padding-top:2px;
 }
 
-.cancer_fact_list li,
 .tumor_fact_list li {
 float:left;
 margin-right:10px;
@@ -312,6 +335,7 @@ padding:0;
 color:#555;
 }
 
+.cancer_fact_list li,
 .cancer_tnm_fact_list li {
 float:left;
 margin-right:10px;
@@ -357,20 +381,21 @@ margin:10px 0 20px;
 
 .table th.th {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 /* The text in th are bold and centered by default. */
+text-align:left;
 }
 
 .table th.th_vertical {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 /* The text in th are bold and centered by default. */
 text-align:left;
 }
 
 .table td {
 padding:3px; 
-border:1px solid #dbdbdb;
+border:1px solid #fff;
 }
 
 .table td.empty_cell {
@@ -419,8 +444,14 @@ margin-right:20px;
 }
 
 .cancer_id {
-font-size:10px;
-font-weight:normal;
+font-weight:bold;
+font-size:1.2em;
+margin-bottom:5px;
+}
+
+.cancer_and_tnm,
+.tumor_summary {
+margin-left:20px;
 }
 
 .right {
@@ -513,21 +544,21 @@ color:orange;
 
 
 /* Report content area */
-.report_area_left {
-width:165px;
+#report_info {
+width:218px;
 float:left;
 padding:10px 5px 10px 10px;
 }
 
 #report_id {
-margin-bottom:10px;
+padding-left:10px;
 }
 
 #report_text {
 position: relative; /* Must explicitly specify the position of this dive for dynamic scrolling */
 float:left;
-width:653px;
-height:500px;
+width:600px;
+height:600px;
 padding:10px 10px 10px 5px;
 overflow-y: scroll;
 font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
@@ -554,10 +585,13 @@ margin:0;
 float:left;
 margin:0 5px 5px 0;
 padding:3px 2px 0;
-border:1px solid #dbdbdb;
 cursor:pointer;
-background-color:#fff;
-color:#75438a;
+background:#a8d1ff;
+}
+
+/* Highlight the fact-based terms among all extracted terms */
+.fact_based_term {
+background: #ffb7b7;
 }
 
 .mentioned_terms_list:last-child {
@@ -565,8 +599,7 @@ margin-right:0;
 }
 
 .current_mentioned_term {
-background: #fff;
-color:#f6941e;
+background:#FFDC00;
 }
 
 .count {
@@ -574,10 +607,8 @@ font-size: .85em;
 }
 
 .highlighted_term {
+display:inline-block;
 background:#FFDC00;
-color:#222;
-/* 400 is the same as normal, and 700 is the same as bold */
-font-weight: 600;
 }
 
 
@@ -656,10 +687,11 @@ fill: dodgerblue;
 fill-opacity: 0.3;
 }
 
-.brush .handle--custom {
+.handle--custom {
 fill: #eee;
 stroke: #666;
 fill-opacity: 0.3;	
+shape-rendering: crispEdges;
 }
 
 .legend_group_divider {
@@ -716,15 +748,16 @@ color: orange;
 }
 
 
-/* Tumor Summary - Color View or Table View - Based on https://codepen.io/JiveDig/pen/jbdJXR*/
+/* Tumor Summary */
 .tumor_summary_title,
 .view_options { /* Align the title and siwtch vertically */
 display:inline-block;
 vertical-align: middle;
+font-weight:bold;
 }
 
 /* Hide the table view and expanded arrow as well as all toggleable facts by default */
-#table_view,
+.table_view,
 .fa-caret-down,
 .toggleable {
 display:none;
@@ -752,7 +785,7 @@ width: 80px;
 background-color: #fff;
 color: rgba(0, 0, 0, 0.6);
 text-align: center;
-font-size: .75em;
+font-size: .85em;
 font-weight:normal;
 padding: 3px 10px 2px;
 border: 1px solid #ccc;
@@ -767,23 +800,16 @@ background-color: rgb(141, 211, 199);
 }
 
 .view_options label:first-of-type {
-  border-radius: 8px 0 0 8px;
+border-radius: 8px 0 0 8px;
 }
 
 .view_options label:last-of-type {
-  border-radius: 0 8px 8px 0;
+border-radius: 0 8px 8px 0;
 }
 
-/* Tumor list */
-#list_view {
-margin:10px 0;
+.list_view {
 background-color:#fff;
-border:1px solid #dbdbdb;
 padding:10px 5px;
-}
-
-.list_view_tumor {
-margin-bottom:5px;
 }
 
 .arrow {
@@ -800,7 +826,7 @@ color:#e6550d;
 }
 
 .list_view_tumor_type {
-width:127px;
+width:85px;
 float:left;
 font-weight:bold;
 margin-right:5px;
@@ -808,7 +834,7 @@ cursor:pointer;
 }
 
 .list_view_tumor_list {
-width:716px;
+width:728px;
 float:left;
 list-style-type: none;
 padding:0;
@@ -825,20 +851,11 @@ height:15px;
 margin-right:3px;
 margin-bottom: 3px;
 padding:3px 2px 1px;
-color:#333;}
-
-.list_view_tumor_list_item:hover {
-background-color:#FFDC00;
-}
-
-.list_view_tumor_fact_list .fact {
-color:#333;
 }
 
 .highlighted_fact {
-font-style: italic;
-color:orange !important;
 text-decoration: underline;
+font-style: italic;
 }
 
 .list_view_tumor_fact_list {
@@ -853,8 +870,12 @@ display:inline;
 margin-right:3px;
 }
 
-#table_view {
+.table_view {
 overflow: auto;
+}
+
+.table_view .table {
+margin:0;
 }
 
 /* Colors from https://bl.ocks.org/pstuffa/3393ff2711a53975040077b7453781a9 */
@@ -862,11 +883,17 @@ overflow: auto;
 background:rgb(253, 208, 162);
 }
 
+.hasLaterality {
+background:rgb(253, 218, 236);
+}
+
 .hasDiagnosis {
 background:rgb(198, 219, 239);
 }
 
-.hasReceptorStatus {
+.has_ER_Status,
+.has_PR_Status,
+.has_HER2_Status {
 background:rgb(229, 216, 189);
 }
 
@@ -877,12 +904,8 @@ background:rgb(229, 216, 189);
 background:rgb(204, 235, 197);
 }
 
-.hasNuclearGrade {
+.hasClockface {
 background:rgb(218, 218, 235);
-}
-
-.hasCancerCellLine {
-background:rgb(255, 255, 204);
 }
 
 .hasHistologicType {
@@ -890,7 +913,7 @@ background:rgb(206, 219, 156);
 }
 
 .hasTumorExtent {
-background:rgb(253, 218, 236);
+background:rgb(255, 255, 204);
 }
 
 .unspecified {

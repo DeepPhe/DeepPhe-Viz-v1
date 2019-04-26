@@ -4,7 +4,16 @@ const transitionDuration = 800; // time in ms
 // Keep the pateints data in memory
 let allPatients = [];
 
+// Patients array based on the current stage chart selection
+let patientsByStage = [];
+
+// Patients array based on the current first encounter age chart selection
+let patientsByFirstEncounterAge = [];
+
 const allStagesLabel = "All stages";
+
+// Array that contains the current min age and max age based on age chart selection
+let currentFirstEncounterAgeRange = [];
 
 // All stages in a sorted order
 const orderedCancerStages = [
@@ -46,12 +55,29 @@ const topLevelStages = [
 let minAge;
 let maxAge;
 
-// encounterDateStr is a string, not Date object
-function getPatientEncounterAgeByDateString(encounterDateStr, birthday) {
-    // birthday is a string
-    let ageDiffMs =  new Date(encounterDateStr).getTime() - new Date(birthday).getTime();
-    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+// Return the intersection of two patient arrays
+function getTargetPatients(patientsByStage, patientsByFirstEncounterAge) {
+	// Create a list of IDs
+	let patientsByStageIds = patientsByStage.map(function(obj) {
+        return obj.patientId;
+	});
+
+    let patientsByFirstEncounterAgeIds = patientsByFirstEncounterAge.map(function(obj) {
+        return obj.patientId;
+	});
+
+    // Find common patient Ids
+    let targetPatientIds = patientsByStageIds.filter(function(id) {
+        return patientsByFirstEncounterAgeIds.indexOf(id) > -1;
+    });
+
+    // Find the patient objects based on common patient IDs
+    // No need to sort/order the targetPatients since it's already sorted in dataProcessor
+    let targetPatients = patientsByStage.filter(function(obj) {
+    	return targetPatientIds.indexOf(obj.patientId) > -1;
+    });
+
+	return targetPatients;
 }
 
 // Entry point
@@ -63,18 +89,23 @@ function showCohort() {
 	    dataType : 'json'
 	})
 	.done(function(response) {
+        // Keep the data in memory for later use
+        allPatients = response.patients;
+
+        // Set as all the target patients for the first load
+        patientsByStage = response.patients;
+        patientsByFirstEncounterAge = response.patients;
+
         // Draw the stages chart
         // We can click the stage bar to show charts of this stage 
         // and unclick to show all again
-        showPatientAgePerStageChart("stage_patient_age", response.stagesInfo);
+        showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
 
-		showPatientCountPerStageChart("stage_patient_count", response.stagesInfo);
+        // Patient first encounter age chart
+        showPatientFirstEncounterAgePerStageChart("stage_patient_age", response.stagesInfo);
 
-        // Keep the data in memory for later use
-        allPatients = response.patientsInfo.patients;
-
-        // By default show charts of all pateints and all stages
-        showDerivedCharts(allPatients, allStagesLabel);
+        // By default show charts of all pateints of all ages (first encounter age) from all stages
+        showDerivedCharts(allPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get cancer stages");
@@ -122,19 +153,13 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			return d.patientsCount; 
 		})])
 		.range([0, chartWidth]);
-    
-    // Use the specified integers as x count ticks ranther than the auto generated 
-    // let xCountTickValues = [];
-    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
-    //     xCountTickValues.push(i);
-    // }
 
 	let y = d3.scaleBand()
 		.domain(defaultStagesData.map(function(d) { 
 			return d.stage; 
 		}))
 		.range([0, chartHeight - chartTopMargin]) // top to bottom: stages by patients count in ascending order 
-		.padding(0.2); // blank space between bands
+		.padding(0.32); // blank space between bands
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
 		.attr("width", svgWidth)
@@ -159,11 +184,25 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     // renderYAxis() is based ont the y.domain(), so no argument
     renderYAxis();
 
+    // Show only integer numbers for the ticks when the max count is less than 10
+    // otherwise use the default ticks
+    let xCountAxis;
+    if (xCount.domain()[1] >= 10) {
+        xCountAxis = d3.axisBottom(xCount);
+    } else {
+    	let xCountTickValues = [];
+	    for (let i = 0; i <= xCount.domain()[1]; i++) {
+	        xCountTickValues.push(i);
+	    }
+    	xCountAxis = d3.axisBottom(xCount).tickValues(xCountTickValues).tickFormat(d3.format("d"));
+    }
+
     // Add patients count top X axis
 	stagesChartGrp.append("g")
 		.attr("transform", "translate(0, " + (chartHeight - chartTopMargin) + ")")
 		.attr("class", "count_axis")
-		.call(d3.axisBottom(xCount))
+		
+		.call(xCountAxis)
 		// Append axis label
 		.append("text")
 		.attr("class", "count_axis_label")
@@ -179,8 +218,12 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 			.data(data)
 			.enter().append("rect")
 			.attr("class", function(d) {
-				// Distiguish the top stages and sub stages using different bg and border colors
-				return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
+				// Distiguish the top stages, sub stages, and unknown stage using different bg and border colors
+				if (d.stage !== "Stage Unknown") {
+                    return "stage_bar " + ((topLevelStages.indexOf(d.stage) !== -1) ? "top_stage_bar " : "sub_stage_bar ") + d.stage.replace(" ", "_") ;
+				} else {
+                    return "stage_bar unknown_stage_bar " + d.stage.replace(" ", "_") ;
+				}
 			})
 			.attr("transform", function(d) { 
 				return "translate(0, " + y(d.stage) + ")"; 
@@ -196,12 +239,24 @@ function showPatientCountPerStageChart(svgContainerId, data) {
 		            svg.selectAll(".stage_bar").classed(css, false);
 	                // Highlight the clicked box and show corresponding patients
 	            	clickedBar.classed(css, true);
-	            	showDerivedCharts(d.patients, d.stage);
+
+	            	// Update patientsByStage
+	            	patientsByStage = d.patients;
+
+                    let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+	            	showDerivedCharts(targetPatients, d.stage, currentFirstEncounterAgeRange);
 	            } else {
 	            	// When clicked again, remove highlight and show all patients
 	            	clickedBar.classed(css, false);
+
+	            	// Update patientsByStage
 	            	// allPatients is the patient data saved in memory
-	            	showDerivedCharts(allPatients, allStagesLabel);
+	            	patientsByStage = allPatients;
+	            	
+	            	let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+	            	showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
 	            }
 			})
 			.transition()
@@ -321,7 +376,7 @@ function showPatientCountPerStageChart(svgContainerId, data) {
     }
 }
 
-function showPatientAgePerStageChart(svgContainerId, data) {
+function showPatientFirstEncounterAgePerStageChart(svgContainerId, data) {
 	let patientsCounts = {};
 
 	// In order to get the minAge and maxAge
@@ -379,6 +434,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	// set the dimensions and margins of the graph
 	const svgWidth = 460;
 	const svgHeight = 360;
+
 	// svgPadding.top is used to position the chart title
 	// svgPadding.left is the space for Y axis labels
 	const svgPadding = {top: 10, right: 15, bottom: 15, left: 110};
@@ -410,15 +466,8 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 	let ageOffset = 5;
 
 	let x = d3.scaleLinear()
-	    // Integer age range based on rounding the minAge and maxAge
-	    .domain([Math.floor(minAge/10) * 10 - ageOffset, Math.ceil(maxAge/10) * 10 + ageOffset])
+	    .domain([minAge - ageOffset, maxAge + ageOffset])
 	    .range([0, chartWidth]);
-	    
-    // Use the specified integers as x count ticks ranther than the auto generated 
-    // let xCountTickValues = [];
-    // for (let i = xCount.domain()[0]; i <= xCount.domain()[1]; i++) {
-    //     xCountTickValues.push(i);
-    // }
 
 	let y = d3.scaleBand()
 		.domain(defaultStagesData.map(function(d) { 
@@ -433,6 +482,10 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 	let stagesChartGrp = svg.append("g")
 		.attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
+
+    let distributionGrp = stagesChartGrp.append("g");
+
+    let ageSelectionGrp = stagesChartGrp.append("g");
 
     // Chart title
     svg.append("text")
@@ -463,10 +516,136 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 		.text("Age of first encounter");
 
 
+    // Age range selection
+    let brush = d3.brushX()
+        // Restrict the brush move between minAge and maxAge
+	    .extent([[x(minAge), 0], [x(maxAge), (chartHeight - chartTopMargin)]])
+	    .on("brush", duringBrush)
+	    // Only activate listener at the end of a brush gesture, such as on mouseup.
+	    // Update the resulting charts on brush end
+	    .on("end", endBrush);
+
+    let ageSelectionBrush = ageSelectionGrp.append("g")
+		.attr("transform", "translate(0, 0)")
+		.attr("class", "age_selection_brush");
+		
+    // Add custom brush handles
+	let customBrushHandlesData = [{type: "w"}, {type: "e"}];
+
+    // Function expression to create custom brush handle path
+	let createCustomBrushHandle = function(d) {
+	    let e = +(d.type === "e"),
+	        x = e ? 1 : -1,
+	        y = chartHeight / 2;
+
+	    return "M" + (.5 * x) + "," + y + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6) + "V" + (2 * y - 6) + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y) + "Z" + "M" + (2.5 * x) + "," + (y + 8) + "V" + (2 * y - 8) + "M" + (4.5 * x) + "," + (y + 8) + "V" + (2 * y - 8);
+	};
+
+	let customBrushHandle = ageSelectionBrush.selectAll(".handle--custom")
+	    .data(customBrushHandlesData)
+	    .enter().append("path")
+	    .attr("class", "handle--custom")
+	    .attr("cursor", "ew-resize")
+		.attr("d", createCustomBrushHandle)
+		.attr("transform", function(d, i) { 
+        	// Position the custom handles based on the default selection range
+        	let selection = [minAge, maxAge].map(x);
+        	return "translate(" + [selection[i], -chartHeight/8] + ")"; 
+        });
+
+    // Function expression of updating custom handles positions
+	let moveCustomBrushHandles = function(selection) {
+		customBrushHandle
+	        .attr("transform", function(d, i) { 
+	        	return "translate(" + [selection[i], -chartHeight/3] + ")"; 
+	        });
+	};
+
+    // Attach brush and move to default position
+    // must call this before removing pointer events
+	ageSelectionBrush.call(brush)
+		// By default, move the brush to start at minAge and end at maxAge
+		.call(brush.move, [minAge, maxAge].map(x))
+
+	// Update the default currentFirstEncounterAgeRange
+	currentFirstEncounterAgeRange = [minAge, maxAge];
+
+    // Remove pointer events on brushe overlay, this prevents new brush from being made
+	// when users click outside the current brush area
+	// So basically, we force the users to only either move the current brush selection 
+	// or use the custom handles to resieze the brush selection.
+	ageSelectionBrush.selectAll('.overlay').style('pointer-events', 'none');
+
+    // Lower age text, default to minAge
+    ageSelectionGrp.append("text")
+        .attr("class", "age_range")
+        .attr("id", "lower_age")
+        .attr("x", x(minAge))
+        .attr("y", 0)
+        .text(minAge);
+
+    // Upper age text, default to maxAge
+    ageSelectionGrp.append("text")
+        .attr("class", "age_range")
+        .attr("id", "upper_age")
+        .attr("x", x(maxAge))
+        .attr("y", 0)
+        .text(maxAge);
+
+    // Set the default of currentFirstEncounterAgeRange
+    currentFirstEncounterAgeRange = [minAge, maxAge];
+
+    // Update/move the range limits as the brush moves
+    // Also update the position of custom brush handles
+    function duringBrush() {
+		let selection = d3.event.selection;
+
+		let extent = selection.map(x.invert, x);
+		
+        let lowerAge = Math.round(extent[0]);
+        let upperAge = Math.round(extent[1]);
+
+        // Update lower and upper ages
+        // Rounding to integer only
+		d3.select("#lower_age")
+		    .attr("x", x(lowerAge))
+	        .text(lowerAge);
+
+	    d3.select("#upper_age")
+		    .attr("x", x(upperAge))
+	        .text(upperAge);
+
+	    // Update the position of custom brush handles
+    	moveCustomBrushHandles(selection);
+	}
+
+    // Filter the patients based on age selection 
+    // Then update derived resulting charts
+	function endBrush() {
+		let extent = d3.event.selection.map(x.invert, x);
+		
+        let lowerAge = Math.round(extent[0]);
+        let upperAge = Math.round(extent[1]);
+
+        // Update patientsByFirstEncounterAge by filtering allPatients
+	    patientsByFirstEncounterAge = allPatients.filter(function(obj) {
+            return ((obj.firstEncounterAge >= lowerAge) && (obj.firstEncounterAge <= upperAge));
+	    });
+
+        // Update the final target patients array and resulting charts
+        let targetPatients = getTargetPatients(patientsByStage, patientsByFirstEncounterAge);
+
+        // Update currentFirstEncounterAgeRange
+	    currentFirstEncounterAgeRange = [lowerAge, upperAge];
+
+	    showDerivedCharts(targetPatients, allStagesLabel, currentFirstEncounterAgeRange);
+	}
+
+
     // Render all stage bars and boxplots
 	function renderDistribution(data) {
 	    // Only show the patient age when the stage has only one patient
-	    let singlePatientGrp = stagesChartGrp.append("g").selectAll(".single_patient_group")
+	    let singlePatientGrp = distributionGrp.append("g").selectAll(".single_patient_group")
 			.data(data.filter(function(d) {
 				return d.patientsCount === 1;
 			}))
@@ -502,7 +681,7 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 			});
 
 		// Show the box plot for stage that has more than one patient
-		let boxplotGrp = stagesChartGrp.append("g").selectAll(".boxplot")
+		let boxplotGrp = distributionGrp.append("g").selectAll(".boxplot")
 			.data(data.filter(function(d) {
 				return d.patientsCount > 1;
 			}))
@@ -750,82 +929,60 @@ function showPatientAgePerStageChart(svgContainerId, data) {
 
 
 // No rest call since each stage data contains the patients list info
-function showDerivedCharts(patientsArr, stage) {
-    let patientIds = [];
-    patientsArr.forEach(function(patient) {
-    	patientIds.push(patient.patientId);
-    });
+function showDerivedCharts(patientsArr, stage, firstEncounterAgeRange) {
+    if (patientsArr.length > 0) {
+        let patientIds = [];
+	    patientsArr.forEach(function(patient) {
+	    	patientIds.push(patient.patientId);
+	    });
 
-    // Make another ajax call to get diagnosis for the list of patients
-    getDiagnosis(patientIds, stage);
+        showResultsTitle("results_title", patientsArr, stage, firstEncounterAgeRange);
 
-    // Make another ajax call to get all tumor info for the list of patients
-    getPatientsTumorInfo(patientIds, stage);
+        // Resulting target patients list
+	    showPatientsList("patients", patientsArr, stage, firstEncounterAgeRange);
 
-    // Patients table
-    showPatientsTable("patients", patientsArr, stage);
+	    // Make another ajax call to get diagnosis for the list of patients
+	    getDiagnosis(patientIds);
+
+	    // Make another ajax call to get biomarkers info for the list of patients
+	    getBiomarkers(patientIds);
+    } else {
+        console.log("Empty target patients list");
+
+        // We'll need to remove the previous resulting charts
+        removeChart("patients");
+        removeChart("diagnosis");
+        removeChart("biomarkers");
+    }
 }
 
-// All patients is a separate call
-// patients of each stage is alrady loaded data
-function showPatientsTable(containerId, data, stage) {
-    // Group patients by age of first encounter
-    let rangeStartAge = Math.floor(minAge/10) * 10;
-    let rangeEndAge = Math.ceil(maxAge/10) * 10;
+// Remove a chart of the given containerId
+function removeChart(containerId) {
+    d3.select("#" + containerId).selectAll("*").remove();
+}
 
-    // Calculate the age range
-    let range = [];
-    let ageRange = [];
-    for (let i = 0; i < (rangeEndAge - rangeStartAge)/10; i++) {
-        if (i === 0) {
-            ageRange = [rangeStartAge + i * 10, rangeStartAge + i * 10 + 10];
-        } else {
-        	ageRange = [rangeStartAge + i * 10 + 1, rangeStartAge + i * 10 + 10];
-        }
+function showResultsTitle(containerId, data, stage, firstEncounterAgeRange) {
+    removeChart(containerId);
 
-        range.push(ageRange);
-    }
-
-    let rangePatients = [];
-    range.forEach(function(range) {
-    	let patients = [];
-    	// The data is already sorted by patient age of first encounter
-        data.forEach(function(patient) {
-            let firstEncounterAge = getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday);
-            if (firstEncounterAge >= range[0] && firstEncounterAge <= range[1]) {
-                patients.push(patient);
-            }
-        });
-        rangePatients.push(patients);
-    });
-
-    let html =  '<table class="patients_table">'
-        + '<caption class="patients_table_title">Patients Table (' + data.length + ' patients from ' + stage + ')</caption>'
-        + '<tr><th>First Encounter Age Range</th><th>Patient List Ordered By First Encounter Age</th><th>Count</th></tr>';
-
-    for (let i = 0; i < rangePatients.length; i++) {
-        html += '<tr><th>' + range[i][0] + ' - ' + range[i][1] + '</th>';
-        html += '<td><ul class="patient_age_range_list">';
-        rangePatients[i].forEach(function(patient) {
-	    	html += '<li><a href="' + baseUri + '/patient/' + patient.patientId + '">' + getPatientShortId(patient.patientId) + '</a> (' + getPatientEncounterAgeByDateString(patient.firstEncounterDate, patient.birthday) + ')</li>';
-	    });
-	    html += '</ul></td><td>' + rangePatients[i].length + '</td></tr>';
-    }
-    
-    html += '</table>';
+    let html = 'Target Patients (' + data.length + ' patients from ' + stage + ', first encounter age between ' + firstEncounterAgeRange[0] + ' and ' + firstEncounterAgeRange[1] + ')';
 
     $("#" + containerId).html(html);
 }
 
-// Leave this for future use 
-// since different data source may have different ID format
-function getPatientShortId(longId) {
-    return longId; 
-}
+// All patients is a separate call
+// patients of each stage is alrady loaded data
+function showPatientsList(containerId, data, stage, firstEncounterAgeRange) {
+    removeChart(containerId);
 
-// Leave this for future use
-function getPatientLongId(shortId) {
-	return shortId;
+    let html = '<ul class="patient_list">';
+
+    data.forEach(function(patient) {
+    	html += '<li><a id="' + patient.patientId + '" class="target_patient" href="' + baseUri + '/patient/' + patient.patientId + '" target="_blank">' + patient.patientId + '</a> (' + patient.firstEncounterAge + ')</li>';
+    });
+
+    html += '</ul>';
+    
+    $("#" + containerId).html(html);
 }
 
 // Same as the one in dataProcessor
@@ -857,17 +1014,24 @@ function sortByProvidedOrder(array, orderArr) {
 }
 
 
-function showDiagnosisChart(svgContainerId, data, stage) {
-    d3.select("#" + svgContainerId).selectAll("*").remove();
+function showDiagnosisChart(svgContainerId, data) {
+    removeChart(svgContainerId);
 
-    const svgWidth = 660;
-    const svgHeight = 360;
-    const overviewHeight = 35;
+    const diagnosisDotRadius = 4;
+    const highlightedDotRadius = 5;
+    const overviewDotRadius = 1.5;
+    const svgPadding = {top: 10, right: 40, bottom: 10, left: 240};
     const gapBetweenYAxisAndXAxis = 10;
-	const svgPadding = {top: 10, right: 25, bottom: 10, left: 248};
-	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+    const chartTopMargin = 40;
+    const xAxisHeight = 20;
+    // 15 is the line height of each Y axis label
+    const yAxisHeight = data.diagnosisGroups.length * 15;
+    const overviewHeight = data.diagnosisGroups.length * overviewDotRadius * 3;
+    const svgWidth = 700;
+    const svgHeight = xAxisHeight + yAxisHeight + chartTopMargin + overviewHeight + gapBetweenYAxisAndXAxis * 2;
+    const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+    const overviewWidth = chartWidth - gapBetweenYAxisAndXAxis;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom - overviewHeight - gapBetweenYAxisAndXAxis;
-	const chartTopMargin = 40;
 
 	let svg = d3.select("#" + svgContainerId).append("svg")
 	    .attr("class", "diagnosis_chart") // Used for CSS styling
@@ -881,51 +1045,48 @@ function showDiagnosisChart(svgContainerId, data, stage) {
     const dotColor = "rgb(107, 174, 214)";
     const highlightedDotColor = "rgb(230, 85, 13)";
 
-    const diagnosisDotRadius = 4;
-    const highlightedDotRadius = 5;
-    const overviewDotRadius = 1.5;
-
     let xDomain = [];
     
     let diagnosisDots = [];
 
     data.data.forEach(function(d) {
-    	let patientShortId = getPatientShortId(d.patient);
+    	xDomain.push(d.patient);
 
-    	xDomain.push(patientShortId);
-
-    	d.diagnosis.forEach(function(diagnosis) {
+    	d.diagnosisGroups.forEach(function(diagGrp) {
     		let dot = {};
-    		dot.patientShortId = patientShortId;
-    		dot.diagnosis = diagnosis;
+    		dot.patientId = d.patient;
+    		dot.diagnosisGroups = diagGrp;
 
     		diagnosisDots.push(dot);
     	});
     });
 
-    let widthPerPatient = chartWidth/xDomain.length;
-    let patientsNumDisplay = 5;
+    let widthPerPatient = (chartWidth - gapBetweenYAxisAndXAxis*2)/(xDomain.length - 1);
+    let patientsNumDisplay = 4;
 
-	// set the ranges
+    // Show the first patientsNumDisplay patients by default
+    let defaultPatients = xDomain.slice(0, patientsNumDisplay);
+    
+	// Set the ranges
 	let x = d3.scalePoint()
-	    .domain(xDomain.slice(0, patientsNumDisplay))
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
+	    .domain(defaultPatients)
+	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 	    
 	let overviewX = d3.scalePoint()
 	    .domain(xDomain)
-	    .range([gapBetweenYAxisAndXAxis, chartWidth - gapBetweenYAxisAndXAxis]);
+	    .range([gapBetweenYAxisAndXAxis, overviewWidth]);
 
 	let y = d3.scalePoint()
-	    .domain(data.diagnosis)
+	    .domain(data.diagnosisGroups)
 		.range([0, chartHeight - chartTopMargin - svgPadding.bottom - gapBetweenYAxisAndXAxis]);
 
 	let overviewY = d3.scalePoint()
-	    .domain(data.diagnosis)
+	    .domain(data.diagnosisGroups)
 		.range([0, overviewHeight]);
 	
-	// Replace all spaces and () with underscores
+	// Replace all spaces, commas, and () with underscores
     let diagnosis2Class = function(diagnosis) {
-        return diagnosis.replace(/ |\(|\)/g, "_");
+        return diagnosis.replace(/ |,|\(|\)|/g, "_");
     };
 
 	// Chart title
@@ -934,29 +1095,29 @@ function showDiagnosisChart(svgContainerId, data, stage) {
         .attr("transform", function(d) { 
 			return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 		})
-        .text("Diagnosis (" + xDomain.length + " patients from " + stage + ")");
+        .text("Diagnosis");
 
 	// Patient diagnosis dots
 	diagnosisChartGrp.selectAll(".diagnosis_dot")
 		.data(diagnosisDots.filter(function(obj) {
 			// By default only show the dots of patients in the x.domain()
-			return x.domain().indexOf(obj.patientShortId) !== -1
+			return x.domain().indexOf(obj.patientId) !== -1
 		}))
 		.enter().append("circle")
 		.attr("class", function(d) {
-			return "diagnosis_dot " + d.patientShortId;
+			return "diagnosis_dot " + d.patientId;
 		})
 		.attr("cx", function(d, i) {
-            return x(d.patientShortId);
+            return x(d.patientId);
 		})
 		.attr("cy", function(d) { 
-            return y(d.diagnosis);
+            return y(d.diagnosisGroups);
 		})
 		.attr("r", diagnosisDotRadius)
 		.attr("fill", dotColor);
 		
 		
-	// add the x Axis
+	// Add the x Axis
 	diagnosisChartGrp.append("g")
 		.attr("transform", "translate(0," + (chartHeight - chartTopMargin - svgPadding.bottom) + ")")
 		.attr("class", "diagnosis_x_axis");
@@ -986,7 +1147,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 						.attr("y2", chartHeight - chartTopMargin);
 
 					// Also highlight the corresponding Y labels
-					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+					data.patients[d].forEach(function(diagnosis) {
 						$("." + diagnosis2Class(diagnosis)).addClass("highlighted_diagnosis_label");
 					});
 		        })
@@ -1000,13 +1161,13 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 		            d3.selectAll(".diagnosis_guideline").remove();
 
 		            // Also dehighlight the corresponding Y labels
-					data.patients[getPatientLongId(d)].forEach(function(diagnosis) {
+					data.patients[d].forEach(function(diagnosis) {
 						$("." + diagnosis2Class(diagnosis)).removeClass("highlighted_diagnosis_label");
 					});
 		        });
 	}
 
-	// add the y Axis
+	// Add the y Axis
 	diagnosisChartGrp.append("g")
 		.call(d3.axisLeft(y))
 		// Now add class to the label text
@@ -1035,45 +1196,72 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 			.enter().append("g").append("circle")
 			.attr('class', 'overview_diagnosis_dot')
 			.attr("cx", function(d) {
-	            return overviewX(d.patientShortId);
+	            return overviewX(d.patientId);
 			})
 			.attr("cy", function(d) { 
-	            return overviewY(d.diagnosis);
+	            return overviewY(d.diagnosisGroups);
 			})
 			.attr("r", overviewDotRadius)
 			.attr("fill", dotColor);
-	    
-	    // d3.scalePoint() doesn't have invert
-	    
 
-	    // Add overview slider 
-		let overviewMover = overview.append("rect")
+	    // Add overview step slider 
+	    let sliderWidth = widthPerPatient * (patientsNumDisplay - 1) + 2*overviewDotRadius;
+
+        // Highlight the target patients in target patients list by default
+        highlightTargetPatients(defaultPatients);
+
+        let drag = d3.drag()
+            .on("drag", dragged);
+
+		overview.append("rect")
 		    .attr("class", "slider")
 		    .attr("x", gapBetweenYAxisAndXAxis - overviewDotRadius)
 			.attr("y", -overviewDotRadius) // take care of the radius
+			.attr("width", sliderWidth) 
 			.attr("height", overviewHeight + 2*overviewDotRadius)
-			.attr("width", widthPerPatient * patientsNumDisplay + 2*overviewDotRadius) 
 			.attr("pointer-events", "all")
 			.attr("cursor", "ew-resize")
-			.call(d3.drag().on("drag", display));
+			.call(drag);
 
-	    function display() {
-	        let xPosInt = parseInt(d3.select(this).attr("x"));
+	    function dragged(d) {
+	        let dragX = d3.event.x;
 
-	        let nx = xPosInt + d3.event.dx;
-	        let widthInt = parseInt(d3.select(this).attr("width"));
+            // Restrict start and end point of the slider
+            const beginX = 0;
+            // endX is always the x position of the first patient dot in the slider
+            // when the slider is moved to the very end
+            const endX = overviewX(xDomain[xDomain.length - patientsNumDisplay]) - overviewDotRadius * 2;
 
-		    if ( nx < 0 || nx + widthInt > chartWidth ) return;
+            if (dragX < beginX) {
+            	dragX = beginX;
+            }
 
-	        // Move the slider rect to new position
-		    d3.select(this).attr("x", nx);
+            if (dragX > endX) {
+            	dragX = endX;
+            }
 
 	        // Now we need to know the start and end index of the domain array
-	        let startIndex = Math.floor(xPosInt/widthPerPatient);
-	        let endIndex = startIndex + patientsNumDisplay;
+	        let startIndex = Math.floor(dragX/widthPerPatient);
 
+            // Step Slider
+			let midPoint = (overviewX(xDomain[startIndex]) + overviewX(xDomain[startIndex + 1]))/2;
+
+			let targetIndex = null;
+			if (dragX < midPoint) {
+				targetIndex = startIndex;
+			} else {
+				targetIndex = startIndex + 1;
+			}
+
+            let endIndex = targetIndex + patientsNumDisplay;
+            
+			// Move the slider rect to new position
+			let newX = overviewX(xDomain[targetIndex]) - overviewDotRadius;
+
+			d3.select(this).attr("x", newX);
+	 
 	        // Element of endIndex is not included
-	        let newXDomain = xDomain.slice(startIndex, endIndex);
+	        let newXDomain = xDomain.slice(targetIndex, endIndex);
 
 	        // Update x domain
 	        x.domain(newXDomain);
@@ -1083,7 +1271,7 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 	        createXAxis();
 
 	        let newDiagnosisDots = diagnosisDots.filter(function(obj) {
-	        	return newXDomain.indexOf(obj.patientShortId) !== -1
+	        	return newXDomain.indexOf(obj.patientId) !== -1
 	        });
 
 	        // Remove all old dots
@@ -1094,25 +1282,153 @@ function showDiagnosisChart(svgContainerId, data, stage) {
 				.data(newDiagnosisDots)
 				.enter().append("circle")
 				.attr("class", function(d) {
-					return "diagnosis_dot " + d.patientShortId;
+					return "diagnosis_dot " + d.patientId;
 				})
 				.attr("cx", function(d) {
-		            return x(d.patientShortId);
+		            return x(d.patientId);
 				})
 				.attr("cy", function(d) { 
-		            return y(d.diagnosis);
+		            return y(d.diagnosisGroups);
 				})
 				.attr("r", 4)
 				.attr("fill", dotColor);
+
+			// Also highlight the target patients in the patient list
+            $(".target_patient").removeClass("highlighted_target_patient_in_diagnosis");
+			highlightTargetPatients(newXDomain);
 		};
 	}
 }
 
+function highlightTargetPatients(patientsArr) {
+    patientsArr.forEach(function(patient) {
+        $("#" + patient).addClass("highlighted_target_patient_in_diagnosis");
+	});
+}
 
-function showBiomarkersChart(svgContainerId, data, stage) {
-    const svgWidth = 460;
+// We do NOT remove the biomarkers patients chart on each redraw, due to the animation
+function showBiomarkersOverviewChart(svgContainerId, data) {
+    const svgWidth = 480;
+    const svgHeight = 120;
+	const svgPadding = {top: 10, right: 15, bottom: 15, left: 180};
+	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
+	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
+	const chartTopMargin = 35;
+
+	let yLables = [];
+	data.forEach(function(obj) {
+	    yLables.push(obj.label);
+	});
+
+    // Band scale of biomarkers
+    let y = d3.scaleBand()
+        .domain(yLables)
+	    .range([0, chartHeight - chartTopMargin])
+	    .padding(0.2);
+
+    // Percentage X
+	let x = d3.scaleLinear()
+	    .domain([0, 1])
+	    .range([0, chartWidth]);
+
+    // https://github.com/d3/d3-format
+    // keep one decimal in percentage, like 45.5%
+    let formatPercentBarText = d3.format(".1%");
+
+    // No decimal, like 45%
+    let formatPercentAxisTick = d3.format(".0%");
+
+    // Only draw everything for the first time
+    if (d3.select(".biomarkers_overview_chart_group").empty()) {
+	    let svg = d3.select("#" + svgContainerId).append("svg")
+		    .attr("class", "biomarkers_overview_chart") // Used for CSS styling
+			.attr("width", svgWidth)
+			.attr("height", svgHeight);
+		
+		// Chart title
+	    svg.append("text")
+	        .attr("class", "biomarkers_chart_title")
+	        .attr("transform", function(d) { 
+				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
+			})
+	        .text("Biomarkers Overview");
+
+		let biomarkersPatientsChartGrp = svg.append("g")
+			    .attr("class", "biomarkers_overview_chart_group")
+			    .attr("transform", "translate(" + svgPadding.left + "," + chartTopMargin + ")");
+
+        // Bars
+        let barGrp = biomarkersPatientsChartGrp.selectAll(".biomarkers_overview_chart_bar_group")
+            .data(data)
+            .enter().append("g")
+            .attr("class", "biomarkers_overview_chart_bar_group");
+
+        // Bar
+        barGrp.append("rect")
+            .attr("class", "biomarkers_overview_chart_bar")
+			.attr("x", 0)
+			.attr("y", function(d) { 
+				return y(d.label); 
+			})
+			.attr("height", y.bandwidth())
+			.transition()
+	        .duration(transitionDuration)
+			.attr("width", function(d) {
+				return x(d.count);
+			});
+        
+        // Percentage text
+        barGrp.append("text")
+			.attr("id", function(d) {
+                return d.label + "_" + d.status;
+			})
+			.attr("class", "biomarkers_overview_chart_bar_percentage")
+			.attr("x", 5)
+			.attr("y", function(d) { 
+				return y(d.label) + y.bandwidth()/2; 
+			})
+			.text(function(d) {
+				return formatPercentBarText(d.count);
+            });
+
+	    // Y axis
+		biomarkersPatientsChartGrp.append("g")
+			.attr("class", "biomarkers_overview_chart_y_axis")
+			.call(d3.axisLeft(y));
+
+	    // X axis
+		biomarkersPatientsChartGrp.append("g")
+			.attr("class", "biomarkers_overview_chart_x_axis")
+			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
+			.call(d3.axisBottom(x).tickFormat(formatPercentAxisTick));
+    } else {
+        // Update the data
+        let biomarkersPatientsGrp = d3.selectAll(".biomarkers_overview_chart_group").selectAll(".biomarkers_overview_chart_bar_group")
+			.data(data);
+
+	    // Update the bar width for each category
+		biomarkersPatientsGrp.select(".biomarkers_overview_chart_bar")
+		    .transition()
+            .duration(transitionDuration)
+    	    .attr("width", function(d) {
+    	    	return x(d.count);
+    	    });
+			
+
+    	// Update the percentage text
+		biomarkersPatientsGrp.select(".biomarkers_overview_chart_bar_percentage")
+			.text(function(d) {
+				return formatPercentBarText(d.count);
+            });
+    }
+}
+
+
+// We do NOT remove the biomarkers chart on each redraw, due to the animation
+function showPatientsWithBiomarkersChart(svgContainerId, data) {
+    const svgWidth = 480;
     const svgHeight = 180;
-	const svgPadding = {top: 10, right: 10, bottom: 15, left: 120};
+	const svgPadding = {top: 10, right: 10, bottom: 15, left: 80};
 	const chartWidth = svgWidth - svgPadding.left - svgPadding.right;
 	const chartHeight = svgHeight - svgPadding.top - svgPadding.bottom;
 	const chartTopMargin = 35;
@@ -1137,8 +1453,11 @@ function showBiomarkersChart(svgContainerId, data, stage) {
         .range(["rgb(214, 39, 40)", "rgb(44, 160, 44)", "rgb(150, 150, 150)"]);
 
     // https://github.com/d3/d3-format
-    // keep one decimal in percentage, like 45%
-    let formatPercent = d3.format(".0%");
+    // keep one decimal in percentage, like 45.5%
+    let formatPercentBarText = d3.format(".1%");
+
+    // No decimal, like 45%
+    let formatPercentAxisTick = d3.format(".0%");
 
     // Create the stack data structure
     // https://github.com/d3/d3-shape/blob/master/README.md#stack
@@ -1166,7 +1485,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 	        .attr("transform", function(d) { 
 				return "translate(" + svgWidth/2 + ", " + svgPadding.top + ")"; 
 			})
-	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
+	        .text("Patients With Biomarkers Found");
 
 	    let biomarkerStatusGrp = biomarkersChartGrp.selectAll(".biomarker_status_group")
 			.data(stackData)
@@ -1182,7 +1501,6 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 		biomarkerStatusGrp.selectAll(".biomarker_status_bar")
 		    // here d is each object in the stackData array
 			.data(function(d) {
-				
 				return d;
 			})
 			.enter().append("rect")
@@ -1197,7 +1515,8 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.transition()
 	        .duration(transitionDuration)
 			.attr("width", function(d) { 
-				return x(d[1]) - x(d[0]);
+				// Return the absolute value to avoid errors due to negative value
+    	    	return Math.abs(x(d[1]) - x(d[0]));
 			});
 
         // Append the percentage text
@@ -1225,7 +1544,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.text(function(d) {
 				// Only show percentage text for values bigger than 10%
 				if (d.data[d.status] > 0.1) {
-					return formatPercent(d.data[d.status]);
+					return formatPercentBarText(d.data[d.status]);
 				}
             });
 
@@ -1236,8 +1555,12 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			// Now modify the label text to add patients count
 			.selectAll("text")
 			.text(function(d) {
-				if (d === "HER2_Neu") {
-                    return "HER2/Neu"
+				if (d === "has_ER_Status") {
+                    return "ER";
+				} else if (d === "has_PR_Status") {
+                    return "PR";
+				} else if (d === "has_HER2_Status") {
+					return "HER2/Neu";
 				} else {
 					return d.replace("_", " ");
 				}
@@ -1247,7 +1570,7 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 		biomarkersChartGrp.append("g")
 			.attr("class", "biomarkers_chart_x_axis")
 			.attr("transform", "translate(0," + (chartHeight - chartTopMargin) + ")")
-			.call(d3.axisBottom(x).tickFormat(formatPercent));
+			.call(d3.axisBottom(x).tickFormat(formatPercentAxisTick));
 
 	    // Status legend
 		let legend = biomarkersChartGrp.append("g")
@@ -1296,7 +1619,9 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.transition()
             .duration(transitionDuration)
     	    .attr("width", function(d, i) {
-    	    	return x(d[1]) - x(d[0]);
+    	    	// Return the absolute value to avoid errors due to negative value
+    	    	// during transitioning from one stage to another stage
+    	    	return Math.abs(x(d[1]) - x(d[0]));
     	    });
 
         // Update the percentage text and x position
@@ -1316,34 +1641,31 @@ function showBiomarkersChart(svgContainerId, data, stage) {
 			.text(function(d) {
 				// Only show percentage text for values bigger than 10%
 				if (d.data[d.status] > 0.1) {
-                    return formatPercent(d.data[d.status]);
+                    return formatPercentBarText(d.data[d.status]);
 				}
             });
-
-        // Also update the chart title with patients count
-        d3.select(".biomarkers_chart_title")
-	        .text("Biomarkers (" + data.patients.length + " patients from " + stage + ")");
     }
 }
 
-function getPatientsTumorInfo(patientIds, stage) {
+
+function getBiomarkers(patientIds) {
     $.ajax({
-	    url: baseUri + '/tumorinfo/' + patientIds.join('+'),
+	    url: baseUri + '/biomarkers/' + patientIds.join('+'),
 	    method: 'GET', 
 	    async : true,
 	    dataType : 'json' 
 	})
 	.done(function(response) {
 	    //console.log(response);
-        
-	    showBiomarkersChart("biomarkers", response.biomarkersInfo, stage);
+	    showBiomarkersOverviewChart("biomarkers_overview", response.biomarkersOverviewData);
+	    showPatientsWithBiomarkersChart("patients_with_biomarkers", response.patientsWithBiomarkersData);
 	})
 	.fail(function () { 
-	    console.log("Ajax error - can't get patients tumor info");
+	    console.log("Ajax error - can't get patients biomarkers info");
 	});
 }
 
-function getDiagnosis(patientIds, stage) {
+function getDiagnosis(patientIds) {
     $.ajax({
 	    url: baseUri + '/diagnosis/' + patientIds.join('+'),
 	    method: 'GET', 
@@ -1351,7 +1673,7 @@ function getDiagnosis(patientIds, stage) {
 	    dataType : 'json' 
 	})
 	.done(function(response) {
-	    showDiagnosisChart("diagnosis", response, stage);
+	    showDiagnosisChart("diagnosis", response);
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get patients diagnosis info");

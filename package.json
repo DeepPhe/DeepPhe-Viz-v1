@@ -1,6 +1,6 @@
 {
   "name": "DeepPhe-Viz",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "DeepPhe-Viz",
   "repository": {
     "type": "git",
@@ -19,12 +19,13 @@
   },
   "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "handlebars": "^4.0.11",
-    "hapi": "^17.5.2",
-    "inert": "^5.1.0",
-    "lodash": "^4.17.10",
-    "neo4j-driver": "^1.6.3",
-    "vision": "^5.3.3"
+    "handlebars": "^4.1.0",
+    "hapi": "^18.1.0",
+    "hapi-swagger": "^9.3.1",
+    "inert": "^5.1.2",
+    "lodash": "^4.17.11",
+    "neo4j-driver": "^1.7.2",
+    "vision": "^5.4.4"
   },
   "main": "server.js"
 }

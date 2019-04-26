@@ -1,12 +1,13 @@
 // Global settings
 const transitionDuration = 800; // time in ms
-let factBasedReports = [];
 
-function getPatientEncounterAgeByDateObject(encounterDateObj, birthday) {
-	// encounterDateObj is Date object while birthday is a string
-    let ageDiffMs = encounterDateObj.getTime() - new Date(birthday).getTime();
-    let ageDate = new Date(ageDiffMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+// This object stores the target reportId as the key, and the value is another object 
+// that stores each factId as key and fact-based terms (non-duplicate) in an array
+let factBasedReports = {};
+
+// Lowercase the episode name and replae space with hyphen
+function episode2CssClass(episode) {
+    return episode.replace(/\s+/g, '-').toLowerCase();
 }
 
 // Show patient info
@@ -47,12 +48,13 @@ function getCancerAndTumorSummary(patientId) {
 	});
 }
 
-function highlightMentionedTexts(textMentions, reportText) {
+// Can highlight one or multiple text mentions
+function highlightTextMentions(textMentions, reportText) {
     const cssClass = "highlighted_term";
 
-    // Sort the textMentions array first based on startOffset
+    // Sort the textMentions array first based on beginOffset
     textMentions.sort(function(a, b) {
-        let comp = a.startOffset - b.startOffset;
+        let comp = a.beginOffset - b.beginOffset;
         if (comp === 0) {
             return b.endOffset - a.endOffset;
         } else {
@@ -65,13 +67,13 @@ function highlightMentionedTexts(textMentions, reportText) {
     if (textMentions.length === 1) {
         let textMention = textMentions[0];
 
-        if (textMention.startOffset === 0) {
+        if (textMention.beginOffset === 0) {
             textFragments.push('');
         } else {
-            textFragments.push(reportText.substring(0, textMention.startOffset));
+            textFragments.push(reportText.substring(0, textMention.beginOffset));
         }
 
-        textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+        textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.beginOffset, textMention.endOffset) + '</span>');
         textFragments.push(reportText.substring(textMention.endOffset));
     } else {
         let lastValidTMIndex = 0;
@@ -82,21 +84,21 @@ function highlightMentionedTexts(textMentions, reportText) {
 
             // If this is the first textmention, paste the start of the document before the first TM.
             if (i === 0) {
-                if (textMention.startOffset === 0) {
+                if (textMention.beginOffset === 0) {
                     textFragments.push('');
                 } else {
-                    textFragments.push(reportText.substring(0, textMention.startOffset));
+                    textFragments.push(reportText.substring(0, textMention.beginOffset));
                 }
             } else { // Otherwise, check if this text mention is valid. if it is, paste the text from last valid TM to this one.
-                if (textMention.startOffset < lastValidTM.endOffset) {
+                if (textMention.beginOffset < lastValidTM.endOffset) {
                         // Push end of the document
                     continue; // Skipping this TM.
                 } else{
-                    textFragments.push(reportText.substring(lastValidTM.endOffset, textMention.startOffset));
+                    textFragments.push(reportText.substring(lastValidTM.endOffset, textMention.beginOffset));
                 }
             }
 
-            textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.startOffset, textMention.endOffset) + '</span>');
+            textFragments.push('<span class="' + cssClass + '">' + reportText.substring(textMention.beginOffset, textMention.endOffset) + '</span>');
             lastValidTMIndex = i;
         }
         // Push end of the document
@@ -113,6 +115,38 @@ function highlightMentionedTexts(textMentions, reportText) {
     return highlightedReportText;
 }
 
+// The target obj has properties: "term", "begin", and "end"
+function scrollToHighlightedTextMention(obj, reportText) {
+    // Highlight the selected term in the term list
+    const cssClass = 'current_mentioned_term';
+    // First remove the previously added highlighting
+    $('.report_mentioned_term').removeClass(cssClass);
+    // Then add to this current one by selecting the attributes
+    $('li[data-begin="' + obj.begin + '"][data-end="' + obj.end + '"]').addClass(cssClass);
+
+    let reportTextDiv = $("#report_text");
+
+    let textMentions = [];
+
+    let textMentionObj = {};
+    textMentionObj.text = obj.term;
+    textMentionObj.beginOffset = obj.begin;
+    textMentionObj.endOffset = obj.end;
+    
+    textMentions.push(textMentionObj);
+
+    // Highlight this term in the report text
+    let highlightedReportText = highlightTextMentions(textMentions, reportText);
+
+    // Use html() for html rendering
+    reportTextDiv.html(highlightedReportText);
+
+    // Scroll to that position inside the report text div
+    // https://stackoverflow.com/questions/2346011/how-do-i-scroll-to-an-element-within-an-overflowed-div
+    // 5 is position tweak
+    reportTextDiv.scrollTop(reportTextDiv.scrollTop() + $('.highlighted_term').position().top - 5);
+}
+
 // Get fact details by ID
 // We need patientId because sometimes a fact may have matching TextMention nodes from different paitents
 function getFact(patientId, factId) {
@@ -120,40 +154,88 @@ function getFact(patientId, factId) {
 	    url: baseUri + '/fact/' + patientId + '/' + factId,
 	    method: 'GET', 
 	    async : true,
-	    dataType : 'html'
+	    dataType : 'json'
 	})
 	.done(function(response) {
+        let docIds = Object.keys(response.groupedTextProvenances);
+
+        // Render the html fact info
+        let factHtml = '<ul class="fact_detail_list">'
+                 + '<li><span class="fact_detail_label">Selected Fact:</span> ' + response.sourceFact.prettyName + '</li>';
+
+        if (docIds.length > 0) {
+            factHtml += '<li class="clearfix"><span class="fact_detail_label">Related Text Provenances in Source Reports:</span><ul>';
+            
+            docIds.forEach(function(id) {
+                let group = response.groupedTextProvenances[id];
+                // Use a combination of reportId and factId to identify this element
+                factHtml += '<li class="grouped_text_provenance"><span class="fact_detail_report_id"><i class="far fa-file"></i> <span id="' + id + "_" + factId + '" data-report="' + id + '" data-fact="' + factId + '" class="fact_based_report_id">' + id + '</span> --></span><ul id="terms_list_' + id + "_" + factId + '">';
+                           
+				let innerHtml = "";
+				group.textCounts.forEach(function(textCount) {
+					innerHtml += '<li><span class="fact_based_term_span">' + textCount.text + '</span> <span class="count">(' + textCount.count + ')</span></li>';
+				});
+
+			    factHtml += innerHtml + '</ul></li>';
+            });    
+        }
+
+        factHtml += '</ul>';
+
 	    // Fade in the fact detail. Need to hide the div in order to fade in.
-	    $('#fact_detail').hide().html(response).fadeIn('slow');
+	    $('#fact_detail').hide().html(factHtml).fadeIn('slow');
 
 	    // Also highlight the report and corresponding text mentions if this fact has text provanences in the report
-        let reportIds = [];
-
-        // Grab the report IDs from the rendered HTML
-        let elements = $('.fact_based_report_id').toArray();
-	    elements.forEach(function(el) {
-            reportIds.push(el.id);
-	    });
-
 		// Highlight report circles in timeline
-		if (reportIds.length > 0) {
-			// Add to the global factBasedReports array for later use
-            factBasedReports = reportIds;
-
+		if (docIds.length > 0) {
 			// Remove the previouly fact-based highlighting
 			$('.main_report').removeClass("fact_highlighted_report");
 
-			reportIds.forEach(function(id) {
+			docIds.forEach(function(id) {
 				// Set fill-opacity to 1
                 highlightReportBasedOnFact(id);
+
+                // Add to the global factBasedReports object for highlighting 
+                // the fact-based terms among all extracted terms of a given report
+                if (typeof factBasedReports[id] === "undefined") {
+	                factBasedReports[id] = {};
+	            } 
+
+                if (typeof factBasedReports[id][factId] === "undefined") {
+	                // Define an array for each factId 
+	                factBasedReports[id][factId] = [];
+	            } 
+
+                // If not already added, add terms
+                // Otherwise reuse what we have in the memory
+                if (factBasedReports[id][factId].length === 0) {
+	                // Only store the unique text
+	                response.groupedTextProvenances[id].terms.forEach(function(obj) {
+                        if (factBasedReports[id][factId].indexOf(obj.term) === -1) {
+                            factBasedReports[id][factId].push(obj.term);
+                        }
+	                });
+                }
 			});
 
 			// Also show the content of the first report
-			// The reportIds is sorted
-			getReport(reportIds[0]);
+			// The docIds is sorted
+			getReport(docIds[0], factId);
 
 			// And highlight the current displaying report circle with a thicker stroke
-			highlightSelectedTimelineReport(reportIds[0])
+			highlightSelectedTimelineReport(docIds[0])
+		} else {
+			// Dehighlight the previously selected report dot 
+		    const css = "selected_report";
+		    $('.main_report').removeClass(css);
+		    $('.overview_report').removeClass(css);
+		    // Also remove the "fact_highlighted_report" class
+		    $('.main_report').removeClass("fact_highlighted_report");
+
+		    // And empty the report area
+		    $('#report_id').empty();
+		    $('#report_mentioned_terms').empty();
+		    $('#report_text').empty();
 		}
 	})
 	.fail(function () { 
@@ -169,7 +251,7 @@ function removeFactBasedHighlighting(reportId) {
 }
 
 // Get report content and mentioned terms by ID 
-function getReport(reportId) {
+function getReport(reportId, factId) {
 	// Must use encodeURIComponent() otherwise may have URI parsing issue
 	$.ajax({
 	    url: baseUri + '/reports/' + reportId ,
@@ -178,45 +260,61 @@ function getReport(reportId) {
 	    dataType : 'json'
 	})
 	.done(function(response) {
-        let reportText = response.text;
+        let reportText = response.reportText;
         let mentionedTerms = response.mentionedTerms;
 
         // If there are fact based reports, highlight the displaying one
-        const cssClass = 'current_displaying_report';
-        $('.fact_based_report_id').removeClass(cssClass);
-        $('#' + reportId).addClass(cssClass);
+        const currentReportCssClass = 'current_displaying_report';
+        const currentFactTermsCssClass = 'fact_based_term';
+        $('.fact_based_report_id').removeClass(currentReportCssClass);
+        $('.fact_based_term_span').removeClass(currentFactTermsCssClass);
 
-        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + cssClass + '">' + getShortDocId(reportId) + '</span>');
+        // Highlight the curent displaying report name
+        $('#' + reportId + "_" + factId).addClass(currentReportCssClass);
+        // Also highlight all the fact-based text mentions in the fact info area
+        $('#terms_list_' + reportId + "_" + factId).children().find(">:first-child").addClass(currentFactTermsCssClass);
+        
+        // Show report ID
+        $('#report_id').html('<i class="far fa-file"></i><span class="display_report_id ' + currentReportCssClass + '">' + reportId + '</span>');
 
         // Show rendered mentioned terms
+        // First check if this report is a fact-based report so we cna highlight the fact-related terms
+        let factBasedTerms = [];
+        if (Object.keys(factBasedReports).indexOf(reportId) !== -1 && Object.keys(factBasedReports[reportId]).indexOf(factId) !== -1) {
+            factBasedTerms = factBasedReports[reportId][factId];
+        }
+
+        // mentionedTerms doesn't have position info, so we need to keep the posiiton info 
+        // for highlighting and scroll to
+        let factBasedTermsWithPosition = [];
+
         let renderedMentionedTerms = '<ul class="mentioned_terms_list">';
         mentionedTerms.forEach(function(obj) {
-        	renderedMentionedTerms += '<li class="report_mentioned_term" data-start="' + obj.startOffset + '" data-end="' + obj.endOffset + '">' + obj.text + '</li>';
+            let fact_based_term_class = '';
+            if (factBasedTerms.indexOf(obj.term) !== -1) {
+                factBasedTermsWithPosition.push(obj);
+                fact_based_term_class = ' fact_based_term';
+            }
+        	renderedMentionedTerms += '<li class="report_mentioned_term' + fact_based_term_class + '" data-begin="' + obj.begin + '" data-end="' + obj.end + '">' + obj.term + '</li>';
         });
         renderedMentionedTerms += "</ul>";
 
         $('#report_mentioned_terms').html(renderedMentionedTerms);
 
-	    // Show report content, either highlighted or not
-	    $('#report_text').html(reportText);
-	    // Scroll back to top of the report content div
-	    $("#report_text").animate({scrollTop: 0}, "fast");
+        // Also scroll to the first fact based term if any in the report text
+        if (factBasedTermsWithPosition.length > 0) {
+            scrollToHighlightedTextMention(factBasedTermsWithPosition[0], reportText);
+        } else {
+            let reportTextDiv = $("#report_text");
+            // Show report content, either highlighted or not
+            reportTextDiv.html(reportText);
+            // Scroll back to top of the report content div
+            reportTextDiv.animate({scrollTop: 0}, "fast");
+        }
 	})
 	.fail(function () { 
 	    console.log("Ajax error - can't get report");
 	});
-}
-
-// "REPORT_patient10_report051_NOTE_2076902750" -> "Report051_NOTE"
-// This utility funtion can also be found in dataProcessor.js
-// But we can't reuse it due to the fact of different componments
-// Functions in deepphe.js are used by client side
-// and functions in dataProcessor.js are used by server side
-function getShortDocId(id) {
-    let partsArr = id.split('_');
-    let str = partsArr[2] + '_' + partsArr[3];
-    // Also capitalize the first letter
-    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 // Highlight the selected report circle in timeline
@@ -309,28 +407,28 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     const textMargin = 10;
 
     // https://github.com/d3/d3-time-format#d3-time-format
-    const formatTime = d3.timeFormat("%Y-%m-%d %I:%M %p");
-    const parseTime = d3.timeParse("%Y-%m-%d %I:%M %p");
+    const formatTime = d3.timeFormat("%Y-%m-%d");
+    const parseTime = d3.timeParse("%Y-%m-%d");
 
 	// Convert string to date
 	reportData.forEach(function(d) {
 		// Format the date to a human-readable string first, formatTime() takes Date object instead of string
 		// d.origTime.slice(0, 19) returns the time string without the time zone part.
-		// E.g., "11/28/2012 01:00 AM" from "11/28/2012 01:00 AM AST"
-		let formattedTimeStr = formatTime(new Date(d.origTime.slice(0, 19)));
+		// E.g., "2012/11/28" from "11/28/2012 01:00 AM AST"
+		let formattedDateStr = formatTime(new Date(d.date));
 		// Then convert a string back to a date to be used by d3
-        d.formattedTime = parseTime(formattedTimeStr);
+        d.formattedDate = parseTime(formattedDateStr);
 	});
 
 	// The earliest report date
-	let xMinDate = d3.min(reportData, function(d) {return d.formattedTime;});
+	let xMinDate = d3.min(reportData, function(d) {return d.formattedDate;});
 
 	// Set the start date of the x axis 10 days before the xMinDate
 	let startDate = new Date(xMinDate);
 	startDate.setDate(startDate.getDate() - numOfDays);
 
 	// The latest report date
-	let xMaxDate = d3.max(reportData, function(d) {return d.formattedTime;});
+	let xMaxDate = d3.max(reportData, function(d) {return d.formattedDate;});
 
 	// Set the end date of the x axis 10 days after the xMaxDate
 	let endDate = new Date(xMaxDate);
@@ -471,9 +569,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 
     episodeLegend.append('circle')
         .attr("class", "episode_legend_circle")
-        .attr("id", function(d) {
-            return d;
-        })
         .attr('cx', function(d, i) {
             return episodeLegendX(i);
         })
@@ -487,15 +582,11 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .on("click", function(d) {
             // Toggle (hide/show reports of the clicked episode)
-            let nodes = d3.selectAll("." + d);
+            let nodes = d3.selectAll("." + episode2CssClass(d));
             nodes.each(function() {
             	let node = d3.select(this);
                 node.classed("hide", !node.classed("hide"));
             });
-
-            // Toggle and episode bar
-            let episodeBar = d3.select("#" + d + "_bar");
-            episodeBar.classed("hide", !episodeBar.classed("hide"));
 
             // Also toggle the episode legend look
             let legendCircle = d3.select(this);
@@ -510,9 +601,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
         })
         .attr('y', 10)
         .attr('class', 'episode_legend_text')
-        .attr('id', function(d) {
-            return "episode_" + d.replace(" ", "_");
-        })
         .text(function(d) { 
             return d + " (" + episodeCounts[d] + ")"; 
         })
@@ -560,7 +648,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
     	// Update main area
 		d3.selectAll(".main_report")
 			.attr("cx", function(d) { 
-				return mainX(d.formattedTime); 
+				return mainX(d.formattedDate); 
 			});
 	
 	    // Update the main x axis
@@ -730,7 +818,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .enter().append("g")
 	    .append("circle")
 	    .attr('class', function(d) {
-	    	return 'main_report ' + d.episode;
+	    	return 'main_report ' + episode2CssClass(d.episode);
 	    })
 	    .attr("id", function(d) {
             // Prefix with "main_"
@@ -742,7 +830,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    })
 	    .attr("r", reportMainRadius)
 	    .attr("cx", function(d) { 
-	    	return mainX(d.formattedTime); 
+	    	return mainX(d.formattedDate); 
 	    })
 	    // Vertically spread the dots with same time
 	    .attr("cy", function(d) { 
@@ -757,7 +845,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .on("click", function(d) {
             // Check to see if this report is one of the fact-based reports that are being highlighted
             // d.id has no prefix, just raw id
-            if (factBasedReports.indexOf(d.id) === -1) {
+            if (Object.keys(factBasedReports).indexOf(d.id) === -1) {
                 // Remove the fact related highlighting
                 removeFactBasedHighlighting(d.id);
             }
@@ -792,9 +880,12 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("class", "age_label")
 	    .text("Patient Age");
 
-    // Date objects, not strings
+    // Patient's first and last encounter dates and corresponding ages
+    // We use the dates to render x position
     let encounterDates = [xMinDate, xMaxDate];
-    
+    // We use the calculated ages to render the text of age
+    let encounterAges = [patientInfo.firstEncounterAge, patientInfo.lastEncounterAge];
+
     age.selectAll(".encounter_age")
         .data(encounterDates)
         .enter()
@@ -805,8 +896,8 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .attr("y", ageAreaHeight/2)
 	    .attr("dy", ".5ex")
 	    .attr("class", "encounter_age")
-	    .text(function(d) {
-	    	return getPatientEncounterAgeByDateObject(d, patientInfo.birthday);
+	    .text(function(d, i) {
+	    	return encounterAges[i];
 	    });
 
     // Vertical guidelines based on min and max dates (date objects)
@@ -844,7 +935,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 		.attr('class', 'overview_report')
 		.attr("r", reportOverviewRadius)
 		.attr("cx", function(d) { 
-			return overviewX(d.formattedTime); 
+			return overviewX(d.formattedDate); 
 		})
 		.attr("cy", function(d) { 
 			return getReportCirclePositionY(d, overviewY, overviewReportTypeRowHeightPerCount);
@@ -887,7 +978,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	    .data(customBrushHandlesData)
 	    .enter().append("path")
 	    .attr("class", "handle--custom")
-	    .attr("stroke", "#000")
 	    .attr("cursor", "ew-resize")
 		.attr("d", createCustomBrushHandle)
 		.attr("transform", function(d, i) { 
@@ -906,25 +996,6 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	        	return "translate(" + [selection[i], -overviewHeight/4] + ")"; 
 	        });
 	};
-
-    // Hide the custom brush handles on mousedown ( the start of a brush gesture)
-    let hideCustomBrushHandles = function() {
-        // Check if an user event exists
-        // Otherwise we'll see the following error in firefox:
-        // TypeError: Value being assigned to SVGPoint.x is not a finite floating-point value.
-        // Because itss not supported to call d3.mouse when there is not a current user event.
-        if (d3.event.sourceEvent) {
-        	let selection = d3.brushSelection(overviewBrush.node());
-        	let mousePosition = d3.mouse(this);
-	        
-	        // Only hide the brush handles when mouse clicks outside of the selection
-	        // Don't hide the handles when clicks inside the selected brush area
-	        if (mousePosition[0] === selection[0] || mousePosition[0] === selection[1]) {
-	            customBrushHandle
-			    	.style("display", "none");
-	        }
-        }  
-    };
 
 	// Function expression to create brush function redraw with selection
 	// Need to define this before defining brush since it's function expression instead of function declariation
@@ -954,10 +1025,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// D3 brush
 	let brush = d3.brushX()
 	    .extent([[0, 0], [width, overviewHeight]])
-	    // https://github.com/d3/d3-brush#brush_on
-	    // First to hide the custom handles at the start of a brush gesture(mousedown)
-	    .on("start", hideCustomBrushHandles)
-	    // Then update the UI on brush move
+	    // Update the UI on brush move
 	    .on("brush", brushed);
 
 	// Applying brush on the overviewBrush element
@@ -976,7 +1044,7 @@ function renderTimeline(svgContainerId, patientInfo, reportTypes, typeCounts, ma
 	// Reset button
 	svg.append("foreignObject")
 	    .attr('id', 'reset')
-	    .attr("transform", "translate(20, " + (margin.top + pad + height + pad + ageAreaHeight + ageAreaBottomPad + overviewHeight) + ")")
+	    .attr("transform", "translate(10, " + (margin.top + pad + height + pad + ageAreaHeight + ageAreaBottomPad + overviewHeight) + ")")
 	    .append("xhtml:body")
         .html('<button>Reset</button>');
 
