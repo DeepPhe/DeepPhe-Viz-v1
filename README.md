@@ -50,6 +50,7 @@ dbms.active_database=deepphe.db
 ````
 
 You'll also have a file named `deepphe-viz-0.3.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The DeepPhe-Viz uses these libraries to interact with the customized DeepPhe system database.
+A copy of the plugin file is also available on [DeepPhe system Releases](https://github.com/DeepPhe/DeepPhe-Release/releases).
 
 To run Neo4j as a console application, use:
 `./<NEO4J_HOME>/bin/neo4j console`
