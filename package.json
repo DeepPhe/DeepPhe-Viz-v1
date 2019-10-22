@@ -23,7 +23,7 @@
     "hapi": "^18.1.0",
     "hapi-swagger": "^9.3.1",
     "inert": "^5.1.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "neo4j-driver": "^1.7.2",
     "vision": "^5.4.4"
   },
