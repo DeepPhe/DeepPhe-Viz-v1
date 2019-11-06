@@ -13,17 +13,17 @@
     "visualization"
   ],
   "author": "University of Pittsburgh, Department of Biomedical Informatics",
-  "license": "SEE LICENSE FILE",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/DeepPhe/DeepPhe-Viz/issues"
   },
   "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "handlebars": "^4.1.0",
-    "hapi": "^18.1.0",
-    "hapi-swagger": "^9.3.1",
+    "handlebars": "^4.4.5",
+    "@hapi/hapi": "^18.4.0",
+    "hapi-swagger": "^10.2.0",
     "inert": "^5.1.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "neo4j-driver": "^1.7.2",
     "vision": "^5.4.4"
   },
