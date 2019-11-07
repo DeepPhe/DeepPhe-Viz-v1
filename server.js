@@ -1,10 +1,10 @@
 'use strict';
 
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
-const Inert = require('inert');
+const Inert = require('@hapi/inert');
 
-const Vision = require('vision');
+const Vision = require('@hapi/vision');
 
 const HapiSwagger = require('hapi-swagger');
 
