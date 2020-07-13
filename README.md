@@ -46,7 +46,7 @@ NOTE: the top level directory is referred to as `NEO4J_HOME`, where you see the 
 After building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md), you will have a `deepphe.db` folder generated in the output folder named `output_graph`. Put the generated `deepphe.db` under your `<NEO4J_HOME>/data/databases/` and configure the `<NEO4J_HOME>/conf/neo4j.conf` to point to this database.
 
 ````
-dbms.active_database=deepphe.db
+dbms.default_database=deepphe.db
 ````
 
 You'll also have a file named `deepphe-viz-0.3.0-plugin.zip` in the directory `deepphe-viz-neo4j/target` after building the [DeepPhe system](https://github.com/DeepPhe/DeepPhe-Release/blob/master/README.md). This compressed file contains a directory named `plugins`.  All the jar files of the `plugins` directory must be copied to `<NEO4J_HOME>/plugins` directory. The DeepPhe-Viz uses these libraries to interact with the customized DeepPhe system database.
