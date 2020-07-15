@@ -24,7 +24,7 @@
     "@hapi/vision": "^5.5.4",
     "handlebars": "^4.5.1",
     "hapi-swagger": "^10.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "neo4j-driver": "^1.7.6"
   },
   "main": "server.js"
