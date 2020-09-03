@@ -19,7 +19,7 @@
   },
   "homepage": "https://healthnlp.hms.harvard.edu/cancer/wiki/index.php/Main_Page",
   "dependencies": {
-    "@hapi/hapi": "^18.4.0",
+    "@hapi/hapi": "^19.1.1",
     "@hapi/inert": "^5.2.2",
     "@hapi/vision": "^5.5.4",
     "handlebars": "^4.5.1",
